@@ -158,7 +158,7 @@ const ArtifactComponent = () => {
   const handleHireNavigate = useCallback(() => handleTabClick('contact'), [handleTabClick]);
 
   const bookMeeting = useCallback(() => {
-    window.open('https://calendly.com/abirabbasmd', '_blank');
+    window.open('https://calendly.com/abirabbasmd', '_blank', 'noopener,noreferrer');
   }, []);
 
   return (
