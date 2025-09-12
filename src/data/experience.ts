@@ -51,15 +51,6 @@ export const experiences: Experience[] = [
     ]
   },
   {
-    role: 'Package Sorting',
-    company: 'Amazon · Contract',
-    period: 'Nov 2020 – Mar 2022',
-    location: 'On-site',
-    details: [
-      'Gained firsthand experience in large-scale operations and systematic processes while building a technical foundation'
-    ]
-  },
-  {
     role: 'Data Miner',
     company: 'Fieldsports GmbH · Part-time',
     period: 'Jul 2020 – Oct 2020',
