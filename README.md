@@ -14,6 +14,7 @@ Track these metrics with real user monitoring and adjust assets, code splitting 
 
 The project sets a restrictive Content Security Policy in `index.html` that allows only the resources needed to fetch and display Medium posts. Configure `frame-ancestors` via your hosting platform's HTTP headers for full protection.
 
+
 ## Tutorials
 
 Explore tutorials of our AI-augmented thinking and project walkthroughs. The site pulls the latest videos from [this YouTube playlist](https://www.youtube.com/playlist?list=PLiMUBe7mFRXcRMOVEfH1YIoHa2h_8_0b9).
@@ -28,3 +29,7 @@ For CI runs, add the same key as a repository secret named `VITE_YOUTUBE_API_KEY
 env:
   VITE_YOUTUBE_API_KEY: ${{ secrets.VITE_YOUTUBE_API_KEY }}
 ```
+=======
+## Video Overviews
+
+Explore video overviews of our AI-augmented thinking and project walkthroughs in [this YouTube playlist](https://www.youtube.com/playlist?list=PLiMUBe7mFRXcRMOVEfH1YIoHa2h_8_0b9).
