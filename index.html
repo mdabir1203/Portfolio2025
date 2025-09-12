@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAGXRFWHRTb2Z0d2FyZQBNYWNpbnRvc2ggSEQgdjEuOTAg4Baq2gAAAD9JREFUKFNjZGBgYGBgUggUGBoa/N8BgwERnLx9uZkBlJDAyMjKAkYEHETVzkKACGcEAMON0IxtZG6XAAAAAElFTkSuQmCC" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https:; object-src 'none'; frame-ancestors 'none'">
+    <!-- frame-ancestors must be delivered via HTTP headers -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cdn-images-1.medium.com https://miro.medium.com; connect-src 'self' https://api.rss2json.com; object-src 'none'; base-uri 'self'"
+    />
     <meta name="description" content="Portfolio of Mohammad Abir Abbas – AI developer, Rust enthusiast and security specialist building AI-powered, secure and scalable solutions." />
     <meta name="keywords" content="Mohammad Abir Abbas, AI developer, Rust, security, portfolio" />
     <meta name="author" content="Mohammad Abir Abbas" />

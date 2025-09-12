@@ -9,3 +9,7 @@ Strive for a fast, fluid experience:
 - Maintain **60 fps** scrolling without layout shifts
 
 Track these metrics with real user monitoring and adjust assets, code splitting and caching accordingly.
+
+## Security
+
+The project sets a restrictive Content Security Policy in `index.html` that allows only the resources needed to fetch and display Medium posts. Configure `frame-ancestors` via your hosting platform's HTTP headers for full protection.
