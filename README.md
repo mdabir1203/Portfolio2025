@@ -12,7 +12,7 @@ Track these metrics with real user monitoring and adjust assets, code splitting 
 
 ## Security
 
-The project sets a restrictive Content Security Policy in `index.html` that allows only the resources needed to fetch and display Medium posts. Configure `frame-ancestors` via your hosting platform's HTTP headers for full protection.
+The project sets a restrictive Content Security Policy in `index.html` that allows only the resources needed to fetch and display Medium posts and YouTube thumbnails. Configure `frame-ancestors` via your hosting platform's HTTP headers for full protection.
 
 ## Tutorials
 
