@@ -16,4 +16,6 @@ The project sets a restrictive Content Security Policy in `index.html` that allo
 
 ## Tutorials
 
-Explore tutorials of our AI-augmented thinking and project walkthroughs in [this YouTube playlist](https://www.youtube.com/playlist?list=PLiMUBe7mFRXcRMOVEfH1YIoHa2h_8_0b9).
+Explore tutorials of our AI-augmented thinking and project walkthroughs. The site pulls the latest videos from [this YouTube playlist](https://www.youtube.com/playlist?list=PLiMUBe7mFRXcRMOVEfH1YIoHa2h_8_0b9).
+
+To fetch playlist data during development, provide a YouTube Data API key as `VITE_YOUTUBE_API_KEY` in a `.env` file (see `.env.example`).
