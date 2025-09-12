@@ -20,7 +20,20 @@ const ExperienceSection: FC<ExperienceSectionProps> = ({ experiences }) => (
             <h4 className="text-lg text-gray-300 mb-3">{exp.company}</h4>
             <ul className="list-disc list-inside text-gray-300 space-y-2">
               {exp.details.map((detail, i) => (
-                <li key={i}>{detail}</li>
+                <li key={i}>
+                  {detail.link ? (
+                    <a
+                      href={detail.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-cyan-400 hover:underline"
+                    >
+                      {detail.text}
+                    </a>
+                  ) : (
+                    detail.text
+                  )}
+                </li>
               ))}
             </ul>
           </div>
