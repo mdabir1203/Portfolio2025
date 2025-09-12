@@ -27,7 +27,7 @@ const TutorialsSection: FC = () => {
       if (!API_KEY) return;
       try {
         const res = await fetch(
-          `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${PLAYLIST_ID}&key=${API_KEY}`,
+          `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=5&playlistId=${PLAYLIST_ID}&key=${API_KEY}`,
         );
         const data: YouTubePlaylistItemsResponse = await res.json();
         setVideos(
@@ -39,7 +39,8 @@ const TutorialsSection: FC = () => {
               if (!id || !title || !thumbnail) return null;
               return { id, title, thumbnail };
             })
-            .filter((v): v is Video => v !== null),
+            .filter((v): v is Video => v !== null)
+            .slice(0, 5),
         );
       } catch (err) {
         console.error('Failed to load videos', err);
@@ -71,6 +72,16 @@ const TutorialsSection: FC = () => {
             <h3 className="mt-2 text-lg text-gray-200 group-hover:text-cyan-400">{video.title}</h3>
           </a>
         ))}
+      </div>
+      <div className="text-center mt-8">
+        <a
+          href={`https://www.youtube.com/playlist?list=${PLAYLIST_ID}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block bg-gradient-to-r from-cyan-500 to-green-500 hover:from-cyan-600 hover:to-green-600 text-black font-bold py-3 px-6 rounded-lg border-2 border-transparent transition-all duration-300 text-shadow-glow transform hover:scale-105 hover:shadow-lg hover:shadow-green-400/30"
+        >
+          View All Tutorials on YouTube →
+        </a>
       </div>
     </section>
   );
