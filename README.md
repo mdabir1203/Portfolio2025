@@ -1,34 +1,49 @@
-Portfolio based on React+Typescript+Vite built with Codex Cli by OpenAi
+# AI Alchemist Portfolio
 
-## Performance Goal
+Welcome to the digital workshop of **Mohammad Abir Abbas** – AI Whisperer, Rust artisan and vibe coder. This site is a living portfolio that fuses art, code and security.
 
-Strive for a fast, fluid experience:
+## What's Inside
+- **Immersive single-page app** built with React and TypeScript.
+- Sections for skills, projects, experience, services, tutorials, blog posts and a contact form.
+- Animated canvas background, retro voxel effects and LinkedIn recommendations to add personality.
+- Medium posts and YouTube playlists are fetched on the fly.
+- A tiny Express proxy handles contact requests with Zod validation and rate limiting.
+- SEO ready: meta tags, sitemap, robots/LLM directives and strict security headers.
 
-- **Largest Contentful Paint** under 2 s on a 3G connection
-- **Interaction latency** below 100 ms
-- Maintain **60 fps** scrolling without layout shifts
+## Tech Stack
+- **React 18 + Vite 7** for a fast development experience.
+- **TypeScript** for type safety.
+- **Tailwind CSS** with `tailwindcss-animate` for design.
+- **Express**, `cors`, `express-rate-limit` and **Zod** for the form proxy.
+- **vite-plugin-sitemap** for automatic sitemap generation.
+- **Yarn v3 (Berry)** as the package manager.
 
-Track these metrics with real user monitoring and adjust assets, code splitting and caching accordingly.
-
-## Security
-
-The project sets a restrictive Content Security Policy in `index.html` that allows only the resources needed to fetch and display Medium posts and YouTube thumbnails. Configure `frame-ancestors` via your hosting platform's HTTP headers for full protection.
-
-## Tutorials
-
-Explore tutorials of our AI-augmented thinking and project walkthroughs. The site pulls the latest videos from [this YouTube playlist](https://www.youtube.com/playlist?list=PLiMUBe7mFRXcRMOVEfH1YIoHa2h_8_0b9).
-
-To fetch playlist data during development, provide a YouTube Data API key as `VITE_YOUTUBE_API_KEY` in a `.env` file (see `.env.example`).
-
-### GitHub Actions
-
-For CI runs, add the same key as a repository secret named `VITE_YOUTUBE_API_KEY` and expose it to the job environment:
-
-```yaml
-env:
-  VITE_YOUTUBE_API_KEY: ${{ secrets.VITE_YOUTUBE_API_KEY }}
+## Getting Started
+```bash
+yarn install
+yarn dev       # start local server
+yarn lint      # optional: lint sources (requires ESLint)
+yarn build     # produce production assets
 ```
 
-## Video Overviews
+Set environment variables when needed:
+- `VITE_YOUTUBE_API_KEY` – fetches playlist videos for the Tutorials section.
+- `GOOGLE_APPS_SCRIPT_URL` – target of the Express proxy for contact submissions.
 
-Explore video overviews of our AI-augmented thinking and project walkthroughs in [this YouTube playlist](https://www.youtube.com/playlist?list=PLiMUBe7mFRXcRMOVEfH1YIoHa2h_8_0b9).
+## Project Structure
+```
+src/
+  artifact-component.tsx   # orchestrates sections and background effects
+  components/              # UI sections (Home, Skills, Projects, etc.)
+  data/                    # typed data for skills, services, projects...
+  proxy.cjs                # Express proxy server
+public/
+  robots.txt, sitemap.xml, llms.txt  # SEO and crawler guidelines
+```
+
+## Deployment & Security
+Security headers and a strict Content Security Policy are configured in `vite.config.ts`.
+The site also ships with a curated `robots.txt` and `sitemap.xml` for search engines and AI crawlers.
+
+## License
+MIT
