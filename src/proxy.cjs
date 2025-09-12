@@ -1,22 +1,49 @@
-// proxy.js
+require('dotenv').config();
 const express = require('express');
-const fetch = require('node-fetch');
+const cors = require('cors');
+const rateLimit = require('express-rate-limit');
+const { z } = require('zod');
+
 const app = express();
 
+const limiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 10,
+});
+
 app.use(express.json());
+app.use(cors({ origin: 'https://your-domain.com', methods: ['POST'] }));
+app.use(limiter);
+
+const bodySchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  message: z.string(),
+});
+
+const scriptUrl = process.env.GOOGLE_APPS_SCRIPT_URL;
+if (!scriptUrl) {
+  throw new Error('GOOGLE_APPS_SCRIPT_URL is not defined');
+}
 
 app.post('/', async (req, res) => {
-  const response = await fetch('https://script.google.com/macros/s/AKfycbzDth9_t9bR01hJv4-Q8Tg_raQcUkQnUff5uUDh6gb06C7fhTbzYWvJ-i5hdn7Rk2Gj/exec', {
+  const parsed = bodySchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({ error: 'Invalid request body', issues: parsed.error.errors });
+  }
+
+  const response = await fetch(scriptUrl, {
     method: 'POST',
-    body: JSON.stringify(req.body), // Ensure the body is stringified
+    body: JSON.stringify(parsed.data),
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   });
   const data = await response.json();
   res.json(data);
 });
 
-app.listen(5173, () => {
-  console.log('Proxy server running on port 5000');
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Proxy server running on port ${PORT}`);
 });
