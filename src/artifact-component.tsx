@@ -9,12 +9,14 @@ import BlogSection from './components/BlogSection';
 import ServicesSection from './components/ServicesSection';
 import JourneySection from './components/JourneySection';
 import ContactSection from './components/ContactSection';
+import ExperienceSection from './components/ExperienceSection';
 
 import { skills } from './data/skills';
 import { projects } from './data/projects';
 import { services } from './data/services';
 import { linkedinRecommendations } from './data/linkedin-recommendations';
 import { journey } from './data/journey';
+import { experiences } from './data/experience';
 import { MediumPost } from './types';
 
 const ArtifactComponent = () => {
@@ -191,6 +193,7 @@ const ArtifactComponent = () => {
         {activeTab === 'services' && (
           <ServicesSection services={services} bookMeeting={bookMeeting} />
         )}
+        {activeTab === 'experience' && <ExperienceSection experiences={experiences} />}
         {activeTab === 'journey' && <JourneySection journey={journey} />}
         {activeTab === 'contact' && <ContactSection bookMeeting={bookMeeting} />}
         <footer className="mt-24 pt-8 border-t border-white/10 text-center">
