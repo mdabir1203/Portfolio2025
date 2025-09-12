@@ -12,5 +12,21 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
       'src': path.resolve(__dirname, './src'),
     },
-  }
+  },
+  server: {
+    headers: {
+      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+      'Referrer-Policy': 'no-referrer',
+    },
+  },
+  preview: {
+    headers: {
+      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+      'Referrer-Policy': 'no-referrer',
+    },
+  },
 });
