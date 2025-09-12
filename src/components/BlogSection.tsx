@@ -1,4 +1,5 @@
 import { FC, memo } from 'react';
+import DOMPurify from 'dompurify';
 import { MediumPost } from '../types';
 
 interface BlogSectionProps {
@@ -29,7 +30,7 @@ const BlogSection: FC<BlogSectionProps> = ({ posts, isFetching, onRetry }) => (
           });
 
           let excerpt = post.description || post.content || '';
-          excerpt = excerpt.replace(/<[^>]*>/g, '');
+          excerpt = DOMPurify.sanitize(excerpt, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
           if (excerpt.length > 150) {
             excerpt = excerpt.substring(0, 150) + '...';
           }
