@@ -8,10 +8,10 @@ interface Video {
 
 interface YouTubePlaylistItemsResponse {
   items?: {
-    snippet: {
-      title: string;
-      resourceId: { videoId: string };
-      thumbnails: { medium: { url: string } };
+    snippet?: {
+      title?: string;
+      resourceId?: { videoId?: string };
+      thumbnails?: { medium?: { url?: string } };
     };
   }[];
 }
@@ -31,11 +31,15 @@ const TutorialsSection: FC = () => {
         );
         const data: YouTubePlaylistItemsResponse = await res.json();
         setVideos(
-          (data.items ?? []).map((item) => ({
-            id: item.snippet.resourceId.videoId,
-            title: item.snippet.title,
-            thumbnail: item.snippet.thumbnails.medium.url,
-          })),
+          (data.items ?? [])
+            .map((item) => {
+              const id = item.snippet?.resourceId?.videoId;
+              const title = item.snippet?.title;
+              const thumbnail = item.snippet?.thumbnails?.medium?.url;
+              if (!id || !title || !thumbnail) return null;
+              return { id, title, thumbnail };
+            })
+            .filter((v): v is Video => v !== null),
         );
       } catch (err) {
         console.error('Failed to load videos', err);
