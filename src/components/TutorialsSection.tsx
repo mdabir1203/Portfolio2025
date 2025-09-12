@@ -62,6 +62,7 @@ const TutorialsSection: FC = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="group block rounded-xl overflow-hidden border-2 border-white/10 transition-colors hover:border-cyan-400"
+            className="group"
           >
             <img
               src={video.thumbnail}
@@ -69,6 +70,9 @@ const TutorialsSection: FC = () => {
               className="w-full aspect-video object-cover"
             />
             <h3 className="p-4 text-lg text-gray-200 group-hover:text-cyan-400">{video.title}</h3>
+              className="w-full h-auto rounded-xl border-2 border-white/10 group-hover:border-cyan-400 transition-colors"
+            />
+            <h3 className="mt-2 text-lg text-gray-200 group-hover:text-cyan-400">{video.title}</h3>
           </a>
         ))}
       </div>

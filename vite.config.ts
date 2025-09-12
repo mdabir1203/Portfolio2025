@@ -22,7 +22,7 @@ export default defineConfig({
       'X-Content-Type-Options': 'nosniff',
       'X-Frame-Options': 'DENY',
       'Referrer-Policy': 'no-referrer',
-      'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cdn-images-1.medium.com https://miro.medium.com https://i.ytimg.com https://img.youtube.com; connect-src 'self' https://api.rss2json.com https://www.googleapis.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com",
+      'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cdn-images-1.medium.com https://miro.medium.com; connect-src 'self' https://api.rss2json.com https://www.googleapis.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com",
     },
   },
   preview: {
@@ -32,6 +32,7 @@ export default defineConfig({
       'X-Frame-Options': 'DENY',
       'Referrer-Policy': 'no-referrer',
       'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cdn-images-1.medium.com https://miro.medium.com https://i.ytimg.com https://img.youtube.com; connect-src 'self' https://api.rss2json.com https://www.googleapis.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com",
+
     },
   },
 });
