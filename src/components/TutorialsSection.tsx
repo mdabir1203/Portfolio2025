@@ -48,32 +48,31 @@ const TutorialsSection: FC = () => {
     fetchVideos();
   }, []);
 
-  return (
-    <section className="mb-16 animate-fadeIn">
-      <h2 className="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">Tutorials</h2>
-      <p className="text-xl text-gray-300 text-center mb-12 max-w-3xl mx-auto">
-        Tutorials highlighting our AI-augmented thinking and projects.
-      </p>
-      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {videos.map((video) => (
-          <a
-            key={video.id}
-            href={`https://www.youtube.com/watch?v=${video.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group block rounded-xl overflow-hidden border-2 border-white/10 transition-colors hover:border-cyan-400"
-          >
-            <img
-              src={video.thumbnail}
-              alt={video.title}
-              className="w-full aspect-video object-cover"
-            />
-            <h3 className="p-4 text-lg text-gray-200 group-hover:text-cyan-400">{video.title}</h3>
-          </a>
-        ))}
-      </div>
-    </section>
-  );
-};
+return (
+  <section className="mb-16 animate-fadeIn">
+    <h2 className="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">Tutorials</h2>
+    <p className="text-xl text-gray-300 text-center mb-12 max-w-3xl mx-auto">
+      Tutorials highlighting our AI-augmented thinking and projects.
+    </p>
+    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {videos.map((video) => (
+        <a
+          key={video.id}
+          href={`https://www.youtube.com/watch?v=${video.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group block rounded-xl overflow-hidden border-2 border-white/10 transition-colors hover:border-cyan-400" // Kept codex's a tag styles
+        >
+          <img
+            src={video.thumbnail}
+            alt={`Tutorial: ${video.title}`} // Enhanced alt text for accessibility
+            className="w-full aspect-video object-cover" // Kept codex's img styles
+          />
+          <h3 className="p-4 text-lg text-gray-200 group-hover:text-cyan-400">{video.title}</h3> // Kept codex's h3 styles (p-4 instead of mt-2)
+        </a>
+      ))}
+    </div>
+  </section>
+);
 
 export default memo(TutorialsSection);
