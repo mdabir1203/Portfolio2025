@@ -26,7 +26,7 @@ export const experiences: Experience[] = [
         link: 'https://www.youtube.com/watch?v=2ptmYpUoopw&t=4s'
       },
       {
-        text: 'Workshop video: 1st Quantum BootCamp – Part 02',
+        text: 'Workshop video: 2nd Quantum BootCamp – Part 02',
         link: 'https://www.youtube.com/watch?v=HMLGoo7D6yk'
       }
     ]
