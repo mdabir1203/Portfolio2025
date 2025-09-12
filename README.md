@@ -19,3 +19,12 @@ The project sets a restrictive Content Security Policy in `index.html` that allo
 Explore tutorials of our AI-augmented thinking and project walkthroughs. The site pulls the latest videos from [this YouTube playlist](https://www.youtube.com/playlist?list=PLiMUBe7mFRXcRMOVEfH1YIoHa2h_8_0b9).
 
 To fetch playlist data during development, provide a YouTube Data API key as `VITE_YOUTUBE_API_KEY` in a `.env` file (see `.env.example`).
+
+### GitHub Actions
+
+For CI runs, add the same key as a repository secret named `VITE_YOUTUBE_API_KEY` and expose it to the job environment:
+
+```yaml
+env:
+  VITE_YOUTUBE_API_KEY: ${{ secrets.VITE_YOUTUBE_API_KEY }}
+```
