@@ -6,6 +6,7 @@ import HomeSection from './components/HomeSection';
 import SkillsSection from './components/SkillsSection';
 import ProjectsSection from './components/ProjectsSection';
 import BlogSection from './components/BlogSection';
+import TutorialsSection from './components/TutorialsSection';
 import ServicesSection from './components/ServicesSection';
 import JourneySection from './components/JourneySection';
 import ContactSection from './components/ContactSection';
@@ -190,6 +191,7 @@ const ArtifactComponent = () => {
         {activeTab === 'blog' && (
           <BlogSection posts={mediumPosts} isFetching={isFetchingPosts} onRetry={fetchMediumPosts} />
         )}
+        {activeTab === 'tutorials' && <TutorialsSection />}
         {activeTab === 'services' && (
           <ServicesSection services={services} bookMeeting={bookMeeting} />
         )}
