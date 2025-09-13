@@ -2,6 +2,11 @@
 
 Welcome to the digital workshop of **Mohammad Abir Abbas** – AI Whisperer, Rust artisan and vibe coder. This site is a living portfolio that fuses art, code and security.
 
+## Preview:
+
+https://github.com/user-attachments/assets/6fdf9f1e-a1e4-444f-8b4d-9969a759deb3
+
+
 ## What's Inside
 - **Immersive single-page app** built with React and TypeScript.
 - Sections for skills, projects, experience, services, tutorials, blog posts and a contact form.
