@@ -18,6 +18,8 @@ jobs:
           node-version: 20
           cache: yarn
       - run: corepack enable
+      - run: yarn set version berry
       - run: yarn install --immutable
       - run: yarn lint
       - run: yarn build
+      
