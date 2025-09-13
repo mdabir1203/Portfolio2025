@@ -1,0 +1,32 @@
+name: Uptime Monitor
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - id: site
+        run: curl -fsS https://portfolio2025.vercel.app > /dev/null
+      - id: blog
+        run: curl -fsS https://medium.com/@md.abir1203 > /dev/null
+      - id: youtube
+        run: curl -fsS https://www.youtube.com/playlist?list=PLiMUBe7mFRXcRMOVEfH1YIoHa2h_8_0b9 > /dev/null
+      - name: Notify on failure
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          from: GitHub Actions <${{ secrets.SMTP_USERNAME }}>
+          to: md.abir1203@gmail.com
+          subject: Portfolio content check failed
+          body: |
+            Main site status: ${{ steps.site.outcome }}
+            Blog status: ${{ steps.blog.outcome }}
+            YouTube status: ${{ steps.youtube.outcome }}

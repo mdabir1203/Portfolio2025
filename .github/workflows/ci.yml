@@ -21,5 +21,6 @@ jobs:
       - run: yarn set version berry
       - run: yarn install --immutable
       - run: yarn lint
+      - run: yarn npm audit --severity high
       - run: yarn build
       

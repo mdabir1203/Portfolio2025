@@ -50,5 +50,10 @@ public/
 Security headers and a strict Content Security Policy are configured in `vite.config.ts`.
 The site also ships with a curated `robots.txt` and `sitemap.xml` for search engines and AI crawlers.
 
+### Security Considerations
+- Production secrets like API keys and SMTP credentials live in GitHub Secrets and are never committed.
+- CI runs `yarn npm audit --severity high` to catch vulnerable dependencies.
+- A scheduled monitor workflow pings the site, Medium feed and YouTube playlist and emails **md.abir1203@gmail.com** if any fail.
+
 ## License
 MIT
