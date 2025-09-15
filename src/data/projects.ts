@@ -19,7 +19,7 @@ export const projects: Project[] = [
     description: 'A Bengali-first fact-checking assistant that cross-checks text or images with the Perplexity API to deliver sourced, culturally aware answers in seconds.',
     stars: '🔎 AI Fact-Checking',
     link: 'https://github.com/mdabir1203/Bangla-Fact-Checker',
-    image: 'https://placehold.co/600x400/0d1321/fdfffc?text=Bangla+Fact+Checker'
+    image: '/images/factcheckerlogo.webp'
   },
   {
     title: 'Prompt Panda Bangla',
