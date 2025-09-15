@@ -33,7 +33,7 @@ export const projects: Project[] = [
     description: 'A Digital Marketplace for easy access to Creator tools',
     stars: '🚀 Learning Journey',
     link: 'https://www.thedeepbluedigital.com',
-    image: 'https://placehold.co/600x400/0d1321/00eaff?text=Deep+Blue+Digital'
+    image: '/images/deepbluelogo.webp'
   },
   {
     title: 'RedAGPT',
