@@ -5,7 +5,7 @@ interface NavigationProps {
   onTabClick: (tab: string) => void;
 }
 
-const tabs = ['home', 'skills', 'projects', 'blog', 'tutorials', 'services', 'experience', 'journey', 'contact'];
+const tabs = ['home', 'skills', 'projects', 'blog', 'tutorials', 'services', 'awards', 'experience', 'journey', 'contact'];
 
 const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => (
   <nav className="flex flex-wrap justify-center gap-4 mb-12" aria-label="Primary">

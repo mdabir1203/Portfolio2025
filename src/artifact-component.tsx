@@ -11,6 +11,7 @@ import ServicesSection from './components/ServicesSection';
 import JourneySection from './components/JourneySection';
 import ContactSection from './components/ContactSection';
 import ExperienceSection from './components/ExperienceSection';
+import AwardsSection from './components/AwardsSection';
 
 import { skills } from './data/skills';
 import { projects } from './data/projects';
@@ -18,6 +19,7 @@ import { services } from './data/services';
 import { linkedinRecommendations } from './data/linkedin-recommendations';
 import { journey } from './data/journey';
 import { experiences } from './data/experience';
+import { awards } from './data/awards';
 import { MediumPost } from './types';
 
 const ArtifactComponent = () => {
@@ -195,6 +197,7 @@ const ArtifactComponent = () => {
         {activeTab === 'services' && (
           <ServicesSection services={services} bookMeeting={bookMeeting} />
         )}
+        {activeTab === 'awards' && <AwardsSection awards={awards} />}
         {activeTab === 'experience' && <ExperienceSection experiences={experiences} />}
         {activeTab === 'journey' && <JourneySection journey={journey} />}
         {activeTab === 'contact' && <ContactSection bookMeeting={bookMeeting} />}
