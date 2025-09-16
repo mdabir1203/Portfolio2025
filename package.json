@@ -21,6 +21,7 @@
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "vite-plugin-sitemap": "^0.8.2",
+    "winston": "^3.17.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
