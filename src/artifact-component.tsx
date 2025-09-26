@@ -9,9 +9,11 @@ import BlogSection from './components/BlogSection';
 import TutorialsSection from './components/TutorialsSection';
 import ServicesSection from './components/ServicesSection';
 import JourneySection from './components/JourneySection';
+import AssistantJourneySection from './components/AssistantJourneySection';
 import ContactSection from './components/ContactSection';
 import ExperienceSection from './components/ExperienceSection';
 import AwardsSection from './components/AwardsSection';
+import BlackBoxAssistant from './components/BlackBoxAssistant';
 
 import { skills } from './data/skills';
 import { projects } from './data/projects';
@@ -200,6 +202,7 @@ const ArtifactComponent = () => {
         {activeTab === 'awards' && <AwardsSection awards={awards} />}
         {activeTab === 'experience' && <ExperienceSection experiences={experiences} />}
         {activeTab === 'journey' && <JourneySection journey={journey} />}
+        {activeTab === 'assistant' && <AssistantJourneySection />}
         {activeTab === 'contact' && <ContactSection bookMeeting={bookMeeting} />}
         <footer className="mt-24 pt-8 border-t border-[#2f6f68]/50 text-center">
           <p className="text-[#c7f2ea] mb-4">
@@ -241,6 +244,8 @@ const ArtifactComponent = () => {
           </div>
         </div>
       </div>
+
+      <BlackBoxAssistant />
 
       <style>{`
         .text-shadow-glow {
