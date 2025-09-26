@@ -141,14 +141,12 @@ const loadAssistantRuntime = async () => {
 
   assistantRuntimePromise = (async () => {
     const [
-      chatModule,
       vectorModule,
       embeddingsModule,
       promptsModule,
       messagesModule,
       qdrantModule,
     ] = await Promise.all([
-      import('@langchain/community/chat_models/qwen'),
       import('@langchain/community/vectorstores/qdrant'),
       import('langchain/embeddings/fake'),
       import('@langchain/core/prompts'),
@@ -156,7 +154,6 @@ const loadAssistantRuntime = async () => {
       import('@qdrant/js-client-rest'),
     ]);
 
-    const { ChatQwen } = chatModule;
     const { QdrantVectorStore } = vectorModule;
     const { FakeEmbeddings } = embeddingsModule;
     const { ChatPromptTemplate, MessagesPlaceholder } = promptsModule;
@@ -188,6 +185,16 @@ const loadAssistantRuntime = async () => {
         text:
           'Act 5 · Finale — Roadmap evolves into a customer-ready agent framework delivering tailored BlackBox Assistants for enterprise workflows.',
         metadata: { act: 'finale', label: 'Roadmap' },
+      },
+      {
+        text:
+          'Sound & Flow — Studio playlists blend analog synthwave, diaspora jazz nights, and ambient club edits that inspire vibe-coded agent design and onboarding rituals.',
+        metadata: { act: 'sound', label: 'Music Identity' },
+      },
+      {
+        text:
+          'Creative Stack — Beyond security research, we host underground listening sessions, prototype generative visuals, and remix field notes into zines to keep storytelling human.',
+        metadata: { act: 'creative', label: 'Culture Layer' },
       },
     ];
 
@@ -227,30 +234,15 @@ const loadAssistantRuntime = async () => {
 
     const retriever = vectorStore.asRetriever({ k: 4 });
 
-    const qwenApiKey = process.env.QWEN_API_KEY;
-    const llm = qwenApiKey
-      ? new ChatQwen({
-          apiKey: qwenApiKey,
-          model: process.env.QWEN_MODEL || 'qwen2.5-coder-32b',
-          temperature: 0.3,
-        })
-      : null;
-
-    if (!qwenApiKey) {
-      logger.warn(
-        'QWEN_API_KEY not configured, BlackBox Assistant will respond with deterministic context summaries.'
-      );
-    }
-
     const prompt = ChatPromptTemplate.fromMessages([
       [
         'system',
-        'You are the BlackBox Assistant guiding visitors through a five act narrative about a security-focused AI portfolio. Blend retrieved metrics with conversational storytelling. Always ground answers in the provided context and cite the business angle.',
+        'You are the BlackBox Deep Research Companion. Guide visitors through Abir Abbas’ security-first AI portfolio, weaving in how analog synths, diaspora jazz sets, and club culture shape our vibe-coded agents. Lean on retrieved facts, respect visitor intent, and end with a bold takeaway that fuses business impact with creative energy.',
       ],
       new MessagesPlaceholder('history'),
       [
         'human',
-        'Visitor says: {question}\n\nContext:\n{context}\n\nRespond with an inviting, data-backed answer and finish with a business takeaway.',
+        'Visitor says: {question}\n\nPortfolio intel:\n{context}\n\nDeliver a vivid, insight-rich answer that links craft, sound, and strategy. Close with a **Takeaway:** line.',
       ],
     ]);
 
@@ -261,28 +253,107 @@ const loadAssistantRuntime = async () => {
           : new HumanMessage(entry.content)
       );
 
+    const openrouterApiKey = process.env.OPENROUTER_API_KEY;
+    const openrouterReferer = process.env.OPENROUTER_REFERRER;
+    const openrouterTitle = process.env.OPENROUTER_TITLE;
+
+    if (!openrouterApiKey) {
+      logger.warn(
+        'OPENROUTER_API_KEY not configured, BlackBox Assistant will respond with deterministic context summaries.'
+      );
+    }
+
+    const invokeDeepResearch = async ({ question, context, historyMessages }) => {
+      if (!openrouterApiKey) {
+        return null;
+      }
+
+      const messages = await prompt.formatMessages({
+        question,
+        context,
+        history: historyMessages,
+      });
+
+      const payload = {
+        model: 'alibaba/tongyi-deepresearch-30b-a3b',
+        messages: messages.map((msg) => {
+          const type = msg._getType();
+          const role = type === 'human' ? 'user' : type === 'ai' ? 'assistant' : type;
+          const content =
+            typeof msg.content === 'string'
+              ? msg.content
+              : msg.content
+                  .map((part) => (typeof part === 'string' ? part : part?.text ?? ''))
+                  .join('');
+
+          return {
+            role,
+            content,
+          };
+        }),
+      };
+
+      try {
+        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${openrouterApiKey}`,
+            'Content-Type': 'application/json',
+            ...(openrouterReferer ? { 'HTTP-Referer': openrouterReferer } : {}),
+            ...(openrouterTitle ? { 'X-Title': openrouterTitle } : {}),
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          logger.error('OpenRouter responded with a non-200 status', {
+            status: response.status,
+            statusText: response.statusText,
+            body: errorText,
+          });
+          return null;
+        }
+
+        const data = await response.json();
+        const choice = data?.choices?.[0]?.message?.content;
+
+        if (typeof choice !== 'string') {
+          logger.error('OpenRouter payload missing expected content shape', { data });
+          return null;
+        }
+
+        return choice;
+      } catch (error) {
+        logger.error('Failed to invoke OpenRouter DeepResearch model', normaliseError(error));
+        return null;
+      }
+    };
+
     const runAssistant = async ({ message, history }) => {
       const docs = await retriever.getRelevantDocuments(message);
       const context = docs.map((doc) => doc.pageContent).join('\n---\n');
+      const formattedHistory = formatHistory(history);
 
-      if (llm) {
-        const response = await prompt.pipe(llm).invoke({
-          question: message,
-          context,
-          history: formatHistory(history),
-        });
+      const deepResearchReply = await invokeDeepResearch({
+        question: message,
+        context,
+        historyMessages: formattedHistory,
+      });
 
+      if (deepResearchReply) {
         return {
-          reply: response?.content ?? '',
+          reply: deepResearchReply,
           sources: docs.map((doc) => doc.metadata ?? {}),
-          mode: 'llm',
+          mode: 'deepresearch',
         };
       }
 
       const fallbackReply = [
         'Here’s what the BlackBox playbook highlights:',
         context,
-        'Business takeaway: secure, scalable, human-aligned systems built on BlackBox, Agentverse, and Vibeverse.',
+        'Soundtrack note: Sessions pulse with analog synthwave, diaspora jazz, and ambient club edits to keep human context front and center.',
+        'Business & creative takeaway: secure, scalable, and human-aligned systems built on BlackBox, Agentverse, and Vibeverse — scored with the music that keeps our teams in flow.',
       ]
         .filter(Boolean)
         .join('\n\n');

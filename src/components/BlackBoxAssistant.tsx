@@ -6,7 +6,9 @@ const initialMessage = "Hi, I’m the BlackBox Assistant. Want to see what makes
 const BlackBoxAssistant: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [liveReply, setLiveReply] = useState<{ text: string; mode?: 'llm' | 'fallback' } | null>(null);
+  const [liveReply, setLiveReply] = useState<
+    { text: string; mode?: 'deepresearch' | 'fallback' } | null
+  >(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationError, setGenerationError] = useState<string | null>(null);
 
@@ -70,14 +72,15 @@ const BlackBoxAssistant: FC = () => {
       if (data && typeof data.reply === 'string') {
         setLiveReply({
           text: data.reply,
-          mode: data.mode === 'llm' || data.mode === 'fallback' ? data.mode : undefined,
+          mode:
+            data.mode === 'deepresearch' || data.mode === 'fallback' ? data.mode : undefined,
         });
       } else {
         setLiveReply(null);
       }
     } catch (error) {
       console.error('Assistant generation failed', error);
-      setGenerationError('Unable to reach the LangChain + Qwen runtime. Try again shortly.');
+      setGenerationError('Unable to reach the LangChain + DeepResearch runtime. Try again shortly.');
     } finally {
       setIsGenerating(false);
     }
@@ -112,12 +115,14 @@ const BlackBoxAssistant: FC = () => {
               {liveReply && (
                 <div className="mt-4 rounded-lg border border-[#1f655d]/70 bg-[#033832]/80 p-3 text-xs text-[#c8fff4]">
                   <p className="uppercase tracking-[0.25em] text-[#80f0df] mb-1">
-                    {liveReply.mode === 'fallback' ? 'Context Summary' : 'Live (Qwen + LangChain)'}
+                    {liveReply.mode === 'fallback'
+                      ? 'Context Summary'
+                      : 'Live (DeepResearch Stack)'}
                   </p>
                   <p className="whitespace-pre-line text-sm text-[#e3fbf6]">{liveReply.text}</p>
                   {liveReply.mode === 'fallback' && (
                     <p className="mt-2 text-[11px] text-[#9adcd1]">
-                      Tip: Add a Qwen API key to unlock generative riffs on this narrative.
+                      Tip: Add an OpenRouter DeepResearch key to unlock generative riffs on this narrative.
                     </p>
                   )}
                 </div>
@@ -158,7 +163,7 @@ const BlackBoxAssistant: FC = () => {
               disabled={isGenerating}
               className="inline-flex items-center gap-2 rounded-lg border border-[#23a395] px-4 py-2 font-semibold uppercase tracking-[0.3em] text-[#9adcd1] transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40 hover:border-[#00bfa5] hover:text-[#c8fff4] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00bfa5]"
             >
-              {isGenerating ? 'Syncing…' : 'Run Qwen Stack'}
+              {isGenerating ? 'Syncing…' : 'Run DeepResearch Stack'}
             </button>
 
             {currentAct.ctaHref && currentAct.ctaLabel && (
