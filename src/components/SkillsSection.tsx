@@ -30,7 +30,6 @@ const SkillsSection: FC<SkillsSectionProps> = ({ skills }) => (
               {skill.badge.charAt(0).toUpperCase() + skill.badge.slice(1)}
             </span>
           </div>
-
           <p className="text-[#d7f5ef] mb-6 text-sm leading-relaxed">{skill.description}</p>
 
           <div className="skill-bar bg-[#033832]/60 rounded-full h-3 mb-6">

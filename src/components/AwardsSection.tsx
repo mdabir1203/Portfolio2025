@@ -37,7 +37,7 @@ const AwardsSection: FC<AwardsSectionProps> = ({ awards }) => (
               </a>
             )}
           </header>
-
+          
           {award.description && <p className="text-[#d7f5ef] leading-relaxed mb-4">{award.description}</p>}
 
           {award.highlights && award.highlights.length > 0 && (

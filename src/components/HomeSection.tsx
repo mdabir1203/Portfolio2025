@@ -1,5 +1,6 @@
 import { FC, memo } from 'react';
 import { LinkedInRecommendation } from '../data/linkedin-recommendations';
+import TealPalettePreview from './TealPalettePreview';
 
 interface HomeSectionProps {
   onHireClick: () => void;
@@ -59,6 +60,8 @@ const HomeSection: FC<HomeSectionProps> = ({ onHireClick, isHired, linkedinRecom
         </div>
       </div>
     </div>
+
+    <TealPalettePreview />
 
     <section className="mb-16">
       <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-[#a7ffeb] via-[#4DB6AC] to-[#009688] bg-clip-text text-transparent">
