@@ -6,7 +6,19 @@ interface NavigationProps {
   onTabClick: (tab: string) => void;
 }
 
-const tabs = ['home', 'skills', 'projects', 'blog', 'tutorials', 'services', 'awards', 'experience', 'journey', 'contact'];
+const tabs = [
+  'home',
+  'skills',
+  'projects',
+  'blog',
+  'tutorials',
+  'services',
+  'awards',
+  'experience',
+  'journey',
+  'assistant',
+  'contact'
+];
 
 const helperPanelId = 'navigation-helper-panel';
 
