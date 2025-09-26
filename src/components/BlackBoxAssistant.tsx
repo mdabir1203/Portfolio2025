@@ -280,7 +280,6 @@ const BlackBoxAssistant: FC = () => {
               Reset
             </button>
           </div>
-
           <div
             ref={chatBodyRef}
             onScroll={() => {
