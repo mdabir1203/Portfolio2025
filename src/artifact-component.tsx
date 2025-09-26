@@ -167,10 +167,10 @@ const ArtifactComponent = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#00695C] via-[#009688] to-[#4DB6AC] text-[#FAFAFA] font-mono relative overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#021513] via-[#042623] to-[#062f2b] text-[#f4fffb] font-mono relative overflow-x-hidden">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-[#00695C] text-[#FF7043] px-4 py-2 rounded z-50"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-[#033832]/95 text-[#FF7043] px-4 py-2 rounded-md border border-[#FF7043]/40 shadow-lg shadow-[#FF7043]/15 z-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00bfa5]"
       >
         Skip to main content
       </a>
@@ -201,40 +201,40 @@ const ArtifactComponent = () => {
         {activeTab === 'experience' && <ExperienceSection experiences={experiences} />}
         {activeTab === 'journey' && <JourneySection journey={journey} />}
         {activeTab === 'contact' && <ContactSection bookMeeting={bookMeeting} />}
-        <footer className="mt-24 pt-8 border-t border-[#4DB6AC]/30 text-center">
-          <p className="text-[#E0F2F1] mb-4">
+        <footer className="mt-24 pt-8 border-t border-[#2f6f68]/50 text-center">
+          <p className="text-[#c7f2ea] mb-4">
             © 2025 Mohammad Abir Abbas.  Crafted with ♥ and a touch of chaos.
           </p>
           <div className="flex justify-center space-x-6 text-sm">
-            <a href="#" className="text-[#E0F2F1] hover:text-[#FF7043] transition-colors duration-300">Privacy Policy</a>
-            <a href="#" className="text-[#E0F2F1] hover:text-[#FF7043] transition-colors duration-300">Terms of Service</a>
-            <a href="#" className="text-[#E0F2F1] hover:text-[#FF7043] transition-colors duration-300">Cookie Settings</a>
+            <a href="#" className="text-[#9adcd1] hover:text-[#FF7043] transition-colors duration-300">Privacy Policy</a>
+            <a href="#" className="text-[#9adcd1] hover:text-[#FF7043] transition-colors duration-300">Terms of Service</a>
+            <a href="#" className="text-[#9adcd1] hover:text-[#FF7043] transition-colors duration-300">Cookie Settings</a>
           </div>
         </footer>
       </main>
 
       <div
         id="cookieConsent"
-        className="fixed bottom-0 left-0 right-0 bg-[#00695C]/95 text-[#FAFAFA] p-4 text-center z-50 hidden"
+        className="fixed bottom-0 left-0 right-0 bg-[#033832]/95 text-[#f1fffc] p-4 text-center z-50 hidden"
       >
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>This website uses cookies to ensure you get the best experience.</p>
           <div className="flex gap-4">
             <button
               id="acceptCookies"
-              className="bg-[#009688] hover:bg-[#00695C] text-[#FAFAFA] font-bold py-2 px-4 rounded transition-colors duration-300"
+              className="bg-[#00a99d] hover:bg-[#009688] text-[#031b18] font-semibold py-2 px-4 rounded transition-colors duration-300 shadow-[0_10px_25px_rgba(0,150,136,0.25)]"
             >
               Accept All Cookies
             </button>
             <button
               id="rejectCookies"
-              className="bg-[#FF7043] hover:bg-[#e65f34] text-[#FAFAFA] font-bold py-2 px-4 rounded transition-colors duration-300"
+              className="bg-[#FF7043] hover:bg-[#e8653c] text-[#0a211d] font-semibold py-2 px-4 rounded transition-colors duration-300 shadow-[0_10px_25px_rgba(255,112,67,0.28)]"
             >
               Reject All Cookies
             </button>
             <button
               id="cookieSettings"
-              className="bg-[#4DB6AC] hover:bg-[#009688] text-[#00695C] font-bold py-2 px-4 rounded transition-colors duration-300"
+              className="bg-[#4DB6AC] hover:bg-[#00bfa5] text-[#043530] font-semibold py-2 px-4 rounded transition-colors duration-300 shadow-[0_10px_25px_rgba(77,182,172,0.28)]"
             >
               Cookie Settings
             </button>
@@ -248,8 +248,8 @@ const ArtifactComponent = () => {
         }
 
         .spinner {
-          border: 4px solid rgba(255, 255, 255, 0.3);
-          border-top: 4px solid #4DB6AC;
+          border: 4px solid rgba(255, 255, 255, 0.25);
+          border-top: 4px solid #00bfa5;
           border-radius: 50%;
           width: 20px;
           height: 20px;
@@ -272,14 +272,14 @@ const ArtifactComponent = () => {
           position: absolute;
           width: 80px;
           height: 80px;
-          background: linear-gradient(45deg, rgba(0, 150, 136, 0.75), rgba(77, 182, 172, 0.75));
+          background: linear-gradient(45deg, rgba(0, 150, 136, 0.65), rgba(77, 182, 172, 0.55));
           display: flex;
           justify-content: center;
           align-items: center;
           font-size: 24px;
           color: #FAFAFA;
-          text-shadow: 0 0 10px rgba(250, 250, 250, 0.8);
-          box-shadow: 0 0 20px rgba(0, 150, 136, 0.35), 0 0 40px rgba(255, 112, 67, 0.3);
+          text-shadow: 0 0 10px rgba(250, 250, 250, 0.65);
+          box-shadow: 0 0 24px rgba(0, 191, 165, 0.28), 0 0 40px rgba(255, 112, 67, 0.22);
         }
 
         .retro-cube .front  { transform: translateZ(40px); }
@@ -308,7 +308,7 @@ const ArtifactComponent = () => {
         .mesh-line {
           position: absolute;
           height: 2px;
-          background: linear-gradient(90deg, rgba(0, 150, 136, 0.3), rgba(77, 182, 172, 0));
+          background: linear-gradient(90deg, rgba(0, 191, 165, 0.32), rgba(0, 150, 136, 0));
           animation: mesh-animate 10s linear infinite;
         }
 

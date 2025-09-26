@@ -67,6 +67,10 @@ For production deployments, set `NODE_ENV=production` so logs are serialised as 
 Security headers and a strict Content Security Policy are configured in `vite.config.ts`.
 The site also ships with a curated `robots.txt` and `sitemap.xml` for search engines and AI crawlers.
 
+## Accessibility
+- A teal-forward design system with premium surfaces and gradients keeps content accessible while feeling bespoke.
+- Use the [teal palette accessibility checklist](docs/teal-accessibility-checklist.md) to confirm contrast, focus, and state coverage before launch.
+
 ### Security Considerations
 - Production secrets like API keys and SMTP credentials live in GitHub Secrets and are never committed.
 - CI runs `yarn npm audit --severity high` to catch vulnerable dependencies.

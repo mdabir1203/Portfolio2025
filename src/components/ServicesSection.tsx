@@ -8,8 +8,10 @@ interface ServicesSectionProps {
 
 const ServicesSection: FC<ServicesSectionProps> = ({ services, bookMeeting }) => (
   <section className="mb-16 animate-fadeIn">
-    <h2 className="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-[#00695C] to-[#4DB6AC] bg-clip-text text-transparent">AI Development Services</h2>
-    <p className="text-xl text-[#E0F2F1] text-center mb-12 max-w-3xl mx-auto">
+    <h2 className="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-[#c8fff4] via-[#4DB6AC] to-[#009688] bg-clip-text text-transparent drop-shadow-[0_16px_40px_rgba(0,150,136,0.25)]">
+      AI Development Services
+    </h2>
+    <p className="text-xl text-[#d7f5ef] text-center mb-12 max-w-3xl mx-auto">
       I provide expert AI development services to bring your ideas to life. Here's a breakdown of my offerings:
     </p>
 
@@ -17,20 +19,20 @@ const ServicesSection: FC<ServicesSectionProps> = ({ services, bookMeeting }) =>
       {services.map((service, index) => (
         <div
           key={index}
-          className="package-card bg-[#FAFAFA]/10 border border-[#4DB6AC]/30 rounded-xl p-8 hover:transform hover:-translate-y-2 transition-all duration-300 hover:shadow-xl hover:shadow-[0_20px_40px_rgba(77,182,172,0.3)] group"
+          className="package-card bg-[#052c28]/70 border border-[#2f6f68]/40 rounded-xl p-8 transition-all duration-300 group hover:-translate-y-2 hover:shadow-[0_26px_60px_rgba(0,150,136,0.22)]"
         >
-          <h3 className="text-2xl font-bold text-[#009688] mb-3">{service.title}</h3>
-          <p className="text-[#E0F2F1] mb-6">{service.description}</p>
+          <h3 className="text-2xl font-semibold text-[#a7ffeb] mb-3 tracking-wide">{service.title}</h3>
+          <p className="text-[#d7f5ef] mb-6 leading-relaxed">{service.description}</p>
 
           <div className="mb-6">
-            <div className="package-price text-3xl font-bold text-[#4DB6AC] mb-4">{service.price}</div>
-            <p className="text-sm text-[#B2DFDB]">Best for: {service.bestFor}</p>
+            <div className="package-price text-3xl font-semibold text-[#00bfa5] mb-2">{service.price}</div>
+            <p className="text-sm text-[#7fcfc2] uppercase tracking-[0.2em]">Best for: {service.bestFor}</p>
           </div>
 
           <ul className="mb-8 space-y-2">
             {service.features.map((feature, featureIndex) => (
-              <li key={featureIndex} className="flex items-center text-[#E0F2F1]">
-                <svg className="w-5 h-5 text-[#4DB6AC] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <li key={featureIndex} className="flex items-center text-[#d7f5ef]">
+                <svg className="w-5 h-5 text-[#00bfa5] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 {feature}
@@ -39,7 +41,7 @@ const ServicesSection: FC<ServicesSectionProps> = ({ services, bookMeeting }) =>
           </ul>
 
           <button
-            className="package-button w-full bg-gradient-to-r from-[#009688] to-[#4DB6AC] hover:from-[#00695C] hover:to-[#009688] text-[#FAFAFA] font-bold py-3 px-6 rounded-lg border-2 border-transparent transition-all duration-300 text-shadow-glow transform hover:scale-105 hover:shadow-lg hover:shadow-[0_0_45px_rgba(0,150,136,0.4)]"
+            className="package-button w-full bg-gradient-to-r from-[#00a99d] via-[#4DB6AC] to-[#00bfa5] hover:from-[#009688] hover:via-[#00a99d] hover:to-[#4DB6AC] text-[#052321] font-semibold tracking-wide py-3 px-6 rounded-lg border border-[#00bfa5]/40 transition-all duration-300 shadow-[0_20px_45px_rgba(0,150,136,0.35)] hover:-translate-y-0.5"
             onClick={bookMeeting}
           >
             Book a Meeting
