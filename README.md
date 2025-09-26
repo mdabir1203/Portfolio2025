@@ -34,6 +34,11 @@ yarn build     # produce production assets
 Set environment variables when needed:
 - `VITE_YOUTUBE_API_KEY` – fetches playlist videos for the Tutorials section.
 - `GOOGLE_APPS_SCRIPT_URL` – target of the Express proxy for contact submissions.
+- `QWEN_API_KEY` – unlocks live responses from the Qwen3 Coder model powering the assistant.
+- `QWEN_API_BASE` (optional) – override the default DashScope compatible endpoint.
+- `QWEN_MODEL` (optional) – customise the deployed Qwen series model, defaults to `qwen3-coder-32b-instruct`.
+- `QWEN_TEMPERATURE` (optional) – tweak sampling temperature for generative replies.
+- `VITE_ASSISTANT_ENDPOINT` (optional) – point the frontend to a custom assistant API URL during development.
 
 ## Project Structure
 ```
@@ -47,7 +52,7 @@ public/
 ```
 
 ## Logging & Proxy Usage
-The contact form proxy is instrumented with a shared Winston logger defined in `src/logger.cjs`.
+The contact form proxy is instrumented with a shared Winston logger defined in `src/logger.cjs` and shared with the `api/assistant.js` serverless function that wraps the LangChain + Qdrant + Qwen runtime.
 
 - Logs default to colourised, human-readable output during development and switch to JSON in production when `NODE_ENV=production`.
 - Each request captures timing, status codes and the caller's user agent, while upstream failures and parse errors are surfaced as structured error logs.
