@@ -1,6 +1,5 @@
 import { FC, memo } from 'react';
 import { LinkedInRecommendation } from '../data/linkedin-recommendations';
-import TealPalettePreview from './TealPalettePreview';
 
 interface HomeSectionProps {
   onHireClick: () => void;
@@ -49,7 +48,7 @@ const HomeSection: FC<HomeSectionProps> = ({ onHireClick, isHired, linkedinRecom
               <span className="bg-gradient-to-r from-[#FF7043] via-[#ff8d66] to-[#009688] text-[#0b2824] px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-semibold tracking-wide shadow-[0_12px_24px_rgba(255,112,67,0.28)]">
                 Vibe Coder
               </span>
-            </div>
+              </div>
             <button
               className="hire-me-button bg-gradient-to-r from-[#00a99d] via-[#4DB6AC] to-[#00bfa5] hover:from-[#009688] hover:via-[#00a99d] hover:to-[#4DB6AC] text-[#031b18] font-bold py-2 px-4 md:py-3 md:px-8 rounded-lg border border-[#4DB6AC]/50 transition-all duration-300 tracking-wide uppercase shadow-[0_16px_32px_rgba(0,150,136,0.35)] hover:shadow-[0_20px_45px_rgba(0,150,136,0.45)] hover:-translate-y-0.5"
               onClick={onHireClick}
@@ -61,28 +60,27 @@ const HomeSection: FC<HomeSectionProps> = ({ onHireClick, isHired, linkedinRecom
       </div>
     </div>
 
-    <TealPalettePreview />
-
     <section className="mb-16">
-      <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-[#a7ffeb] via-[#4DB6AC] to-[#009688] bg-clip-text text-transparent">
-        LinkedIn Recommendations
-      </h2>
-      <div className="grid md:grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
-        {linkedinRecommendations.map((recommendation, index) => (
-          <div
-            key={index}
-            className="bg-[#052c28]/70 border border-[#2f6f68]/40 rounded-xl p-6 flex flex-col h-full transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-[0_30px_60px_rgba(0,150,136,0.25)]"
-          >
-            <div className="flex items-center gap-4 mb-4">
-              <img
-                src={recommendation.avatar}
-                alt={recommendation.name}
-                className="w-16 h-16 rounded-full object-cover border border-[#4DB6AC]/40 shadow-[0_8px_18px_rgba(0,150,136,0.25)]"
-              />
-              <div className="text-left">
-                <h3 className="font-semibold text-[#80f0df] tracking-wide">{recommendation.name}</h3>
-                <p className="text-[#9adcd1] text-sm">{recommendation.role}</p>
-              </div>
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-[#a7ffeb] via-[#4DB6AC] to-[#009688] bg-clip-text text-transparent">
+          LinkedIn Recommendations
+        </h2>
+        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3 items-stretch [grid-auto-rows:1fr]">
+          {linkedinRecommendations.map((recommendation, index) => (
+            <div
+              key={index}
+              className="bg-[#052c28]/70 border border-[#2f6f68]/40 rounded-xl p-6 flex flex-col h-full transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-[0_30px_60px_rgba(0,150,136,0.25)]"
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <img
+                  src={recommendation.avatar}
+                  alt={recommendation.name}
+                  className="w-16 h-16 rounded-full object-cover border border-[#4DB6AC]/40 shadow-[0_8px_18px_rgba(0,150,136,0.25)]"
+                />
+                <div className="text-left">
+                  <h3 className="font-semibold text-[#80f0df] tracking-wide">{recommendation.name}</h3>
+                  <p className="text-[#9adcd1] text-sm">{recommendation.role}</p>
+                </div>
             </div>
             <p className="text-[#e3fbf6] italic flex-1">"{recommendation.content}"</p>
             <div className="flex mt-auto pt-4 text-[#FF7043]">
@@ -92,18 +90,19 @@ const HomeSection: FC<HomeSectionProps> = ({ onHireClick, isHired, linkedinRecom
                 </svg>
               ))}
             </div>
-          </div>
-        ))}
-      </div>
-      <div className="text-center mt-8">
-        <a
-          href="https://www.linkedin.com/in/abir-abbas"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block bg-gradient-to-r from-[#009688] via-[#00bfa5] to-[#4DB6AC] hover:from-[#00a99d] hover:via-[#009688] hover:to-[#4DB6AC] text-[#052321] font-semibold tracking-wide py-3 px-6 rounded-lg border border-[#4DB6AC]/40 transition-all duration-300 shadow-[0_18px_38px_rgba(0,150,136,0.32)] hover:-translate-y-0.5"
-        >
-          View More on LinkedIn →
-        </a>
+            </div>
+          ))}
+        </div>
+        <div className="mt-8 flex justify-center">
+          <a
+            href="https://www.linkedin.com/in/abir-abbas"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-gradient-to-r from-[#009688] via-[#00bfa5] to-[#4DB6AC] hover:from-[#00a99d] hover:via-[#009688] hover:to-[#4DB6AC] text-[#052321] font-semibold tracking-wide py-3 px-6 rounded-lg border border-[#4DB6AC]/40 transition-all duration-300 shadow-[0_18px_38px_rgba(0,150,136,0.32)] hover:-translate-y-0.5"
+          >
+            View More on LinkedIn →
+          </a>
+        </div>
       </div>
     </section>
   </section>
