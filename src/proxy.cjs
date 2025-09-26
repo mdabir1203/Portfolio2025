@@ -5,6 +5,10 @@ const rateLimit = require('express-rate-limit');
 const { z } = require('zod');
 
 const logger = require('./logger.cjs');
+const {
+  assistantRequestSchema,
+  loadAssistantRuntime,
+} = require('./server/assistantRuntime.cjs');
 
 const app = express();
 
@@ -118,6 +122,29 @@ app.post('/', async (req, res, next) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   logger.info('Proxy server running on port %d', PORT);
+});
+
+app.post('/assistant', async (req, res) => {
+  const parsed = assistantRequestSchema.safeParse(req.body);
+  if (!parsed.success) {
+    logger.warn('Rejected invalid assistant request payload', {
+      issues: parsed.error.errors,
+    });
+    return res.status(400).json({ error: 'Invalid request body', issues: parsed.error.errors });
+  }
+
+  try {
+    const runtime = await loadAssistantRuntime();
+    const { reply, sources, mode } = await runtime.runAssistant(parsed.data);
+    logger.info('BlackBox Assistant responded successfully', {
+      sourceCount: sources.length,
+      mode,
+    });
+    return res.json({ reply, sources, mode });
+  } catch (error) {
+    logger.error('Error while generating assistant response', normaliseError(error));
+    return res.status(500).json({ error: 'Assistant service unavailable' });
+  }
 });
 
 app.use((err, req, res, next) => {
