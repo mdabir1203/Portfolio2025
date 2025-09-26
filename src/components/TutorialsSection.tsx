@@ -51,8 +51,8 @@ const TutorialsSection: FC = () => {
 
   return (
     <section className="mb-16 animate-fadeIn">
-      <h2 className="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">Tutorials</h2>
-      <p className="text-xl text-gray-300 text-center mb-12 max-w-3xl mx-auto">
+      <h2 className="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-[#00695C] to-[#4DB6AC] bg-clip-text text-transparent">Tutorials</h2>
+      <p className="text-xl text-[#E0F2F1] text-center mb-12 max-w-3xl mx-auto">
         Tutorials highlighting our AI-augmented thinking and projects.
       </p>
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -67,9 +67,9 @@ const TutorialsSection: FC = () => {
             <img
               src={video.thumbnail}
               alt={video.title}
-              className="w-full h-auto rounded-xl border-2 border-white/10 group-hover:border-cyan-400 transition-colors"
+              className="w-full h-auto rounded-xl border-2 border-[#4DB6AC]/30 group-hover:border-[#4DB6AC] transition-colors"
             />
-            <h3 className="mt-2 text-lg text-gray-200 group-hover:text-cyan-400">{video.title}</h3>
+            <h3 className="mt-2 text-lg text-[#E0F2F1] group-hover:text-[#4DB6AC]">{video.title}</h3>
           </a>
         ))}
       </div>
@@ -78,7 +78,7 @@ const TutorialsSection: FC = () => {
           href={`https://www.youtube.com/playlist?list=${PLAYLIST_ID}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block bg-gradient-to-r from-cyan-500 to-green-500 hover:from-cyan-600 hover:to-green-600 text-black font-bold py-3 px-6 rounded-lg border-2 border-transparent transition-all duration-300 text-shadow-glow transform hover:scale-105 hover:shadow-lg hover:shadow-green-400/30"
+          className="inline-block bg-gradient-to-r from-[#009688] to-[#4DB6AC] hover:from-[#00695C] hover:to-[#009688] text-[#FAFAFA] font-bold py-3 px-6 rounded-lg border-2 border-transparent transition-all duration-300 text-shadow-glow transform hover:scale-105 hover:shadow-lg hover:shadow-[0_0_45px_rgba(0,150,136,0.4)]"
         >
           View All Tutorials on YouTube →
         </a>

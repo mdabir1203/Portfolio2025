@@ -167,10 +167,10 @@ const ArtifactComponent = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0d1321] to-[#1c273c] text-white font-mono relative overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#00695C] via-[#009688] to-[#4DB6AC] text-[#FAFAFA] font-mono relative overflow-x-hidden">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-gray-900 text-cyan-400 px-4 py-2 rounded z-50"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-[#00695C] text-[#FF7043] px-4 py-2 rounded z-50"
       >
         Skip to main content
       </a>
@@ -201,40 +201,40 @@ const ArtifactComponent = () => {
         {activeTab === 'experience' && <ExperienceSection experiences={experiences} />}
         {activeTab === 'journey' && <JourneySection journey={journey} />}
         {activeTab === 'contact' && <ContactSection bookMeeting={bookMeeting} />}
-        <footer className="mt-24 pt-8 border-t border-white/10 text-center">
-          <p className="text-gray-400 mb-4">
+        <footer className="mt-24 pt-8 border-t border-[#4DB6AC]/30 text-center">
+          <p className="text-[#E0F2F1] mb-4">
             © 2025 Mohammad Abir Abbas.  Crafted with ♥ and a touch of chaos.
           </p>
           <div className="flex justify-center space-x-6 text-sm">
-            <a href="#" className="text-gray-400 hover:text-cyan-400 transition-colors duration-300">Privacy Policy</a>
-            <a href="#" className="text-gray-400 hover:text-cyan-400 transition-colors duration-300">Terms of Service</a>
-            <a href="#" className="text-gray-400 hover:text-cyan-400 transition-colors duration-300">Cookie Settings</a>
+            <a href="#" className="text-[#E0F2F1] hover:text-[#FF7043] transition-colors duration-300">Privacy Policy</a>
+            <a href="#" className="text-[#E0F2F1] hover:text-[#FF7043] transition-colors duration-300">Terms of Service</a>
+            <a href="#" className="text-[#E0F2F1] hover:text-[#FF7043] transition-colors duration-300">Cookie Settings</a>
           </div>
         </footer>
       </main>
 
       <div
         id="cookieConsent"
-        className="fixed bottom-0 left-0 right-0 bg-gray-800/90 text-white p-4 text-center z-50 hidden"
+        className="fixed bottom-0 left-0 right-0 bg-[#00695C]/95 text-[#FAFAFA] p-4 text-center z-50 hidden"
       >
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>This website uses cookies to ensure you get the best experience.</p>
           <div className="flex gap-4">
             <button
               id="acceptCookies"
-              className="bg-green-500 hover:bg-green-600 text-black font-bold py-2 px-4 rounded transition-colors duration-300"
+              className="bg-[#009688] hover:bg-[#00695C] text-[#FAFAFA] font-bold py-2 px-4 rounded transition-colors duration-300"
             >
               Accept All Cookies
             </button>
             <button
               id="rejectCookies"
-              className="bg-red-500 hover:bg-red-600 text-black font-bold py-2 px-4 rounded transition-colors duration-300"
+              className="bg-[#FF7043] hover:bg-[#e65f34] text-[#FAFAFA] font-bold py-2 px-4 rounded transition-colors duration-300"
             >
               Reject All Cookies
             </button>
             <button
               id="cookieSettings"
-              className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-4 rounded transition-colors duration-300"
+              className="bg-[#4DB6AC] hover:bg-[#009688] text-[#00695C] font-bold py-2 px-4 rounded transition-colors duration-300"
             >
               Cookie Settings
             </button>
@@ -249,7 +249,7 @@ const ArtifactComponent = () => {
 
         .spinner {
           border: 4px solid rgba(255, 255, 255, 0.3);
-          border-top: 4px solid #00eaff;
+          border-top: 4px solid #4DB6AC;
           border-radius: 50%;
           width: 20px;
           height: 20px;
@@ -272,14 +272,14 @@ const ArtifactComponent = () => {
           position: absolute;
           width: 80px;
           height: 80px;
-          background: linear-gradient(45deg, rgba(255, 0, 255, 0.6), rgba(0, 255, 255, 0.6));
+          background: linear-gradient(45deg, rgba(0, 150, 136, 0.75), rgba(77, 182, 172, 0.75));
           display: flex;
           justify-content: center;
           align-items: center;
           font-size: 24px;
-          color: white;
-          text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-          box-shadow: 0 0 20px rgba(255, 0, 255, 0.4), 0 0 40px rgba(0, 255, 255, 0.4);
+          color: #FAFAFA;
+          text-shadow: 0 0 10px rgba(250, 250, 250, 0.8);
+          box-shadow: 0 0 20px rgba(0, 150, 136, 0.35), 0 0 40px rgba(255, 112, 67, 0.3);
         }
 
         .retro-cube .front  { transform: translateZ(40px); }
@@ -308,7 +308,7 @@ const ArtifactComponent = () => {
         .mesh-line {
           position: absolute;
           height: 2px;
-          background: linear-gradient(90deg, rgba(0, 234, 255, 0.2), rgba(0, 234, 255, 0));
+          background: linear-gradient(90deg, rgba(0, 150, 136, 0.3), rgba(77, 182, 172, 0));
           animation: mesh-animate 10s linear infinite;
         }
 
