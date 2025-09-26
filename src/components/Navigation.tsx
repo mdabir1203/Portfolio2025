@@ -97,8 +97,8 @@ const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
   }, [isHelperOpen]);
 
   return (
-    <div className="flex flex-col items-center gap-4 mb-12">
-      <nav className="flex flex-wrap justify-center gap-4" aria-label="Primary">
+    <div className="relative flex flex-col items-center gap-4 mb-12">
+      <nav className="mt-16 flex flex-wrap justify-center gap-4" aria-label="Primary">
         {tabs.map((tab, index) => (
           <button
             key={tab}
@@ -120,16 +120,20 @@ const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
         ))}
       </nav>
 
-      <div className="relative">
+      <div className="fixed top-6 right-6 z-50 flex flex-col items-end">
         <button
           type="button"
           ref={helperButtonRef}
           onClick={handleToggleHelper}
           aria-expanded={isHelperOpen}
           aria-controls={helperPanelId}
-          className="text-xs font-semibold tracking-[0.2em] px-4 py-2 rounded-full bg-[#033832]/70 border border-[#1f655d] text-[#9adcd1] hover:bg-[#035049]/80 hover:text-[#c8fff4] transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00bfa5] focus-visible:ring-offset-2"
+          className="group flex items-center gap-3 rounded-full border border-[#1f655d] bg-[#033832]/80 px-5 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-[#9adcd1] shadow-[0_18px_38px_rgba(0,150,136,0.18)] transition-colors duration-200 hover:border-[#23a395] hover:bg-[#035049]/90 hover:text-[#c8fff4] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00bfa5] focus-visible:ring-offset-2"
         >
-          {isHelperOpen ? 'Hide navigation tips' : 'Show navigation tips'}
+          <span>{isHelperOpen ? 'Hide navigation tips' : 'Show navigation tips'}</span>
+          <span className="relative inline-flex h-3 w-3 items-center justify-center">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-[#23a395]/70 opacity-75 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 animate-ping" aria-hidden="true" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#8ef5e3]" aria-hidden="true" />
+          </span>
         </button>
 
         {isHelperOpen && (
@@ -138,7 +142,7 @@ const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
             ref={helperPanelRef}
             role="dialog"
             aria-modal="false"
-            className="absolute left-1/2 top-[calc(100%+0.75rem)] w-72 -translate-x-1/2 rounded-xl border border-[#1f655d] bg-[#021c1a]/95 p-4 text-sm shadow-2xl shadow-[0_24px_60px_rgba(0,150,136,0.25)] focus:outline-none"
+            className="mt-3 w-72 rounded-xl border border-[#1f655d] bg-[#021c1a]/95 p-4 text-sm shadow-2xl shadow-[0_24px_60px_rgba(0,150,136,0.25)] focus:outline-none"
             tabIndex={-1}
           >
             <div className="mb-2 flex items-center justify-between gap-2">
