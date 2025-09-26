@@ -109,10 +109,10 @@ const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
             onClick={() => selectTabAt(index)}
             onKeyDown={(event) => handleKeyDown(event, index)}
             aria-current={activeTab === tab ? 'page' : undefined}
-            className={`tab px-6 py-3 rounded-lg font-bold transition-all duration-200 ease-out motion-reduce:transition-none border-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 ${
+            className={`tab px-6 py-3 rounded-lg font-bold transition-all duration-200 ease-out motion-reduce:transition-none border-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4DB6AC] focus-visible:ring-offset-2 ${
               activeTab === tab
-                ? 'text-green-400 border-green-400 bg-green-400/20 shadow-lg shadow-green-400/30'
-                : 'text-gray-400 border-gray-600 hover:border-cyan-400 hover:text-cyan-400'
+                ? 'text-[#FAFAFA] border-[#009688] bg-[#009688]/25 shadow-lg shadow-[0_12px_30px_rgba(0,150,136,0.35)]'
+                : 'text-[#E0F2F1] border-[#4DB6AC]/40 hover:border-[#009688] hover:text-[#009688]'
             }`}
           >
             {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -127,7 +127,7 @@ const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
           onClick={handleToggleHelper}
           aria-expanded={isHelperOpen}
           aria-controls={helperPanelId}
-          className="text-sm font-semibold tracking-wide px-4 py-2 rounded-full bg-white/10 border border-cyan-400/30 text-cyan-200 hover:bg-cyan-400/20 hover:text-white transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2"
+          className="text-sm font-semibold tracking-wide px-4 py-2 rounded-full bg-[#FAFAFA]/10 border border-[#4DB6AC]/40 text-[#4DB6AC] hover:bg-[#4DB6AC]/20 hover:text-[#FAFAFA] transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4DB6AC] focus-visible:ring-offset-2"
         >
           {isHelperOpen ? 'Hide navigation tips' : 'Show navigation tips'}
         </button>
@@ -138,27 +138,27 @@ const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
             ref={helperPanelRef}
             role="dialog"
             aria-modal="false"
-            className="absolute left-1/2 top-[calc(100%+0.75rem)] w-72 -translate-x-1/2 rounded-xl border border-cyan-400/20 bg-slate-950/90 p-4 text-sm shadow-2xl shadow-cyan-500/20 focus:outline-none"
+            className="absolute left-1/2 top-[calc(100%+0.75rem)] w-72 -translate-x-1/2 rounded-xl border border-[#4DB6AC]/30 bg-[#00695C]/95 p-4 text-sm shadow-2xl shadow-[0_20px_45px_rgba(77,182,172,0.25)] focus:outline-none"
             tabIndex={-1}
           >
             <div className="mb-2 flex items-center justify-between gap-2">
-              <h3 className="text-base font-semibold text-cyan-300">Keyboard navigation</h3>
+              <h3 className="text-base font-semibold text-[#4DB6AC]">Keyboard navigation</h3>
               <button
                 type="button"
                 onClick={handleCloseHelper}
-                className="rounded-full border border-cyan-400/30 px-2 py-1 text-xs font-semibold uppercase tracking-widest text-cyan-200 hover:bg-cyan-400/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2"
+                className="rounded-full border border-[#4DB6AC]/40 px-2 py-1 text-xs font-semibold uppercase tracking-widest text-[#4DB6AC] hover:bg-[#4DB6AC]/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4DB6AC] focus-visible:ring-offset-2"
               >
                 Close
               </button>
             </div>
-            <p className="mb-2 text-gray-300">Use your keyboard to glide through the sections like an arcade run:</p>
-            <ul className="space-y-1 text-gray-100">
-              <li><span className="font-semibold text-cyan-200">← / →</span> Cycle through the tabs</li>
-              <li><span className="font-semibold text-cyan-200">↑ / ↓</span> Works too if that&apos;s your style</li>
-              <li><span className="font-semibold text-cyan-200">Home</span> Jump to the first tab instantly</li>
-              <li><span className="font-semibold text-cyan-200">End</span> Warp to the final tab</li>
-              <li><span className="font-semibold text-cyan-200">Enter</span> or <span className="font-semibold text-cyan-200">Space</span> Activate the focused tab</li>
-              <li><span className="font-semibold text-cyan-200">Esc</span> Close this helper</li>
+            <p className="mb-2 text-[#E0F2F1]">Use your keyboard to glide through the sections like an arcade run:</p>
+            <ul className="space-y-1 text-[#FAFAFA]">
+              <li><span className="font-semibold text-[#4DB6AC]">← / →</span> Cycle through the tabs</li>
+              <li><span className="font-semibold text-[#4DB6AC]">↑ / ↓</span> Works too if that&apos;s your style</li>
+              <li><span className="font-semibold text-[#4DB6AC]">Home</span> Jump to the first tab instantly</li>
+              <li><span className="font-semibold text-[#4DB6AC]">End</span> Warp to the final tab</li>
+              <li><span className="font-semibold text-[#4DB6AC]">Enter</span> or <span className="font-semibold text-[#4DB6AC]">Space</span> Activate the focused tab</li>
+              <li><span className="font-semibold text-[#4DB6AC]">Esc</span> Close this helper</li>
             </ul>
           </div>
         )}

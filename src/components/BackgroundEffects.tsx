@@ -20,12 +20,12 @@ const BackgroundEffects: FC<BackgroundEffectsProps> = ({ mousePosition, canvasRe
             transform: `rotateY(${mousePosition.x * 20}deg) rotateX(${mousePosition.y * 20}deg)`
           }}
         >
-          <div className="front bg-gradient-to-br from-purple-500 to-cyan-500 opacity-60"></div>
-          <div className="back bg-gradient-to-br from-cyan-500 to-purple-500 opacity-60"></div>
-          <div className="right bg-gradient-to-br from-purple-500 to-pink-500 opacity-60"></div>
-          <div className="left bg-gradient-to-br from-pink-500 to-cyan-500 opacity-60"></div>
-          <div className="top bg-gradient-to-br from-cyan-500 to-purple-500 opacity-60"></div>
-          <div className="bottom bg-gradient-to-br from-purple-500 to-cyan-500 opacity-60"></div>
+          <div className="front bg-gradient-to-br from-[#009688] to-[#4DB6AC] opacity-60"></div>
+          <div className="back bg-gradient-to-br from-[#4DB6AC] to-[#009688] opacity-60"></div>
+          <div className="right bg-gradient-to-br from-[#FF7043] to-[#009688] opacity-60"></div>
+          <div className="left bg-gradient-to-br from-[#009688] to-[#FF7043] opacity-60"></div>
+          <div className="top bg-gradient-to-br from-[#4DB6AC] to-[#FF7043] opacity-60"></div>
+          <div className="bottom bg-gradient-to-br from-[#FF7043] to-[#4DB6AC] opacity-60"></div>
         </div>
       ))}
     </div>
