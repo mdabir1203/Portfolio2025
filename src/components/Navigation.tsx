@@ -75,13 +75,16 @@ const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
     [selectTabAt]
   );
 
-  const handleToggleHelper = useCallback(() => {
-    setIsHelperOpen((prev) => !prev);
+  const showHelper = useCallback(() => {
+    setIsHelperOpen(true);
   }, []);
 
-  const handleCloseHelper = useCallback(() => {
+  const hideHelper = useCallback(() => {
     setIsHelperOpen(false);
-    helperButtonRef.current?.focus();
+  }, []);
+
+  const toggleHelper = useCallback(() => {
+    setIsHelperOpen((prev) => !prev);
   }, []);
 
   useEffect(() => {
@@ -132,20 +135,40 @@ const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
         ))}
       </nav>
 
-      <div className="fixed top-6 right-6 z-50 flex flex-col items-end">
+      <div
+        className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2"
+        onMouseEnter={showHelper}
+        onMouseLeave={hideHelper}
+        onFocus={showHelper}
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+            hideHelper();
+          }
+        }}
+      >
         <button
           type="button"
           ref={helperButtonRef}
-          onClick={handleToggleHelper}
+          onClick={toggleHelper}
           aria-expanded={isHelperOpen}
           aria-controls={helperPanelId}
-          className="group flex items-center gap-3 rounded-full border border-[#1f655d] bg-[#033832]/80 px-5 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-[#9adcd1] shadow-[0_18px_38px_rgba(0,150,136,0.18)] transition-colors duration-200 hover:border-[#23a395] hover:bg-[#035049]/90 hover:text-[#c8fff4] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00bfa5] focus-visible:ring-offset-2"
+          className="group flex h-11 w-11 items-center justify-center rounded-full border border-[#1f655d] bg-[#033832]/90 text-[#9adcd1] shadow-[0_18px_38px_rgba(0,150,136,0.18)] transition-colors duration-200 hover:border-[#23a395] hover:bg-[#035049]/90 hover:text-[#c8fff4] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00bfa5] focus-visible:ring-offset-2"
         >
-          <span>{isHelperOpen ? 'Hide navigation tips' : 'Show navigation tips'}</span>
-          <span className="relative inline-flex h-3 w-3 items-center justify-center">
-            <span className="absolute inline-flex h-full w-full rounded-full bg-[#23a395]/70 opacity-75 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 animate-ping" aria-hidden="true" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#8ef5e3]" aria-hidden="true" />
-          </span>
+          <span className="sr-only">{isHelperOpen ? 'Hide navigation tips' : 'Show navigation tips'}</span>
+          <svg
+            aria-hidden="true"
+            className="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.8}
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 17h.01M12 11a1.5 1.5 0 011.2.6c.46.61.31 1.47-.27 1.95l-.93.78a1.5 1.5 0 00-.5 1.12V16m0-9a9 9 0 100 18 9 9 0 000-18z"
+            />
+          </svg>
         </button>
 
         {isHelperOpen && (
@@ -154,14 +177,14 @@ const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
             ref={helperPanelRef}
             role="dialog"
             aria-modal="false"
-            className="mt-3 w-72 rounded-xl border border-[#1f655d] bg-[#021c1a]/95 p-4 text-sm shadow-2xl shadow-[0_24px_60px_rgba(0,150,136,0.25)] focus:outline-none"
+            className="mb-2 w-72 rounded-xl border border-[#1f655d] bg-[#021c1a]/95 p-4 text-sm shadow-2xl shadow-[0_24px_60px_rgba(0,150,136,0.25)] focus:outline-none"
             tabIndex={-1}
           >
             <div className="mb-2 flex items-center justify-between gap-2">
               <h3 className="text-base font-semibold text-[#a7ffeb]">Keyboard navigation</h3>
               <button
                 type="button"
-                onClick={handleCloseHelper}
+                onClick={hideHelper}
                 className="rounded-full border border-[#1f655d] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.3em] text-[#7fcfc2] hover:bg-[#02423b]/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00bfa5] focus-visible:ring-offset-2"
               >
                 Close
