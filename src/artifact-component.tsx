@@ -13,7 +13,6 @@ import AssistantJourneySection from './components/AssistantJourneySection';
 import ContactSection from './components/ContactSection';
 import ExperienceSection from './components/ExperienceSection';
 import AwardsSection from './components/AwardsSection';
-import BlackBoxAssistant from './components/BlackBoxAssistant';
 
 import { skills } from './data/skills';
 import { projects } from './data/projects';
@@ -244,8 +243,6 @@ const ArtifactComponent = () => {
           </div>
         </div>
       </div>
-
-      <BlackBoxAssistant />
 
       <style>{`
         .text-shadow-glow {

@@ -1,4 +1,4 @@
-import { FC, memo, useMemo, useState } from 'react';
+import { FC, memo } from 'react';
 import { LinkedInRecommendation } from '../data/linkedin-recommendations';
 
 interface HomeSectionProps {
@@ -8,40 +8,6 @@ interface HomeSectionProps {
 }
 
 const HomeSection: FC<HomeSectionProps> = ({ onHireClick, isHired, linkedinRecommendations }) => {
-  const [discoveredEggs, setDiscoveredEggs] = useState<string[]>([]);
-
-  const easterEggs = useMemo(
-    () => [
-      {
-        id: 'concept-art',
-        label: 'Concept Art Cache',
-        teaser: 'Hover to peek at unreleased visuals',
-        reveal:
-          '🖼️ Concept art reveals a neon-lit SOC command center where BlackBox agents visualize threat flows in real time.'
-      },
-      {
-        id: 'rust-fact',
-        label: 'Rust Build Secret',
-        teaser: 'Click for a behind-the-scenes stat',
-        reveal: '🦀 The Rust rebuild squashed a race condition that had lived in production for 812 days without detection.'
-      },
-      {
-        id: 'vibe-fact',
-        label: 'Vibe Codec',
-        teaser: 'Decode a human-centric insight',
-        reveal:
-          '🎵 Vibe-coded agents remix onboarding flows based on sonic moodboards, lifting session completion rates by 25%.'
-      }
-    ],
-    []
-  );
-
-  const handleDiscover = (id: string) => {
-    setDiscoveredEggs((prev) => (prev.includes(id) ? prev : [...prev, id]));
-  };
-
-  const discoveredCount = discoveredEggs.length;
-
   return (
     <section className="mb-12 md:mb-16 animate-fadeIn">
       <div className="profile-section mb-8 md:mb-12 backdrop-blur-xl bg-[#052825]/70 border border-[#2f6f68]/40 rounded-2xl p-6 md:p-8 shadow-lg shadow-[0_35px_70px_rgba(0,150,136,0.18)] relative overflow-hidden">
@@ -96,60 +62,6 @@ const HomeSection: FC<HomeSectionProps> = ({ onHireClick, isHired, linkedinRecom
       </div>
 
       <section className="mb-16">
-        <div className="max-w-6xl mx-auto mb-12">
-          <div className="rounded-2xl border border-[#1f655d] bg-[#052c28]/70 p-6 shadow-[0_22px_48px_rgba(0,150,136,0.25)]">
-            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-              <div>
-                <p className="text-xs uppercase tracking-[0.3em] text-[#4DB6AC]">🕹️ Interactive Easter Eggs</p>
-                <h2 className="text-2xl font-semibold text-[#c8fff4]">Hidden portfolio lore unlocked</h2>
-              </div>
-              <div className="rounded-full border border-[#1f655d] px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[#FF8A65]">
-                {discoveredCount}/{easterEggs.length} discovered
-              </div>
-            </div>
-            <p className="mt-4 text-sm text-[#d7f5ef]">
-              Hover, click, and explore. Each capsule reveals concept art beats or fun facts from the secure-by-design universe powering this portfolio.
-            </p>
-            <div className="mt-6 grid gap-6 md:grid-cols-3">
-              {easterEggs.map((egg) => {
-                const isDiscovered = discoveredEggs.includes(egg.id);
-                return (
-                  <button
-                    key={egg.id}
-                    type="button"
-                    onClick={() => handleDiscover(egg.id)}
-                    className={`group relative overflow-hidden rounded-xl border border-[#1f655d] bg-[#033832]/80 p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_48px_rgba(0,150,136,0.3)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00bfa5] ${
-                      isDiscovered ? 'border-[#00bfa5]' : ''
-                    }`}
-                    aria-pressed={isDiscovered}
-                  >
-                    <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      <div className="absolute -top-10 -right-10 h-24 w-24 rounded-full bg-[#00bfa5]/25 blur-2xl" />
-                      <div className="absolute -bottom-12 -left-12 h-32 w-32 rounded-full bg-[#FF7043]/25 blur-2xl" />
-                    </div>
-                    <div className="relative z-10">
-                      <p className="text-xs uppercase tracking-[0.3em] text-[#80f0df]">{egg.label}</p>
-                      <p className="mt-2 text-sm text-[#e3fbf6]">{egg.teaser}</p>
-                      <p
-                        className={`mt-4 text-sm leading-relaxed text-[#ffd9cd] transition-opacity duration-300 ${
-                          isDiscovered ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-                        }`}
-                      >
-                        {egg.reveal}
-                      </p>
-                    </div>
-                    {!isDiscovered && (
-                      <span className="relative z-10 mt-4 inline-flex items-center gap-2 rounded-full border border-[#1f655d] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.3em] text-[#FF8A65]">
-                        Tap to reveal
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-[#a7ffeb] via-[#4DB6AC] to-[#009688] bg-clip-text text-transparent">
             LinkedIn Recommendations
