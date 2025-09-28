@@ -25,10 +25,13 @@ const BlogSection: FC<BlogSectionProps> = ({ posts, isFetching, onRetry }) => (
     ) : posts.length > 0 ? (
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts.map((post, index) => {
-          const date = new Date(post.pubDate).toLocaleDateString('en-US', {
+          const publishedAt = new Date(post.pubDate);
+          const formattedDateTime = publishedAt.toLocaleString('en-US', {
             year: 'numeric',
             month: 'long',
-            day: 'numeric'
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit'
           });
 
           let excerpt = post.description || post.content || '';
@@ -45,7 +48,7 @@ const BlogSection: FC<BlogSectionProps> = ({ posts, isFetching, onRetry }) => (
               <h3 className="blog-title text-2xl font-semibold text-[#a7ffeb] mb-3 group-hover:text-[#c8fff4] transition-colors duration-300 tracking-wide">
                 {post.title}
               </h3>
-              <div className="blog-date text-[#9adcd1] text-sm mb-4">{date}</div>
+              <div className="blog-date text-[#9adcd1] text-sm mb-4">{formattedDateTime}</div>
               <p className="blog-excerpt text-[#d7f5ef] mb-6 leading-relaxed">{excerpt}</p>
               <a
                 href={post.link}
