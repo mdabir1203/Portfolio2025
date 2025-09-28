@@ -4,7 +4,7 @@ Welcome to the digital workshop of **Mohammad Abir Abbas** – AI Whisperer, Rus
 
 ## Preview:
 
-https://github.com/user-attachments/assets/6fdf9f1e-a1e4-444f-8b4d-9969a759deb3
+https://github.com/user-attachments/assets/6eda9004-b8a7-4dad-952a-3365771b393a
 
 
 ## What's Inside
