@@ -11,6 +11,7 @@ const tabs = [
   'skills',
   'projects',
   'blog',
+  'social',
   'tutorials',
   'services',
   'awards',
