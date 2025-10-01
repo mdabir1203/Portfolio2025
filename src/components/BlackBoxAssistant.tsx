@@ -163,7 +163,7 @@ const BlackBoxAssistant: FC = () => {
         setIsGenerating(false);
       }
     },
-    [assistantEndpoint, historyFromMessages]
+    [historyFromMessages]
   );
 
   const appendMessages = useCallback(
