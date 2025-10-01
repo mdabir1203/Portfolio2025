@@ -25,6 +25,67 @@ import { awards } from './data/awards';
 import { socialPhotos } from './data/social-photos';
 import { MediumPost } from './types';
 
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null;
+
+const getString = (value: unknown): string | undefined =>
+  typeof value === 'string' && value.trim().length > 0 ? value : undefined;
+
+const getStringArray = (value: unknown): string[] | undefined => {
+  if (!Array.isArray(value)) {
+    return undefined;
+  }
+
+  const filtered = value.filter((item): item is string => typeof item === 'string' && item.trim().length > 0);
+
+  return filtered.length > 0 ? filtered : undefined;
+};
+
+const getThumbnail = (item: Record<string, unknown>): string | undefined => {
+  const directThumbnail = getString(item.thumbnail);
+  if (directThumbnail) {
+    return directThumbnail;
+  }
+
+  if (isRecord(item.enclosure)) {
+    const enclosureLink = getString(item.enclosure.link);
+    if (enclosureLink) {
+      return enclosureLink;
+    }
+  }
+
+  return undefined;
+};
+
+const parseMediumPost = (item: unknown): MediumPost => {
+  if (!isRecord(item)) {
+    return {
+      title: 'Untitled post',
+      description: '',
+      pubDate: new Date().toISOString(),
+      link: '#'
+    };
+  }
+
+  const title = getString(item.title) ?? 'Untitled post';
+  const description = getString(item.description) ?? '';
+  const pubDate = getString(item.pubDate) ?? new Date().toISOString();
+  const link = getString(item.link) ?? '#';
+  const content = getString(item.content);
+  const thumbnail = getThumbnail(item);
+  const categories = getStringArray(item.categories);
+
+  return {
+    title,
+    description,
+    pubDate,
+    link,
+    content,
+    thumbnail,
+    categories
+  };
+};
+
 const ArtifactComponent = () => {
   const [activeTab, setActiveTab] = useState('home');
   const [isHired, setIsHired] = useState(false);
@@ -139,9 +200,15 @@ const ArtifactComponent = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const data = await response.json();
-      if (data.status === 'ok' && data.items && data.items.length > 0) {
-        setMediumPosts(data.items);
+      const data: unknown = await response.json();
+      if (
+        isRecord(data) &&
+        getString(data.status) === 'ok' &&
+        Array.isArray(data.items) &&
+        data.items.length > 0
+      ) {
+        const parsedPosts = data.items.map(parseMediumPost);
+        setMediumPosts(parsedPosts);
       }
     } catch (error) {
       console.error('Error fetching Medium posts:', error);
