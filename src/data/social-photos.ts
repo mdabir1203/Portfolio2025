@@ -14,6 +14,14 @@ export interface SocialPlatformPhotos {
   photos: SocialPhoto[];
 }
 
+export interface PersonalityHighlight {
+  id: string;
+  label: string;
+  caption: string;
+  mood: string;
+  gradient: string;
+}
+
 export const socialPhotos: SocialPlatformPhotos[] = [
   {
     platform: 'facebook',
@@ -76,5 +84,50 @@ export const socialPhotos: SocialPlatformPhotos[] = [
         link: 'https://www.instagram.com/uknowwho_ab1r/'
       }
     ]
+  }
+];
+
+export const personalityHighlights: PersonalityHighlight[] = [
+  {
+    id: 'personality-visionary',
+    label: 'Visionary Strategist',
+    caption: 'Mapping product ecosystems and aligning them with heartfelt human stories.',
+    mood: 'Long-range thinker',
+    gradient: 'from-[#1d3b3b] via-[#0f6f62] to-[#033931]'
+  },
+  {
+    id: 'personality-builder',
+    label: 'Hands-on Builder',
+    caption: 'Getting into the weeds with prototypes until the experience finally sparks.',
+    mood: 'Rapid prototyping energy',
+    gradient: 'from-[#1b2d47] via-[#0f4f69] to-[#02263e]'
+  },
+  {
+    id: 'personality-mentor',
+    label: 'Community Mentor',
+    caption: 'Holding space for founders to ask honest questions and find their own spark.',
+    mood: 'Collaborative and calm',
+    gradient: 'from-[#2a223f] via-[#51388f] to-[#1d1744]'
+  },
+  {
+    id: 'personality-storyteller',
+    label: 'Story-first Creator',
+    caption: 'Translating complex builds into narratives that feel personal and actionable.',
+    mood: 'Narrative-driven',
+    gradient: 'from-[#322230] via-[#7d335d] to-[#2a1025]'
+  },
+  {
+    id: 'personality-explorer',
+    label: 'Curious Explorer',
+    caption: 'Always chasing the next perspective shift—new cities, new teams, new insights.',
+    mood: 'Adventurous',
+    gradient: 'from-[#20343c] via-[#1c6b7a] to-[#072f42]'
+  },
+  {
+    id: 'personality-host',
+    label: 'Gathering Host',
+    caption: 'Designing intimate sessions where builders feel seen, heard, and energized.',
+    mood: 'People-centric',
+    gradient: 'from-[#2f2b2a] via-[#aa5b31] to-[#3f2211]'
   }
 ];
