@@ -4,7 +4,7 @@ Welcome to the digital workshop of **Mohammad Abir Abbas** – AI Whisperer, Rus
 
 ## Preview:
 
-https://github.com/user-attachments/assets/6fdf9f1e-a1e4-444f-8b4d-9969a759deb3
+https://github.com/user-attachments/assets/6eda9004-b8a7-4dad-952a-3365771b393a
 
 
 ## What's Inside
@@ -12,7 +12,7 @@ https://github.com/user-attachments/assets/6fdf9f1e-a1e4-444f-8b4d-9969a759deb3
 - Sections for skills, projects, experience, services, tutorials, blog posts and a contact form.
 - Animated canvas background, retro voxel effects and LinkedIn recommendations to add personality.
 - Medium posts and YouTube playlists are fetched on the fly.
-- A tiny Express proxy handles contact requests with Zod validation and rate limiting.
+- A tiny Express proxy handles contact requests with Zod validation, rate limiting and Winston logging.
 - SEO ready: meta tags, sitemap, robots/LLM directives and strict security headers.
 
 ## Tech Stack
@@ -21,7 +21,7 @@ https://github.com/user-attachments/assets/6fdf9f1e-a1e4-444f-8b4d-9969a759deb3
 - **Tailwind CSS** with `tailwindcss-animate` for design.
 - **Express**, `cors`, `express-rate-limit` and **Zod** for the form proxy.
 - **vite-plugin-sitemap** for automatic sitemap generation.
-- **Yarn v3 (Berry)** as the package manager.
+- **Yarn v4 (Berry)** as the package manager.
 
 ## Getting Started
 ```bash
@@ -34,6 +34,11 @@ yarn build     # produce production assets
 Set environment variables when needed:
 - `VITE_YOUTUBE_API_KEY` – fetches playlist videos for the Tutorials section.
 - `GOOGLE_APPS_SCRIPT_URL` – target of the Express proxy for contact submissions.
+- `QWEN_API_KEY` – unlocks live responses from the Qwen3 Coder model powering the assistant.
+- `QWEN_API_BASE` (optional) – override the default DashScope compatible endpoint.
+- `QWEN_MODEL` (optional) – customise the deployed Qwen series model, defaults to `qwen3-coder-32b-instruct`.
+- `QWEN_TEMPERATURE` (optional) – tweak sampling temperature for generative replies.
+- `VITE_ASSISTANT_ENDPOINT` (optional) – point the frontend to a custom assistant API URL during development.
 
 ## Project Structure
 ```
@@ -46,9 +51,30 @@ public/
   robots.txt, sitemap.xml, llms.txt  # SEO and crawler guidelines
 ```
 
+## Logging & Proxy Usage
+The contact form proxy is instrumented with a shared Winston logger defined in `src/logger.cjs` and shared with the `api/assistant.js` serverless function that wraps the LangChain + Qdrant + Qwen runtime.
+
+- Logs default to colourised, human-readable output during development and switch to JSON in production when `NODE_ENV=production`.
+- Each request captures timing, status codes and the caller's user agent, while upstream failures and parse errors are surfaced as structured error logs.
+- Unhandled rejections and uncaught exceptions are normalised before being emitted, making them easy to ingest in log aggregators.
+
+Run the proxy locally alongside the Vite dev server:
+
+```bash
+GOOGLE_APPS_SCRIPT_URL="https://script.google.com/macros/s/YOUR_SCRIPT/exec" \
+NODE_ENV=development \
+node src/proxy.cjs
+```
+
+For production deployments, set `NODE_ENV=production` so logs are serialised as JSON for services like Logtail, Datadog or CloudWatch. The logger exports a singleton instance, so you can import it in additional middleware or utilities to keep log formatting consistent.
+
 ## Deployment & Security
 Security headers and a strict Content Security Policy are configured in `vite.config.ts`.
 The site also ships with a curated `robots.txt` and `sitemap.xml` for search engines and AI crawlers.
+
+## Accessibility
+- A teal-forward design system with premium surfaces and gradients keeps content accessible while feeling bespoke.
+- Use the [teal palette accessibility checklist](docs/teal-accessibility-checklist.md) to confirm contrast, focus, and state coverage before launch.
 
 ### Security Considerations
 - Production secrets like API keys and SMTP credentials live in GitHub Secrets and are never committed.

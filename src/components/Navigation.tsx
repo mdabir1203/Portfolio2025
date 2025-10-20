@@ -1,4 +1,5 @@
-import { FC, memo } from 'react';
+import { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
+import type { KeyboardEvent as ReactKeyboardEvent } from 'react';
 
 interface NavigationProps {
   activeTab: string;
@@ -21,10 +22,64 @@ const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => (
             : 'text-gray-400 border-gray-600 hover:border-cyan-400 hover:text-cyan-400'
         }`}
       >
-        {tab.charAt(0).toUpperCase() + tab.slice(1)}
-      </button>
-    ))}
-  </nav>
-);
+        <button
+          type="button"
+          ref={helperButtonRef}
+          onClick={toggleHelper}
+          aria-expanded={isHelperOpen}
+          aria-controls={helperPanelId}
+          className="group flex h-11 w-11 items-center justify-center rounded-full border border-[#1f655d] bg-[#033832]/90 text-[#9adcd1] shadow-[0_18px_38px_rgba(0,150,136,0.18)] transition-colors duration-200 hover:border-[#23a395] hover:bg-[#035049]/90 hover:text-[#c8fff4] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00bfa5] focus-visible:ring-offset-2"
+        >
+          <span className="sr-only">{isHelperOpen ? 'Hide navigation tips' : 'Show navigation tips'}</span>
+          <svg
+            aria-hidden="true"
+            className="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.8}
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 17h.01M12 11a1.5 1.5 0 011.2.6c.46.61.31 1.47-.27 1.95l-.93.78a1.5 1.5 0 00-.5 1.12V16m0-9a9 9 0 100 18 9 9 0 000-18z"
+            />
+          </svg>
+        </button>
+
+        {isHelperOpen && (
+          <div
+            id={helperPanelId}
+            ref={helperPanelRef}
+            role="dialog"
+            aria-modal="false"
+            className="mb-2 w-72 rounded-xl border border-[#1f655d] bg-[#021c1a]/95 p-4 text-sm shadow-2xl shadow-[0_24px_60px_rgba(0,150,136,0.25)] focus:outline-none"
+            tabIndex={-1}
+          >
+            <div className="mb-2 flex items-center justify-between gap-2">
+              <h3 className="text-base font-semibold text-[#a7ffeb]">Keyboard navigation</h3>
+              <button
+                type="button"
+                onClick={hideHelper}
+                className="rounded-full border border-[#1f655d] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.3em] text-[#7fcfc2] hover:bg-[#02423b]/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00bfa5] focus-visible:ring-offset-2"
+              >
+                Close
+              </button>
+            </div>
+            <p className="mb-2 text-[#9adcd1]">Use your keyboard to glide through the sections like an arcade run:</p>
+            <ul className="space-y-1 text-[#e3fbf6]">
+              <li><span className="font-semibold text-[#a7ffeb]">← / →</span> Cycle through the tabs</li>
+              <li><span className="font-semibold text-[#a7ffeb]">↑ / ↓</span> Works too if that&apos;s your style</li>
+              <li><span className="font-semibold text-[#a7ffeb]">Home</span> Jump to the first tab instantly</li>
+              <li><span className="font-semibold text-[#a7ffeb]">End</span> Warp to the final tab</li>
+              <li><span className="font-semibold text-[#a7ffeb]">Enter</span> or <span className="font-semibold text-[#a7ffeb]">Space</span> Activate the focused tab</li>
+              <li><span className="font-semibold text-[#FF8A65]">Esc</span> Close this helper</li>
+            </ul>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default memo(Navigation);

@@ -8,6 +8,7 @@ interface AwardsSectionProps {
 const AwardsSection: FC<AwardsSectionProps> = ({ awards }) => (
   <section className="mb-16 animate-fadeIn">
     <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">
+
       Awards &amp; Certifications
     </h2>
 
@@ -37,7 +38,6 @@ const AwardsSection: FC<AwardsSectionProps> = ({ awards }) => (
               </a>
             )}
           </header>
-
           {award.description && <p className="text-gray-300 leading-relaxed mb-4">{award.description}</p>}
 
           {award.highlights && award.highlights.length > 0 && (
