@@ -55,7 +55,7 @@ const WelcomeModal: FC<WelcomeModalProps> = ({ open, onClose }) => {
         </div>
 
         <h2 id="portfolio-welcome-title" className="text-2xl font-semibold text-emerald-50">
-          Welcome to Munna&apos;s Portfolio!
+          Welcome to AI Alchemist Abir's Portfolio!
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-emerald-100/80">
           Thanks for dropping in! Tap a logo below to catch the latest YouTube deep-dives or subscribe for Medium
