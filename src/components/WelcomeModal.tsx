@@ -10,23 +10,22 @@ const mediumNewsletterUrl = 'https://medium.com/@md.abir1203';
 
 const WelcomeModal: FC<WelcomeModalProps> = ({ open, onClose }) => {
   useEffect(() => {
-    if (!open) {
-      return;
-    }
+    if (!open) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
+      if (event.key === 'Escape') onClose();
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [open, onClose]);
 
-  if (!open) {
-    return null;
-  }
+  if (!open) return null;
+
+  const handleModalClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    // Prevent closing when clicking inside modal content
+    event.stopPropagation();
+  };
 
   return (
     <div
@@ -38,8 +37,9 @@ const WelcomeModal: FC<WelcomeModalProps> = ({ open, onClose }) => {
     >
       <div
         className="relative w-full max-w-md overflow-hidden rounded-3xl border border-emerald-500/30 bg-[#041b19]/95 p-8 shadow-[0_30px_80px_rgba(0,150,136,0.35)]"
-        onClick={(event) => event.stopPropagation()}
+        onClick={handleModalClick}
       >
+        {/* Close button */}
         <button
           type="button"
           onClick={onClose}
@@ -70,12 +70,7 @@ const WelcomeModal: FC<WelcomeModalProps> = ({ open, onClose }) => {
             className="group flex flex-col items-center justify-center gap-3 rounded-2xl border border-red-500/40 bg-red-500/10 px-4 py-6 text-center transition hover:-translate-y-1 hover:border-red-400/70 hover:bg-red-500/20"
           >
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-600 text-white shadow-[0_16px_35px_rgba(239,83,80,0.35)]">
-              <svg
-                className="h-7 w-7"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden="true"
-              >
+              <svg className="h-7 w-7" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M21.8 8.001a2.5 2.5 0 0 0-1.76-1.768C18.33 6 12 6 12 6s-6.33 0-8.04.233A2.5 2.5 0 0 0 2.2 8.001 26.5 26.5 0 0 0 2 12a26.5 26.5 0 0 0 .2 3.999 2.5 2.5 0 0 0 1.76 1.768C5.67 18 12 18 12 18s6.33 0 8.04-.233a2.5 2.5 0 0 0 1.76-1.768A26.5 26.5 0 0 0 22 12a26.5 26.5 0 0 0-.2-3.999ZM10 14.5v-5l4.5 2.5Z" />
               </svg>
             </div>
@@ -104,7 +99,10 @@ const WelcomeModal: FC<WelcomeModalProps> = ({ open, onClose }) => {
         <div className="mt-6 flex flex-col gap-3 text-sm text-emerald-100/70">
           <button
             type="button"
-            onClick={onClose}
+            onClick={(event) => {
+              event.stopPropagation();
+              onClose();
+            }}
             className="inline-flex items-center justify-center gap-2 rounded-full border border-emerald-400/50 bg-emerald-500/20 px-4 py-2 font-semibold text-emerald-50 transition hover:-translate-y-0.5 hover:bg-emerald-500/30"
           >
             Continue exploring
