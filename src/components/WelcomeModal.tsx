@@ -59,7 +59,7 @@ const WelcomeModal: FC<WelcomeModalProps> = ({ open, onClose }) => {
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-emerald-100/80">
           Thanks for dropping in! Tap a logo below to catch the latest YouTube deep-dives or subscribe for Medium
-          newsletter drops. No spam—just thoughtful insights and behind-the-scenes notes.
+          newsletter drops. No spam—just thoughtful insights and behind-the-scenes notes about AI, Rust and Security.
         </p>
 
         <div className="mt-6 grid grid-cols-2 gap-4">
