@@ -1,5 +1,10 @@
 import { FC, memo, useMemo } from 'react';
-import type { SocialPlatformPhotos, SocialPhoto } from '../data/social-photos';
+import type {
+  PersonalityHighlight,
+  SocialPlatformPhotos,
+  SocialPhoto
+} from '../data/social-photos';
+import { personalityHighlights } from '../data/social-photos';
 
 interface SocialPhotosSectionProps {
   platforms: SocialPlatformPhotos[];
@@ -23,6 +28,15 @@ const platformColor: Record<SocialPhoto['platform'], string> = {
   instagram: 'from-[#f77737]/70 via-[#e4405f]/70 to-[#8a3ab9]/70'
 };
 
+const personalityTagColor: Record<PersonalityHighlight['mood'], string> = {
+  'Long-range thinker': 'text-[#c2fff2] bg-[#064a42]/70 border-[#0a6a5f]/60',
+  'Rapid prototyping energy': 'text-[#c9ebff] bg-[#0c3651]/70 border-[#10567c]/50',
+  'Collaborative and calm': 'text-[#e2d8ff] bg-[#2d1f55]/70 border-[#4c3a80]/50',
+  'Narrative-driven': 'text-[#ffd7e8] bg-[#4a1634]/70 border-[#7a2d59]/50',
+  Adventurous: 'text-[#cff4ff] bg-[#0f4254]/70 border-[#1d6f89]/50',
+  'People-centric': 'text-[#ffe6d8] bg-[#4f2815]/70 border-[#7c3e1f]/50'
+};
+
 const SocialPhotosSection: FC<SocialPhotosSectionProps> = ({ platforms }) => {
   const sortedPlatforms = useMemo(
     () =>
@@ -37,6 +51,51 @@ const SocialPhotosSection: FC<SocialPhotosSectionProps> = ({ platforms }) => {
 
   return (
     <section className="mb-16 animate-fadeIn">
+      <div className="mb-14 rounded-3xl border border-[#2f6f68]/60 bg-[#032523]/70 p-8 shadow-[0_18px_45px_rgba(0,150,136,0.18)]">
+        <div className="flex flex-col gap-3 text-center md:flex-row md:items-end md:justify-between md:text-left">
+          <div>
+            <p className="text-sm uppercase tracking-[0.4em] text-[#7fcfc2]">Personality Boards</p>
+            <h2 className="mt-2 text-3xl font-semibold text-[#c8fff4]">
+              Expressing the many ways we show up offline
+            </h2>
+          </div>
+          <p className="text-sm text-[#d0f4ed] md:max-w-md">
+            These placeholders act like storyboard frames. Each tile marks a facet of our vibe, ready to be
+            swapped with live photography whenever we capture it.
+          </p>
+        </div>
+
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+          {personalityHighlights.map((highlight) => (
+            <figure
+              key={highlight.id}
+              className="flex flex-col rounded-[28px] border border-[#184d46]/50 bg-[#021917]/80 p-5 shadow-[0_16px_40px_rgba(0,150,136,0.14)] backdrop-blur"
+            >
+              <div
+                className={`relative flex min-h-[240px] flex-1 items-center justify-center overflow-hidden rounded-2xl border border-[#1e5f56]/50 bg-gradient-to-br ${highlight.gradient} text-center`}
+              >
+                <span className="text-lg font-semibold text-[#e6fff9] drop-shadow-[0_8px_20px_rgba(0,0,0,0.35)]">
+                  {highlight.label}
+                </span>
+                <div className="pointer-events-none absolute inset-x-6 bottom-6 rounded-full border border-dashed border-[#a8f5e9]/30 bg-[#04322d]/70 py-2 text-xs font-medium uppercase tracking-[0.45em] text-[#8ae9dd]">
+                  Placeholder
+                </div>
+              </div>
+              <figcaption className="mt-5 space-y-3">
+                <p className="text-sm leading-relaxed text-[#d5f6ef]">{highlight.caption}</p>
+                <span
+                  className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] ${
+                    personalityTagColor[highlight.mood] ?? 'text-[#c8fff4] bg-[#043633]/70 border-[#0c5a52]/50'
+                  }`}
+                >
+                  {highlight.mood}
+                </span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+
       <div className="text-center mb-12">
         <h2 className="text-4xl font-bold bg-gradient-to-r from-[#c8fff4] via-[#4DB6AC] to-[#009688] bg-clip-text text-transparent drop-shadow-[0_16px_40px_rgba(0,150,136,0.25)]">
           Social Highlights

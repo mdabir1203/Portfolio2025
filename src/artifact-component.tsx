@@ -14,6 +14,7 @@ import AssistantJourneySection from './components/AssistantJourneySection';
 import ContactSection from './components/ContactSection';
 import ExperienceSection from './components/ExperienceSection';
 import AwardsSection from './components/AwardsSection';
+import WelcomeModal from './components/WelcomeModal';
 
 import { skills } from './data/skills';
 import { projects } from './data/projects';
@@ -92,7 +93,33 @@ const ArtifactComponent = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [mediumPosts, setMediumPosts] = useState<MediumPost[]>([]);
   const [isFetchingPosts, setIsFetchingPosts] = useState(false);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        const hasSeenWelcome = sessionStorage.getItem('portfolio-welcome-dismissed');
+        if (!hasSeenWelcome) {
+          setShowWelcomeModal(true);
+        }
+      }
+    } catch (error) {
+      console.warn('Unable to read welcome modal preference', error);
+      setShowWelcomeModal(true);
+    }
+  }, []);
+
+  const dismissWelcomeModal = useCallback(() => {
+    setShowWelcomeModal(false);
+    try {
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('portfolio-welcome-dismissed', 'true');
+      }
+    } catch (error) {
+      console.warn('Unable to persist welcome modal preference', error);
+    }
+  }, []);
 
   useEffect(() => {
     let rafId = 0;
@@ -244,6 +271,7 @@ const ArtifactComponent = () => {
       >
         Skip to main content
       </a>
+      <WelcomeModal open={showWelcomeModal} onClose={dismissWelcomeModal} />
       <BackgroundEffects mousePosition={mousePosition} canvasRef={canvasRef} />
       <main
         id="main-content"
