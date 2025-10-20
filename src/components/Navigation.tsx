@@ -1,5 +1,4 @@
 import { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
-import type { KeyboardEvent as ReactKeyboardEvent } from 'react';
 
 interface NavigationProps {
   activeTab: string;
@@ -7,7 +6,7 @@ interface NavigationProps {
 }
 
 const tabs = [
-  'home', 'skills', 'projects', 'blog', 'tutorials', 
+  'home', 'skills', 'projects', 'blog', 'tutorials',
   'services', 'awards', 'experience', 'journey', 'contact'
 ];
 
@@ -29,9 +28,7 @@ const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
   // Handle Escape key to close the helper panel
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsHelperOpen(false);
-      }
+      if (event.key === 'Escape') setIsHelperOpen(false);
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
