@@ -5,7 +5,7 @@ interface WelcomeModalProps {
   onClose: () => void;
 }
 
-const youtubeChannelUrl = 'https://www.youtube.com/@MunnaAbir';
+const youtubeChannelUrl = 'https://www.youtube.com/@AIAugmented';
 const mediumNewsletterUrl = 'https://medium.com/@md.abir1203';
 
 const WelcomeModal: FC<WelcomeModalProps> = ({ open, onClose }) => {
