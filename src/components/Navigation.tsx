@@ -6,146 +6,21 @@ interface NavigationProps {
   onTabClick: (tab: string) => void;
 }
 
-const tabs = [
-  'home',
-  'skills',
-  'projects',
-  'blog',
-  'social',
-  'tutorials',
-  'services',
-  'awards',
-  'experience',
-  'journey',
-  'assistant',
-  'contact'
-];
+const tabs = ['home', 'skills', 'projects', 'blog', 'tutorials', 'services', 'awards', 'experience', 'journey', 'contact'];
 
-const helperPanelId = 'navigation-helper-panel';
-
-const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
-  const [isHelperOpen, setIsHelperOpen] = useState(false);
-  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  const helperButtonRef = useRef<HTMLButtonElement | null>(null);
-  const helperPanelRef = useRef<HTMLDivElement | null>(null);
-
-  const focusTab = useCallback((index: number) => {
-    const wrappedIndex = (index + tabs.length) % tabs.length;
-    const tab = tabRefs.current[wrappedIndex];
-    tab?.focus();
-  }, []);
-
-  const selectTabAt = useCallback(
-    (index: number) => {
-      const wrappedIndex = (index + tabs.length) % tabs.length;
-      onTabClick(tabs[wrappedIndex]);
-      focusTab(wrappedIndex);
-    },
-    [focusTab, onTabClick]
-  );
-
-  const handleKeyDown = useCallback(
-    (event: ReactKeyboardEvent<HTMLButtonElement>, index: number) => {
-      if (event.altKey || event.metaKey || event.ctrlKey) {
-        return;
-      }
-
-      switch (event.key) {
-        case 'ArrowRight':
-        case 'ArrowDown':
-          event.preventDefault();
-          selectTabAt(index + 1);
-          break;
-        case 'ArrowLeft':
-        case 'ArrowUp':
-          event.preventDefault();
-          selectTabAt(index - 1);
-          break;
-        case 'Home':
-          event.preventDefault();
-          selectTabAt(0);
-          break;
-        case 'End':
-          event.preventDefault();
-          selectTabAt(tabs.length - 1);
-          break;
-        default:
-          break;
-      }
-    },
-    [selectTabAt]
-  );
-
-  const showHelper = useCallback(() => {
-    setIsHelperOpen(true);
-  }, []);
-
-  const hideHelper = useCallback(() => {
-    setIsHelperOpen(false);
-  }, []);
-
-  const toggleHelper = useCallback(() => {
-    setIsHelperOpen((prev) => !prev);
-  }, []);
-
-  useEffect(() => {
-    if (!isHelperOpen) {
-      return;
-    }
-
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        setIsHelperOpen(false);
-        helperButtonRef.current?.focus();
-      }
-    };
-
-    window.addEventListener('keydown', closeOnEscape);
-
-    return () => window.removeEventListener('keydown', closeOnEscape);
-  }, [isHelperOpen]);
-
-  useEffect(() => {
-    if (isHelperOpen) {
-      helperPanelRef.current?.focus();
-    }
-  }, [isHelperOpen]);
-
-  return (
-    <div className="relative flex flex-col items-center gap-4 mb-12">
-      <nav className="mt-16 flex flex-wrap justify-center gap-4" aria-label="Primary">
-        {tabs.map((tab, index) => (
-          <button
-            key={tab}
-            ref={(node) => {
-              tabRefs.current[index] = node;
-            }}
-            type="button"
-            onClick={() => selectTabAt(index)}
-            onKeyDown={(event) => handleKeyDown(event, index)}
-            aria-current={activeTab === tab ? 'page' : undefined}
-            className={`tab px-6 py-3 rounded-lg font-semibold tracking-wide uppercase transition-all duration-200 ease-out motion-reduce:transition-none border focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00bfa5] focus-visible:ring-offset-2 ${
-              activeTab === tab
-                ? 'text-[#a7ffeb] border-[#00bfa5] bg-[#022b27]/80 shadow-[0_18px_38px_rgba(0,150,136,0.28)]'
-                : 'text-[#7fcfc2] border-transparent bg-[#042623]/60 hover:border-[#1f655d] hover:text-[#c8fff4] hover:shadow-[0_10px_24px_rgba(0,150,136,0.18)]'
-            }`}
-          >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
-          </button>
-        ))}
-      </nav>
-
-      <div
-        className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2"
-        onMouseEnter={showHelper}
-        onMouseLeave={hideHelper}
-        onFocus={showHelper}
-        onBlur={(event) => {
-          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-            hideHelper();
-          }
-        }}
+const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => (
+  <nav className="flex flex-wrap justify-center gap-4 mb-12" aria-label="Primary">
+    {tabs.map((tab) => (
+      <button
+        key={tab}
+        type="button"
+        onClick={() => onTabClick(tab)}
+        aria-current={activeTab === tab ? 'page' : undefined}
+        className={`tab px-6 py-3 rounded-lg font-bold transition-all duration-200 ease-out motion-reduce:transition-none border-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 ${
+          activeTab === tab
+            ? 'text-green-400 border-green-400 bg-green-400/20 shadow-lg shadow-green-400/30'
+            : 'text-gray-400 border-gray-600 hover:border-cyan-400 hover:text-cyan-400'
+        }`}
       >
         <button
           type="button"

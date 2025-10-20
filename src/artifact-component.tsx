@@ -14,8 +14,6 @@ import AssistantJourneySection from './components/AssistantJourneySection';
 import ContactSection from './components/ContactSection';
 import ExperienceSection from './components/ExperienceSection';
 import AwardsSection from './components/AwardsSection';
-import WelcomeModal from './components/WelcomeModal';
-
 import { skills } from './data/skills';
 import { projects } from './data/projects';
 import { services } from './data/services';
@@ -23,8 +21,7 @@ import { linkedinRecommendations } from './data/linkedin-recommendations';
 import { journey } from './data/journey';
 import { experiences } from './data/experience';
 import { awards } from './data/awards';
-import { socialPhotos } from './data/social-photos';
-import { MediumPost } from './types';
+
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null;

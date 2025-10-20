@@ -9,6 +9,18 @@ export interface Award {
 
 export const awards: Award[] = [
   {
+    title: 'Wolfsburg Homie',
+    issuer: '42 Wolfsburg',
+    description: 'Awarded for embracing the 42 Wolfsburg community spirit—complete with legendary late-night coding sessions.',
+    highlights: ['A playful nod for “sleeping too much” while still shipping code.']
+  },
+  {
+    title: 'Redis Side Quest Hackathon Winner',
+    issuer: 'Redis',
+    description: 'Built RedAGPT, an agentic network security assistant, to win the Redis Side Quest hackathon challenge.',
+    highlights: ['Showcased innovative use of agents to strengthen network security workflows.']
+  },
+  {
     title: 'Certificate of Achievement',
     issuer: 'Local Committee Hannover, AIESEC',
     date: 'Sep 2022',
@@ -40,17 +52,5 @@ export const awards: Award[] = [
       'Capable of managing routine conversations and sharing essential personal information.',
       'Established a solid linguistic base for continued study and cultural collaboration.'
     ]
-  },
-  {
-    title: 'Wolfsburg Homie',
-    issuer: '42 Wolfsburg',
-    description: 'Awarded for embracing the 42 Wolfsburg community spirit—complete with legendary late-night coding sessions.',
-    highlights: ['A playful nod for “sleeping too much” while still shipping code.']
-  },
-  {
-    title: 'Redis Side Quest Hackathon Winner',
-    issuer: 'Redis',
-    description: 'Built RedAGPT, an agentic network security assistant, to win the Redis Side Quest hackathon challenge.',
-    highlights: ['Showcased innovative use of agents to strengthen network security workflows.']
   }
 ];
