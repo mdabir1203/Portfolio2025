@@ -1,5 +1,6 @@
 import { FC, memo } from 'react';
 import { LinkedInRecommendation } from '../data/linkedin-recommendations';
+import SocialPresenceShowcase from './SocialPresenceShowcase';
 
 interface HomeSectionProps {
   onHireClick: () => void;
@@ -60,6 +61,8 @@ const HomeSection: FC<HomeSectionProps> = ({ onHireClick, isHired, linkedinRecom
           </div>
         </div>
       </div>
+
+      <SocialPresenceShowcase />
 
       <section className="mb-16">
         <div className="max-w-6xl mx-auto">
