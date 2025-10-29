@@ -135,7 +135,7 @@ const SocialPresenceShowcase: FC = () => {
               <p className="text-sm font-semibold uppercase tracking-[0.32em] text-[#c8fff4] mb-3">Platform reach</p>
               <p className="text-xs text-[#e0fff8] leading-relaxed">
                 LinkedIn {followerSegments[0].displayValue}, Facebook {followerSegments[1].displayValue}, Instagram {followerSegments[2].value}{' '}
-                followers with 908 following and 48 published case-study visuals.
+                followers with 908 following.
               </p>
             </div>
           </div>
