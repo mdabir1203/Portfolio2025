@@ -25,6 +25,20 @@ const ProjectsSection: FC<ProjectsSectionProps> = ({ projects }) => (
           </div>
           <h3 className="project-title text-2xl font-semibold text-[#a7ffeb] tracking-wide mb-3">{project.title}</h3>
           <p className="project-description text-[#d7f5ef] mb-6 leading-relaxed">{project.description}</p>
+          {project.metrics?.length ? (
+            <div className="grid gap-3 mb-6 sm:grid-cols-2">
+              {project.metrics.map((metric) => (
+                <div
+                  key={metric.label}
+                  className="bg-[#04332f]/70 border border-[#2f6f68]/40 rounded-lg p-4 shadow-inner shadow-[#01211e]/40 transition-all duration-300 group-hover:border-[#00bfa5]/60"
+                >
+                  <p className="text-xs uppercase tracking-[0.2em] text-[#7ddcd3] mb-1">{metric.label}</p>
+                  <p className="text-xl font-semibold text-[#c8fff4] mb-1">{metric.value}</p>
+                  <p className="text-sm text-[#b0f0e6] leading-relaxed">{metric.description}</p>
+                </div>
+              ))}
+            </div>
+          ) : null}
           <div className="project-footer flex justify-between items-center">
             <span className="project-stars text-[#FF8A65] font-semibold flex items-center">
               <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
