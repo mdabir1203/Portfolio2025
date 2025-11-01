@@ -75,3 +75,27 @@
     outline-offset: 2px;
   }
 }
+
+@layer components {
+  .cursor-trail-item {
+    pointer-events: none;
+    transform-origin: center;
+    filter: drop-shadow(0 12px 24px rgba(0, 150, 136, 0.35));
+    animation: cursor-trail-float var(--cursor-trail-duration, 900ms) ease-out forwards;
+    will-change: transform, opacity;
+  }
+}
+
+@keyframes cursor-trail-float {
+  0% {
+    opacity: 0.1;
+    transform: translate(-50%, -50%) scale(0.65) rotate(var(--cursor-trail-rotate, 0deg));
+  }
+  25% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -80%) scale(1.2) rotate(var(--cursor-trail-rotate, 0deg));
+  }
+}
