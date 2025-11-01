@@ -24,6 +24,15 @@ type TrailStyle = CSSProperties & {
   '--cursor-trail-duration'?: string;
 };
 
+type RevealStyle = CSSProperties & {
+  '--cursor-trail-duration'?: string;
+};
+
+type VeilStyle = CSSProperties & {
+  '--cursor-trail-veil-opacity'?: string;
+};
+
+
 const DEFAULT_SPAWN_INTERVAL = 70;
 const DEFAULT_MAX_ITEMS = 28;
 const DEFAULT_FADE_DURATION = 900;
@@ -39,6 +48,11 @@ const CursorTrail: FC<CursorTrailProps> = ({
   const [items, setItems] = useState<TrailItem[]>([]);
   const lastSpawnRef = useRef(0);
   const idRef = useRef(0);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const isInsideRef = useRef(false);
+  const rectRef = useRef<DOMRect | null>(null);
+  const rafRef = useRef<number>();
+
 
   const chosenImages = useMemo(() => images.filter(Boolean), [images]);
   const hasImages = chosenImages.length > 0;
@@ -48,18 +62,60 @@ const CursorTrail: FC<CursorTrailProps> = ({
       return undefined;
     }
 
-    const interval = window.setInterval(() => {
+    const prune = () => {
       const now = performance.now();
-      setItems((current) => current.filter((item) => now - item.createdAt < fadeDuration));
-    }, Math.max(120, Math.floor(fadeDuration / 5)));
+      setItems((current) => {
+        const filtered = current.filter((item) => now - item.createdAt < fadeDuration);
+        if (filtered.length > 0) {
+          rafRef.current = window.requestAnimationFrame(prune);
+        } else {
+          rafRef.current = undefined;
+        }
+        return filtered;
+      });
+    };
+
+    if (items.length > 0 && rafRef.current === undefined) {
+      rafRef.current = window.requestAnimationFrame(prune);
+    }
 
     return () => {
-      window.clearInterval(interval);
+      if (rafRef.current !== undefined) {
+        window.cancelAnimationFrame(rafRef.current);
+        rafRef.current = undefined;
+      }
     };
-  }, [fadeDuration, hasImages]);
+  }, [fadeDuration, hasImages, items.length]);
 
-  const handlePointerMove = useCallback(
-    (event: React.PointerEvent<HTMLDivElement>) => {
+  const updateRect = useCallback(() => {
+    const node = containerRef.current;
+    if (!node) {
+      rectRef.current = null;
+      return;
+    }
+
+    rectRef.current = node.getBoundingClientRect();
+  }, []);
+
+  useEffect(() => {
+    if (!hasImages) {
+      return undefined;
+    }
+
+    updateRect();
+
+    const handleResize = () => updateRect();
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('scroll', handleResize, true);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', handleResize, true);
+    };
+  }, [hasImages, updateRect]);
+
+  const spawnItem = useCallback(
+    (clientX: number, clientY: number) => {
       if (!hasImages) {
         return;
       }
@@ -69,19 +125,33 @@ const CursorTrail: FC<CursorTrailProps> = ({
         return;
       }
 
+      const rect = rectRef.current ?? containerRef.current?.getBoundingClientRect();
+      if (!rect) {
+        return;
+      }
+
+      if (
+        clientX < rect.left ||
+        clientX > rect.right ||
+        clientY < rect.top ||
+        clientY > rect.bottom
+      ) {
+        return;
+      }
+
       lastSpawnRef.current = now;
 
-      const rect = event.currentTarget.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
 
       const image = chosenImages[Math.floor(Math.random() * chosenImages.length)];
-      const size = 32 + Math.random() * 26;
-      const rotation = -18 + Math.random() * 36;
+      const size = 36 + Math.random() * 32;
+      const rotation = -22 + Math.random() * 44;
 
       setItems((current) => {
+        const filtered = current.filter((item) => now - item.createdAt < fadeDuration);
         const nextItems = [
-          ...current,
+          ...filtered,
           {
             id: idRef.current++,
             x,
@@ -100,20 +170,72 @@ const CursorTrail: FC<CursorTrailProps> = ({
         return nextItems;
       });
     },
-    [chosenImages, hasImages, maxItems, spawnInterval],
+    [chosenImages, fadeDuration, hasImages, maxItems, spawnInterval],
+  );
+
+  const handlePointerEnter = useCallback(
+    (event: React.PointerEvent<HTMLDivElement>) => {
+      isInsideRef.current = true;
+      updateRect();
+      spawnItem(event.clientX, event.clientY);
+    },
+    [spawnItem, updateRect],
   );
 
   const handlePointerLeave = useCallback(() => {
+    isInsideRef.current = false;
     setItems([]);
+    if (rafRef.current !== undefined) {
+      window.cancelAnimationFrame(rafRef.current);
+      rafRef.current = undefined;
+    }
   }, []);
 
-  const outerClassName = ['relative block', className].filter(Boolean).join(' ');
+  useEffect(() => {
+    if (!hasImages) {
+      return undefined;
+    }
+
+    const handleWindowPointerMove = (event: PointerEvent) => {
+      if (!isInsideRef.current) {
+        return;
+      }
+
+      spawnItem(event.clientX, event.clientY);
+    };
+
+    window.addEventListener('pointermove', handleWindowPointerMove, { passive: true });
+
+    return () => {
+      window.removeEventListener('pointermove', handleWindowPointerMove);
+    };
+  }, [hasImages, spawnItem]);
+
+  const outerClassName = ['relative block isolate', className].filter(Boolean).join(' ');
+  const veilOpacity = items.length > 0 ? '0.56' : '0.26';
+  const veilStyle: VeilStyle = {
+    '--cursor-trail-veil-opacity': veilOpacity,
+  };
 
   return (
-    <div className={outerClassName} onPointerMove={handlePointerMove} onPointerLeave={handlePointerLeave}>
-      {children}
-      <div className="pointer-events-none absolute inset-0 overflow-visible">
+    <div
+      ref={containerRef}
+      className={outerClassName}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
+    >
+      <div className="relative z-[1]">{children}</div>
+      <div className="pointer-events-none absolute inset-0 z-[2] overflow-visible">
+        <div className="cursor-trail-veil" aria-hidden="true" style={veilStyle} />
         {items.map((item) => {
+          const commonDuration = `${fadeDuration}ms`;
+          const revealStyle: RevealStyle = {
+            left: item.x,
+            top: item.y,
+            width: item.size * 1.85,
+            height: item.size * 1.85,
+            '--cursor-trail-duration': commonDuration,
+          };
           const style: TrailStyle = {
             left: item.x,
             top: item.y,
@@ -121,11 +243,20 @@ const CursorTrail: FC<CursorTrailProps> = ({
             height: item.size,
             position: 'absolute',
             '--cursor-trail-rotate': `${item.rotation}deg`,
-            '--cursor-trail-duration': `${fadeDuration}ms`,
+            '--cursor-trail-duration': commonDuration,
           };
 
           return (
-            <img key={item.id} src={item.image} alt="" aria-hidden="true" className="cursor-trail-item select-none" style={style} />
+            <Fragment key={item.id}>
+              <div className="cursor-trail-reveal" style={revealStyle} />
+              <img
+                src={item.image}
+                alt=""
+                aria-hidden="true"
+                className="cursor-trail-item select-none"
+                style={style}
+              />
+            </Fragment>
           );
         })}
       </div>
