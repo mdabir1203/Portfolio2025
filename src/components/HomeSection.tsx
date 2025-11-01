@@ -15,52 +15,92 @@ const HomeSection: FC<HomeSectionProps> = ({ onHireClick, isHired, linkedinRecom
   return (
     <CursorTrail className="w-full" images={trailImages} spawnInterval={60} maxItems={32}>
       <section className="mb-12 md:mb-16 animate-fadeIn">
-        <div className="profile-section mb-8 md:mb-12 backdrop-blur-xl bg-[#052825]/70 border border-[#2f6f68]/40 rounded-2xl p-6 md:p-8 shadow-lg shadow-[0_35px_70px_rgba(0,150,136,0.18)] relative overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute -left-10 -top-10 h-36 w-36 rounded-full bg-[#00a99d]/20 blur-3xl"></div>
-            <div className="absolute -right-6 bottom-0 h-28 w-28 rounded-full bg-[#FF7043]/25 blur-2xl"></div>
+        <div className="relative mb-8 md:mb-12 overflow-hidden rounded-[36px] border border-[#1f4a44]/60 bg-[#041512]/95 px-6 py-16 shadow-[0_35px_90px_rgba(0,80,72,0.45)] backdrop-blur-xl sm:px-10 sm:py-20 lg:px-16 lg:py-24">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#010504] via-[#031513] to-[#062622] opacity-95"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_18%,rgba(0,171,152,0.32),transparent_60%),radial-gradient(circle_at_82%_28%,rgba(255,112,67,0.18),transparent_60%),radial-gradient(circle_at_48%_82%,rgba(0,150,136,0.24),transparent_65%)] opacity-90"></div>
+          <div className="absolute inset-0 backdrop-blur-[2px]"></div>
+          <div className="pointer-events-none select-none">
+            <div className="absolute top-10 left-10 text-[clamp(2.25rem,7vw,7rem)] font-black uppercase tracking-[0.25em] text-white/6">
+              MOHAMMAD
+            </div>
+            <div className="absolute bottom-10 right-10 text-[clamp(2.25rem,7vw,7rem)] font-black uppercase tracking-[0.3em] text-white/5">
+              ABBAS
+            </div>
+            <div className="absolute top-10 right-12 flex gap-6 text-[0.65rem] sm:text-xs tracking-[0.55em] uppercase text-[#9ee2d7]/70">
+              <span>Work</span>
+              <span>About</span>
+              <span>Thoughts</span>
+              <span>Contact</span>
+            </div>
+            <div className="absolute left-12 bottom-32 origin-bottom-left -rotate-90 text-[0.65rem] uppercase tracking-[0.8em] text-[#c8fff4]/70">
+              Portfolio 2K24
+            </div>
+            <div className="absolute right-16 top-1/2 h-px w-32 -translate-y-1/2 bg-gradient-to-r from-transparent via-[#00bfa5]/60 to-transparent"></div>
           </div>
 
-          <div className="flex flex-col lg:flex-row items-center gap-8 relative z-10">
-            <div className="relative w-40 h-40 md:w-52 md:h-52 lg:w-64 lg:h-64 group">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#009688]/40 via-transparent to-transparent blur-2xl scale-110"></div>
-              <div className="relative w-44 h-44 md:w-56 md:h-56 lg:w-64 lg:h-64">
-                <img
-                  src="/images/profile.webp"
-                  alt="Mohammad Abir Abbas"
-                  className="w-full h-full rounded-full object-cover border-[3px] border-[#4DB6AC]/50 shadow-2xl shadow-[0_25px_60px_rgba(0,150,136,0.35)] transition-transform duration-500 group-hover:scale-105"
-                />
-              </div>
-            </div>
-
-            <div className="profile-info text-center lg:text-left flex-1">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-[#C8FFF4] via-[#4DB6AC] to-[#009688] bg-clip-text text-transparent drop-shadow-[0_12px_35px_rgba(77,182,172,0.35)] mb-3 md:mb-4">
-                Mohammad Abir Abbas
-              </h1>
-              <div className="mb-6 md:mb-8">
-                <p className="text-[#d7f5ef] leading-relaxed text-sm md:text-base max-w-2xl mx-auto lg:mx-0">
+          <div className="relative z-10 grid items-end gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+            <div className="order-2 flex flex-col gap-10 text-left lg:order-1">
+              <div className="space-y-6">
+                <span className="inline-flex items-center gap-3 text-[0.65rem] uppercase tracking-[0.6em] text-[#8fe3d5]">
+                  <span className="h-px w-12 bg-[#00a99d]/80"></span>
+                  Strategic technologist & storyteller
+                </span>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight text-[#eafffa] drop-shadow-[0_22px_60px_rgba(0,160,140,0.4)]">
+                  Mohammad Abir Abbas
+                </h1>
+                <p className="max-w-2xl text-sm leading-relaxed text-[#c8f5ec]/90 md:text-base">
                   We craft AI-powered, secure, and scalable solutions that drive impact. From multi-LLM workflows to Rust systems, every decision is data-driven, every product human-focused, and every line of code aimed at breaking barriers and shaping the impossible.
                 </p>
               </div>
 
-              <div className="role-hire flex flex-col sm:flex-row items-center justify-between gap-3 md:gap-4">
-                <div className="flex flex-wrap gap-2">
-                  <span className="bg-gradient-to-r from-[#01302c] via-[#00695C] to-[#00a99d] text-[#FAFAFA] px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-semibold tracking-wide shadow-[0_12px_24px_rgba(0,105,92,0.3)]">
+              <div className="flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-between">
+                <div className="flex flex-wrap gap-3">
+                  <span className="rounded-full border border-[#145046]/70 bg-white/10 px-4 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.38em] text-[#9ee2d7] shadow-[0_14px_32px_rgba(0,150,136,0.22)]">
                     AI Whisperer
                   </span>
-                  <span className="bg-gradient-to-r from-[#02423b] via-[#009688] to-[#4DB6AC] text-[#f2fffb] px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-semibold tracking-wide shadow-[0_12px_24px_rgba(0,150,136,0.28)]">
+                  <span className="rounded-full border border-[#145046]/70 bg-white/10 px-4 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.38em] text-[#9ee2d7] shadow-[0_14px_32px_rgba(0,150,136,0.22)]">
                     Rust Artisan
                   </span>
-                  <span className="bg-gradient-to-r from-[#FF7043] via-[#ff8d66] to-[#009688] text-[#0b2824] px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-semibold tracking-wide shadow-[0_12px_24px_rgba(255,112,67,0.28)]">
+                  <span className="rounded-full border border-[#412017]/70 bg-white/10 px-4 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.38em] text-[#ffb199] shadow-[0_14px_32px_rgba(255,112,67,0.2)]">
                     Vibe Coder
                   </span>
                 </div>
                 <button
-                  className="hire-me-button bg-gradient-to-r from-[#00a99d] via-[#4DB6AC] to-[#00bfa5] hover:from-[#009688] hover:via-[#00a99d] hover:to-[#4DB6AC] text-[#031b18] font-bold py-2 px-4 md:py-3 md:px-8 rounded-lg border border-[#4DB6AC]/50 transition-all duration-300 tracking-wide uppercase shadow-[0_16px_32px_rgba(0,150,136,0.35)] hover:shadow-[0_20px_45px_rgba(0,150,136,0.45)] hover:-translate-y-0.5"
+                  className="self-start rounded-full border border-[#8fe3d5]/60 bg-[#c8fff4] px-8 py-3 text-xs font-bold uppercase tracking-[0.48em] text-[#03211d] transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-[0_26px_52px_rgba(0,150,136,0.4)]"
                   onClick={onHireClick}
                 >
                   {isHired ? 'Hired!' : 'Hire Me'}
                 </button>
+              </div>
+
+              <div className="grid gap-4 text-[0.65rem] uppercase tracking-[0.5em] text-[#8fe3d5]/80 sm:grid-cols-3">
+                <div className="rounded-2xl border border-[#145046]/70 bg-white/5 px-4 py-5 shadow-[0_12px_30px_rgba(0,90,80,0.28)] backdrop-blur-sm">
+                  <p className="text-[#c8fff4]/70">Focus</p>
+                  <p className="mt-3 text-sm font-semibold tracking-[0.18em] text-[#eafffa]">Multi-LLM Systems</p>
+                </div>
+                <div className="rounded-2xl border border-[#145046]/70 bg-white/5 px-4 py-5 shadow-[0_12px_30px_rgba(0,90,80,0.28)] backdrop-blur-sm">
+                  <p className="text-[#c8fff4]/70">Edge</p>
+                  <p className="mt-3 text-sm font-semibold tracking-[0.18em] text-[#eafffa]">Secure Rust Pipelines</p>
+                </div>
+                <div className="rounded-2xl border border-[#145046]/70 bg-white/5 px-4 py-5 shadow-[0_12px_30px_rgba(0,90,80,0.28)] backdrop-blur-sm">
+                  <p className="text-[#c8fff4]/70">Promise</p>
+                  <p className="mt-3 text-sm font-semibold tracking-[0.18em] text-[#eafffa]">Human-Centered Results</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="order-1 flex justify-center lg:order-2 lg:justify-end">
+              <div className="relative">
+                <div className="absolute -inset-12 rounded-[3rem] bg-gradient-to-br from-[#00a99d]/25 via-transparent to-transparent blur-3xl"></div>
+                <div className="absolute -top-6 -right-6 h-24 w-24 rounded-full bg-[#ff7043]/25 blur-3xl"></div>
+                <div className="relative w-56 overflow-hidden rounded-[2.75rem] border border-[#1f4a44]/70 bg-[#052b27]/80 shadow-[0_40px_90px_rgba(0,110,100,0.45)] sm:w-64 lg:w-72 xl:w-80">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                  <img src="/images/profile.webp" alt="Mohammad Abir Abbas" className="h-full w-full object-cover saturate-110" />
+                  <div className="absolute top-6 right-6 text-[0.6rem] uppercase tracking-[0.65em] text-white/70">2K24</div>
+                  <div className="absolute bottom-6 left-6 text-xs font-semibold uppercase tracking-[0.4em] text-[#c8fff4]">
+                    Future Ready
+                  </div>
+                </div>
               </div>
             </div>
           </div>
