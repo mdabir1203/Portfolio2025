@@ -1,14 +1,4 @@
-import {
-  CSSProperties,
-  FC,
-  Fragment,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { CSSProperties, FC, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface CursorTrailProps {
   images: string[];
@@ -42,6 +32,7 @@ type VeilStyle = CSSProperties & {
   '--cursor-trail-veil-opacity'?: string;
 };
 
+
 const DEFAULT_SPAWN_INTERVAL = 70;
 const DEFAULT_MAX_ITEMS = 28;
 const DEFAULT_FADE_DURATION = 900;
@@ -61,6 +52,7 @@ const CursorTrail: FC<CursorTrailProps> = ({
   const isInsideRef = useRef(false);
   const rectRef = useRef<DOMRect | null>(null);
   const rafRef = useRef<number>();
+
 
   const chosenImages = useMemo(() => images.filter(Boolean), [images]);
   const hasImages = chosenImages.length > 0;
@@ -244,7 +236,6 @@ const CursorTrail: FC<CursorTrailProps> = ({
             height: item.size * 1.85,
             '--cursor-trail-duration': commonDuration,
           };
-
           const style: TrailStyle = {
             left: item.x,
             top: item.y,
