@@ -7,7 +7,7 @@ interface NavigationProps {
 
 const tabs = [
   'home', 'skills', 'projects', 'blog', 'tutorials',
-  'services', 'awards', 'experience', 'journey', 'contact'
+  'services', 'awards', 'experience', 'journey', 'trust', 'contact'
 ];
 
 const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
