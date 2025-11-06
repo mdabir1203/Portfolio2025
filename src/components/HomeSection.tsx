@@ -1,5 +1,6 @@
 import { FC, memo } from 'react';
 import { LinkedInRecommendation } from '../data/linkedin-recommendations';
+import SocialPresenceShowcase from './SocialPresenceShowcase';
 
 interface HomeSectionProps {
   onHireClick: () => void;
@@ -20,11 +21,12 @@ const HomeSection: FC<HomeSectionProps> = ({ onHireClick, isHired, linkedinRecom
           <div className="relative w-40 h-40 md:w-52 md:h-52 lg:w-64 lg:h-64 group">
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#009688]/40 via-transparent to-transparent blur-2xl scale-110"></div>
             <div className="relative w-44 h-44 md:w-56 md:h-56 lg:w-64 lg:h-64">
-              <img
-                src="/images/profile.webp"
-                alt="Mohammad Abir Abbas"
-                className="w-full h-full rounded-full object-cover border-[3px] border-[#4DB6AC]/50 shadow-2xl shadow-[0_25px_60px_rgba(0,150,136,0.35)] transition-transform duration-500 group-hover:scale-105"
-              />
+              <div
+                aria-label="Mohammad Abir Abbas profile placeholder"
+                className="flex h-full w-full items-center justify-center rounded-full border-[3px] border-[#4DB6AC]/50 bg-gradient-to-br from-[#004d43] via-[#00796B] to-[#4DB6AC] text-4xl font-semibold text-[#e6fffb] shadow-2xl shadow-[0_25px_60px_rgba(0,150,136,0.35)] transition-transform duration-500 group-hover:scale-105"
+              >
+                <span className="tracking-widest">MA</span>
+              </div>
             </div>
           </div>
 
@@ -60,6 +62,8 @@ const HomeSection: FC<HomeSectionProps> = ({ onHireClick, isHired, linkedinRecom
           </div>
         </div>
       </div>
+
+      <SocialPresenceShowcase />
 
       <section className="mb-16">
         <div className="max-w-6xl mx-auto">
