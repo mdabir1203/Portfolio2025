@@ -9,6 +9,7 @@ import BlogSection from './components/BlogSection';
 import SocialPhotosSection from './components/SocialPhotosSection';
 import TutorialsSection from './components/TutorialsSection';
 import ServicesSection from './components/ServicesSection';
+import TrustByDesignSection from './components/TrustByDesignSection';
 import JourneySection from './components/JourneySection';
 import AssistantJourneySection from './components/AssistantJourneySection';
 import ContactSection from './components/ContactSection';
@@ -299,6 +300,7 @@ const ArtifactComponent = () => {
         {activeTab === 'awards' && <AwardsSection awards={awards} />}
         {activeTab === 'experience' && <ExperienceSection experiences={experiences} />}
         {activeTab === 'journey' && <JourneySection journey={journey} />}
+        {activeTab === 'trust' && <TrustByDesignSection />}
         {activeTab === 'assistant' && <AssistantJourneySection />}
         {activeTab === 'contact' && <ContactSection bookMeeting={bookMeeting} />}
         <footer className="mt-24 pt-8 border-t border-[#2f6f68]/50 text-center">
