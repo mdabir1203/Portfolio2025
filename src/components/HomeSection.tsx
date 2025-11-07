@@ -20,17 +20,8 @@ const HomeSection: FC<HomeSectionProps> = ({ onHireClick, isHired, linkedinRecom
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_18%,rgba(0,171,152,0.32),transparent_60%),radial-gradient(circle_at_82%_28%,rgba(255,112,67,0.18),transparent_60%),radial-gradient(circle_at_48%_82%,rgba(0,150,136,0.24),transparent_65%)] opacity-90"></div>
           <div className="absolute inset-0 backdrop-blur-[2px]"></div>
           <div className="pointer-events-none select-none">
-            <div className="absolute top-10 left-10 text-[clamp(2.25rem,7vw,7rem)] font-black uppercase tracking-[0.25em] text-white/6">
-              MOHAMMAD
-            </div>
             <div className="absolute bottom-10 right-10 text-[clamp(2.25rem,7vw,7rem)] font-black uppercase tracking-[0.3em] text-white/5">
               ABBAS
-            </div>
-            <div className="absolute top-10 right-12 flex gap-6 text-[0.65rem] sm:text-xs tracking-[0.55em] uppercase text-[#9ee2d7]/70">
-              <span>Work</span>
-              <span>About</span>
-              <span>Thoughts</span>
-              <span>Contact</span>
             </div>
             <div className="absolute left-12 bottom-32 origin-bottom-left -rotate-90 text-[0.65rem] uppercase tracking-[0.8em] text-[#c8fff4]/70">
               Portfolio 2K24
