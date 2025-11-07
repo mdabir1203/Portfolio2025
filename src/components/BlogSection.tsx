@@ -11,10 +11,10 @@ interface BlogSectionProps {
 const BlogSection: FC<BlogSectionProps> = ({ posts, isFetching, onRetry }) => (
   <section className="mb-16 animate-fadeIn">
     <h2 className="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-[#c8fff4] via-[#4DB6AC] to-[#009688] bg-clip-text text-transparent drop-shadow-[0_16px_40px_rgba(0,150,136,0.25)]">
-      My Medium Blog Posts
+      Thoughts
     </h2>
     <p className="text-xl text-[#d7f5ef] text-center mb-12 max-w-3xl mx-auto">
-      Sharing my thoughts on AI, Rust, security, and vibe coding.
+      Sharing reflective notes on AI, Rust, security, and vibe coding.
     </p>
 
     {isFetching ? (
@@ -64,7 +64,7 @@ const BlogSection: FC<BlogSectionProps> = ({ posts, isFetching, onRetry }) => (
       </div>
     ) : (
       <div className="text-center py-12">
-        <p className="text-[#9adcd1] text-lg">No blog posts available at the moment.</p>
+        <p className="text-[#9adcd1] text-lg">No thoughts available at the moment.</p>
         <button
           onClick={onRetry}
           className="mt-4 bg-gradient-to-r from-[#00a99d] via-[#4DB6AC] to-[#00bfa5] hover:from-[#009688] hover:via-[#00a99d] hover:to-[#4DB6AC] text-[#052321] font-semibold tracking-wide py-2 px-4 rounded-lg transition-all duration-300 shadow-[0_16px_32px_rgba(0,150,136,0.3)]"
@@ -82,7 +82,7 @@ const BlogSection: FC<BlogSectionProps> = ({ posts, isFetching, onRetry }) => (
         className="inline-block bg-gradient-to-r from-[#00a99d] via-[#4DB6AC] to-[#00bfa5] hover:from-[#009688] hover:via-[#00a99d] hover:to-[#4DB6AC] text-[#052321] font-semibold tracking-wide py-3 px-6 rounded-lg border border-[#00bfa5]/40 transition-all duration-300 shadow-[0_20px_45px_rgba(0,150,136,0.35)] hover:-translate-y-0.5"
         onClick={onRetry}
       >
-        View All Posts on Medium →
+        View All Thoughts on Medium →
       </a>
     </div>
   </section>

@@ -52,10 +52,10 @@ const TutorialsSection: FC = () => {
   return (
     <section className="mb-16 animate-fadeIn">
       <h2 className="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-[#c8fff4] via-[#4DB6AC] to-[#009688] bg-clip-text text-transparent drop-shadow-[0_16px_40px_rgba(0,150,136,0.25)]">
-        Tutorials
+        Video Writeups
       </h2>
       <p className="text-xl text-[#d7f5ef] text-center mb-12 max-w-3xl mx-auto">
-        Tutorials highlighting our AI-augmented thinking and projects.
+        Bite-sized video writeups highlighting our AI-augmented thinking and projects.
       </p>
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {videos.map((video) => (
@@ -82,7 +82,7 @@ const TutorialsSection: FC = () => {
           rel="noopener noreferrer"
           className="inline-block bg-gradient-to-r from-[#00a99d] via-[#4DB6AC] to-[#00bfa5] hover:from-[#009688] hover:via-[#00a99d] hover:to-[#4DB6AC] text-[#052321] font-semibold tracking-wide py-3 px-6 rounded-lg border border-[#00bfa5]/40 transition-all duration-300 shadow-[0_20px_45px_rgba(0,150,136,0.35)] hover:-translate-y-0.5"
         >
-          View All Tutorials on YouTube →
+          View All Video Writeups on YouTube →
         </a>
       </div>
     </section>

@@ -251,7 +251,7 @@ const ArtifactComponent = () => {
     (tab: string) => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       setActiveTab(tab);
-      if (tab === 'blog' && mediumPosts.length === 0) {
+      if (tab === 'thoughts' && mediumPosts.length === 0) {
         fetchMediumPosts();
       }
     },
@@ -289,11 +289,11 @@ const ArtifactComponent = () => {
         )}
         {activeTab === 'skills' && <SkillsSection skills={skills} />}
         {activeTab === 'projects' && <ProjectsSection projects={projects} />}
-        {activeTab === 'blog' && (
+        {activeTab === 'thoughts' && (
           <BlogSection posts={mediumPosts} isFetching={isFetchingPosts} onRetry={fetchMediumPosts} />
         )}
         {activeTab === 'social' && <SocialPhotosSection platforms={socialPhotos} />}
-        {activeTab === 'tutorials' && <TutorialsSection />}
+        {activeTab === 'video-writeups' && <TutorialsSection />}
         {activeTab === 'services' && (
           <ServicesSection services={services} bookMeeting={bookMeeting} />
         )}

@@ -6,8 +6,16 @@ interface NavigationProps {
 }
 
 const tabs = [
-  'home', 'skills', 'projects', 'blog', 'tutorials',
-  'services', 'awards', 'experience', 'journey', 'trust', 'contact'
+  { id: 'home', label: 'Home' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'thoughts', label: 'Thoughts' },
+  { id: 'video-writeups', label: 'Video Writeups' },
+  { id: 'services', label: 'Services' },
+  { id: 'awards', label: 'Awards' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'journey', label: 'Journey' },
+  { id: 'contact', label: 'Contact' }
 ];
 
 const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
@@ -45,17 +53,17 @@ const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
     <nav className="flex flex-wrap justify-center gap-4 mb-12 relative" aria-label="Primary">
       {tabs.map((tab) => (
         <button
-          key={tab}
+          key={tab.id}
           type="button"
-          onClick={() => onTabClick(tab)}
-          aria-current={activeTab === tab ? 'page' : undefined}
+          onClick={() => onTabClick(tab.id)}
+          aria-current={activeTab === tab.id ? 'page' : undefined}
           className={`tab px-6 py-3 rounded-lg font-bold transition-all duration-200 ease-out motion-reduce:transition-none border-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 ${
-            activeTab === tab
+            activeTab === tab.id
               ? 'text-green-400 border-green-400 bg-green-400/20 shadow-lg shadow-green-400/30'
               : 'text-gray-400 border-gray-600 hover:border-cyan-400 hover:text-cyan-400'
           }`}
         >
-          {tab.charAt(0).toUpperCase() + tab.slice(1)}
+          {tab.label}
         </button>
       ))}
 
