@@ -22,6 +22,18 @@ export interface PersonalityHighlight {
   gradient: string;
 }
 
+export interface EnneagramResult {
+  type: number;
+  name: string;
+  nickname: string;
+  description: string;
+  coreDesire: string;
+  coreFear: string;
+  keyTraits: string[];
+  wing?: string;
+  gradient: string;
+}
+
 export const socialPhotos: SocialPlatformPhotos[] = [
   {
     platform: 'facebook',
@@ -131,3 +143,22 @@ export const personalityHighlights: PersonalityHighlight[] = [
     gradient: 'from-[#2f2b2a] via-[#aa5b31] to-[#3f2211]'
   }
 ];
+
+export const enneagramResult: EnneagramResult = {
+  type: 7,
+  name: 'The Enthusiast',
+  nickname: 'Social Butterfly',
+  description: 'Spontaneous, versatile, and optimistic. Always seeking new experiences and connections, thriving in social environments where energy flows freely and possibilities are endless.',
+  coreDesire: 'To maintain happiness and satisfaction, to seek out new experiences and possibilities',
+  coreFear: 'Being trapped in pain or deprivation, missing out on life\'s experiences',
+  keyTraits: [
+    'Outgoing and enthusiastic',
+    'Spontaneous and adventurous',
+    'Optimistic and future-focused',
+    'Social connector and networker',
+    'Creative problem-solver',
+    'Energetic and high-spirited'
+  ],
+  wing: '7w8',
+  gradient: 'from-[#ff7043] via-[#ffa726] to-[#ffd54f]'
+};

@@ -6,15 +6,15 @@ interface SkillsSectionProps {
 }
 
 const SkillsSection: FC<SkillsSectionProps> = ({ skills }) => (
-  <section className="mb-16 animate-fadeIn">
-    <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-[#c8fff4] via-[#4DB6AC] to-[#009688] bg-clip-text text-transparent drop-shadow-[0_16px_40px_rgba(0,150,136,0.25)]">
+  <section className="mb-12 sm:mb-16 animate-fadeIn">
+    <h2 className="text-3xl sm:text-4xl font-bold text-center mb-8 sm:mb-12 bg-gradient-to-r from-[#c8fff4] via-[#4DB6AC] to-[#009688] bg-clip-text text-transparent drop-shadow-[0_16px_40px_rgba(0,150,136,0.25)]">
       My Digital Arsenal
     </h2>
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
       {skills.map((skill, index) => (
         <div
           key={index}
-          className="skill-card bg-[#052c28]/70 border border-[#2f6f68]/40 rounded-xl p-8 transition-all duration-300 group hover:-translate-y-2 hover:shadow-[0_26px_60px_rgba(0,150,136,0.22)]"
+          className="skill-card bg-[#052c28]/70 border border-[#2f6f68]/40 rounded-xl p-5 sm:p-6 md:p-8 transition-all duration-300 group hover:-translate-y-1 hover:shadow-[0_26px_60px_rgba(0,150,136,0.22)]"
         >
           <div className="flex justify-between items-start mb-4">
             <h3 className="skill-name text-xl font-semibold text-[#a7ffeb] tracking-wide">{skill.name}</h3>

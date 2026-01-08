@@ -5,45 +5,45 @@ interface ContactSectionProps {
 }
 
 const ContactSection: FC<ContactSectionProps> = ({ bookMeeting }) => (
-  <section className="mb-16 animate-fadeIn">
-    <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-[#c8fff4] via-[#4DB6AC] to-[#009688] bg-clip-text text-transparent drop-shadow-[0_16px_40px_rgba(0,150,136,0.25)]">
+  <section className="mb-12 sm:mb-16 animate-fadeIn">
+    <h2 className="text-3xl sm:text-4xl font-bold text-center mb-8 sm:mb-12 bg-gradient-to-r from-[#c8fff4] via-[#4DB6AC] to-[#009688] bg-clip-text text-transparent drop-shadow-[0_16px_40px_rgba(0,150,136,0.25)]">
       Let's Create Magic Together
     </h2>
 
-    <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-12">
-      <div className="bg-[#052c28]/70 border border-[#2f6f68]/40 rounded-xl p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_26px_60px_rgba(0,150,136,0.22)]">
-        <h3 className="text-2xl font-semibold text-[#a7ffeb] mb-6">Send Me a Message</h3>
-        <form className="space-y-6">
+    <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 px-4 sm:px-0">
+      <div className="bg-[#052c28]/70 border border-[#2f6f68]/40 rounded-xl p-5 sm:p-6 md:p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_26px_60px_rgba(0,150,136,0.22)]">
+        <h3 className="text-xl sm:text-2xl font-semibold text-[#a7ffeb] mb-4 sm:mb-6">Send Me a Message</h3>
+        <form className="space-y-4 sm:space-y-6">
           <div>
-            <label htmlFor="name" className="block text-[#d7f5ef] mb-2">Name</label>
+            <label htmlFor="name" className="block text-[#d7f5ef] mb-2 text-sm sm:text-base">Name</label>
             <input
               type="text"
               id="name"
-              className="w-full p-3 bg-[#033832]/70 border border-[#2f6f68]/40 rounded-lg text-[#f4fffb] placeholder-[#7fcfc2] focus:outline-none focus:ring-2 focus:ring-[#00bfa5] transition-all duration-300"
+              className="w-full p-3 sm:p-3 bg-[#033832]/70 border border-[#2f6f68]/40 rounded-lg text-[#f4fffb] placeholder-[#7fcfc2] focus:outline-none focus:ring-2 focus:ring-[#00bfa5] transition-all duration-300 min-h-[44px] text-base"
               placeholder="Your name"
             />
           </div>
           <div>
-            <label htmlFor="email" className="block text-[#d7f5ef] mb-2">Email</label>
+            <label htmlFor="email" className="block text-[#d7f5ef] mb-2 text-sm sm:text-base">Email</label>
             <input
               type="email"
               id="email"
-              className="w-full p-3 bg-[#033832]/70 border border-[#2f6f68]/40 rounded-lg text-[#f4fffb] placeholder-[#7fcfc2] focus:outline-none focus:ring-2 focus:ring-[#00bfa5] transition-all duration-300"
+              className="w-full p-3 sm:p-3 bg-[#033832]/70 border border-[#2f6f68]/40 rounded-lg text-[#f4fffb] placeholder-[#7fcfc2] focus:outline-none focus:ring-2 focus:ring-[#00bfa5] transition-all duration-300 min-h-[44px] text-base"
               placeholder="your.email@example.com"
             />
           </div>
           <div>
-            <label htmlFor="message" className="block text-[#d7f5ef] mb-2">Message</label>
+            <label htmlFor="message" className="block text-[#d7f5ef] mb-2 text-sm sm:text-base">Message</label>
             <textarea
               id="message"
               rows={5}
-              className="w-full p-3 bg-[#033832]/70 border border-[#2f6f68]/40 rounded-lg text-[#f4fffb] placeholder-[#7fcfc2] focus:outline-none focus:ring-2 focus:ring-[#00bfa5] transition-all duration-300 resize-none"
+              className="w-full p-3 sm:p-3 bg-[#033832]/70 border border-[#2f6f68]/40 rounded-lg text-[#f4fffb] placeholder-[#7fcfc2] focus:outline-none focus:ring-2 focus:ring-[#00bfa5] transition-all duration-300 resize-none text-base"
               placeholder="Tell me about your project or idea..."
             ></textarea>
           </div>
           <button
             type="button"
-            className="w-full bg-gradient-to-r from-[#00a99d] via-[#4DB6AC] to-[#00bfa5] hover:from-[#009688] hover:via-[#00a99d] hover:to-[#4DB6AC] text-[#052321] font-semibold tracking-wide py-3 px-6 rounded-lg border border-[#00bfa5]/40 transition-all duration-300 shadow-[0_20px_45px_rgba(0,150,136,0.35)] hover:-translate-y-0.5"
+            className="w-full bg-gradient-to-r from-[#00a99d] via-[#4DB6AC] to-[#00bfa5] hover:from-[#009688] hover:via-[#00a99d] hover:to-[#4DB6AC] text-[#052321] font-semibold tracking-wide py-3 px-6 rounded-lg border border-[#00bfa5]/40 transition-all duration-300 shadow-[0_20px_45px_rgba(0,150,136,0.35)] hover:-translate-y-0.5 min-h-[44px] flex items-center justify-center"
             onClick={bookMeeting}
           >
             Send Message
@@ -51,7 +51,7 @@ const ContactSection: FC<ContactSectionProps> = ({ bookMeeting }) => (
         </form>
       </div>
 
-      <div className="bg-[#052c28]/70 border border-[#2f6f68]/40 rounded-xl p-8 hover:-translate-y-2 transition-all duration-300 hover:shadow-[0_26px_60px_rgba(0,150,136,0.22)]">
+      <div className="bg-[#052c28]/70 border border-[#2f6f68]/40 rounded-xl p-5 sm:p-6 md:p-8 hover:-translate-y-1 transition-all duration-300 hover:shadow-[0_26px_60px_rgba(0,150,136,0.22)]">
         <h3 className="text-2xl font-semibold text-[#a7ffeb] mb-6">Quick Connect</h3>
 
         <div className="mb-8">

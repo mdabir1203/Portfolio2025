@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useCallback, memo } from 'react';
 import BackgroundEffects from './components/BackgroundEffects';
 import Navigation from './components/Navigation';
 import HomeSection from './components/HomeSection';
+import InteractiveCursor from './components/InteractiveCursor';
 import SkillsSection from './components/SkillsSection';
 import ProjectsSection from './components/ProjectsSection';
 import BlogSection from './components/BlogSection';
@@ -92,6 +93,7 @@ const ArtifactComponent = () => {
   const [activeTab, setActiveTab] = useState('home');
   const [isHired, setIsHired] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [scrollPosition, setScrollPosition] = useState(0);
   const [mediumPosts, setMediumPosts] = useState<MediumPost[]>([]);
   const [isFetchingPosts, setIsFetchingPosts] = useState(false);
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
@@ -133,6 +135,33 @@ const ArtifactComponent = () => {
     window.addEventListener('mousemove', handleMouseMove);
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  // Scroll tracking for parallax effects
+  useEffect(() => {
+    let rafId = 0;
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        rafId = requestAnimationFrame(() => {
+          const scrollY = window.scrollY || window.pageYOffset;
+          const maxScroll = Math.max(
+            document.documentElement.scrollHeight - window.innerHeight,
+            1
+          );
+          const normalizedScroll = scrollY / maxScroll;
+          setScrollPosition(normalizedScroll);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial call
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
       cancelAnimationFrame(rafId);
     };
   }, []);
@@ -265,6 +294,7 @@ const ArtifactComponent = () => {
   }, []);
 
   return (
+    <InteractiveCursor>
     <div className="min-h-screen bg-gradient-to-br from-[#021513] via-[#042623] to-[#062f2b] text-[#f4fffb] font-mono relative overflow-x-hidden">
       <a
         href="#main-content"
@@ -273,11 +303,11 @@ const ArtifactComponent = () => {
         Skip to main content
       </a>
       <WelcomeModal open={showWelcomeModal} onClose={dismissWelcomeModal} />
-      <BackgroundEffects mousePosition={mousePosition} canvasRef={canvasRef} />
+      <BackgroundEffects mousePosition={mousePosition} scrollPosition={scrollPosition} canvasRef={canvasRef} />
       <main
         id="main-content"
         tabIndex={-1}
-        className="container mx-auto px-6 py-12 relative z-20"
+        className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 relative z-20"
       >
         <Navigation activeTab={activeTab} onTabClick={handleTabClick} />
         {activeTab === 'home' && (
@@ -421,6 +451,7 @@ const ArtifactComponent = () => {
         }
       `}</style>
     </div>
+    </InteractiveCursor>
   );
 };
 

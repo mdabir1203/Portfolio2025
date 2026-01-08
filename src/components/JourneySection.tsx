@@ -111,7 +111,7 @@ const JourneySection: FC<JourneySectionProps> = ({ journey }) => {
       ref={sectionRef}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
-      className="relative overflow-hidden py-24 md:py-32"
+      className="relative overflow-hidden py-12 sm:py-16 md:py-24 lg:py-32"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
@@ -130,10 +130,10 @@ const JourneySection: FC<JourneySectionProps> = ({ journey }) => {
         ))}
       </div>
 
-      <div className="relative mx-auto max-w-5xl px-6 sm:px-10">
+      <div className="relative mx-auto max-w-5xl px-4 sm:px-6 md:px-10">
         <div className="relative text-center">
           <motion.h2
-            className="bg-gradient-to-r from-[#ccfbf1] via-[#5eead4] to-[#14b8a6] bg-clip-text text-4xl font-extrabold text-transparent md:text-5xl"
+            className="bg-gradient-to-r from-[#ccfbf1] via-[#5eead4] to-[#14b8a6] bg-clip-text text-3xl sm:text-4xl font-extrabold text-transparent md:text-5xl"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
@@ -141,12 +141,12 @@ const JourneySection: FC<JourneySectionProps> = ({ journey }) => {
           >
             My Digital Journey
           </motion.h2>
-          <p className="mx-auto mt-5 max-w-2xl text-base text-[#b0f5e9]/80 md:text-lg">
+          <p className="mx-auto mt-4 sm:mt-5 max-w-2xl text-sm sm:text-base text-[#b0f5e9]/80 md:text-lg px-4">
             A curated timeline of pivotal chapters—each milestone harmonised across craft, community, and cutting-edge creation.
           </p>
         </div>
 
-        <div className="relative mt-20 space-y-24 md:space-y-28">
+        <div className="relative mt-12 sm:mt-16 md:mt-20 space-y-12 sm:space-y-16 md:space-y-24 lg:space-y-28">
           <motion.div
             className="pointer-events-none absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 rounded-full bg-gradient-to-b from-[#5eead4]/80 via-[#2dd4bf]/30 to-[#0f766e]/0 md:block"
             style={{ opacity: lineGlow }}
@@ -196,14 +196,14 @@ const JourneySection: FC<JourneySectionProps> = ({ journey }) => {
                   transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut', delay: index * 0.3 }}
                 />
 
-                <div className="group relative overflow-hidden rounded-3xl border border-[#134e4a]/60 bg-[#021f1c]/80 p-8 shadow-[0_30px_80px_rgba(13,148,136,0.25)] backdrop-blur-xl">
+                <div className="group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-[#134e4a]/60 bg-[#021f1c]/80 p-5 sm:p-6 md:p-8 shadow-[0_30px_80px_rgba(13,148,136,0.25)] backdrop-blur-xl">
                   <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                   <div className="absolute inset-0 bg-gradient-to-br from-[#0f766e]/35 via-transparent to-transparent opacity-70" />
-                  <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-[#5eead4]/70 to-transparent" />
+                  <div className="absolute inset-x-4 sm:inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-[#5eead4]/70 to-transparent" />
                   <div className="relative">
-                    <div className="text-sm uppercase tracking-[0.3em] text-[#5eead4]/80">{step.year}</div>
-                    <h3 className="mt-3 text-2xl font-semibold text-[#e6fffb]">{step.title}</h3>
-                    <p className="mt-4 text-base leading-relaxed text-[#b6f5ea]/80">{step.description}</p>
+                    <div className="text-xs sm:text-sm uppercase tracking-[0.3em] text-[#5eead4]/80">{step.year}</div>
+                    <h3 className="mt-2 sm:mt-3 text-xl sm:text-2xl font-semibold text-[#e6fffb]">{step.title}</h3>
+                    <p className="mt-3 sm:mt-4 text-sm sm:text-base leading-relaxed text-[#b6f5ea]/80">{step.description}</p>
                   </div>
                 </div>
               </motion.article>
@@ -212,14 +212,14 @@ const JourneySection: FC<JourneySectionProps> = ({ journey }) => {
         </div>
 
         <motion.div
-          className="mt-24 rounded-3xl border border-[#134e4a]/50 bg-gradient-to-r from-[#022c29]/85 via-[#043532]/80 to-[#022321]/85 p-10 text-center shadow-[0_30px_90px_rgba(13,148,136,0.25)] backdrop-blur-xl"
+          className="mt-12 sm:mt-16 md:mt-24 rounded-2xl sm:rounded-3xl border border-[#134e4a]/50 bg-gradient-to-r from-[#022c29]/85 via-[#043532]/80 to-[#022321]/85 p-6 sm:p-8 md:p-10 text-center shadow-[0_30px_90px_rgba(13,148,136,0.25)] backdrop-blur-xl"
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
           viewport={{ once: true, amount: 0.4 }}
         >
-          <h3 className="text-2xl font-semibold text-[#d1faf4]">Builder Philosophy</h3>
-          <p className="mx-auto mt-4 max-w-3xl text-lg leading-relaxed text-[#b6f5ea]/80">
+          <h3 className="text-xl sm:text-2xl font-semibold text-[#d1faf4]">Builder Philosophy</h3>
+          <p className="mx-auto mt-3 sm:mt-4 max-w-3xl text-base sm:text-lg leading-relaxed text-[#b6f5ea]/80 px-4">
             "We build boldly, break fearlessly, and aim for horizons yet unseen."
           </p>
         </motion.div>

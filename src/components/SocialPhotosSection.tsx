@@ -4,7 +4,7 @@ import type {
   SocialPlatformPhotos,
   SocialPhoto
 } from '../data/social-photos';
-import { personalityHighlights } from '../data/social-photos';
+import { personalityHighlights, enneagramResult } from '../data/social-photos';
 
 interface SocialPhotosSectionProps {
   platforms: SocialPlatformPhotos[];
@@ -50,22 +50,22 @@ const SocialPhotosSection: FC<SocialPhotosSectionProps> = ({ platforms }) => {
   );
 
   return (
-    <section className="mb-16 animate-fadeIn">
-      <div className="mb-14 rounded-3xl border border-[#2f6f68]/60 bg-[#032523]/70 p-8 shadow-[0_18px_45px_rgba(0,150,136,0.18)]">
+    <section className="mb-12 sm:mb-16 animate-fadeIn">
+      <div className="mb-10 sm:mb-14 rounded-2xl sm:rounded-3xl border border-[#2f6f68]/60 bg-[#032523]/70 p-4 sm:p-6 md:p-8 shadow-[0_18px_45px_rgba(0,150,136,0.18)]">
         <div className="flex flex-col gap-3 text-center md:flex-row md:items-end md:justify-between md:text-left">
           <div>
-            <p className="text-sm uppercase tracking-[0.4em] text-[#7fcfc2]">Personality Boards</p>
-            <h2 className="mt-2 text-3xl font-semibold text-[#c8fff4]">
+            <p className="text-xs sm:text-sm uppercase tracking-[0.4em] text-[#7fcfc2]">Personality Boards</p>
+            <h2 className="mt-2 text-2xl sm:text-3xl font-semibold text-[#c8fff4]">
               Expressing the many ways we show up offline
             </h2>
           </div>
-          <p className="text-sm text-[#d0f4ed] md:max-w-md">
+          <p className="text-xs sm:text-sm text-[#d0f4ed] md:max-w-md">
             These placeholders act like storyboard frames. Each tile marks a facet of our vibe, ready to be
             swapped with live photography whenever we capture it.
           </p>
         </div>
 
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-6 sm:mt-8 grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
           {personalityHighlights.map((highlight) => (
             <figure
               key={highlight.id}
@@ -93,6 +93,69 @@ const SocialPhotosSection: FC<SocialPhotosSectionProps> = ({ platforms }) => {
               </figcaption>
             </figure>
           ))}
+        </div>
+      </div>
+
+      <div className="mb-14 rounded-3xl border border-[#2f6f68]/60 bg-[#032523]/70 p-8 shadow-[0_18px_45px_rgba(0,150,136,0.18)]">
+        <div className="flex flex-col gap-3 text-center md:flex-row md:items-end md:justify-between md:text-left mb-8">
+          <div>
+            <p className="text-sm uppercase tracking-[0.4em] text-[#7fcfc2]">Complete Personality Profile</p>
+            <h2 className="mt-2 text-3xl font-semibold text-[#c8fff4]">
+              Enneagram Type {enneagramResult.type}: {enneagramResult.name}
+            </h2>
+            <p className="mt-2 text-lg font-medium text-[#ffd700]">{enneagramResult.nickname}</p>
+          </div>
+        </div>
+
+        <div className="grid gap-8 lg:grid-cols-[1fr,1.5fr]">
+          <div className={`relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#1e5f56]/50 bg-gradient-to-br ${enneagramResult.gradient} p-8 min-h-[320px] text-center`}>
+            <div className="absolute inset-0 bg-black/20"></div>
+            <div className="relative z-10">
+              <div className="mb-4 text-6xl font-bold text-white drop-shadow-[0_8px_20px_rgba(0,0,0,0.5)]">
+                {enneagramResult.type}
+              </div>
+              <div className="text-2xl font-semibold text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
+                {enneagramResult.name}
+              </div>
+              {enneagramResult.wing && (
+                <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/20 px-4 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-white backdrop-blur-sm">
+                  {enneagramResult.wing}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-lg font-semibold text-[#a7ffeb] mb-3">About This Type</h3>
+              <p className="text-sm leading-relaxed text-[#d5f6ef]">{enneagramResult.description}</p>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-xl border border-[#1f655d]/50 bg-[#021c1a]/70 p-4">
+                <h4 className="text-xs font-semibold uppercase tracking-[0.3em] text-[#7fcfc2] mb-2">Core Desire</h4>
+                <p className="text-sm text-[#d5f6ef]">{enneagramResult.coreDesire}</p>
+              </div>
+              <div className="rounded-xl border border-[#1f655d]/50 bg-[#021c1a]/70 p-4">
+                <h4 className="text-xs font-semibold uppercase tracking-[0.3em] text-[#7fcfc2] mb-2">Core Fear</h4>
+                <p className="text-sm text-[#d5f6ef]">{enneagramResult.coreFear}</p>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-xs font-semibold uppercase tracking-[0.3em] text-[#7fcfc2] mb-3">Key Traits</h4>
+              <div className="flex flex-wrap gap-2">
+                {enneagramResult.keyTraits.map((trait, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center rounded-full border border-[#00bfa5]/40 bg-[#04322d]/70 px-3 py-1.5 text-xs font-medium text-[#c8fff4]"
+                  >
+                    {trait}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -143,12 +206,12 @@ const SocialPhotosSection: FC<SocialPhotosSectionProps> = ({ platforms }) => {
                   href={photo.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative overflow-hidden rounded-2xl border border-[#1f655d]/50 bg-[#021c1a]/70 transition-transform duration-500 hover:-translate-y-2"
+                  className="group relative overflow-hidden rounded-2xl border border-[#1f655d]/50 bg-[#021c1a]/70 transition-transform duration-500 hover:-translate-y-1"
                 >
                   <img
                     src={photo.imageUrl}
                     alt={photo.caption}
-                    className="h-60 w-full object-cover transition duration-500 group-hover:scale-105 group-hover:brightness-110"
+                    className="h-60 w-full object-cover transition duration-500 group-hover:scale-[1.02] group-hover:brightness-110"
                     loading="lazy"
                   />
                   <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-[#021c1a]/95 via-[#021c1a]/40 to-transparent p-5 opacity-0 transition-opacity duration-300 group-hover:opacity-100">

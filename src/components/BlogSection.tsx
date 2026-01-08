@@ -9,21 +9,21 @@ interface BlogSectionProps {
 }
 
 const BlogSection: FC<BlogSectionProps> = ({ posts, isFetching, onRetry }) => (
-  <section className="mb-16 animate-fadeIn">
-    <h2 className="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-[#c8fff4] via-[#4DB6AC] to-[#009688] bg-clip-text text-transparent drop-shadow-[0_16px_40px_rgba(0,150,136,0.25)]">
+  <section className="mb-12 sm:mb-16 animate-fadeIn">
+    <h2 className="text-3xl sm:text-4xl font-bold text-center mb-3 sm:mb-4 bg-gradient-to-r from-[#c8fff4] via-[#4DB6AC] to-[#009688] bg-clip-text text-transparent drop-shadow-[0_16px_40px_rgba(0,150,136,0.25)]">
       Thoughts
     </h2>
-    <p className="text-xl text-[#d7f5ef] text-center mb-12 max-w-3xl mx-auto">
+    <p className="text-base sm:text-lg md:text-xl text-[#d7f5ef] text-center mb-8 sm:mb-12 max-w-3xl mx-auto px-4">
       Sharing reflective notes on AI, Rust, security, and vibe coding.
     </p>
 
     {isFetching ? (
-      <div className="text-center py-12">
+      <div className="text-center py-8 sm:py-12">
         <div className="spinner border-4 border-[#00bfa5]/20 border-t-transparent rounded-full w-12 h-12 animate-spin mx-auto mb-4"></div>
-        <p className="text-[#f4fffb] text-lg">Loading my latest thoughts...</p>
+        <p className="text-[#f4fffb] text-base sm:text-lg">Loading my latest thoughts...</p>
       </div>
     ) : posts.length > 0 ? (
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
         {posts.map((post, index) => {
           const publishedAt = new Date(post.pubDate);
           const formattedDateTime = publishedAt.toLocaleString('en-US', {
@@ -43,18 +43,18 @@ const BlogSection: FC<BlogSectionProps> = ({ posts, isFetching, onRetry }) => (
           return (
             <div
               key={index}
-              className="blog-card bg-[#052c28]/70 border border-[#2f6f68]/40 rounded-xl p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_26px_60px_rgba(0,150,136,0.22)] group"
+              className="blog-card bg-[#052c28]/70 border border-[#2f6f68]/40 rounded-xl p-4 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_26px_60px_rgba(0,150,136,0.22)] group"
             >
-              <h3 className="blog-title text-2xl font-semibold text-[#a7ffeb] mb-3 group-hover:text-[#c8fff4] transition-colors duration-300 tracking-wide">
+              <h3 className="blog-title text-xl sm:text-2xl font-semibold text-[#a7ffeb] mb-2 sm:mb-3 group-hover:text-[#c8fff4] transition-colors duration-300 tracking-wide">
                 {post.title}
               </h3>
-              <div className="blog-date text-[#9adcd1] text-sm mb-4">{formattedDateTime}</div>
-              <p className="blog-excerpt text-[#d7f5ef] mb-6 leading-relaxed">{excerpt}</p>
+              <div className="blog-date text-[#9adcd1] text-xs sm:text-sm mb-3 sm:mb-4">{formattedDateTime}</div>
+              <p className="blog-excerpt text-sm sm:text-base text-[#d7f5ef] mb-4 sm:mb-6 leading-relaxed">{excerpt}</p>
               <a
                 href={post.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="blog-link text-[#052321] font-semibold tracking-wide inline-block py-2 px-4 rounded-lg border border-[#00bfa5]/50 bg-gradient-to-r from-[#00a99d] via-[#4DB6AC] to-[#00bfa5] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_38px_rgba(0,150,136,0.32)]"
+                className="blog-link text-[#052321] font-semibold tracking-wide inline-block py-2.5 px-4 rounded-lg border border-[#00bfa5]/50 bg-gradient-to-r from-[#00a99d] via-[#4DB6AC] to-[#00bfa5] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_38px_rgba(0,150,136,0.32)] min-h-[44px] flex items-center justify-center"
               >
                 Read Full Article →
               </a>

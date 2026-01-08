@@ -4,12 +4,15 @@ export interface ProjectMetric {
   description: string;
 }
 
+export type ProjectCategory = 'hackathon' | 'self-project' | 'startup-venture';
+
 export interface Project {
   title: string;
   description: string;
   stars: string;
   link: string;
   image: string;
+  category: ProjectCategory;
   metrics?: ProjectMetric[];
 }
 
@@ -20,6 +23,7 @@ export const projects: Project[] = [
     stars: '⭐ Open Source',
     link: 'https://github.com/mdabir1203/ShadowMap',
     image: '/images/ShadowMaplogo.webp',
+    category: 'self-project',
     metrics: [
       {
         label: 'Stripe-ready Pricing',
@@ -39,6 +43,7 @@ export const projects: Project[] = [
     stars: '🔎 AI Fact-Checking',
     link: 'https://github.com/mdabir1203/Bangla-Fact-Checker',
     image: '/images/factcheckerlogo.webp',
+    category: 'self-project',
     metrics: [
       {
         label: 'Text & Image Checks',
@@ -58,6 +63,7 @@ export const projects: Project[] = [
     stars: '🐼 Vibe Coding',
     link: 'https://prompt-panda-bangla.lovable.app/',
     image: '/images/1.webp',
+    category: 'self-project',
     metrics: [
       {
         label: 'Localized Onboarding',
@@ -77,6 +83,7 @@ export const projects: Project[] = [
     stars: '🚀 Learning Journey',
     link: 'https://www.thedeepbluedigital.com',
     image: '/images/deepbluelogo.webp',
+    category: 'startup-venture',
     metrics: [
       {
         label: 'Creator Tools Hub',
@@ -96,6 +103,7 @@ export const projects: Project[] = [
     stars: '🏆 Hackathon Winner',
     link: 'https://github.com/mdabir1203/RedAGPT',
     image: '/images/asd.webp',
+    category: 'hackathon',
     metrics: [
       {
         label: 'Security Validation',
@@ -106,6 +114,26 @@ export const projects: Project[] = [
         label: 'Network Coverage',
         value: 'Home & Office',
         description: 'Automates reconnaissance across consumer and SMB networks for proactive vulnerability sweeps.'
+      }
+    ]
+  },
+  {
+    title: 'Wavelink',
+    description: 'An NFC-enabled business card platform that transforms networking through instant tap-to-connect technology, eliminating manual contact entry and enabling real-time engagement tracking.',
+    stars: '📱 Technical Advisor',
+    link: 'https://wave-link-cards.vercel.app',
+    image: '/images/wavelink.webp',
+    category: 'startup-venture',
+    metrics: [
+      {
+        label: 'Instant Connection',
+        value: 'Zero-Friction',
+        description: 'Tap-to-connect eliminates manual entry, reducing contact exchange friction by 90% and ensuring no missed networking opportunities.'
+      },
+      {
+        label: 'Analytics Dashboard',
+        value: 'Real-Time Insights',
+        description: 'Track engagement, views, and connections with actionable data for networking optimization and relationship building.'
       }
     ]
   }

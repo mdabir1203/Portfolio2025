@@ -6,17 +6,16 @@ interface AwardsSectionProps {
 }
 
 const AwardsSection: FC<AwardsSectionProps> = ({ awards }) => (
-  <section className="mb-16 animate-fadeIn">
-    <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">
-
+  <section className="mb-12 sm:mb-16 animate-fadeIn">
+    <h2 className="text-3xl sm:text-4xl font-bold text-center mb-8 sm:mb-12 bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">
       Awards &amp; Certifications
     </h2>
 
-    <div className="max-w-5xl mx-auto grid gap-8">
+    <div className="max-w-5xl mx-auto grid gap-4 sm:gap-6 md:gap-8 px-4 sm:px-0">
       {awards.map((award, index) => (
         <article
           key={`${award.title}-${index}`}
-          className="bg-white/5 border border-white/10 rounded-2xl p-6 shadow-lg shadow-cyan-500/10 hover:shadow-cyan-500/30 transition-shadow duration-300"
+          className="bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg shadow-cyan-500/10 hover:shadow-cyan-500/30 transition-shadow duration-300"
         >
           <header className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
             <div>
@@ -31,7 +30,7 @@ const AwardsSection: FC<AwardsSectionProps> = ({ awards }) => (
                 href={award.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="self-start inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d1321]"
+                className="self-start inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d1321] min-h-[44px]"
               >
                 View credential
                 <span aria-hidden>↗</span>
