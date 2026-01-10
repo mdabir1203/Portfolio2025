@@ -51,19 +51,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
   try {
     // Set security headers
     setSecurityHeaders(res);
-    
+
     // Handle CORS
     handleCORS(req, res);
     if (req.method === 'OPTIONS') {
       return; // Already handled in handleCORS
     }
-    
+
     // Only allow GET requests
     if (req.method !== 'GET') {
       res.setHeader('Allow', 'GET, OPTIONS');
       return sendError(res, 405, 'Method not allowed. Only GET and OPTIONS are supported.');
     }
-    
+
     // Rate limiting
     if (!rateLimit(req, res)) {
       return sendError(
@@ -73,12 +73,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
         { retryAfter: res.getHeader('Retry-After') }
       );
     }
-    
+
     // Optional API key validation (if API_KEY env var is set)
     if (!validateApiKey(req)) {
       return sendError(res, 401, 'Unauthorized. Invalid or missing API key.');
     }
-    
+
     // Validate query parameters
     const queryParseResult = querySchema.safeParse(req.query);
     if (!queryParseResult.success) {
@@ -89,12 +89,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
         queryParseResult.error.errors
       );
     }
-    
+
     const { section, format } = queryParseResult.data;
-    
+
     // Get portfolio data
     let portfolioData: unknown;
-    
+
     if (!section || section === 'all') {
       portfolioData = getAllPortfolioData();
     } else {
@@ -123,10 +123,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
           }
         );
       }
-      
+
       portfolioData = getPortfolioSection(section);
     }
-    
+
     // Format response
     if (format === 'minified') {
       // Minified JSON (no extra whitespace)
@@ -140,16 +140,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
       // Pretty JSON
       sendSuccess(res, portfolioData);
     }
-    
+
   } catch (error) {
     // Log error (in production, use proper logging service)
     console.error('Portfolio API error:', error);
-    
+
     // Don't expose internal error details in production
     const isDevelopment = process.env.NODE_ENV === 'development';
-    const errorMessage = error instanceof Error ? error.message : 'Internal server error';
     const errorDetails = isDevelopment && error instanceof Error ? error.stack : undefined;
-    
+
     sendError(
       res,
       500,

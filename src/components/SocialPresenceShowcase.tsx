@@ -63,13 +63,14 @@ const SocialPresenceShowcase: FC = () => {
       { threshold: 0.3 }
     );
 
-    if (chartRef.current) {
-      observer.observe(chartRef.current);
+    const currentRef = chartRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (chartRef.current) {
-        observer.unobserve(chartRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, []);
@@ -100,11 +101,11 @@ const SocialPresenceShowcase: FC = () => {
   let accumulatedValue = 0;
 
   return (
-      <section className="mt-6 sm:mt-8 md:mt-12">
-        <div className="rounded-xl sm:rounded-2xl border border-[#3ca99c]/35 bg-[#032520]/90 p-4 sm:p-6 md:p-8 shadow-[0_28px_65px_rgba(0,150,136,0.22)] backdrop-blur-xl relative overflow-hidden">
-          {/* Premium background gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0ef9d7]/5 via-transparent to-[#FF8A65]/5 pointer-events-none"></div>
-          <div className="relative z-10">
+    <section className="mt-6 sm:mt-8 md:mt-12">
+      <div className="rounded-xl sm:rounded-2xl border border-[#3ca99c]/35 bg-[#032520]/90 p-4 sm:p-6 md:p-8 shadow-[0_28px_65px_rgba(0,150,136,0.22)] backdrop-blur-xl relative overflow-hidden">
+        {/* Premium background gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0ef9d7]/5 via-transparent to-[#FF8A65]/5 pointer-events-none"></div>
+        <div className="relative z-10">
           <div className="flex flex-col gap-6 sm:gap-8 md:gap-10 lg:flex-row lg:items-center">
             <div className="lg:w-1/2 space-y-3 sm:space-y-4">
               <p className="inline-flex items-center gap-2 text-[0.65rem] sm:text-xs uppercase tracking-[0.35em] text-[#c6fff3]">
@@ -130,7 +131,7 @@ const SocialPresenceShowcase: FC = () => {
                     }}
                   >
                     <div className="flex items-center gap-2 mb-2">
-                      <div 
+                      <div
                         className="w-2 h-2 rounded-full"
                         style={{
                           backgroundColor: segment.accent,
@@ -140,7 +141,7 @@ const SocialPresenceShowcase: FC = () => {
                       />
                       <p className="text-xs uppercase tracking-[0.22em] text-[#c1fff4] font-semibold">{segment.label}</p>
                     </div>
-                    <p 
+                    <p
                       className="text-2xl font-bold text-[#f2fff9] mb-1 transition-all duration-300 group-hover:scale-105"
                       style={{
                         textShadow: `0 0 20px ${segment.accent}40`,
@@ -159,7 +160,7 @@ const SocialPresenceShowcase: FC = () => {
                 {/* Premium glow effects */}
                 <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-[#0ef9d7]/20 via-[#00bfa5]/15 to-[#FF8A65]/10 blur-3xl animate-pulse-slow"></div>
                 <div className="absolute -inset-4 rounded-full border border-[#0ef9d7]/20 animate-pulse-ring"></div>
-                
+
                 {/* Chart container with premium styling */}
                 <div className="relative">
                   <svg
@@ -185,31 +186,31 @@ const SocialPresenceShowcase: FC = () => {
                       </linearGradient>
                       {/* Glow filter */}
                       <filter id="glow">
-                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
                         <feMerge>
-                          <feMergeNode in="coloredBlur"/>
-                          <feMergeNode in="SourceGraphic"/>
+                          <feMergeNode in="coloredBlur" />
+                          <feMergeNode in="SourceGraphic" />
                         </feMerge>
                       </filter>
                     </defs>
-                    
+
                     <title id={chartTitleId}>Audience distribution across social platforms</title>
                     <desc id={chartDescId}>
                       LinkedIn {followerSegments[0].displayValue}, Facebook {followerSegments[1].displayValue}, Instagram
                       {` ${followerSegments[2].value}`} followers in total {totalLabel} advocates.
                     </desc>
-                    
+
                     {/* Background ring with premium styling */}
-                    <circle 
-                      cx="110" 
-                      cy="110" 
-                      r={radius} 
-                      fill="none" 
-                      stroke="rgba(15, 61, 55, 0.5)" 
+                    <circle
+                      cx="110"
+                      cy="110"
+                      r={radius}
+                      fill="none"
+                      stroke="rgba(15, 61, 55, 0.5)"
                       strokeWidth="24"
                       className="transition-opacity duration-1000"
                     />
-                    
+
                     {/* Segments with enhanced animations */}
                     {followerSegments.map((segment, index) => {
                       const startValue = accumulatedValue;
@@ -218,10 +219,10 @@ const SocialPresenceShowcase: FC = () => {
                       const startRatio = startValue / totalValue;
                       const dashArray = `${segmentRatio * circumference} ${circumference}`;
                       const dashOffset = circumference - startRatio * circumference;
-                      
-                      const gradientId = segment.label === 'LinkedIn' ? 'linkedinGradient' 
-                        : segment.label === 'Facebook' ? 'facebookGradient' 
-                        : 'instagramGradient';
+
+                      const gradientId = segment.label === 'LinkedIn' ? 'linkedinGradient'
+                        : segment.label === 'Facebook' ? 'facebookGradient'
+                          : 'instagramGradient';
 
                       return (
                         <g key={segment.label}>
@@ -239,7 +240,7 @@ const SocialPresenceShowcase: FC = () => {
                             transform="rotate(-90 110 110)"
                             opacity="0.4"
                             filter="url(#glow)"
-                            style={{ 
+                            style={{
                               transition: `stroke-dashoffset 2s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.3}s`,
                               animation: `segment-pulse 3s ease-in-out infinite ${index * 0.5}s`
                             }}
@@ -256,7 +257,7 @@ const SocialPresenceShowcase: FC = () => {
                             strokeDashoffset={animate ? dashOffset : circumference}
                             strokeLinecap="round"
                             transform="rotate(-90 110 110)"
-                            style={{ 
+                            style={{
                               transition: `stroke-dashoffset 2s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.3}s`,
                             }}
                             className="drop-shadow-[0_0_12px_currentColor]"
@@ -265,10 +266,10 @@ const SocialPresenceShowcase: FC = () => {
                       );
                     })}
                   </svg>
-                  
+
                   {/* Center content with meaningful chart animation */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                    <span 
+                    <span
                       className="text-xs uppercase tracking-[0.4em] text-[#c1fff4] font-semibold mb-2 opacity-90"
                       style={{
                         animation: isVisible ? 'fade-in-up 0.6s ease-out' : 'none',
@@ -278,7 +279,7 @@ const SocialPresenceShowcase: FC = () => {
                     >
                       Network
                     </span>
-                    <span 
+                    <span
                       className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold text-[#f5fff9] bg-gradient-to-br from-[#eafffa] via-[#c8fff4] to-[#0EF9D7] bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(14,249,215,0.6)]"
                       style={{
                         animation: isVisible ? 'fade-in-scale 0.8s ease-out' : 'none',
@@ -291,19 +292,19 @@ const SocialPresenceShowcase: FC = () => {
                     >
                       {isVisible ? `${(displayValue / 1000).toFixed(1)}k+` : '0k+'}
                     </span>
-                    
+
                     {/* Meaningful animated data flow visualization */}
                     {isVisible && (
                       <>
                         {/* Pulsing center glow */}
-                        <div 
+                        <div
                           className="absolute inset-0 rounded-full"
                           style={{
                             background: 'radial-gradient(circle, rgba(14, 249, 215, 0.2) 0%, transparent 70%)',
                             animation: 'pulse-center 3s ease-in-out infinite',
                           }}
                         />
-                        
+
                         {/* Animated connection lines from segments to center */}
                         {(() => {
                           let tempAccumulated = 0;
@@ -312,11 +313,11 @@ const SocialPresenceShowcase: FC = () => {
                             const startRatio = tempAccumulated / totalValue;
                             const midRatio = startRatio + segmentRatio / 2;
                             tempAccumulated += segment.value;
-                            
+
                             const midAngle = midRatio * 360 - 90;
                             const x1 = 110 + Math.cos(midAngle * Math.PI / 180) * radius;
                             const y1 = 110 + Math.sin(midAngle * Math.PI / 180) * radius;
-                            
+
                             return (
                               <svg
                                 key={`connection-${segment.label}`}
@@ -349,7 +350,7 @@ const SocialPresenceShowcase: FC = () => {
                             );
                           });
                         })()}
-                        
+
                         {/* Orbiting data points */}
                         {[...Array(8)].map((_, i) => {
                           const orbitRadius = 85 + (i % 3) * 5;
@@ -371,9 +372,9 @@ const SocialPresenceShowcase: FC = () => {
                             />
                           );
                         })}
-                        
+
                         {/* Rotating ring indicator */}
-                        <div 
+                        <div
                           className="absolute rounded-full border-2 border-[#0EF9D7]/30"
                           style={{
                             width: '140px',
@@ -398,10 +399,10 @@ const SocialPresenceShowcase: FC = () => {
               </div>
             </div>
           </div>
-          </div>
+        </div>
       </div>
     </section>
-);
+  );
 };
 
 export default SocialPresenceShowcase;

@@ -92,7 +92,7 @@ const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
           }
           break;
 
-        case ' ':
+        case ' ': {
           // Only prevent default if we're on a tab button, not in a form field
           const isOnTabButton = target.closest('button[role="tab"]');
           if (isOnTabButton) {
@@ -103,6 +103,7 @@ const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
             }
           }
           break;
+        }
       }
     };
 
@@ -142,11 +143,10 @@ const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
           }}
           onFocus={() => setFocusedTabIndex(index)}
           aria-current={activeTab === tab.id ? 'page' : undefined}
-          className={`tab liquid-metal-button px-3 py-2 sm:px-7 sm:py-3.5 min-h-[44px] min-w-[44px] rounded-xl text-xs sm:text-base font-semibold tracking-wide transition-all duration-200 ease-out motion-reduce:transition-none border focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 backdrop-blur-sm ${
-            activeTab === tab.id
+          className={`tab liquid-metal-button px-3 py-2 sm:px-7 sm:py-3.5 min-h-[44px] min-w-[44px] rounded-xl text-xs sm:text-base font-semibold tracking-wide transition-all duration-200 ease-out motion-reduce:transition-none border focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 backdrop-blur-sm ${activeTab === tab.id
               ? 'border-green-400/60 bg-gradient-to-br from-green-400/25 via-green-400/15 to-transparent shadow-luxury hover:shadow-luxury-lg hover:-translate-y-0.25 hover:shadow-[0_0_20px_rgba(0,191,165,0.15)]'
               : 'border-gray-600/40 bg-[#041512]/30 hover:border-cyan-400/60 hover:bg-cyan-400/10 hover:-translate-y-0.25 hover:shadow-luxury-sm'
-          }`}
+            }`}
         >
           <span className="liquid-metal-text-wrapper" data-text={tab.label}>
             <span className={activeTab === tab.id ? 'text-green-300' : 'text-gray-300'}>
@@ -193,7 +193,7 @@ const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
           className="absolute top-16 right-0 w-[calc(100vw-2rem)] sm:w-80 max-w-sm rounded-2xl border border-[#1f655d]/50 glass-premium p-4 sm:p-5 text-xs sm:text-sm shadow-luxury-lg backdrop-blur-xl z-50"
         >
           <div className="mb-3 flex items-center justify-between gap-2">
-            <h3 className="text-base font-semibold text-[#a7ffeb] tracking-wide" style={{fontFamily: "'Cormorant Garamond', Georgia, serif"}}>Keyboard navigation</h3>
+            <h3 className="text-base font-semibold text-[#a7ffeb] tracking-wide" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>Keyboard navigation</h3>
             <button
               type="button"
               onClick={hideHelper}
