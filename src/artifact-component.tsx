@@ -333,11 +333,11 @@ const ArtifactComponent = () => {
         {activeTab === 'trust' && <TrustByDesignSection />}
         {activeTab === 'assistant' && <AssistantJourneySection />}
         {activeTab === 'contact' && <ContactSection bookMeeting={bookMeeting} />}
-        <footer className="mt-24 pt-8 border-t border-[#2f6f68]/50 text-center">
-          <p className="text-[#c7f2ea] mb-4">
-            © 2025 Mohammad Abir Abbas.  Crafted with ♥ and a touch of chaos.
+        <footer className="mt-24 pt-8 border-t border-[#2f6f68]/50 flex flex-col items-center justify-center text-center">
+          <p className="text-[#c7f2ea] mb-4 text-center w-full">
+            © 2025 Mohammad Abir Abbas. Crafted with ♥ and a touch of chaos.
           </p>
-          <div className="flex justify-center space-x-6 text-sm">
+          <div className="flex justify-center items-center space-x-6 text-sm">
             <a href="#" className="text-[#9adcd1] hover:text-[#FF7043] transition-colors duration-300">Privacy Policy</a>
             <a href="#" className="text-[#9adcd1] hover:text-[#FF7043] transition-colors duration-300">Terms of Service</a>
             <a href="#" className="text-[#9adcd1] hover:text-[#FF7043] transition-colors duration-300">Cookie Settings</a>

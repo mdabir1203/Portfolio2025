@@ -27,14 +27,47 @@ const HomeSection: FC<HomeSectionProps> = ({ onHireClick, isHired, linkedinRecom
               </div>
               
               {/* Profile Picture */}
-              <div className="relative flex-shrink-0 w-full md:w-auto flex justify-center md:justify-start">
-                <div className="absolute -inset-8 sm:-inset-12 rounded-[3rem] bg-gradient-to-br from-[#00a99d]/10 via-transparent to-transparent blur-3xl" aria-hidden="true"></div>
-                <div className="absolute -top-4 sm:-top-6 -right-4 sm:-right-6 h-16 w-16 sm:h-24 sm:w-24 rounded-full bg-[#ff7043]/10 blur-3xl" aria-hidden="true"></div>
-                <div className="relative w-32 sm:w-40 md:w-48 lg:w-56 xl:w-64 2xl:w-72 overflow-hidden rounded-2xl sm:rounded-[2.75rem] border border-[#1f4a44]/70 bg-[#052b27]/50 shadow-[0_40px_90px_rgba(0,110,100,0.45)]">
-                  <img src="/images/profile.webp" alt="Mohammad Abir Abbas" className="h-full w-full object-cover saturate-110" />
-                  <div className="absolute top-6 right-6 text-[0.6rem] uppercase tracking-[0.65em] text-white/70" aria-hidden="true">2K24</div>
-                  <div className="absolute bottom-6 left-6 text-xs font-semibold uppercase tracking-[0.4em] text-[#c8fff4]" aria-hidden="true">
-                    Future Ready
+              <div className="relative flex-shrink-0 w-full md:w-auto flex justify-center md:justify-start group profile-picture-container">
+                <div className="absolute -inset-8 sm:-inset-12 rounded-[3rem] bg-gradient-to-br from-[#00a99d]/10 via-transparent to-transparent blur-3xl group-hover:from-[#00a99d]/30 group-hover:blur-[80px] group-hover:scale-125 transition-all duration-700 ease-out" aria-hidden="true"></div>
+                <div className="absolute -top-4 sm:-top-6 -right-4 sm:-right-6 h-16 w-16 sm:h-24 sm:w-24 rounded-full bg-[#ff7043]/10 blur-3xl group-hover:bg-[#ff7043]/30 group-hover:blur-[80px] group-hover:scale-200 group-hover:-translate-x-4 group-hover:-translate-y-4 transition-all duration-700 ease-out" aria-hidden="true"></div>
+                <div className="relative w-32 sm:w-40 md:w-48 lg:w-56 xl:w-64 2xl:w-72 overflow-hidden rounded-2xl sm:rounded-[2.75rem] border border-[#1f4a44]/70 bg-[#052b27]/50 shadow-[0_40px_90px_rgba(0,110,100,0.45)] group-hover:border-[#00bfa5]/60 group-hover:shadow-[0_80px_160px_rgba(0,191,165,0.7),0_0_100px_rgba(14,249,215,0.5),inset_0_0_60px_rgba(0,191,165,0.2)] transition-all duration-700 ease-out group-hover:scale-[1.08] group-hover:-translate-y-3 transform-gpu">
+                  {/* Animated gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#00bfa5]/0 via-[#00bfa5]/0 to-[#00bfa5]/0 group-hover:from-[#00bfa5]/30 group-hover:via-[#0ef9d7]/15 group-hover:to-transparent transition-all duration-700 z-10 pointer-events-none group-hover:animate-pulse" style={{ animation: 'profile-glow-pulse 2s ease-in-out infinite' }}></div>
+                  
+                  {/* Dynamic 3D tilt effect */}
+                  <img 
+                    src="/images/profile.webp" 
+                    alt="Mohammad Abir Abbas" 
+                    className="h-full w-full object-cover saturate-110 group-hover:saturate-150 group-hover:scale-115 group-hover:brightness-110 transition-all duration-700 ease-out transform-gpu" 
+                    style={{ transformStyle: 'preserve-3d' }}
+                  />
+                  
+                  {/* Shimmer sweep effect */}
+                  <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100" style={{ 
+                    background: 'linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%)',
+                    animation: 'profile-shimmer 2s ease-in-out infinite',
+                    width: '200%',
+                    height: '200%',
+                    top: '-50%',
+                    left: '-50%'
+                  }}></div>
+                  
+                  {/* Date badge with enhanced hover */}
+                  <div className="absolute top-6 right-6 text-[0.6rem] uppercase tracking-[0.65em] text-white/70 group-hover:text-[#00bfa5] group-hover:scale-125 group-hover:drop-shadow-[0_0_10px_rgba(0,191,165,0.8)] transition-all duration-300 z-20" aria-hidden="true">2K24</div>
+                  
+                  {/* Floating glow particles */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                    <div className="absolute top-1/4 left-1/4 w-3 h-3 bg-[#00bfa5] rounded-full blur-md" style={{ animation: 'profile-particle-float 3s ease-in-out infinite' }}></div>
+                    <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-[#0ef9d7] rounded-full blur-sm" style={{ animation: 'profile-particle-float 3s ease-in-out infinite 0.5s' }}></div>
+                    <div className="absolute bottom-1/4 left-1/3 w-2 h-2 bg-[#00bfa5] rounded-full blur-sm" style={{ animation: 'profile-particle-float 3s ease-in-out infinite 1s' }}></div>
+                    <div className="absolute top-3/4 right-1/3 w-1.5 h-1.5 bg-[#0ef9d7] rounded-full blur-sm" style={{ animation: 'profile-particle-float 3s ease-in-out infinite 1.5s' }}></div>
+                    <div className="absolute bottom-1/2 left-1/2 w-2.5 h-2.5 bg-[#00bfa5] rounded-full blur-md" style={{ animation: 'profile-particle-float 3s ease-in-out infinite 2s' }}></div>
+                  </div>
+                  
+                  {/* Radial glow rings */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+                    <div className="absolute inset-0 rounded-2xl sm:rounded-[2.75rem] border border-[#00bfa5]/40 group-hover:border-[#00bfa5]/60" style={{ animation: 'profile-glow-pulse 2s ease-in-out infinite' }}></div>
+                    <div className="absolute inset-2 rounded-2xl sm:rounded-[2.75rem] border border-[#0ef9d7]/30" style={{ animation: 'profile-glow-pulse 2s ease-in-out infinite 0.5s' }}></div>
                   </div>
                 </div>
               </div>

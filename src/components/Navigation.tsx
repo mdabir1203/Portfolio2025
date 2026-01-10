@@ -142,13 +142,17 @@ const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
           }}
           onFocus={() => setFocusedTabIndex(index)}
           aria-current={activeTab === tab.id ? 'page' : undefined}
-          className={`tab px-3 py-2 sm:px-7 sm:py-3.5 min-h-[44px] min-w-[44px] rounded-xl text-xs sm:text-base font-semibold tracking-wide transition-all duration-200 ease-out motion-reduce:transition-none border focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 backdrop-blur-sm ${
+          className={`tab liquid-metal-button px-3 py-2 sm:px-7 sm:py-3.5 min-h-[44px] min-w-[44px] rounded-xl text-xs sm:text-base font-semibold tracking-wide transition-all duration-200 ease-out motion-reduce:transition-none border focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 backdrop-blur-sm ${
             activeTab === tab.id
-              ? 'text-green-300 border-green-400/60 bg-gradient-to-br from-green-400/25 via-green-400/15 to-transparent shadow-luxury hover:shadow-luxury-lg hover:-translate-y-0.25 hover:shadow-[0_0_20px_rgba(0,191,165,0.15)]'
-              : 'text-gray-300 border-gray-600/40 bg-[#041512]/30 hover:border-cyan-400/60 hover:text-cyan-300 hover:bg-cyan-400/10 hover:-translate-y-0.25 hover:shadow-luxury-sm'
+              ? 'border-green-400/60 bg-gradient-to-br from-green-400/25 via-green-400/15 to-transparent shadow-luxury hover:shadow-luxury-lg hover:-translate-y-0.25 hover:shadow-[0_0_20px_rgba(0,191,165,0.15)]'
+              : 'border-gray-600/40 bg-[#041512]/30 hover:border-cyan-400/60 hover:bg-cyan-400/10 hover:-translate-y-0.25 hover:shadow-luxury-sm'
           }`}
         >
-          {tab.label}
+          <span className="liquid-metal-text-wrapper" data-text={tab.label}>
+            <span className={activeTab === tab.id ? 'text-green-300' : 'text-gray-300'}>
+              {tab.label}
+            </span>
+          </span>
         </button>
       ))}
 

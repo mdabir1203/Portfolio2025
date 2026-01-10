@@ -441,3 +441,638 @@
     opacity: 1;
   }
 }
+
+/* Dynamic Profile Picture Hover Animations */
+@keyframes profile-glow-pulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes profile-shimmer {
+  0% {
+    transform: translateX(-150%) translateY(-150%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(250%) translateY(250%) rotate(45deg);
+  }
+}
+
+@keyframes profile-particle-float {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-20px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) scale(0);
+  }
+}
+
+@keyframes profile-3d-tilt {
+  0%, 100% {
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1);
+  }
+  25% {
+    transform: perspective(1000px) rotateX(-2deg) rotateY(2deg) scale(1.02);
+  }
+  50% {
+    transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) scale(1.05);
+  }
+  75% {
+    transform: perspective(1000px) rotateX(-1deg) rotateY(1deg) scale(1.03);
+  }
+}
+
+/* Dynamic Skills Section Animations */
+@keyframes skill-shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(200%) translateY(200%) rotate(45deg);
+  }
+}
+
+@keyframes skill-particle-float {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-15px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px) scale(0);
+  }
+}
+
+@keyframes skill-progress-shine {
+  0% {
+    transform: translateX(-100%) skewX(-20deg);
+  }
+  100% {
+    transform: translateX(300%) skewX(-20deg);
+  }
+}
+
+@keyframes skill-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95) rotateX(10deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(0deg);
+  }
+}
+
+@keyframes skill-badge-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 12px 24px rgba(0, 150, 136, 0.25);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 16px 32px rgba(0, 191, 165, 0.4);
+  }
+}
+
+/* Skills Section Dynamic Styles */
+.skill-card-dynamic {
+  position: relative;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  will-change: transform, opacity;
+}
+
+.skill-card-dynamic:hover {
+  transform: translateY(-12px) scale(1.03) rotateX(-3deg) rotateY(1deg);
+  box-shadow: 
+    0 40px 100px rgba(0, 150, 136, 0.4),
+    0 20px 50px rgba(0, 191, 165, 0.3),
+    0 0 80px rgba(14, 249, 215, 0.2),
+    inset 0 2px 4px rgba(255, 255, 255, 0.15);
+  border-color: rgba(0, 191, 165, 0.6);
+  background: rgba(5, 44, 40, 0.85);
+}
+
+.skill-name {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.badge-dynamic {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.badge-dynamic::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.skill-card-dynamic:hover .badge-dynamic::before {
+  transform: translateX(100%);
+}
+
+.skill-bar-dynamic {
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-progress-dynamic {
+  position: relative;
+  overflow: hidden;
+  background-size: 200% 100%;
+  animation: liquid-metal-flow 3s ease-in-out infinite;
+}
+
+.specialization-tag {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transform-style: preserve-3d;
+}
+
+.specialization-tag::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(0, 191, 165, 0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+  border-radius: inherit;
+}
+
+.specialization-tag:hover::before {
+  transform: translateX(100%);
+}
+
+.specialization-tag:hover {
+  transform: translateY(-2px) scale(1.1);
+  z-index: 10;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-card-dynamic,
+  .skill-name,
+  .badge-dynamic,
+  .skill-progress-dynamic,
+  .specialization-tag {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .skill-card-dynamic:hover {
+    transform: none !important;
+  }
+}
+
+/* Liquid Metal Twirling Loading Animations */
+@keyframes liquid-metal-flow {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes liquid-metal-flow-vertical {
+  0% {
+    background-position: 0 -200%;
+  }
+  100% {
+    background-position: 0 200%;
+  }
+}
+
+@keyframes twirl-reveal {
+  0% {
+    transform: rotateY(-90deg) scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: rotateY(0deg) scale(1.05);
+    opacity: 0.7;
+  }
+  100% {
+    transform: rotateY(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes metal-shimmer {
+  0% {
+    transform: translateX(-100%) skewX(-20deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(300%) skewX(-20deg);
+    opacity: 0;
+  }
+}
+
+@keyframes metallic-pulse {
+  0%, 100% {
+    opacity: 0.8;
+    filter: brightness(1) saturate(1);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.4) saturate(1.2);
+  }
+}
+
+@keyframes liquid-loading-spinner {
+  0% {
+    transform: rotate(0deg) scale(0.8);
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+    transform: rotate(180deg) scale(1);
+  }
+  100% {
+    transform: rotate(360deg) scale(0.8);
+    opacity: 0.3;
+  }
+}
+
+@keyframes text-liquid-reveal {
+  0% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    clip-path: inset(0 0% 0 0);
+    opacity: 1;
+  }
+}
+
+@keyframes gradient-mask-animation {
+  0% {
+    mask-position: -200% 0;
+    -webkit-mask-position: -200% 0;
+  }
+  100% {
+    mask-position: 200% 0;
+    -webkit-mask-position: 200% 0;
+  }
+}
+
+@keyframes metallic-text-shine {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Liquid Metal Utility Classes */
+.liquid-metal-text {
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(
+    90deg,
+    #c0c0c0 0%,
+    #e8e8e8 25%,
+    #ffffff 50%,
+    #e8e8e8 75%,
+    #c0c0c0 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  will-change: transform, opacity, background-position;
+  transform-style: preserve-3d;
+}
+
+.liquid-metal-bg {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    rgba(192, 192, 192, 0.1) 0%,
+    rgba(232, 232, 232, 0.2) 25%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(14, 249, 215, 0.2) 75%,
+    rgba(0, 191, 165, 0.1) 100%
+  );
+  background-size: 200% 200%;
+  will-change: background-position;
+}
+
+.liquid-metal-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%) skewX(-20deg);
+  will-change: transform;
+}
+
+.twirl-reveal {
+  animation: twirl-reveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.metal-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.metal-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%) skewX(-20deg);
+  animation: metal-shimmer 1.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.flow-gradient {
+  background: linear-gradient(
+    90deg,
+    #1a1a2e 0%,
+    #c0c0c0 20%,
+    #ffffff 40%,
+    #0ef9d7 50%,
+    #ffffff 60%,
+    #c0c0c0 80%,
+    #1a1a2e 100%
+  );
+  background-size: 200% 100%;
+  animation: liquid-metal-flow 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: background-position;
+}
+
+.metallic-glow {
+  position: relative;
+  filter: drop-shadow(0 0 8px rgba(192, 192, 192, 0.5))
+          drop-shadow(0 0 16px rgba(14, 249, 215, 0.3));
+  will-change: filter;
+}
+
+.metallic-glow:hover {
+  filter: drop-shadow(0 0 12px rgba(192, 192, 192, 0.8))
+          drop-shadow(0 0 24px rgba(14, 249, 215, 0.5))
+          drop-shadow(0 0 32px rgba(0, 191, 165, 0.3));
+}
+
+/* Liquid Metal Button Hover Effect */
+.liquid-metal-button {
+  position: relative;
+  overflow: visible;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.liquid-metal-button::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(
+    135deg,
+    rgba(192, 192, 192, 0.15) 0%,
+    rgba(232, 232, 232, 0.25) 20%,
+    rgba(255, 255, 255, 0.4) 40%,
+    rgba(14, 249, 215, 0.35) 50%,
+    rgba(255, 255, 255, 0.4) 60%,
+    rgba(232, 232, 232, 0.25) 80%,
+    rgba(192, 192, 192, 0.15) 100%
+  );
+  background-size: 200% 200%;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 0;
+  border-radius: inherit;
+  filter: blur(8px);
+  will-change: opacity, background-position;
+}
+
+.liquid-metal-button:hover::before {
+  opacity: 0.6;
+  animation: liquid-metal-flow 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.liquid-metal-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  opacity: 0;
+  transform: translateX(-100%) skewX(-15deg);
+  transition: opacity 0.3s ease, transform 0.6s ease;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.liquid-metal-button:hover::after {
+  opacity: 1;
+  transform: translateX(200%) skewX(-15deg);
+  animation: metal-shimmer 1.5s ease-in-out infinite;
+}
+
+/* Loading spinner overlay (using box-shadow technique instead of separate element) */
+.liquid-metal-button {
+  position: relative;
+}
+
+.liquid-metal-button:hover {
+  box-shadow: 0 8px 24px rgba(0, 191, 165, 0.2),
+              0 4px 12px rgba(14, 249, 215, 0.15),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1),
+              0 0 0 2px rgba(14, 249, 215, 0.2);
+  animation: metallic-pulse 2s ease-in-out infinite;
+}
+
+.liquid-metal-button > * {
+  position: relative;
+  z-index: 2;
+}
+
+.liquid-metal-button:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(0, 191, 165, 0.2),
+              0 4px 12px rgba(14, 249, 215, 0.15),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1),
+              0 0 0 2px rgba(14, 249, 215, 0.2);
+  filter: drop-shadow(0 0 8px rgba(14, 249, 215, 0.3))
+          drop-shadow(0 0 16px rgba(0, 191, 165, 0.2));
+  animation: metallic-pulse 2s ease-in-out infinite;
+}
+
+/* Smooth entrance animation - only on initial load */
+.liquid-metal-button {
+  animation: fade-in 0.3s ease-out;
+}
+
+.liquid-metal-button:hover {
+  animation: metallic-pulse 2s ease-in-out infinite;
+}
+
+/* Active state enhancement */
+.liquid-metal-button[aria-selected="true"]::before {
+  opacity: 0.4;
+  animation: liquid-metal-flow 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.liquid-metal-button[aria-selected="true"] .liquid-metal-text-wrapper::before {
+  opacity: 0.3;
+  animation: liquid-metal-flow 2s cubic-bezier(0.4, 0, 0.2, 1) infinite,
+             metallic-pulse 3s ease-in-out infinite;
+}
+
+.liquid-metal-text-wrapper {
+  position: relative;
+  display: inline-block;
+  overflow: visible;
+  perspective: 1000px;
+}
+
+.liquid-metal-text-wrapper::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #c0c0c0 0%,
+    #e8e8e8 15%,
+    #ffffff 30%,
+    #0ef9d7 40%,
+    #ffffff 50%,
+    #0ef9d7 60%,
+    #ffffff 70%,
+    #e8e8e8 85%,
+    #c0c0c0 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0;
+  transform: rotateY(-90deg) scale(0.8);
+  transform-origin: center;
+  transform-style: preserve-3d;
+  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform, opacity, background-position;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.liquid-metal-button:hover .liquid-metal-text-wrapper::before {
+  opacity: 1;
+  transform: rotateY(0deg) scale(1);
+  animation: liquid-metal-flow 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite,
+             metallic-pulse 2s ease-in-out infinite;
+}
+
+.liquid-metal-text-wrapper > span {
+  display: inline-block;
+  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+.liquid-metal-button:hover .liquid-metal-text-wrapper > span {
+  opacity: 0;
+  transform: rotateY(90deg) scale(0.8);
+}
+
+/* Performance Optimizations */
+.liquid-metal-button,
+.liquid-metal-text-wrapper,
+.liquid-metal-text-wrapper::before,
+.liquid-metal-text-wrapper > span {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .liquid-metal-text,
+  .liquid-metal-bg,
+  .flow-gradient,
+  .metallic-glow,
+  .liquid-metal-button::before,
+  .liquid-metal-button::after,
+  .liquid-metal-text-wrapper::before {
+    animation: none !important;
+  }
+  
+  .twirl-reveal {
+    animation: none !important;
+    transform: none !important;
+  }
+  
+  .liquid-metal-button:hover {
+    transform: none !important;
+  }
+  
+  .liquid-metal-button:hover .liquid-metal-text-wrapper::before {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1;
+  }
+  
+  .liquid-metal-button:hover .liquid-metal-text-wrapper > span {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

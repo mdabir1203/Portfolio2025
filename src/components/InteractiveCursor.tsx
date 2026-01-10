@@ -137,42 +137,44 @@ const InteractiveCursor: FC<InteractiveCursorProps> = ({ children }) => {
         {/* Main cursor dot */}
         <div
           className={`absolute rounded-full transition-all duration-300 ${
-            isHoveringButton ? 'w-12 h-12 bg-[#00bfa5]' : 'w-5 h-5 bg-[#eafffa]'
+            isHoveringButton ? 'w-8 h-8 bg-[#00bfa5]' : 'w-3 h-3 bg-[#eafffa]'
           }`}
           style={{
             transform: 'translate(-50%, -50%)',
             boxShadow: isHoveringButton
-              ? '0 0 20px rgba(0, 191, 165, 0.8), 0 0 40px rgba(0, 191, 165, 0.5), 0 0 60px rgba(0, 191, 165, 0.3)'
-              : '0 0 8px rgba(234, 255, 250, 0.6), 0 0 16px rgba(234, 255, 250, 0.3)',
+              ? '0 0 12px rgba(0, 191, 165, 0.7), 0 0 24px rgba(0, 191, 165, 0.4), 0 0 36px rgba(0, 191, 165, 0.2)'
+              : '0 0 4px rgba(234, 255, 250, 0.5), 0 0 8px rgba(234, 255, 250, 0.25)',
           }}
         >
           {isHoveringButton && (
-            <div className="absolute inset-0 rounded-full animate-ping bg-[#00bfa5] opacity-60" />
+            <div className="absolute inset-0 rounded-full animate-ping bg-[#00bfa5] opacity-50" />
           )}
         </div>
 
         {/* Outer ring */}
         <div
-          className={`absolute rounded-full border-2 transition-all duration-300 ${
+          className={`absolute rounded-full border transition-all duration-300 ${
             isHoveringButton
-              ? 'w-16 h-16 border-[#00bfa5] opacity-80'
-              : 'w-10 h-10 border-[#eafffa] opacity-40'
+              ? 'w-12 h-12 border-[#00bfa5] opacity-70'
+              : 'w-6 h-6 border-[#eafffa] opacity-30'
           }`}
           style={{
             transform: 'translate(-50%, -50%)',
             animation: isHoveringButton ? 'pulse-ring 2s ease-in-out infinite' : 'none',
+            borderWidth: isHoveringButton ? '1.5px' : '1px',
           }}
         />
 
         {/* Inner glow ring when hovering */}
         {isHoveringButton && (
           <div
-            className="absolute rounded-full border border-[#00bfa5] opacity-50"
+            className="absolute rounded-full border border-[#00bfa5] opacity-40"
             style={{
-              width: '20px',
-              height: '20px',
+              width: '12px',
+              height: '12px',
               transform: 'translate(-50%, -50%)',
               animation: 'pulse-inner 1.5s ease-in-out infinite',
+              borderWidth: '1px',
             }}
           />
         )}
@@ -207,21 +209,21 @@ const InteractiveCursor: FC<InteractiveCursorProps> = ({ children }) => {
         @keyframes pulse-ring {
           0%, 100% {
             transform: translate(-50%, -50%) scale(1);
-            opacity: 0.8;
+            opacity: 0.7;
           }
           50% {
-            transform: translate(-50%, -50%) scale(1.3);
-            opacity: 0.4;
+            transform: translate(-50%, -50%) scale(1.25);
+            opacity: 0.3;
           }
         }
         @keyframes pulse-inner {
           0%, 100% {
             transform: translate(-50%, -50%) scale(1);
-            opacity: 0.5;
+            opacity: 0.4;
           }
           50% {
-            transform: translate(-50%, -50%) scale(1.5);
-            opacity: 0.2;
+            transform: translate(-50%, -50%) scale(1.4);
+            opacity: 0.15;
           }
         }
         @keyframes fade-in-up {
