@@ -60,26 +60,82 @@ const loadAssistantRuntime = async () => {
 
   assistantRuntimePromise = (async () => {
     const [
-      vectorModule,
+      communityModule,
+      coreModule,
       embeddingsModule,
+      vectorstoresModule,
       promptsModule,
       messagesModule,
       qdrantModule,
     ] = await Promise.all([
-      import('@langchain/community/vectorstores/qdrant'),
-      import('langchain/embeddings/fake'),
+      import('@langchain/community'),
+      import('@langchain/core'),
+      import('@langchain/core/embeddings'),
+      import('@langchain/core/vectorstores'),
       import('@langchain/core/prompts'),
       import('@langchain/core/messages'),
       import('@qdrant/js-client-rest'),
     ]);
 
-    const { QdrantVectorStore } = vectorModule;
-    const { FakeEmbeddings } = embeddingsModule;
+    const { QdrantVectorStore } = communityModule;
+    const { Embeddings } = embeddingsModule;
+    const { VectorStore } = vectorstoresModule;
     const { ChatPromptTemplate, MessagesPlaceholder } = promptsModule;
     const { AIMessage, HumanMessage } = messagesModule;
     const { QdrantClient } = qdrantModule;
 
-    const embeddings = new FakeEmbeddings({ vectorSize: 1536 });
+    // Create a simple mock embeddings class (FakeEmbeddings was removed in LangChain 1.x)
+    class MockEmbeddings extends Embeddings {
+      async embedDocuments(texts) {
+        return texts.map(() => new Array(1536).fill(0));
+      }
+
+      async embedQuery(text) {
+        return new Array(1536).fill(0);
+      }
+    }
+
+    // Create a simple in-memory vector store (MemoryVectorStore was removed in LangChain 1.x)
+    class InMemoryVectorStore extends VectorStore {
+      _vectorstoreType() {
+        return 'in_memory';
+      }
+
+      constructor(embeddings, _dbConfig = {}) {
+        super(embeddings, _dbConfig);
+        this.vectors = [];
+        this.documents = [];
+      }
+
+      async addVectors(vectors, documents) {
+        this.vectors.push(...vectors);
+        this.documents.push(...documents);
+      }
+
+      async addDocuments(documents) {
+        const texts = documents.map((doc) => doc.pageContent);
+        const vectors = await this.embeddings.embedDocuments(texts);
+        return this.addVectors(vectors, documents);
+      }
+
+      static async fromTexts(texts, metadatas, embeddings) {
+        const instance = new InMemoryVectorStore(embeddings);
+        const documents = texts.map((text, i) => ({
+          pageContent: text,
+          metadata: metadatas[i] || {},
+        }));
+        await instance.addDocuments(documents);
+        return instance;
+      }
+
+      async similaritySearchVectorWithScore(query, k) {
+        // Simple cosine similarity (since we're using zero vectors, just return all)
+        const results = this.documents.map((doc, i) => [doc, 1.0]);
+        return results.slice(0, k);
+      }
+    }
+
+    const embeddings = new MockEmbeddings();
 
     let vectorStore;
     const qdrantUrl = process.env.QDRANT_URL;
@@ -102,8 +158,7 @@ const loadAssistantRuntime = async () => {
         }
       );
     } else {
-      const memoryModule = await import('langchain/vectorstores/memory');
-      vectorStore = await memoryModule.MemoryVectorStore.fromTexts(
+      vectorStore = await InMemoryVectorStore.fromTexts(
         knowledgeBase.map((item) => item.text),
         knowledgeBase.map((item) => item.metadata),
         embeddings

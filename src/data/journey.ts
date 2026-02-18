@@ -7,29 +7,29 @@ export interface JourneyStep {
 export const journey: JourneyStep[] = [
   {
     year: '2025',
-    title: 'Rust Evangelist & Security Specialist',
+    title: 'Efficiency & Security Architect',
     description:
-      'Reverse engineering various Rust frameworks to understand how to build high performant systems in Rust and mapping out tools like ShadowMap in Rust & Agents.'
+      'Designing AI systems that focus on ROI and safety. Helping companies secure their high-value data while maximizing the efficiency of their large language models.'
   },
   {
     year: '2024',
-    title: 'AI Alchemist & Vibe Coder',
-    description: 'Mastering the art of turning data into gold with advanced AI systems, prompt engineering, and building lovable, secure websites.'
+    title: 'Scaling Technical Operations',
+    description: 'Mastering the art of building tools that don\'t just work, but scale. Turning technical complexity into predictable business advantages.'
   },
   {
     year: '2023',
-    title: 'Mindset Mentor & Community Builder',
+    title: 'Building Strategic Communities',
     description:
-      'Growing our mindset and expanding our vision possibility with agents. We started building our technical blog and mentoring to build our skillset.'
+      'Growing a community of makers and builders. Focusing on how technical sharing can lead to faster innovation and shared business success.'
   },
   {
     year: '2022',
-    title: 'Startup Warrior',
-    description: 'Launching Deep Blue Digital and VisaNav, learning the hard lessons of entrepreneurship while making tech accessible.'
+    title: 'Technical Operations Lead',
+    description: 'Launching Deep Blue Digital. Learning that technical architecture must always serve the underlying business outcomes and user needs.'
   },
   {
     year: '2021',
-    title: 'Python Wizard',
-    description: 'Diving deep into data science and machine learning, building intelligent systems that solve real problems with personality.'
+    title: 'Foundational Engineering',
+    description: 'Starting with Python and security research. Building the technical backbone required to see through the "magic" of AI into its real-world utility.'
   }
 ];

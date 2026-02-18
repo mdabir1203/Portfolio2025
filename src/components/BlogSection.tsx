@@ -9,80 +9,102 @@ interface BlogSectionProps {
 }
 
 const BlogSection: FC<BlogSectionProps> = ({ posts, isFetching, onRetry }) => (
-  <section className="mb-12 sm:mb-16 animate-fadeIn">
-    <h2 className="text-3xl sm:text-4xl font-bold text-center mb-3 sm:mb-4 bg-gradient-to-r from-[#c8fff4] via-[#4DB6AC] to-[#009688] bg-clip-text text-transparent drop-shadow-[0_16px_40px_rgba(0,150,136,0.25)]">
-      Thoughts
+  <section className="mb-24 sm:mb-32 animate-fadeIn relative px-4">
+    {/* Premium Cyan Ornament */}
+    <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+
+    <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mb-4 text-white tracking-tight font-serif">
+      Reading My <span className="text-primary italic">Mind</span>
     </h2>
-    <p className="text-base sm:text-lg md:text-xl text-[#d7f5ef] text-center mb-8 sm:mb-12 max-w-3xl mx-auto px-4">
-      Sharing reflective notes on AI, Rust, security, and vibe coding.
+    <p className="text-lg sm:text-xl text-sand/60 text-center mb-16 max-w-2xl mx-auto leading-relaxed">
+      Strategic deep-dives into AI compliance, Rust architecture, and the intersection of cultural intelligence and enterprise security.
     </p>
 
     {isFetching ? (
-      <div className="text-center py-8 sm:py-12">
-        <div className="spinner border-4 border-[#00bfa5]/20 border-t-transparent rounded-full w-12 h-12 animate-spin mx-auto mb-4"></div>
-        <p className="text-[#f4fffb] text-base sm:text-lg">Loading my latest thoughts...</p>
+      <div className="text-center py-20 bg-card/20 rounded-3xl border border-white/5 backdrop-blur-sm">
+        <div className="spinner border-2 border-primary/20 border-t-primary rounded-full w-16 h-16 animate-spin mx-auto mb-6"></div>
+        <p className="text-sand/40 font-mono text-sm uppercase tracking-widest">Synchronizing Intelligence...</p>
       </div>
     ) : posts.length > 0 ? (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts.map((post, index) => {
           const publishedAt = new Date(post.pubDate);
-          const formattedDateTime = publishedAt.toLocaleString('en-US', {
+          const formattedDate = publishedAt.toLocaleDateString('en-US', {
             year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: '2-digit'
+            month: 'short',
+            day: 'numeric'
           });
 
           let excerpt = post.description || post.content || '';
           excerpt = DOMPurify.sanitize(excerpt, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
-          if (excerpt.length > 150) {
-            excerpt = excerpt.substring(0, 150) + '...';
+          if (excerpt.length > 180) {
+            excerpt = excerpt.substring(0, 180) + '...';
           }
 
           return (
-            <div
+            <a
               key={index}
-              className="blog-card bg-[#052c28]/70 border border-[#2f6f68]/40 rounded-xl p-4 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_26px_60px_rgba(0,150,136,0.22)] group"
+              href={post.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-col h-full bg-card/40 border border-white/5 rounded-[2.5rem] p-8 transition-all duration-700 hover:border-primary/30 hover:bg-white/[0.03] hover:-translate-y-2 relative overflow-hidden"
             >
-              <h3 className="blog-title text-xl sm:text-2xl font-semibold text-[#a7ffeb] mb-2 sm:mb-3 group-hover:text-[#c8fff4] transition-colors duration-300 tracking-wide">
+              <div className="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                  <span className="text-primary text-xs">↗</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4 mb-6 relative z-10">
+                <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-primary bg-primary/10 px-3 py-1 rounded-full">
+                  Analysis
+                </span>
+                <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-sand/50">
+                  {formattedDate}
+                </span>
+              </div>
+
+              <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-primary transition-colors duration-500 leading-snug relative z-10">
                 {post.title}
               </h3>
-              <div className="blog-date text-[#9adcd1] text-xs sm:text-sm mb-3 sm:mb-4">{formattedDateTime}</div>
-              <p className="blog-excerpt text-sm sm:text-base text-[#d7f5ef] mb-4 sm:mb-6 leading-relaxed">{excerpt}</p>
-              <a
-                href={post.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="blog-link text-[#052321] font-semibold tracking-wide inline-block py-2.5 px-4 rounded-lg border border-[#00bfa5]/50 bg-gradient-to-r from-[#00a99d] via-[#4DB6AC] to-[#00bfa5] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_38px_rgba(0,150,136,0.32)] min-h-[44px] flex items-center justify-center"
-              >
-                Read Full Article →
-              </a>
-            </div>
+
+              <div className="relative z-10">
+                <p className="text-sand/90 text-base leading-relaxed mb-10 group-hover:text-white transition-colors duration-500">
+                  {excerpt}
+                </p>
+
+                {/* Out-of-the-box Glass Highlight for curiosity */}
+                <div className="absolute inset-x-[-1rem] inset-y-[-0.5rem] bg-primary/5 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10 rounded-full" />
+              </div>
+
+              <div className="pt-6 border-t border-white/5 flex items-center text-xs font-mono uppercase tracking-widest text-sand/40 group-hover:text-primary transition-colors relative z-10">
+                Read Deep-Dive
+              </div>
+            </a>
           );
         })}
       </div>
     ) : (
-      <div className="text-center py-12">
-        <p className="text-[#9adcd1] text-lg">No thoughts available at the moment.</p>
+      <div className="text-center py-20 bg-card/20 rounded-3xl border border-white/5">
+        <p className="text-sand/40 text-lg">Knowledge base momentarily offline.</p>
         <button
           onClick={onRetry}
-          className="mt-4 bg-gradient-to-r from-[#00a99d] via-[#4DB6AC] to-[#00bfa5] hover:from-[#009688] hover:via-[#00a99d] hover:to-[#4DB6AC] text-[#052321] font-semibold tracking-wide py-2 px-4 rounded-lg transition-all duration-300 shadow-[0_16px_32px_rgba(0,150,136,0.3)]"
+          className="mt-6 text-primary hover:text-primary/80 font-mono text-sm uppercase tracking-widest underline underline-offset-8 transition-all"
         >
-          Try Again
+          Initialize Re-fetch
         </button>
       </div>
     )}
 
-    <div className="text-center mt-8">
+    <div className="text-center mt-20">
       <a
         href="https://medium.com/@md.abir1203"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-block bg-gradient-to-r from-[#00a99d] via-[#4DB6AC] to-[#00bfa5] hover:from-[#009688] hover:via-[#00a99d] hover:to-[#4DB6AC] text-[#052321] font-semibold tracking-wide py-3 px-6 rounded-lg border border-[#00bfa5]/40 transition-all duration-300 shadow-[0_20px_45px_rgba(0,150,136,0.35)] hover:-translate-y-0.5"
-        onClick={onRetry}
+        className="inline-flex items-center gap-6 px-10 py-5 rounded-full bg-transparent border border-white/10 text-white font-medium hover:border-primary/50 hover:bg-primary/5 transition-all duration-500 group"
       >
-        View All Thoughts on Medium →
+        <span className="text-sm uppercase tracking-[0.2em]">Explore All Mind-Maps</span>
+        <span className="text-primary group-hover:translate-x-2 transition-transform">→</span>
       </a>
     </div>
   </section>

@@ -29,11 +29,17 @@ const ProjectsSection: FC<ProjectsSectionProps> = ({ projects }) => {
   }, [projects]);
 
   return (
-    <section className="mb-12 sm:mb-16 animate-fadeIn">
-      <h2 className="text-3xl sm:text-4xl font-bold text-center mb-8 sm:mb-12 bg-gradient-to-r from-[#c8fff4] via-[#4DB6AC] to-[#009688] bg-clip-text text-transparent drop-shadow-[0_16px_40px_rgba(0,150,136,0.25)]">
-        My Digital Creations
-      </h2>
-      <div className="flex flex-col lg:grid lg:grid-cols-3 gap-8 lg:gap-6">
+    <section className="py-24 px-6 max-w-7xl mx-auto z-20 relative">
+      <div className="text-center mb-20 space-y-4">
+        <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white font-serif">
+          The <span className="text-primary italic">Creations</span> Gallery
+        </h2>
+        <p className="text-sand/60 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-light">
+          A collection of tools that solve real problems, from security automation to helping people find their way in new worlds.
+        </p>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
         {categoryOrder.map((category) => {
           const categoryProjects = groupedProjects[category];
           if (categoryProjects.length === 0) return null;

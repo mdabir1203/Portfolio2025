@@ -1,8 +1,10 @@
-import { FC, memo, useEffect, useRef, useState, useMemo } from 'react';
+import { FC, memo, useEffect, useRef } from 'react';
+import { MotionValue } from 'framer-motion';
 
 interface Enterprise3DBackgroundProps {
-  scrollPosition: number;
-  mousePosition: { x: number; y: number };
+  scrollValue: MotionValue<number>;
+  mouseX: MotionValue<number>;
+  mouseY: MotionValue<number>;
 }
 
 interface TechNode {
@@ -15,61 +17,22 @@ interface TechNode {
   color: string;
 }
 
-interface ConnectionLine {
-  from: number;
-  to: number;
-  depth: number;
+interface Connection {
+  fromNode: TechNode;
+  toNode: TechNode;
 }
 
-const Enterprise3DBackground: FC<Enterprise3DBackgroundProps> = ({ scrollPosition, mousePosition }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [viewportCenter, setViewportCenter] = useState({ x: 0, y: 0 });
-  const [isMobile, setIsMobile] = useState(false);
-  const resizeTimeoutRef = useRef<number | null>(null);
+const Enterprise3DBackground: FC<Enterprise3DBackgroundProps> = ({ scrollValue, mouseX, mouseY }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const nodeDataRef = useRef<{ nodes: TechNode[]; connections: Connection[] } | null>(null);
+  const timeRef = useRef(0);
 
-  // Detect mobile devices
+  // Initialize nodes only once or when screen size changes significantly
   useEffect(() => {
-    const checkMobile = () => {
-      const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-      const isSmallScreen = window.innerWidth < 768;
-      setIsMobile(hasTouch || isSmallScreen);
-    };
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Calculate viewport center with debounced resize
-  useEffect(() => {
-    const updateCenter = () => {
-      setViewportCenter({
-        x: window.innerWidth / 2,
-        y: window.innerHeight / 2,
-      });
-    };
-    updateCenter();
-    const handleResize = () => {
-      if (resizeTimeoutRef.current) {
-        cancelAnimationFrame(resizeTimeoutRef.current);
-      }
-      resizeTimeoutRef.current = requestAnimationFrame(updateCenter);
-    };
-    window.addEventListener('resize', handleResize, { passive: true });
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      if (resizeTimeoutRef.current) {
-        cancelAnimationFrame(resizeTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  // Generate tech nodes in radial pattern (memoized for performance)
-  // Reduce nodes on mobile for better performance
-  const { nodes, connections } = useMemo(() => {
-    const nodeCount = isMobile ? 6 : 12;
+    const isMobile = window.innerWidth < 768;
+    const nodeCount = isMobile ? 8 : 16;
     const layers = isMobile ? 2 : 3;
-    const nodesArray: TechNode[] = [];
+    const nodes: TechNode[] = [];
 
     for (let layer = 0; layer < layers; layer++) {
       const layerRadius = 150 + layer * 200;
@@ -83,9 +46,9 @@ const Enterprise3DBackground: FC<Enterprise3DBackgroundProps> = ({ scrollPositio
         const colors = [
           'rgba(0, 191, 165, 0.6)',
           'rgba(77, 182, 172, 0.5)',
-          'rgba(255, 112, 67, 0.4)',
+          'rgba(25, 207, 190, 0.4)',
         ];
-        nodesArray.push({
+        nodes.push({
           id: layer * 100 + i,
           angle,
           radius: layerRadius,
@@ -97,209 +60,154 @@ const Enterprise3DBackground: FC<Enterprise3DBackgroundProps> = ({ scrollPositio
       }
     }
 
-    // Generate connection lines
-    const connectionsArray: ConnectionLine[] = [];
-    for (let i = 0; i < nodesArray.length; i++) {
-      const node = nodesArray[i];
-      // Connect to nearby nodes in same layer
-      const nearbyNodes = nodesArray.filter(
-        (n) => n.depth === node.depth && Math.abs(n.id - node.id) <= 3 && n.id !== node.id
-      );
-      nearbyNodes.forEach((target) => {
-        if (!connectionsArray.find((c) => c.from === target.id && c.to === node.id)) {
-          connectionsArray.push({
-            from: node.id,
-            to: target.id,
-            depth: node.depth,
-          });
-        }
-      });
+    const connections: Connection[] = [];
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+      const sameLayerNodes = nodes.filter(n => n.depth === node.depth && n.id !== node.id);
+      // Connect to a few nearby nodes in same layer
+      for (let j = 0; j < Math.min(2, sameLayerNodes.length); j++) {
+        const target = sameLayerNodes[(i + j + 1) % sameLayerNodes.length];
+        connections.push({ fromNode: node, toNode: target });
+      }
     }
 
-    return { nodes: nodesArray, connections: connectionsArray };
-  }, [isMobile]);
+    nodeDataRef.current = { nodes, connections };
+  }, []);
 
-  // Calculate parallax transforms (memoized calculation)
-  // Reduce parallax intensity on mobile
-  const getNodeTransform = (node: TechNode) => {
-    const parallaxMultiplier = isMobile ? 0.3 : 1;
-    const parallaxX = scrollPosition * node.speed * 50 * parallaxMultiplier;
-    const parallaxY = scrollPosition * node.speed * 30 * parallaxMultiplier;
-    const parallaxZ = scrollPosition * node.speed * 100 * parallaxMultiplier;
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    const x = viewportCenter.x + Math.cos(node.angle + scrollPosition * 0.001) * node.radius + parallaxX;
-    const y = viewportCenter.y + Math.sin(node.angle + scrollPosition * 0.001) * node.radius + parallaxY;
-    const z = node.depth + parallaxZ;
+    let rafId: number;
 
-    const rotationY = isMobile ? scrollPosition * 0.3 : mousePosition.x * 15 + scrollPosition * 0.5;
-    const rotationX = isMobile ? scrollPosition * 0.2 : mousePosition.y * 10 + scrollPosition * 0.3;
-
-    return {
-      transform: `translate3d(${x - node.size / 2}px, ${y - node.size / 2}px, ${z}px) rotateY(${rotationY}deg) rotateX(${rotationX}deg)`,
-      opacity: Math.max(0.3, 1 - Math.abs(z) / 500),
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     };
-  };
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    const draw = () => {
+      if (!ctx || !nodeDataRef.current) return;
+
+      const { nodes, connections } = nodeDataRef.current;
+      const width = canvas.width;
+      const height = canvas.height;
+      const centerX = width / 2;
+      const centerY = height / 2;
+
+      const s = scrollValue.get();
+      const mX = mouseX.get();
+      const mY = mouseY.get();
+      const time = timeRef.current;
+      timeRef.current += 1;
+
+      ctx.clearRect(0, 0, width, height);
+
+      // Perspective helper
+      const getPos = (node: TechNode) => {
+        const idleX = Math.cos(time * 0.01 + node.id) * 10;
+        const idleY = Math.sin(time * 0.01 + node.id) * 10;
+
+        const angle = node.angle + s * 0.001 + time * 0.002;
+        const radius = node.radius;
+
+        const basePX = Math.cos(angle) * radius;
+        const basePY = Math.sin(angle) * radius;
+
+        const parallaxX = s * node.speed * 50 + mX * 20 + idleX;
+        const parallaxY = s * node.speed * 30 + mY * 20 + idleY;
+        const parallaxZ = node.depth + s * node.speed * 100;
+
+        const x = centerX + basePX + parallaxX;
+        const y = centerY + basePY + parallaxY;
+        const zScale = 1 - Math.abs(parallaxZ) / 2000;
+
+        return { x, y, zScale };
+      };
+
+      // Draw connections first
+      ctx.lineWidth = 0.5;
+      connections.forEach(({ fromNode, toNode }) => {
+        const p1 = getPos(fromNode);
+        const p2 = getPos(toNode);
+
+        const opacity = Math.max(0.01, p1.zScale * 0.1);
+        ctx.strokeStyle = `rgba(0, 191, 165, ${opacity})`;
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      });
+
+      // Draw nodes
+      nodes.forEach(node => {
+        const p = getPos(node);
+        const size = node.size * p.zScale;
+        const opacity = Math.max(0.1, p.zScale * 0.4);
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+
+        // Node Glow
+        const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, size * 2);
+        gradient.addColorStop(0, node.color.replace('0.6', String(opacity)));
+        gradient.addColorStop(1, 'transparent');
+
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(0, 0, size * 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Node Core
+        ctx.fillStyle = node.color.replace('0.6', '0.8');
+        ctx.beginPath();
+        ctx.arc(0, 0, size / 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+      });
+
+      // Central Hub
+      const hubPos = { x: centerX, y: centerY };
+      const hubParallaxZ = s * 30;
+      const hubScale = 1 - Math.abs(hubParallaxZ) / 2000;
+      const hubSize = 30 * hubScale;
+
+      ctx.save();
+      ctx.translate(hubPos.x + mX * 30, hubPos.y + mY * 30);
+
+      const hubGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, hubSize * 3);
+      hubGrad.addColorStop(0, `rgba(0, 191, 165, ${0.4 * hubScale})`);
+      hubGrad.addColorStop(1, 'transparent');
+
+      ctx.fillStyle = hubGrad;
+      ctx.beginPath();
+      ctx.arc(0, 0, hubSize * 3, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+
+      rafId = requestAnimationFrame(draw);
+    };
+
+    rafId = requestAnimationFrame(draw);
+
+    return () => {
+      window.removeEventListener('resize', resize);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className="fixed inset-0 z-0 overflow-hidden pointer-events-none"
-      style={{
-        perspective: isMobile ? '1000px' : '2000px',
-        perspectiveOrigin: `${viewportCenter.x}px ${viewportCenter.y}px`,
-        willChange: 'transform',
-      }}
-    >
-      {/* Hexagonal Grid Overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage: `
-            repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(0, 191, 165, 0.1) 50px),
-            repeating-linear-gradient(60deg, transparent, transparent 49px, rgba(0, 191, 165, 0.1) 50px),
-            repeating-linear-gradient(120deg, transparent, transparent 49px, rgba(0, 191, 165, 0.1) 50px)
-          `,
-          transform: `translateZ(${scrollPosition * 20}px)`,
-        }}
-      />
-
-      {/* Network Connection Lines */}
-      <svg className="absolute inset-0" style={{ transform: `translateZ(${scrollPosition * 15}px)` }}>
-        {connections.map((connection, idx) => {
-          const fromNode = nodes.find((n) => n.id === connection.from);
-          const toNode = nodes.find((n) => n.id === connection.to);
-          if (!fromNode || !toNode) return null;
-
-          const fromX = viewportCenter.x + Math.cos(fromNode.angle + scrollPosition * 0.001) * fromNode.radius;
-          const fromY = viewportCenter.y + Math.sin(fromNode.angle + scrollPosition * 0.001) * fromNode.radius;
-          const toX = viewportCenter.x + Math.cos(toNode.angle + scrollPosition * 0.001) * toNode.radius;
-          const toY = viewportCenter.y + Math.sin(toNode.angle + scrollPosition * 0.001) * toNode.radius;
-
-          return (
-            <line
-              key={`${connection.from}-${connection.to}-${idx}`}
-              x1={fromX}
-              y1={fromY}
-              x2={toX}
-              y2={toY}
-              stroke="rgba(0, 191, 165, 0.15)"
-              strokeWidth="1"
-              className="animate-pulse"
-              style={{
-                filter: 'drop-shadow(0 0 2px rgba(0, 191, 165, 0.3))',
-              }}
-            />
-          );
-        })}
-      </svg>
-
-      {/* Tech Nodes */}
-      {nodes.map((node) => {
-        const transform = getNodeTransform(node);
-        return (
-          <div
-            key={node.id}
-            className="absolute tech-node"
-            style={{
-              width: `${node.size}px`,
-              height: `${node.size}px`,
-              ...transform,
-              willChange: 'transform, opacity',
-            }}
-          >
-            <div
-              className="glass-premium rounded-full w-full h-full"
-              style={{
-                background: `radial-gradient(circle at 30% 30%, ${node.color}, rgba(4, 21, 18, 0.3))`,
-                border: `1px solid ${node.color}`,
-                boxShadow: `
-                  0 0 ${node.size * 2}px ${node.color},
-                  0 0 ${node.size * 4}px ${node.color}40,
-                  inset 0 0 ${node.size}px rgba(255, 255, 255, 0.15)
-                `,
-                backdropFilter: 'blur(8px) saturate(1.2)',
-                WebkitBackdropFilter: 'blur(8px) saturate(1.2)',
-              }}
-            >
-              {/* Inner glow */}
-              <div
-                className="absolute inset-0 rounded-full"
-                style={{
-                  background: `radial-gradient(circle at center, ${node.color}, transparent)`,
-                  opacity: 0.4,
-                  animation: 'pulse-glow 3s ease-in-out infinite',
-                  animationDelay: `${node.id * 0.1}s`,
-                }}
-              />
-            </div>
-          </div>
-        );
-      })}
-
-      {/* Data Flow Particles */}
-      {Array.from({ length: 8 }).map((_, i) => {
-        const angle = (i / 8) * Math.PI * 2 + scrollPosition * 0.002;
-        const radius = 300 + (i % 3) * 150;
-        const x = viewportCenter.x + Math.cos(angle) * radius;
-        const y = viewportCenter.y + Math.sin(angle) * radius;
-        const parallaxZ = scrollPosition * 0.5 * 50;
-
-        return (
-          <div
-            key={`particle-${i}`}
-            className="absolute rounded-full"
-            style={{
-              width: '4px',
-              height: '4px',
-              left: `${x}px`,
-              top: `${y}px`,
-              background: 'rgba(0, 191, 165, 0.8)',
-              boxShadow: '0 0 8px rgba(0, 191, 165, 0.6)',
-              transform: `translateZ(${parallaxZ}px)`,
-              animation: `particle-flow 4s linear infinite`,
-              animationDelay: `${i * 0.5}s`,
-              willChange: 'transform, opacity',
-            }}
-          />
-        );
-      })}
-
-      {/* Central Hub Node */}
-      <div
-        className="absolute tech-node"
-        style={{
-          width: '60px',
-          height: '60px',
-          left: `${viewportCenter.x - 30}px`,
-          top: `${viewportCenter.y - 30}px`,
-          transform: `translateZ(${scrollPosition * 30}px) rotateY(${mousePosition.x * 20}deg) rotateX(${mousePosition.y * 15}deg)`,
-          willChange: 'transform',
-        }}
-      >
-        <div
-          className="glass-premium rounded-full w-full h-full"
-          style={{
-            background: 'radial-gradient(circle at 30% 30%, rgba(0, 191, 165, 0.85), rgba(77, 182, 172, 0.5), rgba(4, 21, 18, 0.4))',
-            border: '2px solid rgba(0, 191, 165, 0.7)',
-            boxShadow: `
-              0 0 40px rgba(0, 191, 165, 0.6),
-              0 0 80px rgba(0, 191, 165, 0.3),
-              inset 0 0 30px rgba(255, 255, 255, 0.15)
-            `,
-            backdropFilter: 'blur(12px) saturate(1.3)',
-            WebkitBackdropFilter: 'blur(12px) saturate(1.3)',
-          }}
-        >
-          <div
-            className="absolute inset-0 rounded-full"
-            style={{
-              background: 'radial-gradient(circle at center, rgba(0, 191, 165, 0.6), transparent)',
-              animation: 'pulse-glow 2s ease-in-out infinite',
-            }}
-          />
-        </div>
-      </div>
-    </div>
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 z-0 pointer-events-none"
+      style={{ opacity: 0.6 }}
+    />
   );
 };
 

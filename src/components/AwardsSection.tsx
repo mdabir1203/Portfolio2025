@@ -1,4 +1,6 @@
 import { FC, memo } from 'react';
+import { motion } from 'framer-motion';
+import { Trophy, ExternalLink } from 'lucide-react';
 import { Award } from '../data/awards';
 
 interface AwardsSectionProps {
@@ -6,47 +8,55 @@ interface AwardsSectionProps {
 }
 
 const AwardsSection: FC<AwardsSectionProps> = ({ awards }) => (
-  <section className="mb-12 sm:mb-16 animate-fadeIn">
-    <h2 className="text-3xl sm:text-4xl font-bold text-center mb-8 sm:mb-12 bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">
-      Awards &amp; Certifications
-    </h2>
+  <section className="py-24 px-6 max-w-7xl mx-auto z-20 relative">
+    <div className="text-center mb-20 space-y-4">
+      <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white font-serif">
+        The <span className="text-primary italic">Recognition</span> Wall
+      </h2>
+      <p className="text-sand/60 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-light">
+        A celebration of small wins and major milestones—from winning hackathons to being part of communities that change worlds.
+      </p>
+    </div>
 
-    <div className="max-w-5xl mx-auto grid gap-4 sm:gap-6 md:gap-8 px-4 sm:px-0">
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
       {awards.map((award, index) => (
-        <article
+        <motion.div
           key={`${award.title}-${index}`}
-          className="bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg shadow-cyan-500/10 hover:shadow-cyan-500/30 transition-shadow duration-300"
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: index * 0.05 }}
+          className="group flex flex-col md:flex-row md:items-center justify-between p-8 rounded-2xl bg-gradient-to-r from-card/10 to-transparent border-l-2 border-white/5 hover:border-primary transition-all duration-300 gap-6"
         >
-          <header className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
-            <div>
-              <h3 className="text-2xl font-semibold text-green-400">{award.title}</h3>
-              <p className="text-gray-300">
-                <span className="text-cyan-300">{award.issuer}</span>
-                {award.date && <span className="text-gray-400"> · {award.date}</span>}
-              </p>
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-[10px] font-mono text-primary/50 py-1 px-2 border border-primary/20 rounded uppercase tracking-widest">
+                {award.issuer}
+              </span>
+              {award.date && <span className="text-[10px] font-mono text-white/30 uppercase">{award.date}</span>}
             </div>
+            <h3 className="text-2xl font-bold text-white group-hover:text-primary transition-colors duration-300">
+              {award.title}
+            </h3>
+            <p className="mt-2 text-sm text-sand/60 leading-relaxed font-light">
+              {award.description}
+            </p>
+          </div>
+          <div className="flex items-center gap-4">
+            <Trophy className="text-primary/20 group-hover:text-primary transition-colors" size={24} />
             {award.link && (
               <a
                 href={award.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="self-start inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d1321] min-h-[44px]"
+                className="p-2 rounded-full bg-white/5 hover:bg-primary/20 text-white transition-all"
+                aria-label="View Award"
               >
-                View credential
-                <span aria-hidden>↗</span>
+                <ExternalLink size={18} />
               </a>
             )}
-          </header>
-          {award.description && <p className="text-gray-300 leading-relaxed mb-4">{award.description}</p>}
-
-          {award.highlights && award.highlights.length > 0 && (
-            <ul className="list-disc list-inside text-gray-300 space-y-2">
-              {award.highlights.map((highlight, highlightIndex) => (
-                <li key={highlightIndex}>{highlight}</li>
-              ))}
-            </ul>
-          )}
-        </article>
+          </div>
+        </motion.div>
       ))}
     </div>
   </section>

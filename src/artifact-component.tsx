@@ -1,177 +1,125 @@
-import { useState, useEffect, useRef, useCallback, memo } from 'react';
+import { useState, useEffect, useRef, memo, useCallback } from 'react';
+import { motion, useScroll, useTransform, useMotionValue } from 'framer-motion';
+import { Github, Instagram, Linkedin, MonitorPlay, Leaf, ExternalLink } from 'lucide-react';
 
 import BackgroundEffects from './components/BackgroundEffects';
-import Navigation from './components/Navigation';
-import HomeSection from './components/HomeSection';
 import InteractiveCursor from './components/InteractiveCursor';
-import SkillsSection from './components/SkillsSection';
-import ProjectsSection from './components/ProjectsSection';
-import BlogSection from './components/BlogSection';
-import SocialPhotosSection from './components/SocialPhotosSection';
-import TutorialsSection from './components/TutorialsSection';
-import ServicesSection from './components/ServicesSection';
-import TrustByDesignSection from './components/TrustByDesignSection';
-import JourneySection from './components/JourneySection';
-import AssistantJourneySection from './components/AssistantJourneySection';
-import ContactSection from './components/ContactSection';
-import ExperienceSection from './components/ExperienceSection';
+import Navigation from './components/Navigation';
+import RecommendationSection from './components/RecommendationSection';
 import AwardsSection from './components/AwardsSection';
-import WelcomeModal from './components/WelcomeModal';
-import { skills } from './data/skills';
-import { projects } from './data/projects';
-import { services } from './data/services';
+import BlogSection from './components/BlogSection';
+import VideosSection from './components/VideosSection';
+import DataStorySection from './components/DataStorySection';
+
 import { linkedinRecommendations } from './data/linkedin-recommendations';
-import { journey } from './data/journey';
-import { experiences } from './data/experience';
 import { awards } from './data/awards';
-import { socialPhotos } from './data/social-photos';
 import { MediumPost } from './types';
 
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-const isRecord = (value: unknown): value is Record<string, unknown> =>
-  typeof value === 'object' && value !== null;
-
-const getString = (value: unknown): string | undefined =>
-  typeof value === 'string' && value.trim().length > 0 ? value : undefined;
-
-const getStringArray = (value: unknown): string[] | undefined => {
-  if (!Array.isArray(value)) {
-    return undefined;
-  }
-
-  const filtered = value.filter((item): item is string => typeof item === 'string' && item.trim().length > 0);
-
-  return filtered.length > 0 ? filtered : undefined;
-};
-
-const getThumbnail = (item: Record<string, unknown>): string | undefined => {
-  const directThumbnail = getString(item.thumbnail);
-  if (directThumbnail) {
-    return directThumbnail;
-  }
-
-  if (isRecord(item.enclosure)) {
-    const enclosureLink = getString(item.enclosure.link);
-    if (enclosureLink) {
-      return enclosureLink;
-    }
-  }
-
-  return undefined;
-};
-
-const parseMediumPost = (item: unknown): MediumPost => {
-  if (!isRecord(item)) {
-    return {
-      title: 'Untitled post',
-      description: '',
-      pubDate: new Date().toISOString(),
-      link: '#'
-    };
-  }
-
-  const title = getString(item.title) ?? 'Untitled post';
-  const description = getString(item.description) ?? '';
-  const pubDate = getString(item.pubDate) ?? new Date().toISOString();
-  const link = getString(item.link) ?? '#';
-  const content = getString(item.content);
-  const thumbnail = getThumbnail(item);
-  const categories = getStringArray(item.categories);
-
-  return {
-    title,
-    description,
-    pubDate,
-    link,
-    content,
-    thumbnail,
-    categories
-  };
-};
+gsap.registerPlugin(ScrollTrigger);
 
 const ArtifactComponent = () => {
-  const [activeTab, setActiveTab] = useState('home');
-  const [isHired, setIsHired] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const [mediumPosts, setMediumPosts] = useState<MediumPost[]>([]);
+  const [activeSection, setActiveSection] = useState('home');
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const scrollValue = useMotionValue(0);
+  const [posts, setPosts] = useState<MediumPost[]>([]);
   const [isFetchingPosts, setIsFetchingPosts] = useState(false);
-  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const { scrollYProgress } = useScroll();
+
+  const fetchMediumPosts = useCallback(async () => {
+    setIsFetchingPosts(true);
+    try {
+      // Using rss2json to convert Medium RSS to JSON
+      const rssUrl = 'https://medium.com/feed/@md.abir1203';
+      const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`);
+      const data = await response.json();
+      if (data.status === 'ok') {
+        setPosts(data.items);
+      }
+    } catch (error) {
+      console.error('Error fetching Medium posts:', error);
+    } finally {
+      setIsFetchingPosts(false);
+    }
+  }, []);
 
   useEffect(() => {
-    try {
-      if (typeof window !== 'undefined') {
-        const hasSeenWelcome = sessionStorage.getItem('portfolio-welcome-dismissed');
-        if (!hasSeenWelcome) {
-          setShowWelcomeModal(true);
+    fetchMediumPosts();
+  }, [fetchMediumPosts]);
+
+  useEffect(() => {
+    // GSAP Immersive Animations
+    const sections = ['#home', '#skills', '#projects', '#recommendations', '#awards', '#thoughts', '#videos', '#contact'];
+
+    sections.forEach((section) => {
+      gsap.fromTo(section,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            toggleActions: "play none none reverse"
+          }
         }
-      }
-    } catch (error) {
-      console.warn('Unable to read welcome modal preference', error);
-      setShowWelcomeModal(true);
+      );
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach(t => t.kill());
+    };
+  }, []);
+
+  const handleSectionChange = useCallback((sectionId: string) => {
+    setActiveSection(sectionId);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
     }
   }, []);
 
-  const dismissWelcomeModal = useCallback(() => {
-    setShowWelcomeModal(false);
-    try {
-      if (typeof window !== 'undefined') {
-        sessionStorage.setItem('portfolio-welcome-dismissed', 'true');
-      }
-    } catch (error) {
-      console.warn('Unable to persist welcome modal preference', error);
-    }
-  }, []);
+  // Hero section opacity fade
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+  const heroScale = useTransform(scrollYProgress, [0, 0.15], [1, 0.95]);
 
   useEffect(() => {
-    let rafId = 0;
     const handleMouseMove = (e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth) * 2 - 1;
       const y = -(e.clientY / window.innerHeight) * 2 + 1;
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => setMousePosition({ x, y }));
+      mouseX.set(x);
+      mouseY.set(y);
     };
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      cancelAnimationFrame(rafId);
     };
   }, []);
 
-  // Scroll tracking for parallax effects
   useEffect(() => {
-    let rafId = 0;
-    let ticking = false;
     const handleScroll = () => {
-      if (!ticking) {
-        rafId = requestAnimationFrame(() => {
-          const scrollY = window.scrollY || window.pageYOffset;
-          const maxScroll = Math.max(
-            document.documentElement.scrollHeight - window.innerHeight,
-            1
-          );
-          const normalizedScroll = scrollY / maxScroll;
-          setScrollPosition(normalizedScroll);
-          ticking = false;
-        });
-        ticking = true;
-      }
+      const scrollY = window.scrollY || window.pageYOffset;
+      const maxScroll = Math.max(
+        document.documentElement.scrollHeight - window.innerHeight,
+        1
+      );
+      scrollValue.set(scrollY / maxScroll);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial call
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      cancelAnimationFrame(rafId);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const context = canvas.getContext('2d');
-    if (!context) return;
-    const ctx: CanvasRenderingContext2D = context;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -200,18 +148,19 @@ const ArtifactComponent = () => {
       constructor(x: number, y: number) {
         this.x = x;
         this.y = y;
-        this.size = Math.random() * 5 + 1;
-        this.speedX = Math.random() * 6 - 3;
-        this.speedY = Math.random() * 6 - 3;
-        this.color = `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.8)`;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = Math.random() * 2 - 1;
+        this.speedY = Math.random() * 2 - 1;
+        this.color = `rgba(0, 191, 165, ${Math.random() * 0.5})`;
         this.life = 100;
       }
       update() {
         this.x += this.speedX;
         this.y += this.speedY;
-        this.life -= 2;
+        this.life -= 1;
       }
       draw() {
+        if (!ctx) return;
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -219,240 +168,331 @@ const ArtifactComponent = () => {
       }
     }
 
+    let rafId: number;
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (Math.random() > 0.9 && particles.length < 50) {
+        particles.push(new P(Math.random() * canvas.width, Math.random() * canvas.height));
+      }
       particles = particles.filter(p => p.life > 0);
       particles.forEach(p => {
         p.update();
         p.draw();
       });
-      requestAnimationFrame(animate);
+      rafId = requestAnimationFrame(animate);
     };
-    animate();
-
-    const handleHireClick = () => {
-      const rect = canvas.getBoundingClientRect();
-      const x = rect.width / 2;
-      const y = rect.height / 2;
-      for (let i = 0; i < 100; i++) {
-        particles.push(new P(x, y));
-      }
-      setIsHired(true);
-      setTimeout(() => setIsHired(false), 3000);
-    };
-
-    const hireButton = document.querySelector('.hire-me-button');
-    hireButton?.addEventListener('click', handleHireClick);
-    return () => hireButton?.removeEventListener('click', handleHireClick);
+    rafId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafId);
   }, []);
 
-  const fetchMediumPosts = useCallback(async () => {
-    setIsFetchingPosts(true);
-    try {
-      const mediumUsername = 'md.abir1203';
-      const rssUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(
-        `https://medium.com/feed/@${mediumUsername}`
-      )}`;
-      const response = await fetch(rssUrl);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data: unknown = await response.json();
-      if (
-        isRecord(data) &&
-        getString(data.status) === 'ok' &&
-        Array.isArray(data.items) &&
-        data.items.length > 0
-      ) {
-        const parsedPosts = data.items.map(parseMediumPost);
-        setMediumPosts(parsedPosts);
-      }
-    } catch (error) {
-      console.error('Error fetching Medium posts:', error);
-    } finally {
-      setIsFetchingPosts(false);
-    }
-  }, []);
-
-  // Medium posts are fetched lazily when the blog tab becomes active
-
-  const handleTabClick = useCallback(
-    (tab: string) => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      setActiveTab(tab);
-      if (tab === 'thoughts' && mediumPosts.length === 0) {
-        fetchMediumPosts();
-      }
-    },
-    [mediumPosts, fetchMediumPosts]
+  // Emotional Background Transitions
+  const bgColor = useTransform(
+    scrollYProgress,
+    [0, 0.2, 0.5, 0.8, 1],
+    ['#061312', '#081a19', '#032520', '#061312', '#040b0a']
   );
-
-  const handleHireNavigate = useCallback(() => handleTabClick('contact'), [handleTabClick]);
-
-  const bookMeeting = useCallback(() => {
-    window.open('https://calendly.com/abirabbasmd', '_blank', 'noopener,noreferrer');
-  }, []);
 
   return (
     <InteractiveCursor>
-    <div className="min-h-screen bg-gradient-to-br from-[#021513] via-[#042623] to-[#062f2b] text-[#f4fffb] font-mono relative overflow-x-hidden">
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-[#033832]/95 text-[#FF7043] px-4 py-2 rounded-md border border-[#FF7043]/40 shadow-lg shadow-[#FF7043]/15 z-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00bfa5]"
+      <motion.div
+        style={{ backgroundColor: bgColor }}
+        className="text-ink min-h-screen font-sans selection:bg-primary/30 selection:text-ink relative overflow-x-hidden transition-colors duration-1000"
       >
-        Skip to main content
-      </a>
-      <WelcomeModal open={showWelcomeModal} onClose={dismissWelcomeModal} />
-      <BackgroundEffects mousePosition={mousePosition} scrollPosition={scrollPosition} canvasRef={canvasRef} />
-      <main
-        id="main-content"
-        tabIndex={-1}
-        className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 relative z-20"
-      >
-        <Navigation activeTab={activeTab} onTabClick={handleTabClick} />
-        {activeTab === 'home' && (
-          <HomeSection
-            onHireClick={handleHireNavigate}
-            isHired={isHired}
-            linkedinRecommendations={linkedinRecommendations}
+        <BackgroundEffects mouseX={mouseX} mouseY={mouseY} scrollValue={scrollValue} canvasRef={canvasRef} />
+
+        <Navigation activeTab={activeSection} onTabClick={handleSectionChange} />
+
+        {/* SCROLL 01: THE HOOK (The Terminal) */}
+        <section id="home" className="h-screen flex flex-col items-center justify-center relative px-6 z-20">
+          <motion.div
+            style={{ opacity: heroOpacity, scale: heroScale }}
+            className="max-w-6xl w-full"
+          >
+            <div className="flex flex-col md:flex-row items-center gap-12 mb-12">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                className="relative shrink-0 group"
+              >
+                <div className="absolute -inset-4 bg-primary/20 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                <div className="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-primary/20 backdrop-blur-sm relative z-10 p-2 bg-card/20 group-hover:border-primary/50 transition-all duration-700">
+                  <img
+                    src="/images/profile.webp"
+                    alt="Mohammad Abir Abbas"
+                    className="w-full h-full object-cover rounded-full grayscale hover:grayscale-0 transition-all duration-1000 scale-110 hover:scale-100"
+                  />
+                </div>
+                <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-primary/90 text-white px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap shadow-xl shadow-primary/20">
+                  Efficiency Architect • 2026
+                </div>
+              </motion.div>
+
+              <div className="text-left">
+                <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold leading-[0.85] text-white tracking-tighter font-serif mb-12 flex flex-col">
+                  <motion.span
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{
+                      opacity: 1,
+                      x: 0,
+                      textShadow: ["0 0 0px rgba(14,249,215,0)", "0 0 20px rgba(14,249,215,0.3)", "0 0 0px rgba(14,249,215,0)"]
+                    }}
+                    transition={{
+                      opacity: { duration: 0.8, delay: 0.5 },
+                      x: { duration: 0.8, delay: 0.5 },
+                      textShadow: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                    }}
+                    className="block"
+                  >
+                    SCALING
+                  </motion.span>
+                  <motion.span
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{
+                      opacity: 1,
+                      x: 0,
+                      scale: [1, 1.02, 1],
+                    }}
+                    transition={{
+                      opacity: { duration: 0.8, delay: 0.7 },
+                      x: { duration: 0.8, delay: 0.7 },
+                      scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                    }}
+                    className="text-primary italic block"
+                  >
+                    INNOVATION
+                  </motion.span>
+                  <motion.span
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                      filter: ["brightness(1)", "brightness(1.2)", "brightness(1)"]
+                    }}
+                    transition={{
+                      opacity: { duration: 0.8, delay: 0.9 },
+                      y: { duration: 0.8, delay: 0.9 },
+                      filter: { duration: 2.5, repeat: Infinity, ease: "easeInOut" }
+                    }}
+                    className="block"
+                  >
+                    SAFELY.
+                  </motion.span>
+                </h1>
+                <p className="text-sand/60 text-lg md:text-2xl max-w-2xl leading-relaxed font-light">
+                  Bridging the gap between cutting-edge AI and measurable business ROI.
+                  Simple, secure, and built to scale.
+                </p>
+              </div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1, duration: 1 }}
+              className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce flex flex-col items-center"
+            >
+              <span className="text-[10px] tracking-[0.4em] uppercase font-mono text-primary/40 mb-2">Continue Journey</span>
+              <div className="w-[1px] h-12 bg-gradient-to-b from-primary/60 to-transparent" />
+            </motion.div>
+          </motion.div>
+        </section>
+
+        {/* SCROLL 02: THE ALCHEMIST'S MINDSET (Technical & Visual Riffs) */}
+        <section id="skills" className="min-h-screen flex items-center py-32 px-6 max-w-6xl mx-auto z-20 relative">
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ type: 'spring', stiffness: 50, damping: 20 }}
+            className="grid md:grid-cols-2 gap-16 items-center"
+          >
+            <div className="space-y-8">
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white leading-none font-serif">
+                Built for <br />
+                <span className="text-primary animate-shimmer bg-clip-text text-transparent bg-gradient-to-r from-primary via-white/80 to-primary bg-[length:200%_auto]">Measurable Impact.</span>
+              </h2>
+
+              <div className="space-y-6 text-lg md:text-xl text-sand/70 leading-relaxed font-light">
+                <p>
+                  I'm an <span className="text-primary font-mono border-b border-primary/30">Efficiency & Security Architect</span>. I specialize in deploying AI workflows that protect enterprise assets while recapturing thousands of engineering hours through intelligent automation.
+                </p>
+                <p>
+                  I turn "magic" technology into predictable <span className="text-white italic">business advantages</span>. My <a href="https://medium.com/@md.abir1203" target="_blank" className="text-primary underline decoration-primary/20 underline-offset-8 transition-all hover:decoration-primary/60">Reading My Mind</a> blog deep-dives into the strategic "why" behind high-performance code, while my social presence tracks the momentum of the 2026 digital layer.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <div className="p-8 glass-panel rounded-3xl group transition-all duration-500 hover:border-primary/50">
+                <span className="text-primary/50 font-mono text-[10px] tracking-widest uppercase mb-4 block group-hover:text-primary transition-colors text-xs tracking-widest uppercase mb-4 block group-hover:text-primary transition-colors">// THE ADVANTAGE</span>
+                <p className="text-2xl font-bold text-white font-serif">High-ROI AI Deployments (2026)</p>
+                <div className="mt-4 flex gap-2">
+                  <span className="px-3 py-1 rounded-full bg-primary/5 border border-primary/20 text-[10px] text-primary tracking-tighter">Operational Scaling</span>
+                  <span className="px-3 py-1 rounded-full bg-primary/5 border border-primary/20 text-[10px] text-primary tracking-tighter">Risk Mitigation</span>
+                </div>
+              </div>
+
+              <div className="p-8 glass-panel rounded-3xl border-white/5 hover:border-primary/40 group transition-all duration-500">
+                <span className="text-primary/40 font-mono text-[10px] tracking-widest uppercase mb-4 block group-hover:text-primary transition-colors">// THE OUTCOME</span>
+                <p className="text-2xl font-bold text-white font-serif tracking-tight leading-snug">Empowering Human Agency Through Strategic Automation</p>
+              </div>
+            </div>
+          </motion.div>
+        </section>
+
+        {/* SCROLL 03: THE HUMANE FRAMEWORK (Wavelink) */}
+        <section id="projects" className="min-h-screen flex items-center py-32 px-6 bg-card/20 relative z-20">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-10%" }}
+            className="max-w-5xl mx-auto text-center"
+          >
+            <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8 border border-primary/20">
+              <Leaf className="w-10 h-10 text-primary" />
+            </div>
+
+            <h2 className="text-4xl md:text-6xl font-bold mb-8 text-white tracking-tight">Connectivity that doesn’t <br />cost the earth.</h2>
+
+            <p className="text-xl md:text-2xl text-muted-foreground/80 mb-12 max-w-3xl mx-auto leading-relaxed">
+              Technology must be humane. Through <strong className="text-primary font-semibold italic">Wavelink</strong>, we are building the no-waste paper movement via smart NFC networking. One tap. Endless connections. Zero environmental waste.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 font-mono text-primary text-sm uppercase tracking-widest">
+              <div className="p-6 border border-white/5 rounded-2xl bg-white/5 backdrop-blur-sm">Universal NFC</div>
+              <div className="p-6 border border-white/5 rounded-2xl bg-white/5 backdrop-blur-sm">GDPR Compliant</div>
+              <div className="p-6 border border-white/5 rounded-2xl bg-white/5 backdrop-blur-sm">Zero Paper</div>
+            </div>
+
+            <div className="mt-16">
+              <a
+                href="https://wave-link-cards.vercel.app"
+                target="_blank"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-bold hover:scale-105 transition-all shadow-lg shadow-primary/20"
+              >
+                Explore Wavelink <ExternalLink size={18} />
+              </a>
+            </div>
+          </motion.div>
+        </section>
+
+        {/* SCROLL 04: THE SOCIAL CONTRACT (Recommendations) */}
+        <section id="recommendations" className="min-h-screen flex items-center py-32 z-20 relative">
+          <RecommendationSection recommendations={linkedinRecommendations} />
+        </section>
+
+        {/* SCROLL 05: THE VALIDATION (Awards) */}
+        <section id="awards" className="min-h-screen flex items-center py-32 bg-card/10 z-20 relative">
+          <AwardsSection awards={awards} />
+        </section>
+
+        {/* NEW SCROLL 05.1: THE INTELLECT (Thoughts) */}
+        <section id="thoughts" className="min-h-screen py-32 px-6 max-w-7xl mx-auto z-20 relative">
+          <BlogSection
+            posts={posts}
+            isFetching={isFetchingPosts}
+            onRetry={fetchMediumPosts}
           />
-        )}
-        {activeTab === 'skills' && <SkillsSection skills={skills} />}
-        {activeTab === 'projects' && <ProjectsSection projects={projects} />}
-        {activeTab === 'thoughts' && (
-          <BlogSection posts={mediumPosts} isFetching={isFetchingPosts} onRetry={fetchMediumPosts} />
-        )}
-        {activeTab === 'social' && <SocialPhotosSection platforms={socialPhotos} />}
-        {activeTab === 'video-writeups' && <TutorialsSection />}
-        {activeTab === 'services' && (
-          <ServicesSection services={services} bookMeeting={bookMeeting} />
-        )}
-        {activeTab === 'awards' && <AwardsSection awards={awards} />}
-        {activeTab === 'experience' && <ExperienceSection experiences={experiences} />}
-        {activeTab === 'journey' && <JourneySection journey={journey} />}
-        {activeTab === 'trust' && <TrustByDesignSection />}
-        {activeTab === 'assistant' && <AssistantJourneySection />}
-        {activeTab === 'contact' && <ContactSection bookMeeting={bookMeeting} />}
-        <footer className="mt-24 pt-8 border-t border-[#2f6f68]/50 flex flex-col items-center justify-center text-center">
-          <p className="text-[#c7f2ea] mb-4 text-center w-full">
-            © 2025 Mohammad Abir Abbas. Crafted with ♥ and a touch of chaos.
-          </p>
-          <div className="flex justify-center items-center space-x-6 text-sm">
-            <a href="#" className="text-[#9adcd1] hover:text-[#FF7043] transition-colors duration-300">Privacy Policy</a>
-            <a href="#" className="text-[#9adcd1] hover:text-[#FF7043] transition-colors duration-300">Terms of Service</a>
-            <a href="#" className="text-[#9adcd1] hover:text-[#FF7043] transition-colors duration-300">Cookie Settings</a>
-          </div>
-        </footer>
-      </main>
+        </section>
 
-      <div
-        id="cookieConsent"
-        className="fixed bottom-0 left-0 right-0 bg-[#033832]/95 text-[#f1fffc] p-4 text-center z-50 hidden"
-      >
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>This website uses cookies to ensure you get the best experience.</p>
-          <div className="flex gap-4">
-            <button
-              id="acceptCookies"
-              className="bg-[#00a99d] hover:bg-[#009688] text-[#031b18] font-semibold py-2 px-4 rounded transition-colors duration-300 shadow-[0_10px_25px_rgba(0,150,136,0.25)]"
-            >
-              Accept All Cookies
-            </button>
-            <button
-              id="rejectCookies"
-              className="bg-[#FF7043] hover:bg-[#e8653c] text-[#0a211d] font-semibold py-2 px-4 rounded transition-colors duration-300 shadow-[0_10px_25px_rgba(255,112,67,0.28)]"
-            >
-              Reject All Cookies
-            </button>
-            <button
-              id="cookieSettings"
-              className="bg-[#4DB6AC] hover:bg-[#00bfa5] text-[#043530] font-semibold py-2 px-4 rounded transition-colors duration-300 shadow-[0_10px_25px_rgba(77,182,172,0.28)]"
-            >
-              Cookie Settings
-            </button>
-          </div>
-        </div>
-      </div>
+        {/* NEW SCROLL 05.2: THE VISUAL (Videos) */}
+        <section id="videos" className="min-h-screen py-32 px-6 max-w-7xl mx-auto z-20 relative bg-card/5">
+          <VideosSection />
+        </section>
 
-      <style>{`
-        .text-shadow-glow {
-          text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
-        }
+        {/* PHASE 6: THE IMPACT (Data Story & Chaos Animation) */}
+        <section id="impact" className="min-h-screen z-20 relative overflow-hidden">
+          <DataStorySection />
+        </section>
 
-        .spinner {
-          border: 4px solid rgba(255, 255, 255, 0.25);
-          border-top: 4px solid #00bfa5;
-          border-radius: 50%;
-          width: 20px;
-          height: 20px;
-          animation: spin 1s linear infinite;
-        }
+        {/* SCROLL 06: THE INVISIBLE ARCHITECTURE (Socials & GitHub) */}
+        <section id="contact" className="min-h-screen flex flex-col justify-center py-32 px-6 max-w-6xl mx-auto relative z-20">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.2 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-16 border-b border-white/10 pb-8 text-white">Initialize Connection.</h2>
 
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <SocialCard
+                icon={<Linkedin className="w-6 h-6" />}
+                platform="LinkedIn"
+                handle="/in/abir-abbas"
+                link="https://linkedin.com/in/abir-abbas"
+                metric="B2B Strategic Vision"
+                color="primary"
+              />
+              <SocialCard
+                icon={<Github className="w-6 h-6" />}
+                platform="GitHub"
+                handle="@mdabir1203"
+                link="https://github.com/mdabir1203"
+                metric="Modular Rust & RedAGPT"
+                color="white"
+              />
+              <SocialCard
+                icon={<Instagram className="w-6 h-6" />}
+                platform="Instagram"
+                handle="@uknowwho_ab1r"
+                link="https://instagram.com/uknowwho_ab1r"
+                metric="Daily Visual Riffs"
+                color="accent"
+              />
+              <SocialCard
+                icon={<MonitorPlay className="w-6 h-6" />}
+                platform="YouTube"
+                handle="@AIAugmented"
+                link="https://youtube.com/@AIAugmented"
+                metric="TrendRadar & AI Deep Dives"
+                color="destructive"
+              />
+            </div>
+          </motion.div>
 
-        .retro-cube {
-          width: 80px;
-          height: 80px;
-          position: absolute;
-          transform-style: preserve-3d;
-        }
+          <footer className="mt-32 pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-muted-foreground/40 text-sm">
+            <p>© 2026 Mohammad Abir Abbas. All Systems Operational.</p>
+            <div className="flex gap-8 mt-4 md:mt-0 font-mono text-[10px] uppercase tracking-widest">
+              <span className="text-primary/40 cursor-default">Status: Online</span>
+              <span className="text-primary/40 cursor-default">Latency: 24ms</span>
+              <span className="text-primary/40 cursor-default">Region: Global</span>
+            </div>
+          </footer>
+        </section>
 
-        .retro-cube div {
-          position: absolute;
-          width: 80px;
-          height: 80px;
-          background: linear-gradient(45deg, rgba(0, 150, 136, 0.65), rgba(77, 182, 172, 0.55));
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-size: 24px;
-          color: #FAFAFA;
-          text-shadow: 0 0 10px rgba(250, 250, 250, 0.65);
-          box-shadow: 0 0 24px rgba(0, 191, 165, 0.28), 0 0 40px rgba(255, 112, 67, 0.22);
-        }
-
-        .retro-cube .front  { transform: translateZ(40px); }
-        .retro-cube .back   { transform: rotateY(180deg) translateZ(40px); }
-        .retro-cube .right  { transform: rotateY(90deg) translateZ(40px); }
-        .retro-cube .left   { transform: rotateY(-90deg) translateZ(40px); }
-        .retro-cube .top    { transform: rotateX(90deg) translateZ(40px); }
-        .retro-cube .bottom { transform: rotateX(-90deg) translateZ(40px); }
-
-        .voxel-background {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          overflow: hidden;
-          z-index: 0;
-        }
-
-        .mesh-wrapper {
-          position: relative;
-          width: 100%;
-          height: 100%;
-        }
-
-        .mesh-line {
-          position: absolute;
-          height: 2px;
-          background: linear-gradient(90deg, rgba(0, 191, 165, 0.32), rgba(0, 150, 136, 0));
-          animation: mesh-animate 10s linear infinite;
-        }
-
-        @keyframes mesh-animate {
-          0% { transform: translate3d(0, 0, 0); }
-          50% { transform: translate3d(10px, 10px, 0) rotate(5deg); }
-          100% { transform: translate3d(0, 0, 0) rotate(0); }
-        }
-      `}</style>
-    </div>
+      </motion.div>
     </InteractiveCursor>
   );
 };
+
+// Reusable SocialCard with premium styles
+function SocialCard({ icon, platform, handle, link, metric, color }: any) {
+  const colorStyles: Record<string, string> = {
+    primary: "group-hover:text-primary group-hover:border-primary/30 group-hover:bg-primary/5",
+    accent: "group-hover:text-accent group-hover:border-accent/30 group-hover:bg-accent/5",
+    destructive: "group-hover:text-destructive group-hover:border-destructive/30 group-hover:bg-destructive/5",
+    white: "group-hover:text-white group-hover:border-white/30 group-hover:bg-white/5",
+  };
+
+  return (
+    <a
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`group block p-8 rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 ${colorStyles[color] || colorStyles.primary}`}
+    >
+      <div className="text-muted-foreground/60 transition-colors mb-6">
+        {icon}
+      </div>
+      <h3 className="text-xl font-bold text-white mb-1">{platform}</h3>
+      <p className="font-mono text-xs text-muted-foreground mb-6">{handle}</p>
+      <div className="pt-4 border-t border-white/5">
+        <p className="text-[10px] text-muted-foreground/40 uppercase tracking-widest font-bold">{metric}</p>
+      </div>
+    </a>
+  );
+}
 
 export default memo(ArtifactComponent);

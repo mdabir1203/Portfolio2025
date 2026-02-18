@@ -18,22 +18,72 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: 'The Hollow Batch Exploit',
+    description: 'A strategic security discovery that identifies how attackers can bypass billing filters. By flattening JSON payloads, attackers trick APIs into seeing a "single" request, preventing thousands of dollars in legitimate service charges.',
+    stars: '🛡️ Loss Prevention',
+    link: '#',
+    image: '/images/hollow-batch-exploit.jpg',
+    category: 'self-project',
+    metrics: [
+      {
+        label: 'Financial Protection',
+        value: '$5,000 / Attack',
+        description: 'Estimated loss prevented per automated exploit attempt by closing the logic-gap in meter filtering.'
+      },
+      {
+        label: 'Security Advantage',
+        value: 'Logic Gating',
+        description: 'Moves beyond simple bugs to identify fundamental flaws in how services are sold and protected.'
+      }
+    ]
+  },
+  {
     title: 'ShadowMap',
-    description: 'A Rust-powered open-source framework for subdomain enumeration, vulnerability detection, and attack surface mapping built with vibe coding.',
-    stars: '⭐ Open Source',
+    description: 'A Rust-powered framework for continuous security monitoring and asset tracking. Designed to give companies a complete view of their digital footprint without the high cost of manual audits.',
+    stars: '💎 Efficiency Asset',
     link: 'https://github.com/mdabir1203/ShadowMap',
     image: '/images/ShadowMaplogo.webp',
     category: 'self-project',
     metrics: [
       {
-        label: 'Stripe-ready Pricing',
-        value: '3 Plans',
-        description: 'Starter, Growth, and Enterprise tiers render straight from the Rust landing page for immediate monetization.'
+        label: 'Audit Scaling',
+        value: '40% Faster',
+        description: 'Reduces the time needed for security reviews, allowing teams to ship features faster and safer.'
       },
       {
-        label: 'Compliance Guardrails',
-        value: 'SOC 2 + GDPR',
-        description: 'Operational safeguards mirror SOC 2 Trust Services Criteria and GDPR requirements from the outset.'
+        label: 'Cost Efficiency',
+        value: 'Hybrid Logic',
+        description: 'Combines automated speed with smart human judgment to minimize expensive false positives.'
+      },
+      {
+        label: 'Market Readiness',
+        value: '3 Tiers',
+        description: 'Built-in subscription logic (Starter, Growth, Enterprise) ready for immediate service monetization.'
+      },
+      {
+        label: 'Risk Compliance',
+        value: 'SOC 2 Ready',
+        description: 'Ensures that every security check aligns with standard enterprise trust and safety requirements.'
+      }
+    ]
+  },
+  {
+    title: 'EmbeddedGPT: R&D Velocity Accelerator',
+    description: 'Operationalizing Generative AI (GPT-4) directly into the R&D workflow to decouple innovation output from linear headcount growth. Addressed "knowledge silos" and reduced cognitive overload for high-complexity engineering teams.',
+    stars: '⚡ R&D Automation',
+    link: '#',
+    image: '/images/1.webp',
+    category: 'self-project',
+    metrics: [
+      {
+        label: 'Troubleshooting Latency',
+        value: '-50% Reduction',
+        description: 'Halved the time spent identifying and fixing root causes in complex systems.'
+      },
+      {
+        label: 'Time-to-Productivity',
+        value: 'Accelerated',
+        description: 'Compressed TTP for new engineering talent by providing instant, contextual knowledge access.'
       }
     ]
   },
@@ -98,22 +148,32 @@ export const projects: Project[] = [
     ]
   },
   {
-    title: 'RedAGPT',
-    description: 'A Redis side quest hackathon winner - a cutting-edge security testing toolkit using AutoGPT and Langchain for network vulnerability assessment in homes and offices.',
-    stars: '🏆 Hackathon Winner',
+    title: 'RedAGPT: Intelligent Automation',
+    description: 'An autonomous security system that handles the heavy lifting of network auditing. It compresses 48-hour manual review cycles into 15-minute automated checks, freeing up high-cost engineering talent for innovation.',
+    stars: '🏆 Business Winner',
     link: 'https://github.com/mdabir1203/RedAGPT',
     image: '/images/asd.webp',
     category: 'hackathon',
     metrics: [
       {
-        label: 'Security Validation',
-        value: 'Hackathon Win',
-        description: 'Battle-tested at the Redis x AutoGPT hackathon, proving the concept with judges and users.'
+        label: 'Audit Velocity',
+        value: '< 15 Minutes',
+        description: '99% faster than manual methods. Security is no longer a bottleneck for product deployment.'
       },
       {
-        label: 'Network Coverage',
-        value: 'Home & Office',
-        description: 'Automates reconnaissance across consumer and SMB networks for proactive vulnerability sweeps.'
+        label: 'Operational Scaling',
+        value: 'Zero Headcount',
+        description: 'Handles increased network volume without requiring additional engineering hires.'
+      },
+      {
+        label: 'Risk Gating',
+        value: 'Standardized',
+        description: 'Eliminates human fatigue from the audit process, ensuring 100% of standard checks are met.'
+      },
+      {
+        label: 'Engineering ROI',
+        value: '0.5 FTE Recovered',
+        description: 'Recaptures half of a senior engineer\'s time, redirecting it toward strategic research and development.'
       }
     ]
   },

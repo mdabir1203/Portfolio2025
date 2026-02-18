@@ -108,16 +108,15 @@ const SocialPresenceShowcase: FC = () => {
         <div className="relative z-10">
           <div className="flex flex-col gap-6 sm:gap-8 md:gap-10 lg:flex-row lg:items-center">
             <div className="lg:w-1/2 space-y-3 sm:space-y-4">
-              <p className="inline-flex items-center gap-2 text-[0.65rem] sm:text-xs uppercase tracking-[0.35em] text-[#c6fff3]">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#0EF9D7]"></span>
-                Social Proof / Top 100 Designer Playbook
+              <p className="inline-flex items-center gap-2 text-[0.65rem] sm:text-xs uppercase tracking-[0.35em] text-primary">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse"></span>
+                Community Impact / Digital Presence
               </p>
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#f4fff9] leading-snug">
-                A meticulously nurtured audience that mirrors top-tier design momentum.
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white font-serif leading-snug">
+                Helping over <span className="text-primary">5,600+ people</span> navigate the digital layer.
               </h2>
-              <p className="text-xs sm:text-sm md:text-base text-[#eafff9] max-w-xl leading-relaxed">
-                Every connection is the outcome of a curated conversation—carefully aligned with product intuition, growth rituals,
-                and the brand language of a top 100 designer.
+              <p className="text-xs sm:text-sm md:text-base text-sand/60 max-w-xl leading-relaxed">
+                My work reaches across LinkedIn, Facebook, and Instagram, bringing together thousands of people interested in security, AI tools, and design thinking.
               </p>
               <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3">
                 {followerSegments.map((segment, index) => (
