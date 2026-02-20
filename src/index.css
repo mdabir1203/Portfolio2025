@@ -5,6 +5,35 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Horizontal Swipe Story Styles */
+.horizontal-snap-container {
+  display: flex !important;
+  flex-direction: row !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scroll-snap-type: x mandatory !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  width: 100vw;
+  height: 100vh;
+}
+
+.horizontal-snap-container::-webkit-scrollbar {
+  display: none;
+}
+
+.snap-section {
+  flex: 0 0 100vw !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  scroll-snap-align: center !important;
+  scroll-snap-stop: always !important;
+  position: relative;
+  overflow: hidden;
+}
+
 @layer base {
   :root {
     /* High Contrast Teal Theme (WCAG AA Compliant) */
