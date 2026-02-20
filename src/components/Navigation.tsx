@@ -8,11 +8,14 @@ interface NavigationProps {
 
 const tabs = [
   { id: 'home', label: 'Home' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'projects', label: 'Projects' },
+  { id: 'skills', label: 'Mindset' },
+  { id: 'projects', label: 'Creations' },
+  { id: 'recommendations', label: 'Kind Words' },
+  { id: 'awards', label: 'Wall' },
   { id: 'thoughts', label: 'Thoughts' },
-  { id: 'services', label: 'Services' },
-  { id: 'contact', label: 'Contact' }
+  { id: 'videos', label: 'Videos' },
+  { id: 'impact', label: 'Impact' },
+  { id: 'contact', label: 'Connect' }
 ];
 
 // Magnetic Item Component
@@ -42,7 +45,7 @@ const DockItem = ({
   return (
     <motion.button
       ref={ref}
-      style={{ width }} // Dynamic width for magnetic effect
+      style={{ width } as any} // Dynamic width for magnetic effect
       onClick={onClick}
       className={`
         relative h-12 rounded-full flex items-center justify-center 

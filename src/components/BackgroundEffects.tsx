@@ -10,13 +10,11 @@ interface BackgroundEffectsProps {
 }
 
 const BackgroundEffects: FC<BackgroundEffectsProps> = ({ mouseX, mouseY, scrollValue, canvasRef }) => {
-  // We use useTransform to create motion-driven style strings without re-renders
-  const cubeTransform = () => {
-    return useTransform(
-      [mouseX, mouseY, scrollValue],
-      ([x, y, s]: any[]) => `rotateY(${x * 15}deg) rotateX(${y * 15}deg) translateZ(${s * 50}px)`
-    );
-  };
+  // Correctly define transforms at the top level
+  const transform = useTransform(
+    [mouseX, mouseY, scrollValue],
+    ([x, y, s]: any[]) => `rotateY(${x * 15}deg) rotateX(${y * 15}deg) translateZ(${s * 50}px)`
+  );
 
   return (
     <>
@@ -32,7 +30,7 @@ const BackgroundEffects: FC<BackgroundEffectsProps> = ({ mouseX, mouseY, scrollV
               top: `${25 + i * 20}%`,
               animationDelay: `${i * 3}s`,
               animationDuration: `${25 + i * 5}s`,
-              transform: cubeTransform()
+              transform
             }}
           >
             <div className="front bg-gradient-to-br from-[#00bfa5] to-[#007f72] opacity-20"></div>

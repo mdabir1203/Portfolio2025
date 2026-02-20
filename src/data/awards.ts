@@ -5,20 +5,40 @@ export interface Award {
   description?: string;
   highlights?: string[];
   link?: string;
+  image?: string;
+  qrCode?: string;
 }
 
 export const awards: Award[] = [
   {
-    title: 'Wolfsburg Homie',
-    issuer: '42 Wolfsburg',
-    description: 'Awarded for embracing the 42 Wolfsburg community spirit—complete with legendary late-night coding sessions.',
-    highlights: ['A playful nod for “sleeping too much” while still shipping code.']
+    title: 'Hack-Nation 2026 Participant',
+    issuer: 'Hack-Nation',
+    date: 'Feb 2026',
+    description: 'Outstanding participation in the 4th Hack-Nation-Hackathon, showcasing innovation and technical execution.',
+    image: '/images/hack-nation-2026.jpg'
   },
   {
     title: 'Redis Side Quest Hackathon Winner',
     issuer: 'Redis',
+    date: 'Jun 2023',
     description: 'Built RedAGPT, an agentic network security assistant, to win the Redis Side Quest hackathon challenge.',
-    highlights: ['Showcased innovative use of agents to strengthen network security workflows.']
+    highlights: ['Showcased innovative use of agents to strengthen network security workflows.'],
+    link: 'https://lablab.ai/blog/redis-sidequest-winner-announcement'
+  },
+  {
+    title: 'Wolfsburg Homie',
+    issuer: '42 Wolfsburg',
+    date: '2021 - 2023',
+    description: 'Awarded for embracing the 42 Wolfsburg community spirit—complete with legendary late-night coding sessions.',
+    highlights: ['A playful nod for “sleeping too much” while still shipping code.'],
+    image: '/images/wolfshomieno1.jpg'
+  },
+  {
+    title: 'Certificate for Social Engagement',
+    issuer: 'Local Committee Hannover, AIESEC',
+    date: 'Jan 2023',
+    description: 'Served as Vice President for Incoming Global Talent, managing interns and corporate relations with HubSpot integration.',
+    image: '/images/aieseccert.jpg'
   },
   {
     title: 'Certificate of Achievement',

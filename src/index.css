@@ -160,6 +160,68 @@
   .text-liquid-metal {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-primary/50 to-white bg-[length:200%_auto] animate-shimmer;
   }
+
+  /* 3D Parallax Slider Styles */
+  .parallax-slider-container {
+    perspective: 1200px;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .parallax-card {
+    position: absolute;
+    width: var(--slide-width, 400px);
+    height: 450px;
+    transition: transform var(--slide-transition-duration, 800ms) cubic-bezier(0.23, 1, 0.32, 1),
+      opacity var(--slide-transition-duration, 800ms),
+      filter var(--slide-transition-duration, 800ms);
+    transform-style: preserve-3d;
+    will-change: transform, opacity;
+    opacity: 0;
+    pointer-events: none;
+    filter: blur(8px);
+    transform: translate3d(0, 0, -400px) rotateY(0deg);
+  }
+
+  .parallax-card[data-current="true"] {
+    opacity: 1;
+    pointer-events: auto;
+    filter: blur(0);
+    z-index: 10;
+    transform: translate3d(0, 0, 0) rotateX(calc(var(--rotX, 0) * 1deg)) rotateY(calc(var(--rotY, 0) * 1deg));
+    transition: transform 0.1s ease-out, opacity 0.8s ease, filter 0.8s ease;
+    /* Snappy tilt, smooth transition */
+  }
+
+  .parallax-card[data-previous="true"] {
+    opacity: 0.3;
+    filter: blur(4px);
+    z-index: 5;
+    transform: translate3d(-100%, 0, -200px) rotateY(45deg);
+  }
+
+  .parallax-card[data-next="true"] {
+    opacity: 0.3;
+    filter: blur(4px);
+    z-index: 5;
+    transform: translate3d(100%, 0, -200px) rotateY(-45deg);
+  }
+
+  .parallax-card-content {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+  }
+
+  .parallax-card-inner {
+    transform: translateZ(50px);
+    /* Internal depth */
+  }
 }
 
 @layer utilities {

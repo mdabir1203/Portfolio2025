@@ -1,107 +1,216 @@
-import { FC, memo, useMemo } from 'react';
-import { Project, ProjectCategory } from '../data/projects';
+import { FC, memo, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Rocket, ExternalLink, ChevronLeft, ChevronRight, X, BarChart3, ShieldCheck } from 'lucide-react';
+import { Project } from '../data/projects';
+import { useParallaxSlider } from '../hooks/useParallaxSlider';
 
 interface ProjectsSectionProps {
   projects: Project[];
 }
 
-const categoryLabels: Record<ProjectCategory, string> = {
-  'hackathon': 'Hackathon Projects',
-  'self-project': 'Self Projects',
-  'startup-venture': 'Startup Ventures'
-};
-
-const categoryOrder: ProjectCategory[] = ['hackathon', 'self-project', 'startup-venture'];
-
 const ProjectsSection: FC<ProjectsSectionProps> = ({ projects }) => {
-  const groupedProjects = useMemo(() => {
-    const grouped: Record<ProjectCategory, Project[]> = {
-      'hackathon': [],
-      'self-project': [],
-      'startup-venture': []
-    };
+  const {
+    activeIndex,
+    rotX,
+    rotY,
+    containerRef,
+    handlers,
+    next,
+    prev,
+    goTo
+  } = useParallaxSlider(projects.length);
 
-    projects.forEach(project => {
-      grouped[project.category].push(project);
-    });
-
-    return grouped;
-  }, [projects]);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   return (
-    <section className="py-24 px-6 max-w-7xl mx-auto z-20 relative">
-      <div className="text-center mb-20 space-y-4">
+    <div className="w-full h-full flex flex-col items-center justify-center overflow-hidden bg-background/50 relative">
+      <div className="text-center mb-8 space-y-4 px-6 z-20">
         <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white font-serif">
-          The <span className="text-primary italic">Creations</span> Gallery
+          The <span className="text-primary italic">Creation</span> Phase
         </h2>
-        <p className="text-sand/60 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-light">
-          A collection of tools that solve real problems, from security automation to helping people find their way in new worlds.
+        <p className="text-sand/60 text-sm md:text-base max-w-xl mx-auto leading-relaxed font-light">
+          Scaleable builds with measurable Impact & ROI.
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-        {categoryOrder.map((category) => {
-          const categoryProjects = groupedProjects[category];
-          if (categoryProjects.length === 0) return null;
+      <div
+        ref={containerRef as any}
+        className="parallax-slider-container z-10"
+        {...handlers}
+      >
+        {projects.map((project, index) => {
+          const isCurrent = index === activeIndex;
+          const isPrevious = index === (activeIndex - 1 + projects.length) % projects.length;
+          const isNext = index === (activeIndex + 1) % projects.length;
 
           return (
-            <div key={category} className="flex flex-col space-y-4 sm:space-y-6">
-              <h3 className="text-lg sm:text-xl font-semibold text-[#a7ffeb] tracking-wide border-b border-[#2f6f68]/40 pb-2 sm:pb-3 lg:sticky lg:top-0 lg:bg-[#021513]/95 lg:backdrop-blur-sm lg:z-10">
-                {categoryLabels[category]}
-              </h3>
-              <div className="flex flex-col gap-4 sm:gap-6">
-                {categoryProjects.map((project, index) => (
-                  <div
-                    key={index}
-                    className="project-card bg-[#052c28]/70 border border-[#2f6f68]/40 rounded-xl p-4 sm:p-6 transition-all duration-300 group overflow-hidden hover:-translate-y-1 hover:shadow-[0_26px_60px_rgba(0,150,136,0.22)]"
-                  >
-                    <div className="mb-3 sm:mb-4 rounded-lg overflow-hidden">
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-40 sm:h-48 object-cover transition-transform duration-500 group-hover:scale-110 group-hover:brightness-110"
-                      />
-                    </div>
-                    <h3 className="project-title text-xl sm:text-2xl font-semibold text-[#a7ffeb] tracking-wide mb-2 sm:mb-3">{project.title}</h3>
-                    <p className="project-description text-sm sm:text-base text-[#d7f5ef] mb-4 sm:mb-6 leading-relaxed">{project.description}</p>
-                    {project.metrics?.length ? (
-                      <div className="grid gap-2 sm:gap-3 mb-4 sm:mb-6 grid-cols-1 sm:grid-cols-2">
-                        {project.metrics.map((metric) => (
-                          <div
-                            key={metric.label}
-                            className="bg-[#04332f]/70 border border-[#2f6f68]/40 rounded-lg p-3 sm:p-4 shadow-inner shadow-[#01211e]/40 transition-all duration-300 group-hover:border-[#00bfa5]/60"
-                          >
-                            <p className="text-[0.65rem] sm:text-xs uppercase tracking-[0.2em] text-[#7ddcd3] mb-1">{metric.label}</p>
-                            <p className="text-lg sm:text-xl font-semibold text-[#c8fff4] mb-1">{metric.value}</p>
-                            <p className="text-xs sm:text-sm text-[#b0f0e6] leading-relaxed">{metric.description}</p>
-                          </div>
-                        ))}
-                      </div>
-                    ) : null}
-                    <div className="project-footer flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 sm:gap-0">
-                      <span className="project-stars text-[#FF8A65] font-semibold flex items-center justify-center sm:justify-start">
-                        <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                        {project.stars}
-                      </span>
-                      <a
-                        href={project.link}
-                        className="project-link text-[#052321] font-semibold tracking-wide py-2.5 sm:py-2 px-4 sm:px-4 rounded-lg border border-[#00bfa5]/50 bg-gradient-to-r from-[#00a99d] via-[#4DB6AC] to-[#00bfa5] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_38px_rgba(0,150,136,0.32)] text-center min-h-[44px] flex items-center justify-center"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Explore →
-                      </a>
-                    </div>
-                  </div>
-                ))}
-              </div>
+            <div
+              key={`${project.title}-${index}`}
+              className="parallax-card"
+              data-current={isCurrent}
+              data-previous={isPrevious}
+              data-next={isNext}
+              style={{
+                '--rotX': isCurrent ? rotX : 0,
+                '--rotY': isCurrent ? rotY : 0,
+              } as any}
+            >
+              <ProjectCard project={project} isCurrent={isCurrent} onShowImage={setSelectedImage} />
             </div>
           );
         })}
+
+        {/* Navigation Arrows */}
+        <button
+          onClick={prev}
+          className="absolute left-8 z-30 p-4 rounded-full bg-white/5 border border-white/10 text-white/50 hover:text-primary hover:border-primary/50 transition-all hidden md:block"
+        >
+          <ChevronLeft size={24} />
+        </button>
+        <button
+          onClick={next}
+          className="absolute right-8 z-30 p-4 rounded-full bg-white/5 border border-white/10 text-white/50 hover:text-primary hover:border-primary/50 transition-all hidden md:block"
+        >
+          <ChevronRight size={24} />
+        </button>
       </div>
-    </section>
+
+      {/* Progress Dots */}
+      <div className="flex gap-3 mt-8 z-20">
+        {projects.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(i)}
+            className={`h-1.5 rounded-full transition-all duration-500 ${i === activeIndex ? 'w-8 bg-primary' : 'w-2 bg-primary/20 hover:bg-primary/40'
+              }`}
+          />
+        ))}
+      </div>
+
+      {/* Full-screen Image Modal */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedImage(null)}
+            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-12 cursor-zoom-out"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="relative max-w-5xl w-full h-full flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={selectedImage}
+                alt="Project Detail"
+                className="max-w-full max-h-full object-contain rounded-lg shadow-2xl border border-white/10"
+              />
+              <button
+                onClick={() => setSelectedImage(null)}
+                className="absolute top-4 right-4 p-2 rounded-full bg-white/10 text-white hover:bg-primary hover:text-black transition-all"
+              >
+                <X size={24} />
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+const ProjectCard = ({ project, isCurrent, onShowImage }: { project: Project, isCurrent: boolean, onShowImage: (url: string) => void }) => {
+  return (
+    <div className="parallax-card-content p-8 rounded-3xl bg-gradient-to-br from-card/80 to-black/80 border border-white/10 flex flex-col relative group overflow-hidden shadow-2xl backdrop-blur-sm">
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+      <div className="parallax-card-inner flex flex-col h-full">
+        <div className="flex justify-between items-start mb-4">
+          <div className="space-y-1">
+            <span className="text-[10px] font-mono text-primary py-1 px-2 bg-primary/10 rounded uppercase tracking-widest block w-fit">
+              {project.category.replace('-', ' ')}
+            </span>
+            <span className="text-[10px] font-mono text-white/30 uppercase block font-bold">{project.stars}</span>
+          </div>
+          <Rocket className={`text-primary/20 ${isCurrent ? 'text-primary/60' : ''} group-hover:text-primary transition-colors`} size={24} />
+        </div>
+
+        <h3 className="text-xl md:text-2xl font-bold text-white mb-2 line-clamp-1">
+          {project.title}
+        </h3>
+
+        {/* Feynman Summary - Single line, high prominence */}
+        <p className="text-primary/90 text-sm font-medium mb-4 italic leading-tight border-l-2 border-primary/30 pl-3">
+          "{project.feynmanSummary}"
+        </p>
+
+        <p className="text-xs text-sand/50 leading-relaxed font-light line-clamp-3 mb-6">
+          {project.description}
+        </p>
+
+        {/* Impact Metrics Grid */}
+        {project.metrics && (
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            {project.metrics.slice(0, 2).map((metric, idx) => (
+              <div key={idx} className="p-3 rounded-xl bg-white/5 border border-white/5 space-y-1 hover:bg-white/10 transition-colors">
+                <div className="flex items-center gap-1.5 text-[10px] font-mono text-primary/60 uppercase tracking-tighter">
+                  {idx === 0 ? <BarChart3 size={12} /> : <ShieldCheck size={12} />}
+                  {metric.label}
+                </div>
+                <div className="text-sm font-bold text-white tabular-nums">{metric.value}</div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {project.image && (
+          <div
+            className="relative h-28 w-full rounded-xl overflow-hidden mb-4 cursor-pointer group/img shrink-0"
+            onClick={() => onShowImage(project.image!)}
+          >
+            <img
+              src={project.image}
+              alt={project.title}
+              className="w-full h-full object-cover grayscale group-hover/img:grayscale-0 transition-all duration-500 scale-100 group-hover/img:scale-110"
+            />
+            <div className="absolute inset-0 bg-black/40 group-hover/img:bg-black/10 transition-all" />
+          </div>
+        )}
+
+        <div className="mt-auto pt-4 flex items-center justify-between">
+          {project.link !== '#' ? (
+            <motion.a
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-primary text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors"
+            >
+              Source <ExternalLink size={12} />
+            </motion.a>
+          ) : (
+            <span className="text-[10px] font-mono text-white/20 uppercase">Internal Build</span>
+          )}
+
+          <button
+            onClick={() => onShowImage(project.image!)}
+            className="text-[10px] uppercase tracking-widest text-white/40 hover:text-primary transition-colors font-bold"
+          >
+            Details
+          </button>
+        </div>
+      </div>
+
+      {/* Ambient Glow */}
+      {isCurrent && (
+        <div className="absolute -inset-20 bg-primary/5 blur-[100px] opacity-50 pointer-events-none -z-10" />
+      )}
+    </div>
   );
 };
 
