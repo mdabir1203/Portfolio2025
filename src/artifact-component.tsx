@@ -60,6 +60,66 @@ const getSectionOrderForPersona = (persona: Persona): SectionId[] => {
   return ['home', 'skills', 'projects', 'recommendations', 'awards', 'thoughts', 'videos', 'impact', 'contact'];
 };
 
+/**
+ * HeroHeading — CSS lineIn fade-in + sequential setInterval typewriter.
+ * No Framer Motion infinite loops. All three lines run via one async useEffect chain.
+ */
+const HeroHeading = memo(() => {
+  const [l1, setL1] = useState('');
+  const [l2, setL2] = useState('');
+  const [l3, setL3] = useState('');
+  const [activeLine, setActiveLine] = useState(0);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const typeLine = (
+      setter: React.Dispatch<React.SetStateAction<string>>,
+      text: string,
+      lineIdx: number,
+      startDelay: number,
+      charDelay: number
+    ): Promise<void> => new Promise((resolve) => {
+      setTimeout(() => {
+        let i = 0;
+        setActiveLine(lineIdx);
+        const iv = setInterval(() => {
+          if (cancelled) { clearInterval(iv); return; }
+          i++;
+          setter(text.slice(0, i));
+          if (i >= text.length) {
+            clearInterval(iv);
+            setActiveLine(0);
+            resolve();
+          }
+        }, charDelay);
+      }, startDelay);
+    });
+
+    (async () => {
+      await typeLine(setL1, 'SCALING', 1, 500, 55);
+      await typeLine(setL2, 'INNOVATION', 2, 0, 45);
+      await typeLine(setL3, 'SAFELY.', 3, 0, 50);
+    })();
+
+    return () => { cancelled = true; };
+  }, []);
+
+  return (
+    <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold leading-[0.85] text-white tracking-tighter font-serif mb-4 flex flex-col">
+      <span className="hero-line hero-line-1">
+        <span className={activeLine === 1 ? 'type-cursor' : ''}>{l1 || '\u00A0'}</span>
+      </span>
+      <span className="hero-line hero-line-2 text-primary italic">
+        <span className={activeLine === 2 ? 'type-cursor' : ''}>{l2 || '\u00A0'}</span>
+      </span>
+      <span className="hero-line hero-line-3">
+        <span className={activeLine === 3 ? 'type-cursor' : ''}>{l3 || '\u00A0'}</span>
+      </span>
+    </h1>
+  );
+});
+
 const ArtifactComponent = () => {
   const { persona } = usePersona();
   const { status: consentStatus, grant: grantConsent, deny: denyConsent } = useConsent();
@@ -300,56 +360,7 @@ const ArtifactComponent = () => {
                 </motion.div>
 
                 <div className="text-left space-y-6">
-                  <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold leading-[0.85] text-white tracking-tighter font-serif mb-4 flex flex-col">
-                    <motion.span
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{
-                        opacity: 1,
-                        x: 0,
-                        textShadow: ["0 0 0px rgba(14,249,215,0)", "0 0 20px rgba(14,249,215,0.3)", "0 0 0px rgba(14,249,215,0)"]
-                      }}
-                      transition={{
-                        opacity: { duration: 0.8, delay: 0.5 },
-                        x: { duration: 0.8, delay: 0.5 },
-                        textShadow: { duration: 3, repeat: Infinity, ease: "easeInOut" }
-                      }}
-                      className="block"
-                    >
-                      SCALING
-                    </motion.span>
-                    <motion.span
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{
-                        opacity: 1,
-                        x: 0,
-                        scale: [1, 1.02, 1],
-                      }}
-                      transition={{
-                        opacity: { duration: 0.8, delay: 0.7 },
-                        x: { duration: 0.8, delay: 0.7 },
-                        scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
-                      }}
-                      className="text-primary italic block"
-                    >
-                      INNOVATION
-                    </motion.span>
-                    <motion.span
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{
-                        opacity: 1,
-                        y: 0,
-                        filter: ["brightness(1)", "brightness(1.2)", "brightness(1)"]
-                      }}
-                      transition={{
-                        opacity: { duration: 0.8, delay: 0.9 },
-                        y: { duration: 0.8, delay: 0.9 },
-                        filter: { duration: 2.5, repeat: Infinity, ease: "easeInOut" }
-                      }}
-                      className="block"
-                    >
-                      SAFELY.
-                    </motion.span>
-                  </h1>
+                  <HeroHeading />
 
                   <p className="inline-block px-4 py-1 rounded-full bg-primary/10 border border-primary/30 text-[10px] font-mono uppercase tracking-[0.25em] text-primary/70">
                     {persona === 'recruiter' && 'Built for hiring managers & talent teams'}

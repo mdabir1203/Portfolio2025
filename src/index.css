@@ -224,30 +224,75 @@
   }
 }
 
-@layer utilities {
-  .animate-shimmer {
-    animation: shimmer 8s linear infinite;
+/* Hero Typewriter Animations */
+.hero-line {
+  display: block;
+  opacity: 0;
+  transform: translateY(8px);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55);
+}
+
+.hero-line-1 {
+  animation: lineIn 900ms ease forwards;
+  animation-delay: 0.5s;
+}
+
+.hero-line-2 {
+  animation: lineIn 900ms ease forwards;
+  animation-delay: 0.7s;
+}
+
+.hero-line-3 {
+  animation: lineIn 900ms ease forwards;
+  animation-delay: 0.9s;
+}
+
+@keyframes lineIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Blinking cursor — appended to the active typing span */
+.type-cursor::after {
+  content: "▍";
+  display: inline-block;
+  margin-left: 2px;
+  transform: translateY(-2px);
+  opacity: 0.8;
+  animation: blink 900ms steps(1) infinite;
+  color: hsl(var(--primary));
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 8s linear infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 0 0;
   }
 
-  @keyframes shimmer {
-    from {
-      background-position: 0 0;
-    }
-
-    to {
-      background-position: -200% 0;
-    }
+  to {
+    background-position: -200% 0;
   }
+}
 
-  @media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) {
 
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
