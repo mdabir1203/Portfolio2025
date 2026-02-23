@@ -24,11 +24,11 @@ const ProjectsSection: FC<ProjectsSectionProps> = ({ projects }) => {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center overflow-hidden bg-background/50 relative">
-      <div className="text-center mb-8 space-y-4 px-6 z-20">
+      <div className="max-w-7xl mx-auto px-8 md:px-16 w-full mb-8 space-y-4 z-20">
         <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white font-serif">
           The <span className="text-primary italic">Creation</span> Phase
         </h2>
-        <p className="text-sand/60 text-sm md:text-base max-w-xl mx-auto leading-relaxed font-light">
+        <p className="text-sand/60 text-sm md:text-base max-w-xl leading-relaxed font-light">
           Scaleable builds with measurable Impact & ROI.
         </p>
       </div>

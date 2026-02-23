@@ -9,20 +9,20 @@ interface RecommendationSectionProps {
 
 const RecommendationSection: FC<RecommendationSectionProps> = ({ recommendations }) => {
     return (
-        <section id="recommendations" className="py-24 px-6 max-w-7xl mx-auto z-20 relative">
+        <section id="recommendations" className="py-24 px-8 md:px-16 max-w-7xl mx-auto z-20 relative">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="mb-16 text-center"
+                className="mb-16"
             >
                 <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white font-serif mb-4">
                     Kind <span className="text-primary italic">Words</span>
                 </h2>
-                <p className="text-sand/60 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-light mb-8">
+                <p className="text-sand/60 text-lg md:text-xl max-w-2xl leading-relaxed font-light mb-8">
                     Voices from the people I've built with, taught, and learned from across the digital landscape.
                 </p>
-                <div className="h-px w-24 bg-gradient-to-r from-transparent via-primary/50 to-transparent mx-auto" />
+                <div className="h-px w-24 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

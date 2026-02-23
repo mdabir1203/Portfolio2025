@@ -27,13 +27,13 @@ function getClientId(req: VercelRequest): string {
   const forwarded = req.headers['x-forwarded-for'];
   const realIp = req.headers['x-real-ip'];
   const cfConnectingIp = req.headers['cf-connecting-ip'];
-  
-  const ip = 
+
+  const ip =
     (typeof forwarded === 'string' ? forwarded.split(',')[0] : null) ||
     (typeof realIp === 'string' ? realIp : null) ||
     (typeof cfConnectingIp === 'string' ? cfConnectingIp : null) ||
     'unknown';
-  
+
   return ip.trim();
 }
 
@@ -54,14 +54,14 @@ function cleanupRateLimitStore(): void {
  */
 export function rateLimit(req: VercelRequest, res: VercelResponse): boolean {
   cleanupRateLimitStore();
-  
+
   const clientId = getClientId(req);
   const isStrictMethod = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method || 'GET');
   const maxRequests = isStrictMethod ? RATE_LIMIT_MAX_REQUESTS_STRICT : RATE_LIMIT_MAX_REQUESTS;
-  
+
   const now = Date.now();
   const clientData = rateLimitStore[clientId];
-  
+
   if (!clientData || clientData.resetTime < now) {
     // New window or expired, reset
     rateLimitStore[clientId] = {
@@ -70,7 +70,7 @@ export function rateLimit(req: VercelRequest, res: VercelResponse): boolean {
     };
     return true;
   }
-  
+
   if (clientData.count >= maxRequests) {
     // Rate limit exceeded
     const retryAfter = Math.ceil((clientData.resetTime - now) / 1000);
@@ -80,13 +80,13 @@ export function rateLimit(req: VercelRequest, res: VercelResponse): boolean {
     res.setHeader('X-RateLimit-Reset', new Date(clientData.resetTime).toISOString());
     return false;
   }
-  
+
   // Increment count
   clientData.count++;
   res.setHeader('X-RateLimit-Limit', maxRequests.toString());
   res.setHeader('X-RateLimit-Remaining', (maxRequests - clientData.count).toString());
   res.setHeader('X-RateLimit-Reset', new Date(clientData.resetTime).toISOString());
-  
+
   return true;
 }
 
@@ -99,11 +99,11 @@ export function setSecurityHeaders(res: VercelResponse): void {
   res.setHeader('X-XSS-Protection', '1; mode=block');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
-  
+
   // Content Security Policy for API responses
   res.setHeader(
     'Content-Security-Policy',
-    "default-src 'none'; script-src 'none'; style-src 'none'; img-src 'none'; connect-src 'self'"
+    "default-src 'none'; script-src 'none'; style-src 'none'; img-src 'self' data: https://images.unsplash.com; connect-src 'self'"
   );
 }
 
@@ -112,21 +112,21 @@ export function setSecurityHeaders(res: VercelResponse): void {
  */
 export function handleCORS(req: VercelRequest, res: VercelResponse): void {
   const origin = req.headers.origin;
-  
+
   // Allow specific origins or all origins in development
   const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['*'];
-  const isAllowed = 
-    allowedOrigins.includes('*') || 
+  const isAllowed =
+    allowedOrigins.includes('*') ||
     (origin && allowedOrigins.includes(origin));
-  
+
   if (isAllowed && origin) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
-  
+
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-API-Key');
   res.setHeader('Access-Control-Max-Age', '86400'); // 24 hours
-  
+
   // Handle preflight
   if (req.method === 'OPTIONS') {
     res.status(204).end();
@@ -138,17 +138,17 @@ export function handleCORS(req: VercelRequest, res: VercelResponse): void {
  */
 export function validateApiKey(req: VercelRequest): boolean {
   const apiKey = process.env.API_KEY;
-  
+
   // If no API key is set, allow all requests
   if (!apiKey) {
     return true;
   }
-  
-  const providedKey = 
-    req.headers['x-api-key'] || 
+
+  const providedKey =
+    req.headers['x-api-key'] ||
     req.headers['authorization']?.replace('Bearer ', '') ||
     req.query.apiKey;
-  
+
   return providedKey === apiKey;
 }
 

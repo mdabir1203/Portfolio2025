@@ -73,7 +73,7 @@ const DataStorySection: FC = () => {
     }, []);
 
     return (
-        <div ref={containerRef} className="py-32 px-6 max-w-7xl mx-auto relative overflow-hidden">
+        <div ref={containerRef} className="relative overflow-hidden">
             {/* Background Data Resonance (Data Story) */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-32 relative z-10">
                 <motion.div

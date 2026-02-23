@@ -14,8 +14,11 @@
   scroll-snap-type: x mandatory !important;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  /* Firefox */
   -ms-overflow-style: none;
-  scroll-behavior: smooth;
+  /* IE and Edge */
+  /* Remove scroll-behavior: smooth here to make manual wheel/JS scroll snappier,
+     while snap-type handles the final alignment. */
   width: 100vw;
   height: 100vh;
 }
@@ -27,11 +30,7 @@
 .snap-section {
   flex: 0 0 100vw !important;
   width: 100vw !important;
-  height: 100vh !important;
-  scroll-snap-align: center !important;
-  scroll-snap-stop: always !important;
   position: relative;
-  overflow: hidden;
 }
 
 @layer base {
@@ -283,6 +282,40 @@
   to {
     background-position: -200% 0;
   }
+}
+
+/* Grain & Texture */
+.grain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Duotone / Portrait Treatment */
+.duotone-teal {
+  filter: sepia(100%) hue-rotate(130deg) saturate(150%) contrast(110%) brightness(90%);
+  mix-blend-mode: luminosity;
+  transition: filter 0.5s ease;
+}
+
+.duotone-teal:hover {
+  filter: sepia(0%) hue-rotate(0deg) saturate(100%) contrast(100%) brightness(100%);
+  mix-blend-mode: normal;
+}
+
+/* Brutalist Architectural Mask */
+.mask-arch {
+  clip-path: polygon(0% 100%, 0% 15%, 15% 0%, 85% 0%, 100% 15%, 100% 100%);
+}
+
+.mask-brutalist {
+  clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -24,11 +24,11 @@ const BlogSection: FC<BlogSectionProps> = ({ posts, isFetching, onRetry }) => {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center overflow-hidden bg-background/50 relative">
-      <div className="text-center mb-8 space-y-4 px-6 z-20">
+      <div className="w-full mb-8 space-y-4 z-20">
         <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white font-serif">
           Reading My <span className="text-primary italic">Mind</span>
         </h2>
-        <p className="text-sand/60 text-sm md:text-base max-w-xl mx-auto leading-relaxed font-light">
+        <p className="text-sand/60 text-sm md:text-base max-w-xl leading-relaxed font-light">
           Strategic deep-dives and technical mind-maps.
         </p>
       </div>
@@ -107,7 +107,7 @@ const BlogSection: FC<BlogSectionProps> = ({ posts, isFetching, onRetry }) => {
         </div>
       )}
 
-      <div className="mt-8 z-20">
+      <div className="mt-8 z-20 w-full">
         <a
           href="https://medium.com/@md.abir1203"
           target="_blank"

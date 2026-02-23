@@ -104,20 +104,20 @@ const HomeSection: FC<HomeSectionProps> = ({ onHireClick, isHired, linkedinRecom
         <motion.div variants={containerVariants} className="space-y-8 text-center lg:text-left">
           <motion.div variants={itemVariants}>
             <span className="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-[0.2em] uppercase mb-4 border border-primary/20">
-              Creative Technologist & Storyteller
+              AI Business Consultant & Growth Specialist
             </span>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight text-white mb-6">
               Mohammad <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Abir Abbas</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              Transforming global cultural intelligence into AI-powered enterprise decisions.
-              I embed diverse cultural insights into risk modeling and strategic planning, empowering C-suite executives to make data-driven decisions that respect regional nuances.
+              <span className="text-foreground font-semibold">Growth-oriented professional open to AI-driven Business Consultancy.</span><br />
+              Specializing in transforming global cultural intelligence into AI-powered enterprise decisions for the Dubai and Middle East markets.
             </p>
           </motion.div>
 
           <motion.div variants={itemVariants} className="flex flex-wrap gap-4 justify-center lg:justify-start">
-            {["AI Whisperer", "Rust Artisan", "Vibe Coder"].map((tag) => (
+            {["AI Strategy", "Consultancy", "Business Analytics"].map((tag) => (
               <span key={tag} className="px-5 py-2.5 rounded-full bg-secondary/30 border border-white/5 text-sm md:text-base font-medium text-foreground backdrop-blur-md">
                 {tag}
               </span>
@@ -129,20 +129,20 @@ const HomeSection: FC<HomeSectionProps> = ({ onHireClick, isHired, linkedinRecom
               onClick={onHireClick}
               className="relative px-8 py-4 rounded-full bg-primary text-primary-foreground text-lg font-bold tracking-widest uppercase shadow-[0_0_25px_rgba(23,207,190,0.4)] hover:shadow-[0_0_40px_rgba(23,207,190,0.6)] hover:scale-105 transition-all duration-300 active:scale-95"
             >
-              {isHired ? 'Hired!' : 'Hire Me'}
+              {isHired ? 'Ready to Consult' : 'Hire for Consultancy'}
             </button>
           </motion.div>
 
 
           <motion.div variants={itemVariants} className="block">
             <div className="inline-flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-3 px-5 py-4 rounded-2xl bg-card/40 border border-white/5 backdrop-blur-md shadow-lg">
-              <span className="text-2xl animate-pulse">🌏</span>
+              <span className="text-2xl animate-pulse">🇦🇪</span>
               <div className="space-y-1">
                 <p className="text-sm font-semibold text-foreground tracking-wide uppercase text-[0.7rem]">
-                  Global Mobility
+                  Target Markets
                 </p>
                 <p className="text-sm text-muted-foreground leading-snug max-w-md">
-                  Open to relocation to <span className="text-primary font-medium">Thailand (Bangkok)</span> & <span className="text-primary font-medium">Dubai</span> for <span className="text-foreground">AI Augmented Compliance</span> & <span className="text-foreground">Business Analyst</span> roles.
+                  Actively pursuing opportunities in <span className="text-primary font-medium">Dubai</span> & <span className="text-primary font-medium">UAE</span> for <span className="text-foreground">AI Business Consultancy</span> & <span className="text-foreground">Growth Strategy</span> roles.
                 </p>
               </div>
             </div>

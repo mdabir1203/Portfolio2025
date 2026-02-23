@@ -114,10 +114,10 @@ const Navigation: FC<NavigationProps> = ({ activeTab, onTabClick }) => {
         className="
           pointer-events-auto
           mx-auto flex items-end gap-3 px-4 py-3
-          rounded-full border border-white/10
-          bg-background/60 backdrop-blur-2xl shadow-2xl
+          rounded-full border border-white/20
+          bg-black/40 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]
           hover:shadow-[0_0_40px_rgba(23,207,190,0.15)]
-          transition-shadow duration-500
+          transition-all duration-500
         "
         role="tablist"
         aria-label="Primary Navigation"

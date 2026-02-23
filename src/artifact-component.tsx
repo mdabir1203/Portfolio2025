@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, memo, useCallback, useMemo } from 'react';
-import { motion, useScroll, useTransform, useMotionValue } from 'framer-motion';
-import { Github, Instagram, Linkedin, MonitorPlay, Leaf, ExternalLink, Twitter, MessageCircle } from 'lucide-react';
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
+import { Github, Instagram, Linkedin, MonitorPlay, Twitter, MessageCircle } from 'lucide-react';
 
 import BackgroundEffects from './components/BackgroundEffects';
 import InteractiveCursor from './components/InteractiveCursor';
@@ -35,6 +35,33 @@ type SectionId =
   | 'videos'
   | 'impact'
   | 'contact';
+
+const useMagnetic = () => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const springX = useSpring(x, { stiffness: 150, damping: 15, mass: 0.1 });
+  const springY = useSpring(y, { stiffness: 150, damping: 15, mass: 0.1 });
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    const { clientX, clientY, currentTarget } = e;
+    const { left, top, width, height } = currentTarget.getBoundingClientRect();
+    const centerX = left + width / 2;
+    const centerY = top + height / 2;
+    const distanceX = clientX - centerX;
+    const distanceY = clientY - centerY;
+
+    // Magnetic pull strength
+    x.set(distanceX * 0.35);
+    y.set(distanceY * 0.35);
+  }, [x, y]);
+
+  const handleMouseLeave = useCallback(() => {
+    x.set(0);
+    y.set(0);
+  }, [x, y]);
+
+  return { x: springX, y: springY, handleMouseMove, handleMouseLeave };
+};
 
 const getSectionOrderForPersona = (persona: Persona): SectionId[] => {
   // For general visitors, lean into personality earlier.
@@ -98,7 +125,7 @@ const HeroHeading = memo(() => {
 
     (async () => {
       await typeLine(setL1, 'SCALING', 1, 500, 55);
-      await typeLine(setL2, 'INNOVATION', 2, 0, 45);
+      await typeLine(setL2, 'INNOVATION', 2, 0, 10);
       await typeLine(setL3, 'SAFELY.', 3, 0, 50);
     })();
 
@@ -106,17 +133,36 @@ const HeroHeading = memo(() => {
   }, []);
 
   return (
-    <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold leading-[0.85] text-white tracking-tighter font-serif mb-4 flex flex-col">
-      <span className="hero-line hero-line-1">
-        <span className={activeLine === 1 ? 'type-cursor' : ''}>{l1 || '\u00A0'}</span>
-      </span>
-      <span className="hero-line hero-line-2 text-primary italic">
-        <span className={activeLine === 2 ? 'type-cursor' : ''}>{l2 || '\u00A0'}</span>
-      </span>
-      <span className="hero-line hero-line-3">
-        <span className={activeLine === 3 ? 'type-cursor' : ''}>{l3 || '\u00A0'}</span>
-      </span>
-    </h1>
+    <div className="relative z-30 pointer-events-none">
+      <h1 className="text-[9vw] md:text-[7vw] lg:text-[6vw] font-black leading-[0.8] tracking-tighter flex flex-col">
+        <motion.span
+          initial={{ x: -100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="hero-line font-sans text-white/90"
+        >
+          <span className={activeLine === 1 ? 'type-cursor' : ''}>{l1 || '\u00A0'}</span>
+        </motion.span>
+
+        <motion.span
+          initial={{ x: -80, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+          className="hero-line font-serif italic text-primary mt-12"
+        >
+          <span className={activeLine === 2 ? 'type-cursor' : ''}>{l2 || '\u00A0'}</span>
+        </motion.span>
+
+        <motion.span
+          initial={{ x: -60, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+          className="hero-line font-sans text-white mt-6 mix-blend-difference"
+        >
+          <span className={activeLine === 3 ? 'type-cursor' : ''}>{l3 || '\u00A0'}</span>
+        </motion.span>
+      </h1>
+    </div>
   );
 });
 
@@ -131,7 +177,6 @@ const ArtifactComponent = () => {
   const [isFetchingPosts, setIsFetchingPosts] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const horizontalContainerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll(); // Keep for global if needed, but we'll use horizontal for effects
   const { scrollXProgress } = useScroll({
     container: horizontalContainerRef,
     axis: "x"
@@ -157,6 +202,43 @@ const ArtifactComponent = () => {
   useEffect(() => {
     fetchMediumPosts();
   }, [fetchMediumPosts]);
+
+  useEffect(() => {
+    const container = horizontalContainerRef.current;
+    if (!container) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) {
+        e.preventDefault();
+        // Increased sensitivity: multiplier (1.5) to make it faster
+        container.scrollLeft += e.deltaY * 1.5;
+      }
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Map vertical movement keys to horizontal scroll
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        container.scrollLeft += 250; // Increased from 100
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        container.scrollLeft -= 250; // Increased from 100
+      } else if (e.key === 'PageDown') {
+        e.preventDefault();
+        container.scrollLeft += window.innerWidth;
+      } else if (e.key === 'PageUp') {
+        e.preventDefault();
+        container.scrollLeft -= window.innerWidth;
+      }
+    };
+
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      container.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   useEffect(() => {
     const observerOptions = {
@@ -195,10 +277,14 @@ const ArtifactComponent = () => {
     }
   }, []);
 
-  // Hero section opacity fade
-  // Hero section effects mapped to horizontal progress
+  // Hero section effects mapped to scroll progress
   const heroOpacity = useTransform(scrollXProgress, [0, 0.1], [1, 0]);
   const heroScale = useTransform(scrollXProgress, [0, 0.1], [1, 0.95]);
+
+  const orderedSections = useMemo(
+    () => getSectionOrderForPersona(persona),
+    [persona],
+  );
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -222,27 +308,13 @@ const ArtifactComponent = () => {
       scrollValue.set(scrollX / (maxScroll || 1));
     };
 
-    const handleWheel = (e: WheelEvent) => {
-      const el = horizontalContainerRef.current;
-      if (!el) return;
-
-      // If scrolling horizontally already, let native behavior take over
-      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
-
-      // Convert vertical scroll to horizontal
-      e.preventDefault();
-      el.scrollLeft += e.deltaY;
-    };
-
     const container = horizontalContainerRef.current;
     if (container) {
       container.addEventListener('scroll', handleScroll, { passive: true });
-      container.addEventListener('wheel', handleWheel, { passive: false });
     }
     return () => {
       if (container) {
         container.removeEventListener('scroll', handleScroll);
-        container.removeEventListener('wheel', handleWheel);
       }
     };
   }, []);
@@ -304,11 +376,17 @@ const ArtifactComponent = () => {
     let rafId: number;
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      if (Math.random() > 0.9 && particles.length < 50) {
+
+      // Speed up particles based on scroll
+      const scrollFactor = scrollValue.get() * 5 + 1;
+
+      if (Math.random() > 0.85 && particles.length < 100) {
         particles.push(new P(Math.random() * canvas.width, Math.random() * canvas.height));
       }
+
       particles = particles.filter(p => p.life > 0);
       particles.forEach(p => {
+        p.speedX *= (1 + scrollValue.get() * 0.01);
         p.update();
         p.draw();
       });
@@ -318,178 +396,156 @@ const ArtifactComponent = () => {
     return () => cancelAnimationFrame(rafId);
   }, []);
 
-  // Emotional Background Transitions (Mapped to horizontal progress)
+  // Emotional Background Transitions (Mapped to scroll progress)
   const bgColor = useTransform(
     scrollXProgress,
     [0, 0.2, 0.4, 0.6, 0.8, 1],
-    ['#061312', '#081a19', '#032520', '#051b1a', '#061312', '#040b0a']
-  );
-
-  const orderedSections = useMemo(
-    () => getSectionOrderForPersona(persona),
-    [persona],
+    ['#061312', '#081a19', '#032520', '#0a1f2e', '#161312', '#040b0a']
   );
 
   const renderSection = (sectionId: SectionId) => {
     switch (sectionId) {
       case 'home':
         return (
-          <section key="home" id="home" className="snap-section flex flex-col items-center justify-center relative px-6 z-20">
+          <div key="home" className="flex flex-col items-center justify-center relative z-20 h-full w-full overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+              <div className="absolute top-[10%] left-[-5%] text-[20vw] font-black text-white/5 whitespace-nowrap select-none">ARCHITECTURE</div>
+              <div className="absolute bottom-[10%] right-[-5%] text-[20vw] font-black text-primary/5 whitespace-nowrap select-none">EFFICIENCY</div>
+            </div>
+
             <motion.div
               style={{ opacity: heroOpacity, scale: heroScale }}
-              className="max-w-6xl w-full"
+              className="max-w-7xl mx-auto px-8 md:px-16 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 relative"
             >
-              <div className="flex flex-col md:flex-row items-center gap-12 mb-12">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative shrink-0 group"
-                >
-                  <div className="absolute -inset-4 bg-primary/20 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                  <div className="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-primary/20 backdrop-blur-sm relative z-10 p-2 bg-card/20 group-hover:border-primary/50 transition-all duration-700">
-                    <img
-                      src="/images/profile.webp"
-                      alt="Mohammad Abir Abbas"
-                      className="w-full h-full object-cover rounded-full grayscale hover:grayscale-0 transition-all duration-1000 scale-110 hover:scale-100"
-                    />
-                  </div>
-                  <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-primary/90 text-white px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap shadow-xl shadow-primary/20">
-                    Efficiency Architect • 2026
-                  </div>
-                </motion.div>
+              <div className="z-30">
+                <HeroHeading />
 
-                <div className="text-left space-y-6">
-                  <HeroHeading />
+                <div className="mt-12 space-y-8 max-w-xl relative">
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1.5 }}
+                    className="inline-block px-4 py-1 rounded-sm bg-primary/10 border-l-4 border-primary text-[10px] font-mono uppercase tracking-[0.25em] text-primary"
+                  >
+                    {persona === 'recruiter' && 'Protocol: Talent Acquisition'}
+                    {persona === 'client' && 'Protocol: Strategic Build'}
+                    {persona === 'collaborator' && 'Protocol: Open Source Craft'}
+                    {persona === 'general' && 'Human-Centric AI Systems'}
+                  </motion.p>
 
-                  <p className="inline-block px-4 py-1 rounded-full bg-primary/10 border border-primary/30 text-[10px] font-mono uppercase tracking-[0.25em] text-primary/70">
-                    {persona === 'recruiter' && 'Built for hiring managers & talent teams'}
-                    {persona === 'client' && 'For founders & teams shipping secure AI products'}
-                    {persona === 'collaborator' && 'For engineers who care about systems & craft'}
-                    {persona === 'general' && 'Human-first AI, culture, and craft'}
-                  </p>
-
-                  <p className="text-sand/60 text-lg md:text-2xl max-w-2xl leading-relaxed font-light">
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.7 }}
+                    className="text-sand/70 text-lg md:text-xl leading-relaxed font-light backdrop-blur-sm bg-black/5 p-4 rounded-lg border border-white/5"
+                  >
                     {persona === 'recruiter' && (
                       <>
-                        AI developer, Rust engineer, and security specialist with a bias for ship-ready systems.
-                        Proven in blocking real exploits, shipping multi-agent workflows, and driving retention and ROI.
+                        <span className="text-white font-medium">Efficiency Architect.</span> Rust engineer & security specialist.
+                        Proven in blocking real exploits and shipping multi-agent workflows.
                       </>
                     )}
                     {persona === 'client' && (
                       <>
-                        I help you design and deploy AI products that are safe, explainable, and measurably useful.
-                        From multi-agent copilots to secure data layers, every build is tied to business impact.
+                        <span className="text-white font-medium">Strategic Deployment.</span> I help you design and deploy AI products that are
+                        safe, explainable, and measurably useful.
                       </>
                     )}
                     {persona === 'collaborator' && (
                       <>
-                        I explore the edges of agents, Rust systems, and security—then open-source the playbooks.
-                        Expect thoughtful trade-offs, observability by design, and a love for weird side quests.
+                        <span className="text-white font-medium">Craft & Systems.</span> I explore the edges of agents, Rust, and security—then open-source the playbooks.
                       </>
                     )}
                     {persona === 'general' && (
                       <>
                         Bridging the gap between cutting-edge AI and human stories.
-                        This is where experiments, failures, and big bets on the future live side by side.
+                        Experiments, failures, and big bets on the future live side by side.
                       </>
                     )}
-                  </p>
+                  </motion.p>
 
-                  <div className="flex flex-wrap items-center gap-4 mt-4">
-                    {persona === 'recruiter' && (
-                      <>
-                        <button
-                          onClick={() => handleSectionChange('projects')}
-                          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold tracking-[0.18em] uppercase shadow-[0_0_25px_rgba(23,207,190,0.4)] hover:shadow-[0_0_40px_rgba(23,207,190,0.6)] hover:scale-105 transition-all duration-300"
-                        >
-                          View Projects & Case Studies
-                        </button>
-                        <a
-                          href="/resume.pdf"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-primary/40 text-primary text-sm font-semibold tracking-[0.18em] uppercase hover:bg-primary/10 transition-colors duration-300"
-                        >
-                          Open Resume
-                        </a>
-                      </>
-                    )}
-                    {persona === 'client' && (
-                      <>
-                        <button
-                          onClick={() => handleSectionChange('contact')}
-                          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold tracking-[0.18em] uppercase shadow-[0_0_25px_rgba(23,207,190,0.4)] hover:shadow-[0_0_40px_rgba(23,207,190,0.6)] hover:scale-105 transition-all duration-300"
-                        >
-                          Book a Discovery Call
-                        </button>
-                        <button
-                          onClick={() => handleSectionChange('impact')}
-                          className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-primary/40 text-primary text-sm font-semibold tracking-[0.18em] uppercase hover:bg-primary/10 transition-colors duration-300"
-                        >
-                          See Impact Stories
-                        </button>
-                      </>
-                    )}
-                    {persona === 'collaborator' && (
-                      <>
-                        <button
-                          onClick={() => handleSectionChange('impact')}
-                          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold tracking-[0.18em] uppercase shadow-[0_0_25px_rgba(23,207,190,0.4)] hover:shadow-[0_0_40px_rgba(23,207,190,0.6)] hover:scale-105 transition-all duration-300"
-                        >
-                          Explore Technical Deep Dives
-                        </button>
-                        <a
-                          href="https://github.com/mdabir1203"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-primary/40 text-primary text-sm font-semibold tracking-[0.18em] uppercase hover:bg-primary/10 transition-colors duration-300"
-                        >
-                          View GitHub
-                        </a>
-                      </>
-                    )}
-                    {persona === 'general' && (
-                      <>
-                        <button
-                          onClick={() => handleSectionChange('skills')}
-                          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold tracking-[0.18em] uppercase shadow-[0_0_25px_rgba(23,207,190,0.4)] hover:shadow-[0_0_40px_rgba(23,207,190,0.6)] hover:scale-105 transition-all duration-300"
-                        >
-                          Meet the Mindset
-                        </button>
-                        <button
-                          onClick={() => handleSectionChange('recommendations')}
-                          className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-primary/40 text-primary text-sm font-semibold tracking-[0.18em] uppercase hover:bg-primary/10 transition-colors duration-300"
-                        >
-                          See What Others Say
-                        </button>
-                      </>
-                    )}
+                  <div className="flex flex-wrap items-center gap-6 mt-10">
+                    <MagneticButton
+                      onClick={() => handleSectionChange('projects')}
+                      className="px-8 py-4 bg-white text-black text-xs font-bold uppercase tracking-[0.2em] hover:bg-primary transition-colors duration-500 shadow-[0_20px_50px_rgba(0,0,0,0.3)]"
+                    >
+                      Explore Work
+                    </MagneticButton>
+                    <MagneticButton
+                      onClick={() => handleSectionChange('contact')}
+                      className="group flex items-center gap-4 text-xs font-bold uppercase tracking-[0.2em] text-white/60 hover:text-primary transition-colors"
+                    >
+                      <div className="w-12 h-[1px] bg-white/20 group-hover:w-20 group-hover:bg-primary transition-all duration-500" />
+                      Connect
+                    </MagneticButton>
                   </div>
                 </div>
               </div>
 
               <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1], delay: 0.6 }}
+                className="relative mt-12 lg:mt-0 flex justify-center lg:justify-end"
+              >
+                <div className="relative w-72 h-96 md:w-80 md:h-[32rem] group">
+                  <motion.div
+                    initial={{ scaleY: 0 }}
+                    animate={{ scaleY: 1 }}
+                    transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1], delay: 0.8 }}
+                    className="absolute inset-0 bg-primary/20 blur-3xl rounded-full scale-110 opacity-50 origin-bottom"
+                  />
+                  <motion.div
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1], delay: 1 }}
+                    className="absolute -inset-2 border border-primary/20 mask-brutalist pointer-events-none origin-left"
+                  />
+                  <div className="w-full h-full overflow-hidden mask-brutalist bg-card relative z-10 shadow-[0_40px_100px_rgba(0,0,0,0.6)]">
+                    <motion.img
+                      initial={{ scale: 1.5, filter: 'grayscale(100%) contrast(150%)' }}
+                      animate={{ scale: 1.1, filter: 'grayscale(100%) contrast(100%)' }}
+                      transition={{ duration: 2.5, ease: [0.16, 1, 0.3, 1] }}
+                      src="/images/profile.webp"
+                      alt="Mohammad Abir Abbas"
+                      className="w-full h-full object-cover duotone-teal"
+                    />
+                  </div>
+
+                </div>
+              </motion.div>
+
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 1, duration: 1 }}
-                className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce flex flex-col items-center"
+                transition={{ delay: 2.5, duration: 1 }}
+                className="absolute -bottom-20 left-0 w-full flex justify-between items-center px-4"
               >
-                <span className="text-[10px] tracking-[0.4em] uppercase font-mono text-primary/40 mb-2">Continue Journey</span>
-                <div className="w-[1px] h-12 bg-gradient-to-b from-primary/60 to-transparent" />
+                <div className="hidden lg:flex gap-12 text-[10px] font-mono text-white/20 uppercase tracking-[0.4em]">
+                  <span>Craft</span>
+                  <span>Code</span>
+                  <span>Impact</span>
+                </div>
+                <div
+                  className="animate-bounce flex flex-col items-center cursor-pointer group"
+                  onClick={() => handleSectionChange('skills')}
+                >
+                  <span className="text-[8px] tracking-[0.5em] uppercase font-mono text-primary/40 mb-2 group-hover:text-primary transition-colors">INITIATE</span>
+                  <div className="w-[1px] h-12 bg-gradient-to-b from-primary/60 to-transparent" />
+                </div>
               </motion.div>
             </motion.div>
-          </section>
+          </div>
         );
       case 'skills':
         return (
-          <section key="skills" id="skills" className="snap-section flex items-center py-32 px-6 z-20 relative">
+          <div key="skills" className="flex items-center z-20 relative h-full w-full">
             <motion.div
               initial={{ opacity: 0, y: 100 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-10%" }}
               transition={{ type: 'spring', stiffness: 50, damping: 20 }}
-              className="grid md:grid-cols-2 gap-16 items-center"
+              className="max-w-7xl mx-auto px-8 md:px-16 w-full grid md:grid-cols-2 gap-16 items-center"
             >
               <div className="space-y-8">
                 <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white leading-none font-serif">
@@ -500,49 +556,14 @@ const ArtifactComponent = () => {
                 </h2>
 
                 <div className="space-y-6 text-lg md:text-xl text-sand/70 leading-relaxed font-light">
-                  {persona === 'recruiter' && (
-                    <>
-                      <p>
-                        I operate as an <span className="text-primary font-mono border-b border-primary/30">Efficiency & Security Architect</span> inside AI teams.
-                        I slot into product pods to de-risk launches, harden systems, and unblock engineering throughput.
-                      </p>
-                      <p>
-                        From incident response to multi-LLM workflows, the focus is simple: reduce surprises, increase signal, and make your next hire the calmest one of the quarter.
-                      </p>
-                    </>
-                  )}
-                  {persona === 'client' && (
-                    <>
-                      <p>
-                        Think of this as an embedded AI partner: we co-design flows, align them with your governance constraints, and then ship in small, observable increments.
-                      </p>
-                      <p>
-                        You get clear phases, honest trade-offs, and a systems view that keeps compliance, security, and UX talking to each other instead of fighting.
-                      </p>
-                    </>
-                  )}
-                  {persona === 'collaborator' && (
-                    <>
-                      <p>
-                        I care about primitives—queues, schedulers, memory layouts, agent protocols—and how they behave under failure.
-                      </p>
-                      <p>
-                        If you like arguing about observability, safety rails, or how to keep latency predictable while talking to 5+ models, you’re in the right place.
-                      </p>
-                    </>
-                  )}
-                  {persona === 'general' && (
-                    <>
-                      <p>
-                        I'm an <span className="text-primary font-mono border-b border-primary/30">Efficiency & Security Architect</span>.
-                        I specialize in deploying AI workflows that protect assets while recapturing thousands of hours through intelligent automation.
-                      </p>
-                      <p>
-                        I turn \"magic\" technology into predictable <span className="text-white italic">business advantages</span>.
-                        This portfolio traces the mindset behind those decisions, not just the highlight reel.
-                      </p>
-                    </>
-                  )}
+                  <p>
+                    I operate as an <span className="text-primary font-mono border-b border-primary/30">Efficiency & Security Architect</span>.
+                    I specialize in deploying AI workflows that protect assets while recapturing thousands of hours through intelligent automation.
+                  </p>
+                  <p>
+                    I turn "magic" technology into predictable <span className="text-white italic">business advantages</span>.
+                    This portfolio traces the mindset behind those decisions, not just the highlight reel.
+                  </p>
                 </div>
               </div>
 
@@ -552,11 +573,7 @@ const ArtifactComponent = () => {
                     // THE ADVANTAGE
                   </span>
                   <p className="text-2xl font-bold text-white font-serif">
-                    {persona === 'client'
-                      ? 'High-ROI AI deployments that don’t blow up compliance.'
-                      : persona === 'recruiter'
-                        ? 'Operators who can speak to both execs and infra.'
-                        : 'High-ROI AI deployments for 2026 and beyond.'}
+                    High-ROI AI deployments that don’t blow up compliance.
                   </p>
                 </div>
 
@@ -565,145 +582,145 @@ const ArtifactComponent = () => {
                     // THE OUTCOME
                   </span>
                   <p className="text-2xl font-bold text-white font-serif tracking-tight leading-snug">
-                    {persona === 'collaborator'
-                      ? 'Systems that are fun to debug, resilient in production, and honest about trade-offs.'
-                      : 'Empowering human agency through strategic automation.'}
+                    Empowering human agency through strategic automation.
                   </p>
                 </div>
               </div>
             </motion.div>
-          </section>
+          </div>
         );
       case 'projects':
         return (
-          <section key="projects" id="projects" className="snap-section flex items-center min-h-screen z-20 relative">
+          <div key="projects" className="flex items-center h-full w-full z-20 relative">
             <ProjectsSection projects={projects} />
-          </section>
+          </div>
         );
       case 'recommendations':
         return (
-          <section key="recommendations" id="recommendations" className="snap-section flex items-center py-32 z-20 relative">
+          <div key="recommendations" className="flex items-center py-32 z-20 relative h-full w-full">
             <RecommendationSection recommendations={linkedinRecommendations} />
-          </section>
+          </div>
         );
       case 'awards':
         return (
-          <section key="awards" id="awards" className="snap-section flex items-center py-32 bg-card/10 z-20 relative">
+          <div key="awards" className="flex items-center py-32 bg-card/10 z-20 relative h-full w-full">
             <AwardsSection awards={awards} />
-          </section>
+          </div>
         );
       case 'thoughts':
         return (
-          <section key="thoughts" id="thoughts" className="snap-section py-32 px-6 z-20 relative">
-            <BlogSection
-              posts={posts}
-              isFetching={isFetchingPosts}
-              onRetry={fetchMediumPosts}
-            />
-          </section>
+          <div key="thoughts" className="flex items-center z-20 relative h-full w-full overflow-y-auto">
+            <div className="max-w-7xl mx-auto px-8 md:px-16 w-full py-32">
+              <BlogSection
+                posts={posts}
+                isFetching={isFetchingPosts}
+                onRetry={fetchMediumPosts}
+              />
+            </div>
+          </div>
         );
       case 'videos':
         return (
-          <section key="videos" id="videos" className="snap-section py-32 px-6 z-20 relative bg-card/5">
-            <VideosSection />
-          </section>
+          <div key="videos" className="flex items-center z-20 relative bg-card/5 h-full w-full overflow-y-auto">
+            <div className="max-w-7xl mx-auto px-8 md:px-16 w-full py-32">
+              <VideosSection />
+            </div>
+          </div>
         );
       case 'impact':
         return (
-          <section key="impact" id="impact" className="snap-section z-20 relative overflow-hidden">
-            <DataStorySection />
-          </section>
+          <div key="impact" className="z-20 relative overflow-hidden h-full w-full flex items-center">
+            <div className="max-w-7xl mx-auto px-8 md:px-16 w-full">
+              <DataStorySection />
+            </div>
+          </div>
         );
       case 'contact':
         return (
-          <section key="contact" id="contact" className="snap-section flex flex-col justify-center py-32 px-6 relative z-20">
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 1.2 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 border-b border-white/10 pb-4 text-white">
-                {persona === 'client'
-                  ? 'Scope a build. Share a risk. Start small.'
-                  : persona === 'recruiter'
-                    ? 'Initialize Connection.'
-                    : persona === 'collaborator'
-                      ? 'Ship something weird together.'
-                      : 'Initialize Connection.'}
-              </h2>
-              <p className="text-sm md:text-base text-muted-foreground/70 mb-10 max-w-2xl">
-                {persona === 'client' &&
-                  'Send context, constraints, and timelines—and we can quickly see if there’s a fit for an AI or systems engagement.'}
-                {persona === 'recruiter' &&
-                  'Best paths for hiring conversations, referrals, or longlist validation across AI, Rust, and security roles.'}
-                {persona === 'collaborator' &&
-                  'If you have an idea, repo, or odd constraint you want to explore, this is your shortcut into my brain.'}
-                {persona === 'general' &&
-                  'No pressure, no pitch. Just a set of links if you ever want to continue the conversation elsewhere.'}
-              </p>
+          <div key="contact" className="flex flex-col justify-center relative z-20 h-full w-full overflow-y-auto">
+            <div className="max-w-7xl mx-auto px-8 md:px-16 w-full py-32">
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 1.2 }}
+                viewport={{ once: true }}
+              >
+                <h2 className="text-4xl md:text-5xl font-bold mb-4 border-b border-white/10 pb-4 text-white">
+                  Initialize Connection.
+                </h2>
+                <p className="text-sm md:text-base text-muted-foreground/70 mb-10 max-w-2xl">
+                  {persona === 'client' &&
+                    'Send context, constraints, and timelines—and we can quickly see if there’s a fit for an AI or systems engagement.'}
+                  {persona === 'recruiter' &&
+                    'Best paths for hiring conversations, referrals, or longlist validation across AI, Rust, and security roles.'}
+                  {persona === 'collaborator' &&
+                    'If you have an idea, repo, or odd constraint you want to explore, this is your shortcut into my brain.'}
+                  {persona === 'general' &&
+                    'No pressure, no pitch. Just a set of links if you ever want to continue the conversation elsewhere.'}
+                </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <SocialCard
-                  icon={<Linkedin className="w-6 h-6" />}
-                  platform="LinkedIn"
-                  handle="/in/abir-abbas"
-                  link="https://linkedin.com/in/abir-abbas"
-                  metric={persona === 'client' ? 'B2B & Exec Threads' : 'B2B Strategic Vision'}
-                  color="primary"
-                />
-                <SocialCard
-                  icon={<Github className="w-6 h-6" />}
-                  platform="GitHub"
-                  handle="@mdabir1203"
-                  link="https://github.com/mdabir1203"
-                  metric={persona === 'collaborator' ? 'Rust, agents & experiments' : 'Modular Rust & RedAGPT'}
-                  color="white"
-                />
-                <SocialCard
-                  icon={<Instagram className="w-6 h-6" />}
-                  platform="Instagram"
-                  handle="@uknowwho_ab1r"
-                  link="https://instagram.com/uknowwho_ab1r"
-                  metric="Daily Visual Riffs"
-                  color="accent"
-                />
-                <SocialCard
-                  icon={<MonitorPlay className="w-6 h-6" />}
-                  platform="YouTube"
-                  handle="@AIAugmented"
-                  link="https://youtube.com/@AIAugmented"
-                  metric="TrendRadar & AI Deep Dives"
-                  color="destructive"
-                />
-                <SocialCard
-                  icon={<Twitter className="w-6 h-6" />}
-                  platform="TikTok / X"
-                  handle="@Mohamma71616280"
-                  link="https://x.com/Mohamma71616280"
-                  metric="AI Intelligence & Riffs"
-                  color="white"
-                />
-                <SocialCard
-                  icon={<MessageCircle className="w-6 h-6" />}
-                  platform="WhatsApp"
-                  handle="+880 1841-603542"
-                  link="https://wa.me/8801841603542"
-                  metric="Direct Protocol"
-                  color="primary"
-                />
-              </div>
-            </motion.div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <SocialCard
+                    icon={<Linkedin className="w-6 h-6" />}
+                    platform="LinkedIn"
+                    handle="/in/abir-abbas"
+                    link="https://linkedin.com/in/abir-abbas"
+                    metric="B2B Strategic Vision"
+                    color="primary"
+                  />
+                  <SocialCard
+                    icon={<Github className="w-6 h-6" />}
+                    platform="GitHub"
+                    handle="@mdabir1203"
+                    link="https://github.com/mdabir1203"
+                    metric="Modular Rust & RedAGPT"
+                    color="white"
+                  />
+                  <SocialCard
+                    icon={<Instagram className="w-6 h-6" />}
+                    platform="Instagram"
+                    handle="@uknowwho_ab1r"
+                    link="https://instagram.com/uknowwho_ab1r"
+                    metric="Daily Visual Riffs"
+                    color="accent"
+                  />
+                  <SocialCard
+                    icon={<MonitorPlay className="w-6 h-6" />}
+                    platform="YouTube"
+                    handle="@AIAugmented"
+                    link="https://youtube.com/@AIAugmented"
+                    metric="TrendRadar & AI Deep Dives"
+                    color="destructive"
+                  />
+                  <SocialCard
+                    icon={<Twitter className="w-6 h-6" />}
+                    platform="TikTok / X"
+                    handle="@Mohamma71616280"
+                    link="https://x.com/Mohamma71616280"
+                    metric="AI Intelligence & Riffs"
+                    color="white"
+                  />
+                  <SocialCard
+                    icon={<MessageCircle className="w-6 h-6" />}
+                    platform="WhatsApp"
+                    handle="+880 1841-603542"
+                    link="https://wa.me/8801841603542"
+                    metric="Direct Protocol"
+                    color="primary"
+                  />
+                </div>
+              </motion.div>
 
-            <footer className="mt-32 pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-muted-foreground/40 text-sm">
-              <p>© 2026 Mohammad Abir Abbas. All Systems Operational.</p>
-              <div className="flex gap-8 mt-4 md:mt-0 font-mono text-[10px] uppercase tracking-widest">
-                <span className="text-primary/40 cursor-default">Status: Online</span>
-                <span className="text-primary/40 cursor-default">Latency: 24ms</span>
-                <span className="text-primary/40 cursor-default">Region: Global</span>
-              </div>
-            </footer>
-          </section>
+              <footer className="mt-32 pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-muted-foreground/40 text-sm">
+                <p>© 2026 Mohammad Abir Abbas. All Systems Operational.</p>
+                <div className="flex gap-8 mt-4 md:mt-0 font-mono text-[10px] uppercase tracking-widest">
+                  <span className="text-primary/40 cursor-default">Status: Online</span>
+                  <span className="text-primary/40 cursor-default">Latency: 24ms</span>
+                  <span className="text-primary/40 cursor-default">Region: Global</span>
+                </div>
+              </footer>
+            </div>
+          </div>
         );
       default:
         return null;
@@ -716,52 +733,58 @@ const ArtifactComponent = () => {
         style={{ backgroundColor: bgColor }}
         className="text-ink h-screen w-screen font-sans selection:bg-primary/30 selection:text-ink relative overflow-hidden transition-colors duration-1000"
       >
+        <div className="grain-overlay" />
         <BackgroundEffects mouseX={mouseX} mouseY={mouseY} scrollValue={scrollValue} canvasRef={canvasRef} />
 
         <Navigation activeTab={activeSection} onTabClick={handleSectionChange} />
 
         <div
           ref={horizontalContainerRef}
-          className="horizontal-snap-container h-full w-screen"
+          className="horizontal-snap-container"
         >
-          {orderedSections.map(renderSection)}
+          {/* AI & LLM Scraper Optimization Block */}
+          <aside className="sr-only" aria-hidden="true">
+            <h2>Mohammad Abir Abbas - AI Business Consultant</h2>
+            <p>Specialization: Strategic AI Implementation, Growth Strategy, and Enterprise Security.</p>
+          </aside>
+
+          {orderedSections.map((id) => (
+            <div key={id} id={id} className="snap-section">
+              {renderSection(id)}
+            </div>
+          ))}
         </div>
 
         {consentStatus === 'unknown' && (
-          <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[60] flex justify-center px-4 pb-4 sm:pb-6">
-            <div className="pointer-events-auto max-w-3xl w-full rounded-2xl border border-white/10 bg-[#021513]/95 backdrop-blur-xl px-4 py-4 sm:px-6 sm:py-5 shadow-[0_24px_80px_rgba(0,0,0,0.65)]">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-                <div className="space-y-1">
-                  <p className="text-xs font-mono uppercase tracking-[0.22em] text-primary/70">
-                    Optional Personalization
-                  </p>
-                  <p className="text-sm sm:text-base text-sand/80">
-                    I use a tiny cookie/local preference to remember whether you&apos;re a recruiter, client, or collaborator
-                    so the hero, CTAs, and layout feel tailored to you. No cross-site tracking, ads, or third-party scripts.
-                  </p>
-                </div>
-                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 min-w-[220px]">
-                  <button
-                    type="button"
-                    onClick={denyConsent}
-                    className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs sm:text-sm font-medium text-sand/80 hover:bg-white/10 transition-colors"
-                  >
-                    Keep it neutral
-                  </button>
-                  <button
-                    type="button"
-                    onClick={grantConsent}
-                    className="inline-flex items-center justify-center rounded-full border border-primary/40 bg-primary px-4 py-2 text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase text-primary-foreground shadow-[0_0_22px_rgba(23,207,190,0.55)] hover:shadow-[0_0_32px_rgba(23,207,190,0.8)] transition-all"
-                  >
-                    Allow personalization
-                  </button>
+          <div className="fixed inset-x-0 bottom-0 z-[60] flex justify-center px-4 pb-4">
+            <div className="max-w-3xl w-full rounded-2xl border border-white/10 bg-[#021513]/95 backdrop-blur-xl px-6 py-5">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p className="text-sm text-sand/80">Tailor the experience?</p>
+                <div className="flex gap-3">
+                  <button onClick={denyConsent} className="text-xs text-sand/60">Neutral</button>
+                  <button onClick={grantConsent} className="bg-primary px-4 py-2 rounded-full text-xs font-bold uppercase">Personalize</button>
                 </div>
               </div>
             </div>
           </div>
         )}
       </motion.div>
-    </InteractiveCursor >
+    </InteractiveCursor>
+  );
+};
+
+const MagneticButton = ({ children, onClick, className }: any) => {
+  const { x, y, handleMouseMove, handleMouseLeave } = useMagnetic();
+  return (
+    <motion.button
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ x, y }}
+      onClick={onClick}
+      className={className}
+    >
+      {children}
+    </motion.button>
   );
 };
 

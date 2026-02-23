@@ -2,14 +2,14 @@ import { FC, memo } from 'react';
 import { videos } from '../data/videos';
 
 const VideosSection: FC = () => (
-  <section className="mb-24 sm:mb-32 animate-fadeIn relative px-4">
+  <section className="mb-24 sm:mb-32 animate-fadeIn relative">
     {/* Prestige Accent Ornament */}
-    <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-prestige/50 to-transparent"></div>
+    <div className="absolute -top-12 left-0 w-24 h-px bg-gradient-to-r from-prestige/50 to-transparent"></div>
 
-    <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mb-4 text-white tracking-tight font-serif">
+    <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 text-white tracking-tight font-serif">
       Visual <span className="text-prestige">Intelligence</span>
     </h2>
-    <p className="text-lg sm:text-xl text-sand/60 text-center mb-16 max-w-2xl mx-auto leading-relaxed">
+    <p className="text-lg sm:text-xl text-sand/60 mb-16 max-w-2xl leading-relaxed">
       Watch live demonstrations of agentic workflows, quantum prototyping, and the architectural principles of high-stability AI systems.
     </p>
 

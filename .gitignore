@@ -32,3 +32,6 @@ dist-ssr
 !.yarn/versions
 yarn.lock
 .pnp.*
+
+# Generated Data
+public/data.json
