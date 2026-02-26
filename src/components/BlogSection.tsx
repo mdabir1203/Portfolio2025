@@ -23,7 +23,7 @@ const BlogSection: FC<BlogSectionProps> = ({ posts, isFetching, onRetry }) => {
   } = useParallaxSlider(posts.length);
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center overflow-hidden bg-background/50 relative">
+    <div className="w-full flex flex-col items-start">
       <div className="w-full mb-8 space-y-4 z-20">
         <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white font-serif">
           Reading My <span className="text-primary italic">Mind</span>
@@ -34,12 +34,12 @@ const BlogSection: FC<BlogSectionProps> = ({ posts, isFetching, onRetry }) => {
       </div>
 
       {isFetching ? (
-        <div className="h-[450px] flex flex-col items-center justify-center z-20">
+        <div className="h-[450px] w-full flex flex-col items-center justify-center z-20">
           <div className="spinner border-2 border-primary/20 border-t-primary rounded-full w-12 h-12 animate-spin mb-4"></div>
           <p className="text-sand/40 font-mono text-[10px] uppercase tracking-widest">Synchronizing Intelligence...</p>
         </div>
       ) : posts.length > 0 ? (
-        <>
+        <div className="w-full flex flex-col items-center">
           <div
             ref={containerRef as any}
             className="parallax-slider-container z-10"
@@ -94,9 +94,9 @@ const BlogSection: FC<BlogSectionProps> = ({ posts, isFetching, onRetry }) => {
               />
             ))}
           </div>
-        </>
+        </div>
       ) : (
-        <div className="h-[450px] flex flex-col items-center justify-center z-20">
+        <div className="h-[450px] w-full flex flex-col items-center justify-center z-20">
           <p className="text-sand/40 text-sm font-mono uppercase tracking-widest mb-6">Knowledge base momentarily offline.</p>
           <button
             onClick={onRetry}
@@ -107,7 +107,7 @@ const BlogSection: FC<BlogSectionProps> = ({ posts, isFetching, onRetry }) => {
         </div>
       )}
 
-      <div className="mt-8 z-20 w-full">
+      <div className="mt-8 z-20 w-full text-left">
         <a
           href="https://medium.com/@md.abir1203"
           target="_blank"

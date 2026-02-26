@@ -185,12 +185,13 @@ const ArtifactComponent = () => {
   const fetchMediumPosts = useCallback(async () => {
     setIsFetchingPosts(true);
     try {
-      // Using rss2json to convert Medium RSS to JSON
       const rssUrl = 'https://medium.com/feed/@md.abir1203';
-      const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`);
+      const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}&count=10`);
       const data = await response.json();
-      if (data.status === 'ok') {
+      if (data.status === 'ok' && data.items && data.items.length > 0) {
         setPosts(data.items);
+      } else {
+        console.warn('Medium posts fetch returned status:', data.status);
       }
     } catch (error) {
       console.error('Error fetching Medium posts:', error);
@@ -407,7 +408,7 @@ const ArtifactComponent = () => {
     switch (sectionId) {
       case 'home':
         return (
-          <div key="home" className="flex flex-col items-center justify-center relative z-20 h-full w-full overflow-hidden">
+          <div key="home" className="flex flex-col items-center justify-center relative z-20 h-full w-full overflow-hidden no-scrollbar">
             <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
               <div className="absolute top-[10%] left-[-5%] text-[20vw] font-black text-white/5 whitespace-nowrap select-none">ARCHITECTURE</div>
               <div className="absolute bottom-[10%] right-[-5%] text-[20vw] font-black text-primary/5 whitespace-nowrap select-none">EFFICIENCY</div>
@@ -539,7 +540,7 @@ const ArtifactComponent = () => {
         );
       case 'skills':
         return (
-          <div key="skills" className="flex items-center z-20 relative h-full w-full">
+          <div key="skills" className="flex items-center z-20 relative h-full w-full no-scrollbar">
             <motion.div
               initial={{ opacity: 0, y: 100 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -591,26 +592,32 @@ const ArtifactComponent = () => {
         );
       case 'projects':
         return (
-          <div key="projects" className="flex items-center h-full w-full z-20 relative">
-            <ProjectsSection projects={projects} />
+          <div key="projects" className="flex items-start pt-32 h-full w-full z-20 relative no-scrollbar overflow-y-auto">
+            <div className="max-w-7xl mx-auto px-8 md:px-16 w-full">
+              <ProjectsSection projects={projects} />
+            </div>
           </div>
         );
       case 'recommendations':
         return (
-          <div key="recommendations" className="flex items-center py-32 z-20 relative h-full w-full">
-            <RecommendationSection recommendations={linkedinRecommendations} />
+          <div key="recommendations" className="flex items-start pt-32 z-20 relative h-full w-full no-scrollbar overflow-y-auto">
+            <div className="max-w-7xl mx-auto px-8 md:px-16 w-full">
+              <RecommendationSection recommendations={linkedinRecommendations} />
+            </div>
           </div>
         );
       case 'awards':
         return (
-          <div key="awards" className="flex items-center py-32 bg-card/10 z-20 relative h-full w-full">
-            <AwardsSection awards={awards} />
+          <div key="awards" className="flex items-start pt-32 bg-card/10 z-20 relative h-full w-full no-scrollbar overflow-y-auto">
+            <div className="max-w-7xl mx-auto px-8 md:px-16 w-full">
+              <AwardsSection awards={awards} />
+            </div>
           </div>
         );
       case 'thoughts':
         return (
-          <div key="thoughts" className="flex items-center z-20 relative h-full w-full overflow-y-auto">
-            <div className="max-w-7xl mx-auto px-8 md:px-16 w-full py-32">
+          <div key="thoughts" className="flex items-start pt-32 z-20 relative h-full w-full overflow-y-auto no-scrollbar">
+            <div className="max-w-7xl mx-auto px-8 md:px-16 w-full h-full">
               <BlogSection
                 posts={posts}
                 isFetching={isFetchingPosts}
@@ -621,15 +628,15 @@ const ArtifactComponent = () => {
         );
       case 'videos':
         return (
-          <div key="videos" className="flex items-center z-20 relative bg-card/5 h-full w-full overflow-y-auto">
-            <div className="max-w-7xl mx-auto px-8 md:px-16 w-full py-32">
+          <div key="videos" className="flex items-start pt-32 z-20 relative bg-card/5 h-full w-full overflow-y-auto no-scrollbar">
+            <div className="max-w-7xl mx-auto px-8 md:px-16 w-full h-full">
               <VideosSection />
             </div>
           </div>
         );
       case 'impact':
         return (
-          <div key="impact" className="z-20 relative overflow-hidden h-full w-full flex items-center">
+          <div key="impact" className="z-20 relative overflow-y-auto h-full w-full flex items-start pt-32 no-scrollbar">
             <div className="max-w-7xl mx-auto px-8 md:px-16 w-full">
               <DataStorySection />
             </div>
@@ -637,18 +644,19 @@ const ArtifactComponent = () => {
         );
       case 'contact':
         return (
-          <div key="contact" className="flex flex-col justify-center relative z-20 h-full w-full overflow-y-auto">
-            <div className="max-w-7xl mx-auto px-8 md:px-16 w-full py-32">
+          <div key="contact" className="flex flex-col justify-center relative z-20 h-full w-full overflow-y-auto no-scrollbar">
+            <div className="max-w-7xl mx-auto px-8 md:px-16 w-full py-32 h-full flex flex-col justify-center">
               <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 1.2 }}
                 viewport={{ once: true }}
+                className="w-full"
               >
-                <h2 className="text-4xl md:text-5xl font-bold mb-4 border-b border-white/10 pb-4 text-white">
+                <h2 className="text-4xl md:text-5xl font-bold mb-4 border-b border-white/10 pb-4 text-white text-left">
                   Initialize Connection.
                 </h2>
-                <p className="text-sm md:text-base text-muted-foreground/70 mb-10 max-w-2xl">
+                <p className="text-sm md:text-base text-muted-foreground/70 mb-10 max-w-2xl text-left">
                   {persona === 'client' &&
                     'Send context, constraints, and timelines—and we can quickly see if there’s a fit for an AI or systems engagement.'}
                   {persona === 'recruiter' &&

@@ -23,8 +23,8 @@ const ProjectsSection: FC<ProjectsSectionProps> = ({ projects }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center overflow-hidden bg-background/50 relative">
-      <div className="max-w-7xl mx-auto px-8 md:px-16 w-full mb-8 space-y-4 z-20">
+    <div className="w-full h-full flex flex-col items-start overflow-hidden bg-background/50 relative">
+      <div className="w-full mb-8 space-y-4 z-20">
         <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white font-serif">
           The <span className="text-primary italic">Creation</span> Phase
         </h2>

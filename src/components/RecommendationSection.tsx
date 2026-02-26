@@ -9,7 +9,7 @@ interface RecommendationSectionProps {
 
 const RecommendationSection: FC<RecommendationSectionProps> = ({ recommendations }) => {
     return (
-        <section id="recommendations" className="py-24 px-8 md:px-16 max-w-7xl mx-auto z-20 relative">
+        <section id="recommendations" className="z-20 relative w-full">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}

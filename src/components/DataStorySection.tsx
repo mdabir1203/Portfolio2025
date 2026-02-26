@@ -73,9 +73,9 @@ const DataStorySection: FC = () => {
     }, []);
 
     return (
-        <div ref={containerRef} className="relative overflow-hidden">
+        <div ref={containerRef} className="relative overflow-hidden w-full">
             {/* Background Data Resonance (Data Story) */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-32 relative z-10">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-32 relative z-10 w-full">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -110,7 +110,7 @@ const DataStorySection: FC = () => {
             </div>
 
             {/* Crafted with Chaos (User's Specific Animation Request) */}
-            <div className="relative flex flex-col items-center justify-center text-center">
+            <div className="relative flex flex-col items-start justify-center text-left w-full">
                 <canvas
                     ref={canvasRef}
                     className="absolute inset-0 w-full h-full pointer-events-none opacity-40 blur-sm"
@@ -128,7 +128,7 @@ const DataStorySection: FC = () => {
                         And a touch of <span className="text-primary/60">chaos.</span>
                     </p>
 
-                    <div className="mt-12 flex items-center justify-center gap-4 pt-12 border-t border-white/5">
+                    <div className="mt-12 flex items-center justify-start gap-4 pt-12 border-t border-white/5 w-full">
                         <p className="text-sm font-mono text-sand/60 tracking-wider">Mohammad Abir Abbas.</p>
                         <div className="px-3 py-1 bg-primary text-background font-mono text-xs font-bold uppercase tracking-widest">
                             Efficiency Architect.

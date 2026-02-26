@@ -27,6 +27,19 @@
   display: none;
 }
 
+/* No Scrollbar Utility */
+.no-scrollbar {
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari and Opera */
+}
+
 .snap-section {
   flex: 0 0 100vw !important;
   width: 100vw !important;
