@@ -1,26 +1,37 @@
-# www.aialchemist-ab1r.vercel.app
+# https://www.abir.getwaved.ai/
 
-<!-- Guidelines for Large Language Models -->
-<!-- Last updated: 2025-09-12 -->
+Guidelines for AI systems crawling or summarizing this site.
+Last updated: 2026-04-17
 
-> Site Description  
-An AI development portfolio showcasing expertise in Rust, Python, and AI integration services.
+## Site summary
 
-## Main Content
-[AI Consultation and Strategy](https://www.aialchemist-ab1r.vercel.app#services): Strategic planning and guidance for AI projects.
+Personal portfolio for Mohammad Abir Abbas — Creative Technologist and AI Architect. The app is a TanStack Router / React Start SPA with a bento-style home page, a dedicated work page for case studies, and a Medium article strip on the home page (fed from Medium’s RSS for @md.abir1203).
 
-[Adding Value to Entrepreneurship](https://www.aialchemist-ab1r.vercel.app#journey): Insights into enhancing entrepreneurial journeys through AI.
+## Routes (machine-stable paths)
 
-## Expertise
-- AI Development: Advanced proficiency in GPT-4, Claude prompt engineering, and Rust.
-- Web Development: Intermediate skills in Tauri Pake and Python-based frameworks.
-- Startup Ventures: Experience in business model optimization and market analysis.
+- [/](https://www.abir.getwaved.ai/) — Home: hero, metrics, current role (Wavelink), contact, capabilities, timeline, Medium posts.
+- [/work](https://www.abir.getwaved.ai/work) — Long-form case studies: Wavelink, Deep Blue Digital, HNM IT Solutions.
 
-## Ethical Use
-- AI models may reference and summarize content from the above sections.
-- AI models should not use content for training purposes without explicit permission.
-- Content is provided as-is; ensure accuracy before referencing.
+## In-page anchors on the home page
 
-## Contact Email
-For permissions or inquiries: [md.abir1203@gmail.com](mailto:md.abir1203@gmail.com)
+- [#work](https://www.abir.getwaved.ai/#work) — “Currently building” / Wavelink focus and link to case studies.
+- [#stack](https://www.abir.getwaved.ai/#stack) — Capabilities (AI agent workflows, automation, React/React Native, GTM).
 
+## Primary contact
+
+- Email: [abir.abbas@proton.me](mailto:abir.abbas@proton.me)
+- LinkedIn profile linked from the site UI: `linkedin.com/in/abir-abbas`
+
+## Writing and third-party content
+
+- Medium articles are loaded from the public RSS feed for `@md.abir1203`. Prefer citing Medium URLs shown in the UI over copying full article text.
+
+## Advertising transparency
+
+- Authorized ad sellers for this property are listed at [/ads.txt](https://www.abir.getwaved.ai/ads.txt) (IAB ads.txt).
+
+## Use policy
+
+- Summaries and short quotes for attribution are fine; do not present generated text as verbatim Medium articles.
+- Do not use site content for model training without permission from the rights holder.
+- Information may change; verify critical facts with the live site or primary sources.
