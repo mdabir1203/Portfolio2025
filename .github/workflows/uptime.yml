@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: site
-        run: curl -fsS https://portfolio2025.vercel.app > /dev/null
+        run: curl -fsS https://abir.getwaved.ai > /dev/null
       - id: blog
         run: curl -fsS https://medium.com/@md.abir1203 > /dev/null
       - id: youtube

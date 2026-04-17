@@ -16,11 +16,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: yarn
-      - run: corepack enable
-      - run: yarn set version berry
-      - run: yarn install --immutable
-      - run: yarn lint
-      - run: yarn npm audit --severity high
-      - run: yarn build
-      
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm audit --audit-level=high
+      - run: npm run build
