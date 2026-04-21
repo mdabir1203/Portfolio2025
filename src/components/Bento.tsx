@@ -49,7 +49,8 @@ function useSpotlight() {
 
 const fade = (delay = 0) => ({
   initial: { opacity: 0, y: 14 },
-  animate: { opacity: 1, y: 0 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-50px" },
   transition: { duration: 0.6, delay, ease: [0.2, 0.8, 0.2, 1] as const },
 });
 
