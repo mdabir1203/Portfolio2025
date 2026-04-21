@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import {
@@ -16,23 +16,33 @@ import {
   Download,
 } from "lucide-react";
 import abir from "@/assets/abir.webp";
-import MediumCard from "@/components/MediumCard";
+
+const MediumCard = lazy(() => import("@/components/MediumCard"));
 
 function useSpotlight() {
   const ref = useRef<HTMLElement | null>(null);
   useEffect(() => {
     const root = ref.current;
     if (!root) return;
+
+    let frameId: number;
     const onMove = (e: MouseEvent) => {
-      const target = e.target as HTMLElement | null;
-      const card = target?.closest<HTMLElement>(".bento");
-      if (!card) return;
-      const rect = card.getBoundingClientRect();
-      card.style.setProperty("--mx", `${e.clientX - rect.left}px`);
-      card.style.setProperty("--my", `${e.clientY - rect.top}px`);
+      cancelAnimationFrame(frameId);
+      frameId = requestAnimationFrame(() => {
+        const target = e.target as HTMLElement | null;
+        const card = target?.closest<HTMLElement>(".bento");
+        if (!card) return;
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+        card.style.setProperty("--my", `${e.clientY - rect.top}px`);
+      });
     };
+
     root.addEventListener("mousemove", onMove);
-    return () => root.removeEventListener("mousemove", onMove);
+    return () => {
+      root.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(frameId);
+    };
   }, []);
   return ref;
 }
@@ -267,7 +277,9 @@ export default function Bento() {
 
         {/* MEDIUM */}
         <motion.div {...fade(0.2)} className="bento sm:col-span-4 md:col-span-4">
-          <MediumCard />
+          <Suspense fallback={<div className="h-48 w-full animate-pulse rounded-xl bg-white/5" />}>
+            <MediumCard />
+          </Suspense>
         </motion.div>
 
         {/* LANGUAGES */}
