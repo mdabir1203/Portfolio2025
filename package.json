@@ -1,5 +1,5 @@
 {
-  "name": "tanstack_start_ts",
+  "name": "portfolio2025",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -59,6 +59,7 @@
     "react-hook-form": "^7.71.2",
     "react-resizable-panels": "^4.6.5",
     "recharts": "^2.15.4",
+    "resend": "^6.12.2",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.1",
@@ -66,6 +67,10 @@
     "vaul": "^1.1.2",
     "vite-tsconfig-paths": "^6.0.2",
     "zod": "^3.24.2"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.60.1",
+    "@rollup/rollup-win32-x64-msvc": "4.60.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",

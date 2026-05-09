@@ -1,10 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
-import { ArrowLeft, ArrowUpRight, Target, Cog, ShieldCheck } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import { ArrowLeft, ArrowUpRight, Target, Cog, ShieldCheck, Mail, X, ZoomIn } from "lucide-react";
+import ContactForm from "@/components/ContactForm";
+import gccAbayaCaseStudy from "@/assets/case-study-gcc-abaya-bn.png";
 
 type CaseStudy = {
   slug: string;
   brand: string;
+  /** Optional trade / business license number shown under the brand. */
+  license?: string;
   role: string;
   period: string;
   tagline: string;
@@ -13,6 +18,8 @@ type CaseStudy = {
   outcomes: { value: string; label: string; tone: "teal" | "lime" | "amber" }[];
   stack: string[];
   link?: { label: string; href: string };
+  /** Optional hero infographic or visual for the case study. */
+  image?: string;
 };
 
 const studies: CaseStudy[] = [
@@ -37,6 +44,30 @@ const studies: CaseStudy[] = [
     ],
     stack: ["GTM Strategy", "NFC", "GDPR", "Pipeline Design"],
     link: { label: "Explore Wavelink", href: "https://wave-link-cards.vercel.app/" },
+  },
+  {
+    slug: "gcc-famous-ladies-gowns",
+    brand: "Famous Ladies Gowns Tailoring LLC",
+    license: "71761",
+    role: "Process visibility · GCC manufacturing",
+    period: "Abaya production · GCC",
+    tagline:
+      "A small abaya factory increased output by 38% using end-to-end process visibility—no extra headcount, no major investment.",
+    problem:
+      "The floor was busy, but output and on-time delivery were inconsistent. Supervisors saw utilization, not where time disappeared between cutting, stitching, sleeves, embroidery, ironing, and packaging—or why the same steps varied sharply across operators.",
+    approach: [
+      "Introduced lightweight, real-time time tracking per unit via mobile, aligned to the full production chain.",
+      "Made throughput, bottlenecks, and micro-delays between tasks visible to the whole team—not only management.",
+      "Used the data to rebalance work and reduce idle, untracked time instead of adding capacity or hires.",
+    ],
+    outcomes: [
+      { value: "+38%", label: "Production output", tone: "teal" },
+      { value: "−30%", label: "Cycle time", tone: "lime" },
+      { value: "92%", label: "On-time delivery (from 65%)", tone: "amber" },
+      { value: "0", label: "Additional hires", tone: "teal" },
+    ],
+    stack: ["Process mapping", "Mobile time tracking", "Shop-floor visibility", "Continuous improvement"],
+    image: gccAbayaCaseStudy,
   },
   {
     slug: "deep-blue-digital",
@@ -79,6 +110,46 @@ const studies: CaseStudy[] = [
     ],
     stack: ["Network Security", "Automation", "Diagnostics", "SLA Ops"],
   },
+  {
+    slug: "redagpt",
+    brand: "RedAGPT",
+    role: "Lead Developer",
+    period: "Nov 2024 · Redis Side Quest",
+    tagline: "Redis-powered AI agent for technical documentation retrieval.",
+    problem:
+      "Technical teams were losing hours daily navigating fragmented documentation. Traditional keyword search failed to capture semantic intent in complex codebases.",
+    approach: [
+      "Implemented vector-based semantic search using Redis Stack.",
+      "Engineered an RAG pipeline to inject real-time context into LLM responses.",
+      "Built a high-performance React front-end for instant search feedback.",
+    ],
+    outcomes: [
+      { value: "Winner", label: "Redis Side Quest 2024", tone: "teal" },
+      { value: "−80%", label: "Documentation search time", tone: "lime" },
+      { value: "100%", label: "Semantic accuracy on test bank", tone: "amber" },
+    ],
+    stack: ["Redis Stack", "Node.js", "GPT-4o", "Vector Search"],
+  },
+  {
+    slug: "smartswap",
+    brand: "SmartSwap",
+    role: "Full-stack Lead",
+    period: "Feb 2026 · MIT Hacknation",
+    tagline: "Peer-to-peer circular economy for high-value asset exchange.",
+    problem:
+      "The circular economy is bottlenecked by trust. People want to trade high-value goods but lack a verified, real-time matching engine for sustainable swaps.",
+    approach: [
+      "Designed a real-time matching engine for P2P asset trading.",
+      "Integrated carbon credit tracking to quantify environmental impact per swap.",
+      "Developed a verified trust layer using peer reviews and asset verification.",
+    ],
+    outcomes: [
+      { value: "Next Best", label: "MIT Hacknation 2026", tone: "teal" },
+      { value: "200+", label: "Initial waitlist signups", tone: "lime" },
+      { value: "Verified", label: "P2P Carbon tracking system", tone: "amber" },
+    ],
+    stack: ["React Native", "PostgreSQL", "Real-time Engine", "Sustainability"],
+  },
 ];
 
 const toneClass = {
@@ -94,12 +165,13 @@ export const Route = createFileRoute("/work")({
       {
         name: "description",
         content:
-          "Case studies: Wavelink GTM, Deep Blue Digital AI commerce, HNM IT network hardening. Measurable outcomes.",
+          "Case studies: Wavelink GTM, GCC manufacturing visibility (Famous Ladies Gowns Tailoring LLC), Deep Blue Digital AI commerce, HNM IT network hardening. Measurable outcomes.",
       },
       { property: "og:title", content: "Work — Mohammad Abir Abbas" },
       {
         property: "og:description",
-        content: "Three case studies. Measurable outcomes. AI, GTM, and infrastructure.",
+        content:
+          "Case studies across GTM, manufacturing visibility, AI commerce, and infrastructure—with measurable outcomes.",
       },
     ],
   }),
@@ -107,8 +179,58 @@ export const Route = createFileRoute("/work")({
 });
 
 function WorkPage() {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  // Prevent scrolling when lightbox is open
+  useEffect(() => {
+    if (selectedImage) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [selectedImage]);
+
   return (
     <main className="min-h-screen px-4 py-6 md:px-8 md:py-10">
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedImage(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-xl cursor-zoom-out"
+          >
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="fixed right-6 top-6 z-[60] rounded-full bg-white/10 p-2 text-white/70 backdrop-blur-md transition-colors hover:bg-white/20 hover:text-white"
+              onClick={() => setSelectedImage(null)}
+            >
+              <X className="h-6 w-6" />
+            </motion.button>
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative max-h-full max-w-full overflow-auto rounded-xl border border-white/10 shadow-2xl custom-scrollbar"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={selectedImage}
+                alt="Full case study view"
+                className="h-auto w-full max-w-4xl"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <header className="mx-auto mb-10 flex max-w-[1100px] items-center justify-between">
         <Link
           to="/"
@@ -131,7 +253,7 @@ function WorkPage() {
           Selected <em className="text-[color:var(--accent-teal)]">work</em>.
         </motion.h1>
         <p className="mt-4 max-w-xl text-sm text-foreground/70 md:text-base">
-          Three deep-dives. Each one: the problem, the approach, the measurable result.
+          {studies.length} deep-dives. Each one: the problem, the approach, the measurable result.
         </p>
       </section>
 
@@ -145,6 +267,25 @@ function WorkPage() {
             transition={{ duration: 0.6, delay: idx * 0.05 }}
             className="bento bento-feature grain"
           >
+            {s.image ? (
+              <div 
+                className="group relative mb-6 cursor-zoom-in overflow-hidden rounded-xl border border-white/10 bg-black/20 transition-all hover:border-white/20"
+                onClick={() => setSelectedImage(s.image!)}
+              >
+                <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
+                  <div className="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-md border border-white/10">
+                    <ZoomIn className="h-4 w-4" /> View Full Case Study
+                  </div>
+                </div>
+                <img
+                  src={s.image}
+                  alt={`Case study infographic — ${s.brand}${s.license ? `, license no. ${s.license}` : ""}`}
+                  className="w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+                  loading={idx === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                />
+              </div>
+            ) : null}
             <div className="grid gap-6 md:grid-cols-[1.2fr_1fr]">
               {/* Left: narrative */}
               <div>
@@ -156,7 +297,14 @@ function WorkPage() {
                 <h2 className="mt-3 font-display text-4xl leading-tight md:text-5xl">
                   {s.brand}
                 </h2>
-                <p className="mt-1 font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--accent-teal)]">
+                {s.license ? (
+                  <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/45">
+                    License no. {s.license}
+                  </p>
+                ) : null}
+                <p
+                  className={`font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--accent-teal)] ${s.license ? "mt-2" : "mt-1"}`}
+                >
                   {s.role}
                 </p>
                 <p className="mt-4 max-w-md text-base text-foreground/80">{s.tagline}</p>
@@ -227,7 +375,25 @@ function WorkPage() {
         ))}
       </section>
 
-      <footer className="mx-auto mt-12 flex max-w-[1100px] items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40">
+      {/* Contact Section */}
+      <section className="mx-auto mt-20 max-w-[1100px]">
+        <div className="grid gap-10 md:grid-cols-[1fr_1.5fr]">
+          <div className="space-y-6">
+            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-foreground/40">
+              <Mail className="h-4 w-4" /> // Get in touch
+            </div>
+            <h2 className="font-display text-4xl leading-tight md:text-5xl">
+              Have a project <br /> <em className="text-[color:var(--accent-teal)]">in mind?</em>
+            </h2>
+            <p className="max-w-md text-sm text-foreground/70">
+              Whether you're looking to automate engineering workflows, deploy AI agents, or scale a product—let's talk ROI.
+            </p>
+          </div>
+          <ContactForm />
+        </div>
+      </section>
+
+      <footer className="mx-auto mt-20 flex max-w-[1100px] items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40">
         <Link to="/" className="hover:text-foreground">← Home</Link>
         <a href="mailto:abir.abbas@proton.me" className="hover:text-foreground">
           abir.abbas@proton.me

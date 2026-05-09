@@ -6,18 +6,22 @@ import {
   Code2,
   Link as LinkIcon,
   Mail,
-  MapPin,
-  Sparkles,
   Globe2,
   Cpu,
   Workflow,
   Zap,
   TrendingUp,
   Download,
+  Trophy,
+  CirclePlay,
+  BookOpen,
 } from "lucide-react";
 import abir from "@/assets/abir.webp";
+import IdentityHeroBento from "@/components/IdentityHeroBento";
+import TestimonialsMarquee from "@/components/TestimonialsCard";
 
 const MediumCard = lazy(() => import("@/components/MediumCard"));
+const YoutubeStrip = lazy(() => import("@/components/YoutubeStrip"));
 
 function useSpotlight() {
   const ref = useRef<HTMLElement | null>(null);
@@ -78,12 +82,21 @@ export default function Bento() {
           <Link to="/work" className="hover:text-foreground">Work</Link>
           <a href="#stack" className="hover:text-foreground">Stack</a>
           <a href="mailto:abir.abbas@proton.me" className="hover:text-foreground">Contact</a>
-          <button
-            onClick={() => window.print()}
-            className="inline-flex items-center gap-1.5 rounded-full border border-[color:var(--accent-teal)]/40 bg-[color:var(--accent-teal)]/10 px-3 py-1 text-[color:var(--accent-teal)] hover:bg-[color:var(--accent-teal)]/20"
-          >
-            <Download className="h-3 w-3" /> Resume
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => window.print()}
+              className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-foreground/70 hover:bg-white/10"
+            >
+              <Download className="h-3 w-3" /> Resume
+            </button>
+            <a
+              href="/cv-ats.html"
+              download="Abir_Abbas_CV_ATS.html"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[color:var(--accent-teal)]/40 bg-[color:var(--accent-teal)]/10 px-3 py-1 text-[color:var(--accent-teal)] hover:bg-[color:var(--accent-teal)]/20"
+            >
+              <Download className="h-3 w-3" /> ATS CV
+            </a>
+          </div>
         </nav>
         <button
           onClick={() => window.print()}
@@ -96,44 +109,18 @@ export default function Bento() {
 
       {/* Bento Grid */}
       <section className="mx-auto grid max-w-[1280px] auto-rows-[minmax(120px,auto)] grid-cols-1 gap-3 sm:grid-cols-4 md:grid-cols-6 md:gap-4">
-        {/* HERO — name + pitch */}
-        <motion.div
-          {...fade(0)}
-          className="bento bento-feature grain sm:col-span-4 md:col-span-4 md:row-span-2"
-        >
-          <div className="flex h-full flex-col justify-between gap-6">
-            <div className="flex items-center justify-between">
-              <Tag>// Creative Technologist · 2026</Tag>
-              <Sparkles className="h-4 w-4 text-[color:var(--accent-teal)]" />
-            </div>
-            <div>
-              <h1 className="font-display text-5xl leading-[0.95] tracking-tight md:text-7xl">
-                Mohammad <br />
-                Abir <em className="text-[color:var(--accent-teal)]">Abbas.</em>
-              </h1>
-              <p className="mt-5 max-w-xl text-sm text-foreground/70 md:text-base">
-                I deploy <span className="text-foreground">AI workflows</span> that protect enterprise assets
-                and recapture thousands of engineering hours — turning "magic" tech into{" "}
-                <span className="text-foreground">predictable ROI</span>.
-              </p>
-            </div>
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.2em] text-foreground/60">
-              <span className="flex items-center gap-1.5"><MapPin className="h-3 w-3" /> Chattogram → Relocating</span>
-              <span>13 Countries</span>
-              <span>269K+ Readers</span>
-            </div>
-          </div>
-        </motion.div>
+        {/* HERO — name + pitch (cinematic VFX) */}
+        <IdentityHeroBento {...fade(0)} />
 
         {/* PORTRAIT */}
         <motion.div
           {...fade(0.05)}
-          className="bento relative !p-0 sm:col-span-2 md:col-span-2 md:row-span-2"
+          className="group bento relative !p-0 sm:col-span-2 md:col-span-2 md:row-span-2"
         >
           <img
             src={abir}
             alt="Mohammad Abir Abbas — Creative Technologist and AI Architect"
-            className="h-full w-full object-cover grayscale"
+            className="h-full w-full object-cover grayscale transition-[filter] duration-500 ease-out group-hover:grayscale-0 group-focus-within:grayscale-0"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--bento)] via-transparent to-transparent" />
           <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
@@ -143,15 +130,35 @@ export default function Bento() {
               </div>
               <div className="text-sm text-foreground/90">CTA · Wavelink</div>
             </div>
-            <a
-              href="https://www.linkedin.com/in/abir-abbas"
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full border border-white/15 p-2 transition hover:bg-white/10"
-              aria-label="LinkedIn"
-            >
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
+            <div className="flex flex-wrap justify-end gap-2">
+              <a
+                href="https://www.linkedin.com/in/abir-abbas"
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-full border border-white/15 p-2 transition hover:bg-white/10"
+                aria-label="LinkedIn"
+              >
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+              <a
+                href="https://www.youtube.com/@wavelinkd"
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-full border border-white/15 p-2 transition hover:bg-white/10"
+                aria-label="Wavelink on YouTube"
+              >
+                <CirclePlay className="h-4 w-4" />
+              </a>
+              <a
+                href="https://medium.com/@md.abir1203"
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-full border border-white/15 p-2 transition hover:bg-white/10"
+                aria-label="Medium articles"
+              >
+                <BookOpen className="h-4 w-4" />
+              </a>
+            </div>
           </div>
         </motion.div>
 
@@ -246,10 +253,12 @@ export default function Bento() {
               Send a brief <ArrowUpRight className="h-3 w-3" />
             </div>
           </a>
-          <div className="mt-4 flex gap-2">
+          <div className="mt-4 flex flex-wrap gap-2">
             <a href="mailto:abir.abbas@proton.me" className="rounded-full border border-white/10 p-2 hover:bg-white/10" aria-label="Email"><Mail className="h-4 w-4" /></a>
             <a href="https://www.linkedin.com/in/abir-abbas" target="_blank" rel="noreferrer" className="rounded-full border border-white/10 p-2 hover:bg-white/10" aria-label="LinkedIn"><LinkIcon className="h-4 w-4" /></a>
             <a href="https://github.com/" target="_blank" rel="noreferrer" className="rounded-full border border-white/10 p-2 hover:bg-white/10" aria-label="Github"><Code2 className="h-4 w-4" /></a>
+            <a href="https://www.youtube.com/@wavelinkd" target="_blank" rel="noreferrer" className="rounded-full border border-white/10 p-2 hover:bg-white/10" aria-label="Wavelink on YouTube"><CirclePlay className="h-4 w-4" /></a>
+            <a href="https://medium.com/@md.abir1203" target="_blank" rel="noreferrer" className="rounded-full border border-white/10 p-2 hover:bg-white/10" aria-label="Medium articles"><BookOpen className="h-4 w-4" /></a>
           </div>
         </motion.div>
 
@@ -299,24 +308,81 @@ export default function Bento() {
             ))}
           </div>
         </motion.div>
+
+        {/* AWARDS */}
+        <motion.div {...fade(0.1)} className="bento sm:col-span-4 md:col-span-4">
+          <Tag>// Recognition</Tag>
+          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="flex items-start gap-3">
+              <div className="rounded-lg bg-[color:var(--accent-teal)]/10 p-2 text-[color:var(--accent-teal)]">
+                <Trophy className="h-5 w-5" />
+              </div>
+              <div>
+                <div className="font-display text-xl leading-tight">RedAGPT</div>
+                <div className="mt-0.5 text-[10px] uppercase tracking-wider text-foreground/50">Redis Side Quest Winner</div>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="rounded-lg bg-[color:var(--accent-amber)]/10 p-2 text-[color:var(--accent-amber)]">
+                <Trophy className="h-5 w-5" />
+              </div>
+              <div>
+                <div className="font-display text-xl leading-tight">SmartSwap</div>
+                <div className="mt-0.5 text-[10px] uppercase tracking-wider text-foreground/50">MIT Hacknation 2026 — Next Best</div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* YOUTUBE — latest from @wavelinkd via public RSS */}
+        <motion.div {...fade(0.15)} className="bento sm:col-span-2 md:col-span-2">
+          <Suspense
+            fallback={
+              <div>
+                <div className="flex items-center justify-between">
+                  <Tag>// Watch</Tag>
+                  <div className="h-4 w-4 animate-pulse rounded bg-white/10" aria-hidden />
+                </div>
+                <div className="mt-4 grid grid-cols-3 gap-1.5">
+                  {[0, 1, 2].map((i) => (
+                    <div key={i} className="aspect-video animate-pulse rounded-md bg-white/5" />
+                  ))}
+                </div>
+                <div className="mt-3 h-3 w-24 animate-pulse rounded bg-white/5" aria-hidden />
+              </div>
+            }
+          >
+            <YoutubeStrip />
+          </Suspense>
+        </motion.div>
+
+        {/* ATS CV CTA for Recruiters */}
+        <motion.div
+          {...fade(0.2)}
+          className="bento sm:col-span-2 md:col-span-2 flex flex-col justify-between border-[color:var(--accent-teal)]/20 bg-[color:var(--accent-teal)]/[0.02]"
+        >
+          <div>
+            <Tag>// For Recruiters</Tag>
+            <h3 className="mt-3 font-display text-2xl leading-tight">
+              Looking for <br />
+              <span className="text-[color:var(--accent-teal)]">a clean CV?</span>
+            </h3>
+            <p className="mt-2 text-xs text-foreground/60">
+              Download a simple, ATS-optimized version of my professional experience.
+            </p>
+          </div>
+          <a
+            href="/cv-ats.html"
+            download="Abir_Abbas_CV_ATS.html"
+            className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[color:var(--accent-teal)] px-4 py-3 text-sm font-semibold uppercase tracking-wider text-[color:var(--ink)] transition-transform hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <Download className="h-4 w-4" /> Download DOC CV
+          </a>
+        </motion.div>
       </section>
 
-      {/* Marquee */}
-      <section className="mt-6 overflow-hidden rounded-2xl border border-white/5 bg-[color:var(--bento)] py-4">
-        <div className="marquee font-display text-3xl text-foreground/40 md:text-5xl">
-          {Array.from({ length: 2 }).map((_, i) => (
-            <div key={i} className="flex shrink-0 items-center gap-10 pr-10">
-              <span>AI Architect</span><span>·</span>
-              <span className="text-[color:var(--accent-teal)] italic">Creative Technologist</span><span>·</span>
-              <span>GTM Strategist</span><span>·</span>
-              <span>Automation</span><span>·</span>
-              <span className="italic">Wavelink</span><span>·</span>
-              <span>13 Countries</span><span>·</span>
-              <span>Relocating 2026</span><span>·</span>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Testimonials */}
+      <TestimonialsMarquee />
 
       <footer className="mx-auto mt-6 flex max-w-[1280px] items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40">
         <span>© 2026 — Abir Abbas</span>

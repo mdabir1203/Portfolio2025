@@ -195,6 +195,72 @@
     border-color: oklch(1 0 0 / 12%);
     transform: translateY(-2px);
   }
+  .bento-hero-vfx:hover {
+    transform: none;
+  }
+  .identity-vfx-root {
+    border-radius: inherit;
+  }
+  .identity-tech-grid {
+    background-image:
+      linear-gradient(oklch(1 0 0 / 5%) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(1 0 0 / 5%) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 85% 75% at 35% 25%, black 20%, transparent 72%);
+    opacity: 0.45;
+    animation: identity-grid-drift 22s linear infinite;
+  }
+  @keyframes identity-grid-drift {
+    from { background-position: 0 0, 0 0; }
+    to { background-position: 44px 44px, -44px 44px; }
+  }
+  .identity-scan-line {
+    height: 180%;
+    background: linear-gradient(
+      to bottom,
+      transparent 42%,
+      oklch(0.78 0.14 180 / 0.06) 49.2%,
+      oklch(0.78 0.14 180 / 0.14) 50%,
+      oklch(0.78 0.14 180 / 0.06) 50.8%,
+      transparent 58%
+    );
+    animation: identity-scan 7.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    mix-blend-mode: screen;
+  }
+  @keyframes identity-scan {
+    0%,
+    12% { transform: translateY(-55%); opacity: 0; }
+    18% { opacity: 1; }
+    50% { transform: translateY(35%); opacity: 1; }
+    58%,
+    100% { transform: translateY(55%); opacity: 0; }
+  }
+  .identity-surname {
+    text-shadow:
+      0 0 22px oklch(0.78 0.14 180 / 0.45),
+      0 0 48px oklch(0.78 0.14 180 / 0.22),
+      0 0 2px oklch(0.85 0.12 180 / 0.9);
+    animation: identity-surname-shimmer 4.2s ease-in-out infinite;
+  }
+  @keyframes identity-surname-shimmer {
+    0%,
+    100% {
+      filter: brightness(1) saturate(1);
+    }
+    40% {
+      filter: brightness(1.12) saturate(1.15);
+    }
+    55% {
+      filter: brightness(1.05) saturate(1.08);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .identity-tech-grid,
+    .identity-scan-line,
+    .identity-surname {
+      animation: none !important;
+    }
+  }
   .bento-feature {
     background-image: var(--gradient-spot), linear-gradient(180deg, var(--bento), var(--bento));
   }
@@ -243,6 +309,11 @@
   html, body { background: #fff !important; color: #0b0b0b !important; }
   .marquee, .pulse-dot { display: none !important; animation: none !important; }
   .grain::after, .bento::before { display: none !important; }
+  .identity-particles,
+  .identity-tech-grid,
+  .identity-scan-line {
+    display: none !important;
+  }
   .bento {
     break-inside: avoid;
     page-break-inside: avoid;
@@ -255,4 +326,22 @@
   .bento img { filter: none !important; }
   h1, h2, h3 { color: #0b0b0b !important; }
   a { color: #0b0b0b !important; text-decoration: none !important; }
+}
+
+/* Lightbox Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
