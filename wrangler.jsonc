@@ -1,9 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "portfolio2025-9zi",
-  "account_id": "80a2fa80dad67b7fa53eac967e197492",
   "compatibility_date": "2025-09-24",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "@tanstack/react-start/server-entry",
-  "pages_build_output_dir": ".output/public"
+  "pages_build_output_dir": "dist/client"
 }
