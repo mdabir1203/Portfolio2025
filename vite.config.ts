@@ -11,20 +11,7 @@ export default defineConfig({
     build: {
       minify: "esbuild",
       sourcemap: false,
-      reportCompressedSize: true,
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            "vendor-react": ["react", "react-dom"],
-            "vendor-tanstack": [
-              "@tanstack/react-router",
-              "@tanstack/react-query",
-              "@tanstack/react-start",
-            ],
-            "vendor-ui": ["framer-motion", "lucide-react", "class-variance-authority"],
-          },
-        },
-      },
+      reportCompressedSize: true
     },
   },
 });
