@@ -20,9 +20,10 @@ if (fs.existsSync(configPath)) {
     }
 
     // Fix absolute path in pages_build_output_dir
-    // It should be relative to the project root when deployed
+    // Since this config is ALREADY inside the output directory (dist/client),
+    // the path should be '.' relative to this config file.
     if (config.pages_build_output_dir) {
-      config.pages_build_output_dir = 'dist/client';
+      config.pages_build_output_dir = '.';
     }
 
     // Remove unexpected top-level fields that cause validation errors on Cloudflare Pages
@@ -69,6 +70,30 @@ if (fs.existsSync(configPath)) {
 
     fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
     console.log('[fix-wrangler-json] Successfully sanitized dist/client/wrangler.json for Cloudflare Pages deployment.');
+
+    // Ensure SSR Worker is in the right place for Cloudflare Pages
+    const serverPath = path.resolve(process.cwd(), 'dist/server/server.js');
+    const workerPath = path.resolve(process.cwd(), 'dist/client/_worker.js');
+    
+    if (fs.existsSync(serverPath)) {
+      fs.copyFileSync(serverPath, workerPath);
+      console.log('[fix-wrangler-json] Successfully copied dist/server/server.js to dist/client/_worker.js');
+      
+      // Copy server assets to client assets so the worker can find its chunks
+      const serverAssetsDir = path.resolve(process.cwd(), 'dist/server/assets');
+      const clientAssetsDir = path.resolve(process.cwd(), 'dist/client/assets');
+      
+      if (fs.existsSync(serverAssetsDir)) {
+        if (!fs.existsSync(clientAssetsDir)) {
+          fs.mkdirSync(clientAssetsDir, { recursive: true });
+        }
+        const assets = fs.readdirSync(serverAssetsDir);
+        for (const asset of assets) {
+          fs.copyFileSync(path.join(serverAssetsDir, asset), path.join(clientAssetsDir, asset));
+        }
+        console.log('[fix-wrangler-json] Successfully merged server assets into dist/client/assets');
+      }
+    }
   } catch (err) {
     console.error('[fix-wrangler-json] Error processing wrangler.json:', err);
   }
