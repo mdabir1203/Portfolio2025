@@ -19,8 +19,18 @@ if (fs.existsSync(configPath)) {
       delete config.dev.generate_types;
     }
 
-    // Remove unexpected top-level fields
+    // Fix absolute path in pages_build_output_dir
+    // It should be relative to the project root when deployed
+    if (config.pages_build_output_dir) {
+      config.pages_build_output_dir = 'dist/client';
+    }
+
+    // Remove unexpected top-level fields that cause validation errors on Cloudflare Pages
     const invalidTopLevelKeys = [
+      "assets",
+      "topLevelName",
+      "jsx_factory",
+      "jsx_fragment",
       "definedEnvironments",
       "ai_search_namespaces",
       "ai_search",
@@ -34,11 +44,25 @@ if (fs.existsSync(configPath)) {
       "python_modules",
       "configPath",
       "userConfigPath",
-      "legacy_env"
+      "legacy_env",
+      "rules",
+      "cloudchamber",
+      "pipelines",
+      "logfwdr"
     ];
 
     for (const key of invalidTopLevelKeys) {
-      if (key in config) {
+      delete config[key];
+    }
+
+    // Remove empty arrays and objects (except vars) to keep the config clean
+    for (const key in config) {
+      if (key === 'vars' || key === 'name' || key === 'compatibility_date' || key === 'compatibility_flags' || key === 'pages_build_output_dir') {
+        continue;
+      }
+      if (Array.isArray(config[key]) && config[key].length === 0) {
+        delete config[key];
+      } else if (typeof config[key] === 'object' && config[key] !== null && Object.keys(config[key]).length === 0) {
         delete config[key];
       }
     }
