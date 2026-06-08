@@ -31,11 +31,19 @@ export const fetchMediumPosts = createServerFn({ method: "GET" }).handler(
       if (!res.ok) return { posts: [] };
       const xml = await res.text();
       const items = xml.split("<item>").slice(1, 6);
-      const posts: MediumPost[] = items.map((raw) => ({
-        title: pick(raw, "title") ?? "Untitled",
-        link: pick(raw, "link") ?? "#",
-        pubDate: pick(raw, "pubDate") ?? "",
-      }));
+      const posts: MediumPost[] = items.map((raw) => {
+        const rawLink = pick(raw, "link") ?? "#";
+        let link = "#";
+        try {
+          const u = new URL(rawLink);
+          if (u.protocol === "https:") link = rawLink;
+        } catch { /* leave as "#" */ }
+        return {
+          title: pick(raw, "title") ?? "Untitled",
+          link,
+          pubDate: pick(raw, "pubDate") ?? "",
+        };
+      });
       return { posts };
     } catch {
       return { posts: [] };

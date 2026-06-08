@@ -7,9 +7,9 @@ import { Loader2, Send } from "lucide-react";
 import { useState } from "react";
 
 const contactSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
+  name: z.string().min(2, "Name must be at least 2 characters").max(100),
+  email: z.string().email("Invalid email address").max(320),
+  message: z.string().min(10, "Message must be at least 10 characters").max(2000, "Max 2000 characters"),
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
@@ -56,6 +56,8 @@ export default function ContactForm() {
             {...register("name")}
             id="name"
             placeholder="Your name"
+            maxLength={100}
+            autoComplete="name"
             className="mt-1 w-full border-b border-white/10 bg-transparent py-2 text-sm outline-none transition-colors focus:border-[color:var(--accent-teal)]"
           />
           {errors.name && (
@@ -77,6 +79,8 @@ export default function ContactForm() {
             id="email"
             type="email"
             placeholder="your@email.com"
+            maxLength={320}
+            autoComplete="email"
             className="mt-1 w-full border-b border-white/10 bg-transparent py-2 text-sm outline-none transition-colors focus:border-[color:var(--accent-teal)]"
           />
           {errors.email && (
@@ -98,6 +102,7 @@ export default function ContactForm() {
             id="message"
             rows={4}
             placeholder="What's on your mind?"
+            maxLength={2000}
             className="mt-1 w-full border-b border-white/10 bg-transparent py-2 text-sm outline-none transition-colors focus:border-[color:var(--accent-teal)] resize-none"
           />
           {errors.message && (

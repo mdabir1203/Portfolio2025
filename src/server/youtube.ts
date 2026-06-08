@@ -43,6 +43,11 @@ export const fetchWavelinkVideos = createServerFn({ method: "GET" }).handler(
         if (!cid) return { ids: [] };
         rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${cid}`;
       }
+      // Guard against SSRF: only fetch youtube.com RSS URLs
+      try {
+        const parsed = new URL(rssUrl);
+        if (parsed.hostname !== "www.youtube.com") return { ids: [] };
+      } catch { return { ids: [] }; }
       const rss = await fetch(rssUrl, { headers: { "User-Agent": UA } });
       if (!rss.ok) return { ids: [] };
       const xml = await rss.text();

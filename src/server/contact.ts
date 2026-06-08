@@ -3,9 +3,9 @@ import { Resend } from "resend";
 import { z } from "zod";
 
 const contactSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
+  name: z.string().min(2, "Name must be at least 2 characters").max(100, "Name too long"),
+  email: z.string().email("Invalid email address").max(320, "Email too long"),
+  message: z.string().min(10, "Message must be at least 10 characters").max(2000, "Message too long"),
 });
 
 export const submitContact = createServerFn({ method: "POST" })

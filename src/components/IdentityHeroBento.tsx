@@ -275,6 +275,28 @@ export default function IdentityHeroBento({ className, ...rest }: IdentityHeroBe
               </span>
             </h1>
             <PitchLine />
+            <motion.div
+              className="relative z-[2] mt-6 flex flex-wrap items-center gap-3"
+              initial={reduce ? false : { opacity: 0, y: 10 }}
+              whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 1.0, duration: 0.5, ease: easeOutExpo }}
+            >
+              <a
+                href="mailto:abir.abbas@proton.me"
+                className="inline-flex items-center gap-2 rounded-full bg-[color:var(--accent-teal)] px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.15em] text-[color:var(--ink)] transition-all hover:brightness-110 active:scale-95"
+              >
+                Let's Talk
+              </a>
+              <a
+                href="https://www.linkedin.com/in/abir-abbas"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm font-mono uppercase tracking-[0.15em] text-foreground/70 transition-all hover:border-white/30 hover:text-foreground active:scale-95"
+              >
+                LinkedIn
+              </a>
+            </motion.div>
           </div>
 
           <motion.div
@@ -285,7 +307,7 @@ export default function IdentityHeroBento({ className, ...rest }: IdentityHeroBe
             transition={{ delay: 1.15, duration: 0.55, ease: easeOutExpo }}
           >
             <span className="flex items-center gap-1.5">
-              <MapPin className="h-3 w-3" /> Chattogram → Relocating
+              <MapPin className="h-3 w-3" /> Open to GCC · UAE · KSA · Qatar
             </span>
             <span>13 Countries</span>
             <span>325K+ Global Readers</span>

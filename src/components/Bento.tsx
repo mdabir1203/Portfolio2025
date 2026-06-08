@@ -15,6 +15,8 @@ import {
   Trophy,
   CirclePlay,
   BookOpen,
+  Factory,
+  BriefcaseBusiness,
 } from "lucide-react";
 import abir from "@/assets/abir.webp";
 import IdentityHeroBento from "@/components/IdentityHeroBento";
@@ -76,7 +78,7 @@ export default function Bento() {
       {/* Top bar */}
       <header className="mx-auto mb-6 flex max-w-[1280px] items-center justify-between print:hidden">
         <div className="flex items-center gap-2 font-mono text-xs tracking-widest text-foreground/70">
-          <span className="pulse-dot" /> AVAILABLE — Q1 2026
+          <span className="pulse-dot" /> AVAILABLE — Q3 2026
         </div>
         <nav className="hidden items-center gap-4 font-mono text-xs uppercase tracking-[0.2em] text-foreground/60 md:flex">
           <Link to="/work" className="hover:text-foreground">Work</Link>
@@ -98,13 +100,20 @@ export default function Bento() {
             </a>
           </div>
         </nav>
-        <button
-          onClick={() => window.print()}
-          aria-label="Download resume"
-          className="md:hidden inline-flex items-center gap-1 rounded-full border border-[color:var(--accent-teal)]/40 bg-[color:var(--accent-teal)]/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--accent-teal)]"
-        >
-          <Download className="h-3 w-3" /> PDF
-        </button>
+        <div className="md:hidden flex items-center gap-2">
+          <Link
+            to="/work"
+            className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/60 active:scale-95 transition-transform"
+          >
+            Work
+          </Link>
+          <a
+            href="mailto:abir.abbas@proton.me"
+            className="inline-flex items-center gap-1 rounded-full border border-[color:var(--accent-teal)]/40 bg-[color:var(--accent-teal)]/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--accent-teal)] active:scale-95 transition-transform"
+          >
+            <Mail className="h-3 w-3" /> Contact
+          </a>
+        </div>
       </header>
 
       {/* Bento Grid */}
@@ -163,7 +172,7 @@ export default function Bento() {
         </motion.div>
 
         {/* METRIC 1 */}
-        <motion.div {...fade(0.1)} className="bento sm:col-span-2 md:col-span-2">
+        <motion.div {...fade(0.1)} className="bento sm:col-span-2 md:col-span-2 active:scale-[0.97] transition-transform cursor-default">
           <Tag>// Engaze.ai integration</Tag>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="font-display text-6xl leading-none text-[color:var(--accent-lime)]">40%</span>
@@ -175,7 +184,7 @@ export default function Bento() {
         </motion.div>
 
         {/* METRIC 2 */}
-        <motion.div {...fade(0.15)} className="bento sm:col-span-2 md:col-span-2">
+        <motion.div {...fade(0.15)} className="bento sm:col-span-2 md:col-span-2 active:scale-[0.97] transition-transform cursor-default">
           <Tag>// Midjourney × Zapier</Tag>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="font-display text-6xl leading-none text-[color:var(--accent-amber)]">−30%</span>
@@ -186,7 +195,7 @@ export default function Bento() {
         </motion.div>
 
         {/* METRIC 3 */}
-        <motion.div {...fade(0.2)} className="bento md:col-span-2">
+        <motion.div {...fade(0.2)} className="bento md:col-span-2 active:scale-[0.97] transition-transform cursor-default">
           <Tag>// MTTR</Tag>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="font-display text-6xl leading-none text-[color:var(--accent-teal)]">−35%</span>
@@ -334,6 +343,88 @@ export default function Bento() {
           </div>
         </motion.div>
 
+        {/* GCC EXECUTIVE SIGNAL — AbayaTrack / Famous Ladies Gowns */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97, y: 20 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
+          className="bento bento-feature grain sm:col-span-4 md:col-span-4 border-[color:var(--accent-amber)]/25 bg-[color:var(--accent-amber)]/[0.02]"
+        >
+          <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <Factory className="h-4 w-4 text-[color:var(--accent-amber)]" />
+                <Tag>// GCC Manufacturing · AbayaTrack</Tag>
+              </div>
+              <h3 className="mt-3 font-display text-3xl leading-tight md:text-4xl">
+                Famous Ladies Gowns{" "}
+                <span className="text-[color:var(--accent-amber)]">Tailoring LLC</span>
+              </h3>
+              <p className="mt-2 max-w-lg text-sm text-foreground/70">
+                Deployed end-to-end production visibility (AbayaTrack) across a GCC abaya factory — mobile time-tracking per unit, real-time bottleneck detection, zero additional headcount.
+              </p>
+              <Link
+                to="/work"
+                className="mt-4 inline-flex items-center gap-1 text-sm text-[color:var(--accent-amber)] transition-all hover:gap-2"
+              >
+                Full case study <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-2 md:w-72 shrink-0">
+              {[
+                { v: "+38%", l: "Production output", tone: "amber" as const },
+                { v: "−30%", l: "Cycle time", tone: "lime" as const },
+                { v: "92%", l: "On-time delivery", tone: "teal" as const },
+                { v: "0", l: "Extra hires needed", tone: "amber" as const },
+              ].map(({ v, l, tone }) => (
+                <div key={l} className="rounded-xl border border-white/5 bg-white/[0.02] p-3">
+                  <div className={`font-display text-3xl leading-none ${
+                    tone === "amber" ? "text-[color:var(--accent-amber)]" :
+                    tone === "lime" ? "text-[color:var(--accent-lime)]" :
+                    "text-[color:var(--accent-teal)]"
+                  }`}>{v}</div>
+                  <div className="mt-1 text-[10px] text-foreground/55">{l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* GCC OPEN TO WORK — executive recruiter hook */}
+        <motion.div
+          initial={{ opacity: 0, x: -16 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.6, ease: [0.2, 0.8, 0.2, 1], delay: 0.1 }}
+          className="bento sm:col-span-4 md:col-span-2 flex flex-col justify-between"
+        >
+          <div className="flex items-center gap-2">
+            <BriefcaseBusiness className="h-4 w-4 text-[color:var(--accent-lime)]" />
+            <Tag>// Executive · GCC Ready</Tag>
+          </div>
+          <div className="mt-4 space-y-3">
+            {[
+              "Cross-cultural GTM — 13 countries",
+              "Arabic market · GCC operations",
+              "GDPR + compliance-first leadership",
+              "Co-founder P&L ownership",
+              "EN / BN / DE · Relocating UAE·KSA",
+            ].map((line) => (
+              <div key={line} className="flex items-start gap-2 text-sm text-foreground/75">
+                <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[color:var(--accent-lime)]" />
+                {line}
+              </div>
+            ))}
+          </div>
+          <a
+            href="mailto:abir.abbas@proton.me?subject=Executive%20Opportunity%20%E2%80%94%20GCC"
+            className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[color:var(--accent-lime)]/30 bg-[color:var(--accent-lime)]/[0.06] py-3 text-xs font-semibold uppercase tracking-[0.15em] text-[color:var(--accent-lime)] transition-all hover:bg-[color:var(--accent-lime)]/10 active:scale-95"
+          >
+            <Mail className="h-3.5 w-3.5" /> Reach Out — GCC Roles
+          </a>
+        </motion.div>
+
         {/* YOUTUBE — latest from @wavelinkd via public RSS */}
         <motion.div {...fade(0.15)} className="bento sm:col-span-2 md:col-span-2">
           <Suspense
@@ -384,10 +475,39 @@ export default function Bento() {
       {/* Testimonials */}
       <TestimonialsMarquee />
 
-      <footer className="mx-auto mt-6 flex max-w-[1280px] items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40">
+      <footer className="mx-auto mt-6 flex max-w-[1280px] items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40 mb-24 md:mb-0">
         <span>© 2026 — Abir Abbas</span>
         <span>Built for the 3-second glance.</span>
       </footer>
+
+      {/* Sticky mobile CTA — highest-conversion element on mobile */}
+      <div className="md:hidden fixed bottom-0 inset-x-0 z-50 pb-[env(safe-area-inset-bottom)]">
+        <div className="mx-3 mb-3 flex items-center gap-2 rounded-2xl border border-white/10 bg-[color:var(--bento)]/95 p-2.5 backdrop-blur-xl shadow-[0_-4px_32px_rgba(0,0,0,0.5)]">
+          <a
+            href="mailto:abir.abbas@proton.me"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[color:var(--accent-teal)] py-3 text-sm font-semibold uppercase tracking-[0.15em] text-[color:var(--ink)] active:scale-95 transition-transform"
+          >
+            <Mail className="h-4 w-4" /> Let's Talk
+          </a>
+          <a
+            href="https://www.linkedin.com/in/abir-abbas"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-foreground/70 active:scale-95 transition-transform"
+            aria-label="LinkedIn"
+          >
+            <ArrowUpRight className="h-4 w-4" />
+          </a>
+          <a
+            href="/cv-ats.html"
+            download="Abir_Abbas_CV_ATS.html"
+            className="flex items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-foreground/70 active:scale-95 transition-transform"
+            aria-label="Download CV"
+          >
+            <Download className="h-4 w-4" />
+          </a>
+        </div>
+      </div>
     </main>
   );
 }
