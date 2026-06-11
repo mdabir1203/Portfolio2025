@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   motion,
   useMotionTemplate,
@@ -68,6 +68,8 @@ function SplitNameReveal({
 }
 
 function AmbientParticles({ count = 28 }: { count?: number }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const reduce = useReducedMotion();
   const specs = useMemo(
     () =>
@@ -82,7 +84,7 @@ function AmbientParticles({ count = 28 }: { count?: number }) {
     [count],
   );
 
-  if (reduce) return null;
+  if (!mounted || reduce) return null;
 
   return (
     <div className="identity-particles pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden>
