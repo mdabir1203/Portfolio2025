@@ -477,7 +477,7 @@ export default function Bento() {
 
       <footer className="mx-auto mt-6 flex max-w-[1280px] items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40 mb-24 md:mb-0">
         <span>© 2026 — Abir Abbas</span>
-        <span>Built for the 3-second glance.</span>
+        <span>Everlasting growth and adaptibility.</span>
       </footer>
 
       {/* Sticky mobile CTA — highest-conversion element on mobile */}

@@ -78,6 +78,14 @@ if (fs.existsSync(configPath)) {
     if (fs.existsSync(serverPath)) {
       fs.copyFileSync(serverPath, workerPath);
       console.log('[fix-wrangler-json] Successfully copied dist/server/server.js to dist/client/_worker.js');
+
+      // Also expose server.js at dist/client/server.js so client chunk imports
+      // of the form `import ... from "../server.js"` resolve during Cloudflare's
+      // Pages bundling pass (chunks live in dist/client/assets/, so ../server.js
+      // resolves to dist/client/server.js).
+      const serverJsClientPath = path.resolve(process.cwd(), 'dist/client/server.js');
+      fs.copyFileSync(serverPath, serverJsClientPath);
+      console.log('[fix-wrangler-json] Successfully copied dist/server/server.js to dist/client/server.js');
       
       // Copy server assets to client assets so the worker can find its chunks
       const serverAssetsDir = path.resolve(process.cwd(), 'dist/server/assets');
