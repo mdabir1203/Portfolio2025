@@ -278,6 +278,7 @@ export default function Bento() {
             <li className="flex items-center gap-3"><Cpu className="h-4 w-4 text-[color:var(--accent-teal)]" /> AI Agent Workflows</li>
             <li className="flex items-center gap-3"><Workflow className="h-4 w-4 text-[color:var(--accent-teal)]" /> Process Automation</li>
             <li className="flex items-center gap-3"><Zap className="h-4 w-4 text-[color:var(--accent-teal)]" /> React / React Native</li>
+            <li className="flex items-center gap-3"><Code2 className="h-4 w-4 text-[color:var(--accent-teal)]" /> Rust / C / C++</li>
             <li className="flex items-center gap-3"><Globe2 className="h-4 w-4 text-[color:var(--accent-teal)]" /> Cross-cultural GTM</li>
           </ul>
         </motion.div>
