@@ -132,23 +132,24 @@ const studies: CaseStudy[] = [
   },
   {
     slug: "smartswap",
-    brand: "SmartSwap",
-    role: "Full-stack Lead",
+    brand: "SmartSwap — AI Personalization Layer",
+    role: "AI Architect · Full-stack Lead",
     period: "Feb 2026 · MIT Hacknation",
-    tagline: "Peer-to-peer circular economy for high-value asset exchange.",
+    tagline: "Drop-in AI personalization engine that turns static storefronts into intent-driven revenue machines. Zero backend required.",
     problem:
-      "The circular economy is bottlenecked by trust. People want to trade high-value goods but lack a verified, real-time matching engine for sustainable swaps.",
+      "E-commerce storefronts serve one static experience to visitors with radically different intent. Conversion rates stall at 2–3% industry-wide because brands can't afford the engineering overhead of true personalization. Most leave 30–60% of potential revenue on the table — not from lack of traffic, but from lack of relevance.",
     approach: [
-      "Designed a real-time matching engine for P2P asset trading.",
-      "Integrated carbon credit tracking to quantify environmental impact per swap.",
-      "Developed a verified trust layer using peer reviews and asset verification.",
+      "Built a client-side intent engine that reads URL signals (UTM params, referrer, campaign tags) and scores each visitor against 7 behavioral personas in under 50ms — no backend, no deploy, no ops.",
+      "Dynamically swaps hero image, headline, CTA copy, and section order on arrival, creating a tailored storefront experience from the first pixel rendered.",
+      "Added real-time frustration detection — rage clicks, scroll hesitation, exit intent — to trigger recovery flows before bounce, recovering sessions that would otherwise be lost.",
     ],
     outcomes: [
       { value: "Next Best", label: "MIT Hacknation 2026", tone: "teal" },
-      { value: "200+", label: "Initial waitlist signups", tone: "lime" },
-      { value: "Verified", label: "P2P Carbon tracking system", tone: "amber" },
+      { value: "<50ms", label: "Intent resolution, zero backend", tone: "lime" },
+      { value: "7", label: "Behavioral personas, drop-in deploy", tone: "amber" },
     ],
-    stack: ["React Native", "PostgreSQL", "Real-time Engine", "Sustainability"],
+    stack: ["URL Signal Scoring", "Behavior Tracking", "Client-side AI", "React"],
+    link: { label: "Live Demo", href: "https://smartswap.lovable.app/" },
   },
 ];
 
