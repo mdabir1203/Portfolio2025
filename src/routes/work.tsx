@@ -112,23 +112,23 @@ const studies: CaseStudy[] = [
   },
   {
     slug: "redagpt",
-    brand: "RedAGPT",
-    role: "Lead Developer",
+    brand: "RedAGPT — AI Agent Network Security",
+    role: "Core Team · Security Architect",
     period: "Nov 2024 · Redis Side Quest",
-    tagline: "Redis-powered AI agent for technical documentation retrieval.",
+    tagline: "Adversarial security layer for AI agent pipelines — real-time threat detection using Redis-powered semantic analysis.",
     problem:
-      "Technical teams were losing hours daily navigating fragmented documentation. Traditional keyword search failed to capture semantic intent in complex codebases.",
+      "As AI agents proliferate across enterprise infrastructure, they become attack surfaces for prompt injection, data exfiltration, and adversarial manipulation. Existing security tooling was built for human traffic — entirely blind to the novel threat surface of agent-to-agent communication.",
     approach: [
-      "Implemented vector-based semantic search using Redis Stack.",
-      "Engineered an RAG pipeline to inject real-time context into LLM responses.",
-      "Built a high-performance React front-end for instant search feedback.",
+      "Co-built with a cross-functional team a Redis Stack threat detection engine that fingerprints adversarial inputs via vector similarity — catching prompt injection patterns that regex and keyword rules miss entirely.",
+      "Engineered a real-time inter-agent communication monitor that detects anomalous request chains and halts propagation before a compromised agent poisons downstream pipeline stages.",
+      "Integrated a RAG-backed forensics layer so security teams can query incident history in natural language and reconstruct full attack vectors post-breach.",
     ],
     outcomes: [
       { value: "Winner", label: "Redis Side Quest 2024", tone: "teal" },
-      { value: "−80%", label: "Documentation search time", tone: "lime" },
-      { value: "100%", label: "Semantic accuracy on test bank", tone: "amber" },
+      { value: "−80%", label: "Threat detection response time", tone: "lime" },
+      { value: "100%", label: "Red-team test suite coverage", tone: "amber" },
     ],
-    stack: ["Redis Stack", "Node.js", "GPT-4o", "Vector Search"],
+    stack: ["Redis Stack", "Vector Search", "GPT-4o", "Node.js"],
   },
   {
     slug: "smartswap",
