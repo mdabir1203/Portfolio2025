@@ -76,8 +76,27 @@ if (fs.existsSync(configPath)) {
     const workerPath = path.resolve(process.cwd(), 'dist/client/_worker.js');
     
     if (fs.existsSync(serverPath)) {
-      fs.copyFileSync(serverPath, workerPath);
-      console.log('[fix-wrangler-json] Successfully copied dist/server/server.js to dist/client/_worker.js');
+      // _worker.js must route static assets to env.ASSETS (Cloudflare Pages advanced mode
+      // sends ALL requests through the worker — without this, CSS/JS return HTML and the
+      // page renders unstyled).
+      const workerWrapper = `import ssrHandler from './server.js';
+export default {
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    const path = url.pathname;
+    if (
+      env.ASSETS &&
+      (path.startsWith('/assets/') ||
+        /\\.(ico|png|jpg|jpeg|webp|gif|svg|woff|woff2|ttf|eot|map|txt)$/.test(path))
+    ) {
+      return env.ASSETS.fetch(request);
+    }
+    return ssrHandler.fetch(request, env, ctx);
+  }
+};
+`;
+      fs.writeFileSync(workerPath, workerWrapper, 'utf-8');
+      console.log('[fix-wrangler-json] Successfully wrote static-asset-aware _worker.js to dist/client/_worker.js');
 
       // Also expose server.js at dist/client/server.js so client chunk imports
       // of the form `import ... from "../server.js"` resolve during Cloudflare's
