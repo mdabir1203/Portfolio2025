@@ -265,7 +265,7 @@ export default function Bento() {
           <div className="mt-4 flex flex-wrap gap-2">
             <a href="mailto:abir.abbas@proton.me" className="rounded-full border border-white/10 p-2 hover:bg-white/10" aria-label="Email"><Mail className="h-4 w-4" /></a>
             <a href="https://www.linkedin.com/in/abir-abbas" target="_blank" rel="noreferrer" className="rounded-full border border-white/10 p-2 hover:bg-white/10" aria-label="LinkedIn"><LinkIcon className="h-4 w-4" /></a>
-            <a href="https://github.com/" target="_blank" rel="noreferrer" className="rounded-full border border-white/10 p-2 hover:bg-white/10" aria-label="Github"><Code2 className="h-4 w-4" /></a>
+            <a href="https://github.com/mdabir1203" target="_blank" rel="noreferrer" className="rounded-full border border-white/10 p-2 hover:bg-white/10" aria-label="Github"><Code2 className="h-4 w-4" /></a>
             <a href="https://www.youtube.com/@wavelinkd" target="_blank" rel="noreferrer" className="rounded-full border border-white/10 p-2 hover:bg-white/10" aria-label="Wavelink on YouTube"><CirclePlay className="h-4 w-4" /></a>
             <a href="https://medium.com/@md.abir1203" target="_blank" rel="noreferrer" className="rounded-full border border-white/10 p-2 hover:bg-white/10" aria-label="Medium articles"><BookOpen className="h-4 w-4" /></a>
           </div>
