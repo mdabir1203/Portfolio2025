@@ -402,7 +402,7 @@ export default function Bento() {
         >
           <div className="flex items-center gap-2">
             <BriefcaseBusiness className="h-4 w-4 text-[color:var(--accent-lime)]" />
-            <Tag>// Executive · GCC Ready</Tag>
+            <Tag>// Executive · Based in GCC</Tag>
           </div>
           <div className="mt-4 space-y-3">
             {[
@@ -410,7 +410,7 @@ export default function Bento() {
               "Arabic market · GCC operations",
               "GDPR + compliance-first leadership",
               "Co-founder P&L ownership",
-              "EN / BN / DE · Relocating UAE·KSA",
+              "EN / BN / DE · UAE · KSA · Qatar",
             ].map((line) => (
               <div key={line} className="flex items-start gap-2 text-sm text-foreground/75">
                 <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[color:var(--accent-lime)]" />
