@@ -309,7 +309,7 @@ export default function IdentityHeroBento({ className, ...rest }: IdentityHeroBe
             transition={{ delay: 1.15, duration: 0.55, ease: easeOutExpo }}
           >
             <span className="flex items-center gap-1.5">
-              <MapPin className="h-3 w-3" /> Based in GCC · UAE · KSA · Qatar
+              <MapPin className="h-3 w-3" /> Ajman, UAE · Open across GCC
             </span>
             <span>13 Countries</span>
             <span>325K+ Global Readers</span>
