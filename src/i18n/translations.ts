@@ -118,7 +118,7 @@ export const translations = {
       typing: 'Thinking…',
       loading: '~300 MB · cached after first load',
       error: 'WebGPU not supported. Try Chrome 121+ or Edge.',
-      greeting: "Hi! Ask me anything about Abir's projects, skills, or how he can help your team.",
+      greeting: "Hey 👋 I'm Abir's AI — running fully in your browser (yes, really). Ask me about his work, the numbers behind it, or just what makes him different. I'll be straight with you.",
     },
   },
   ar: {
@@ -238,7 +238,7 @@ export const translations = {
       typing: 'أفكر…',
       loading: '~300 ميجابايت · يُخزَّن بعد أول تحميل',
       error: 'المتصفح لا يدعم WebGPU. جرّب Chrome 121+ أو Edge.',
-      greeting: 'مرحباً! اسألني عن مشاريع أبير أو مهاراته أو كيف يمكنه مساعدة فريقك.',
+      greeting: 'أهلاً 👋 أنا ذكاء أبير الاصطناعي — شغّال في متصفحك مباشرة (أيوه، بجد). اسألني عن شغله أو الأرقام اللي وراه أو وش يميّزه. بكون صريح معك.',
     },
   },
 } as const;
