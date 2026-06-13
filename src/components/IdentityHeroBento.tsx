@@ -141,7 +141,7 @@ function PitchLine() {
   const tx = translations[lang];
   const pitch = tx.hero.pitch;
   const words = pitch.split(/(\s+)/);
-  const emphasis = new Set(["AI", "workflows", "predictable", "ROI.", "الذكاء", "الاصطناعي", "استثمار", "متوقع."]);
+  const emphasis = new Set(tx.hero.emphasisWords);
 
   if (reduce) {
     return (

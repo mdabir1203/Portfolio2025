@@ -7,12 +7,23 @@ import {
 } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { translations } from "@/i18n/translations";
-import { X, Send } from "lucide-react";
+import { X, Send, Mail } from "lucide-react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type Role = "user" | "assistant";
 type Message = { role: Role; content: string };
 type Phase = "idle" | "loading" | "cached" | "ready" | "streaming" | "error";
+
+// ─── Constants ────────────────────────────────────────────────────────────────
+const QWEN_MODEL_ID = "Qwen2.5-0.5B-Instruct-q4f16_1-MLC";
+const MAX_RESPONSE_TOKENS = 300;
+const RESPONSE_TEMPERATURE = 0.7;
+const MAGNETIC_RANGE_PX = 80;
+const MAGNETIC_PULL = 0.15;
+const CACHE_HIT_MS = 4000;
+const BURST_RADIUS_PX = 52;
+const IDLE_TOOLTIP_DELAY_MS = 4000;
+const QUESTION_CYCLE_MS = 3200;
 
 // ─── Funny questions that cycle while the model loads ─────────────────────────
 const CRACK_QUESTIONS_EN = [
@@ -77,7 +88,7 @@ function CrackQuestions({ lang }: { lang: string }) {
         setIdx((i) => (i + 1) % questions.length);
         setVisible(true);
       }, 400);
-    }, 3200);
+    }, QUESTION_CYCLE_MS);
     return () => clearInterval(cycle);
   }, [questions.length]);
 
@@ -109,8 +120,8 @@ function CachedBurst() {
       {SPARKS.map((s, i) => {
         const angle = (i / SPARKS.length) * 360;
         const rad = (angle * Math.PI) / 180;
-        const tx = Math.cos(rad) * 52;
-        const ty = Math.sin(rad) * 52;
+        const tx = Math.cos(rad) * BURST_RADIUS_PX;
+        const ty = Math.sin(rad) * BURST_RADIUS_PX;
         return (
           <motion.span
             key={i}
@@ -203,9 +214,9 @@ export default function ChatWidget() {
       const dx = e.clientX - cx;
       const dy = e.clientY - cy;
       const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 80) {
-        orbX.set(dx * 0.15);
-        orbY.set(dy * 0.15);
+      if (dist < MAGNETIC_RANGE_PX) {
+        orbX.set(dx * MAGNETIC_PULL);
+        orbY.set(dy * MAGNETIC_PULL);
       } else {
         orbX.set(0);
         orbY.set(0);
@@ -228,9 +239,9 @@ export default function ChatWidget() {
         setShowTooltip(true);
         tooltipCycleRef.current = setTimeout(() => {
           setShowTooltip(false);
-          scheduleTooltip(); // re-schedule after 12s
+          scheduleTooltip();
         }, 3000);
-      }, 4000);
+      }, IDLE_TOOLTIP_DELAY_MS);
     };
     scheduleTooltip();
     return () => {
@@ -266,7 +277,7 @@ export default function ChatWidget() {
     try {
       const { CreateMLCEngine } = await import("@mlc-ai/web-llm");
       const engine = await CreateMLCEngine(
-        "Qwen2.5-0.5B-Instruct-q4f16_1-MLC",
+        QWEN_MODEL_ID,
         {
           initProgressCallback: (r: { progress: number }) =>
             setLoadProgress(Math.round(r.progress * 100)),
@@ -274,8 +285,7 @@ export default function ChatWidget() {
       );
       engineRef.current = engine;
       const elapsed = Date.now() - loadStart;
-      // If loaded in < 4s it was from cache — show celebration
-      if (elapsed < 4000) {
+      if (elapsed < CACHE_HIT_MS) {
         setPhase("cached");
         setTimeout(() => {
           setPhase("ready");
@@ -337,8 +347,8 @@ export default function ChatWidget() {
           ...nextHistory.map((m) => ({ role: m.role, content: m.content })),
         ],
         stream: true,
-        max_tokens: 300,
-        temperature: 0.7,
+        max_tokens: MAX_RESPONSE_TOKENS,
+        temperature: RESPONSE_TEMPERATURE,
       });
 
       let accumulated = "";
@@ -679,12 +689,3 @@ export default function ChatWidget() {
   );
 }
 
-// needed for inline Mail icon in error state
-function Mail({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-      <rect width="20" height="16" x="2" y="4" rx="2" />
-      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-    </svg>
-  );
-}
