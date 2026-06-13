@@ -14,6 +14,7 @@ export const translations = {
     hero: {
       tag: '// Creative Technologist · 2026',
       pitch: 'I deploy AI workflows that protect enterprise assets and recapture thousands of engineering hours — turning "magic" tech into predictable ROI.',
+      emphasisWords: ['AI', 'workflows', 'predictable', 'ROI.'] as readonly string[],
       cta: "Let's Talk",
       linkedin: 'LinkedIn',
       location: 'Ajman, UAE · Open across GCC',
@@ -133,6 +134,7 @@ export const translations = {
     hero: {
       tag: '// مبتكر تقني · 2026',
       pitch: 'أطرح سير عمل الذكاء الاصطناعي التي تحمي أصول المؤسسات وتستعيد آلاف ساعات الهندسة — محوّلاً التقنية السحرية إلى عائد استثمار متوقع.',
+      emphasisWords: ['الذكاء', 'الاصطناعي', 'استثمار', 'متوقع.'] as readonly string[],
       cta: 'لنتحدث',
       linkedin: 'لينكد إن',
       location: 'عجمان، الإمارات · متاح في دول الخليج',

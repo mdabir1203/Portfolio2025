@@ -1,26 +1,11 @@
 import { createServerFn } from "@tanstack/react-start";
+import { parseItems } from "./medium.helpers";
 
 export type MediumPost = {
   title: string;
   link: string;
   pubDate: string;
 };
-
-function decodeEntities(s: string) {
-  return s
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&apos;/g, "'");
-}
-
-function pick(xml: string, tag: string): string | null {
-  const m = xml.match(new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`));
-  if (!m) return null;
-  return decodeEntities(m[1].replace(/<!\[CDATA\[|\]\]>/g, "").trim());
-}
 
 export const fetchMediumPosts = createServerFn({ method: "GET" }).handler(
   async (): Promise<{ posts: MediumPost[] }> => {
@@ -30,21 +15,7 @@ export const fetchMediumPosts = createServerFn({ method: "GET" }).handler(
       });
       if (!res.ok) return { posts: [] };
       const xml = await res.text();
-      const items = xml.split("<item>").slice(1, 6);
-      const posts: MediumPost[] = items.map((raw) => {
-        const rawLink = pick(raw, "link") ?? "#";
-        let link = "#";
-        try {
-          const u = new URL(rawLink);
-          if (u.protocol === "https:") link = rawLink;
-        } catch { /* leave as "#" */ }
-        return {
-          title: pick(raw, "title") ?? "Untitled",
-          link,
-          pubDate: pick(raw, "pubDate") ?? "",
-        };
-      });
-      return { posts };
+      return { posts: parseItems(xml) };
     } catch {
       return { posts: [] };
     }
