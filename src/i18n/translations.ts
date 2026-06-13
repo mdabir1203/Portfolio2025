@@ -110,6 +110,15 @@ export const translations = {
       tagline: 'Everlasting growth and adaptibility.',
     },
     mobileCta: "Let's Talk",
+    chat: {
+      tag: '// Ask Abir',
+      placeholder: 'Ask about my work, skills, or projects…',
+      send: 'Send',
+      typing: 'Thinking…',
+      loading: '~300 MB · cached after first load',
+      error: 'WebGPU not supported. Try Chrome 121+ or Edge.',
+      greeting: "Hi! Ask me anything about Abir's projects, skills, or how he can help your team.",
+    },
   },
   ar: {
     nav: {
@@ -220,5 +229,14 @@ export const translations = {
       tagline: 'نمو دائم وقدرة على التكيف.',
     },
     mobileCta: 'لنتحدث',
+    chat: {
+      tag: '// اسأل أبير',
+      placeholder: 'اسأل عن مشاريعي أو مهاراتي…',
+      send: 'إرسال',
+      typing: 'أفكر…',
+      loading: '~300 ميجابايت · يُخزَّن بعد أول تحميل',
+      error: 'المتصفح لا يدعم WebGPU. جرّب Chrome 121+ أو Edge.',
+      greeting: 'مرحباً! اسألني عن مشاريع أبير أو مهاراته أو كيف يمكنه مساعدة فريقك.',
+    },
   },
 } as const;

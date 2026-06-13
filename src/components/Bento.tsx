@@ -23,6 +23,7 @@ import {
 import abir from "@/assets/abir.webp";
 import IdentityHeroBento from "@/components/IdentityHeroBento";
 import TestimonialsMarquee from "@/components/TestimonialsCard";
+import ChatWidget from "@/components/ChatWidget";
 
 const MediumCard = lazy(() => import("@/components/MediumCard"));
 const YoutubeStrip = lazy(() => import("@/components/YoutubeStrip"));
@@ -496,6 +497,7 @@ export default function Bento() {
           </a>
         </div>
       </div>
+      <ChatWidget />
     </main>
   );
 }
