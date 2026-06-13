@@ -12,7 +12,32 @@ import { X, Send } from "lucide-react";
 // ─── Types ────────────────────────────────────────────────────────────────────
 type Role = "user" | "assistant";
 type Message = { role: Role; content: string };
-type Phase = "idle" | "loading" | "ready" | "streaming" | "error";
+type Phase = "idle" | "loading" | "cached" | "ready" | "streaming" | "error";
+
+// ─── Funny questions that cycle while the model loads ─────────────────────────
+const CRACK_QUESTIONS_EN = [
+  "Will Abir fix my terrible code at 3 AM? 🌙",
+  "Can AI explain why my CSS is broken? 😭",
+  "Is Abir secretly a robot? 🤖",
+  "What if I just ask for his Netflix password? 📺",
+  "Can this AI tell my boss I'm 'in a meeting'? 🤫",
+  "Will Abir do my taxes? 💸",
+  "What's the meaning of life AND React hooks? ⚛️",
+  "Can I hire Abir to make my startup profitable in 24h? 😅",
+  "Does Abir drink coffee or is he just caffeinated by passion? ☕",
+  "What if the real friends were the AI agents we deployed along the way? 🤝",
+];
+
+const CRACK_QUESTIONS_AR = [
+  "هل يصلح أبير كودي الفاشل الساعة 3 صباحاً؟ 🌙",
+  "هل يمكن للذكاء الاصطناعي يشرح ليش CSS ما يشتغل؟ 😭",
+  "هل أبير روبوت سري؟ 🤖",
+  "وش لو سألته عن كلمة مرور Netflix؟ 📺",
+  "هل يقدر يقول لمديري إنني 'في اجتماع'؟ 🤫",
+  "هل أبير يشرب قهوة أو إنه يعمل بالشغف فقط؟ ☕",
+  "هل يقدر يخلي الستارت-أب ربح في 24 ساعة؟ 😅",
+  "ما هو معنى الحياة وهوكس React؟ ⚛️",
+];
 
 // ─── Portfolio knowledge base (replaces AirLLM's input_text) ─────────────────
 const SYSTEM_PROMPT = `You are the AI voice for Mohammad Abir Abbas's portfolio at abir.getwaved.ai.
@@ -38,6 +63,69 @@ CASE STUDIES:
 RECOGNITION: Redis Side Quest Winner 2024, MIT Hacknation 2026 Next Best.
 LANGUAGES: English IELTS 7.5, Bengali (native), German A2.
 CONTACT: abir.abbas@proton.me | linkedin.com/in/abir-abbas`;
+
+// ─── Cycling crack questions during load ─────────────────────────────────────
+function CrackQuestions({ lang }: { lang: string }) {
+  const [idx, setIdx] = useState(0);
+  const [visible, setVisible] = useState(true);
+  const questions = lang === "ar" ? CRACK_QUESTIONS_AR : CRACK_QUESTIONS_EN;
+
+  useEffect(() => {
+    const cycle = setInterval(() => {
+      setVisible(false);
+      setTimeout(() => {
+        setIdx((i) => (i + 1) % questions.length);
+        setVisible(true);
+      }, 400);
+    }, 3200);
+    return () => clearInterval(cycle);
+  }, [questions.length]);
+
+  return (
+    <div className="relative h-16 w-full overflow-hidden flex items-center justify-center">
+      <AnimatePresence mode="wait">
+        {visible && (
+          <motion.p
+            key={idx}
+            initial={{ opacity: 0, y: 14, filter: "blur(6px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: -14, filter: "blur(6px)" }}
+            transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-x-0 px-2 text-center font-mono text-[11px] leading-relaxed text-foreground/60"
+          >
+            {questions[idx]}
+          </motion.p>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// ─── Cached celebration burst ─────────────────────────────────────────────────
+const SPARKS = ["✦", "⬡", "◈", "✶", "❋", "◆", "✺", "⬟"];
+function CachedBurst() {
+  return (
+    <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
+      {SPARKS.map((s, i) => {
+        const angle = (i / SPARKS.length) * 360;
+        const rad = (angle * Math.PI) / 180;
+        const tx = Math.cos(rad) * 52;
+        const ty = Math.sin(rad) * 52;
+        return (
+          <motion.span
+            key={i}
+            className="absolute text-[color:var(--accent-teal)] text-sm select-none"
+            initial={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+            animate={{ opacity: 0, x: tx, y: ty, scale: 0.3 }}
+            transition={{ duration: 0.65, delay: i * 0.04, ease: "easeOut" }}
+          >
+            {s}
+          </motion.span>
+        );
+      })}
+    </div>
+  );
+}
 
 // ─── Typing indicator ─────────────────────────────────────────────────────────
 function TypingDots() {
@@ -174,6 +262,7 @@ export default function ChatWidget() {
     }
 
     setPhase("loading");
+    const loadStart = Date.now();
     try {
       const { CreateMLCEngine } = await import("@mlc-ai/web-llm");
       const engine = await CreateMLCEngine(
@@ -184,8 +273,18 @@ export default function ChatWidget() {
         }
       );
       engineRef.current = engine;
-      setPhase("ready");
-      setMessages([{ role: "assistant", content: tx.chat.greeting }]);
+      const elapsed = Date.now() - loadStart;
+      // If loaded in < 4s it was from cache — show celebration
+      if (elapsed < 4000) {
+        setPhase("cached");
+        setTimeout(() => {
+          setPhase("ready");
+          setMessages([{ role: "assistant", content: tx.chat.greeting }]);
+        }, 1400);
+      } else {
+        setPhase("ready");
+        setMessages([{ role: "assistant", content: tx.chat.greeting }]);
+      }
     } catch (e) {
       console.error("WebLLM init error:", e);
       setErrorMsg(tx.chat.error);
@@ -407,24 +506,73 @@ export default function ChatWidget() {
             {/* Body */}
             <div className="flex flex-col" style={{ height: 400 }}>
 
-              {/* Loading state */}
+              {/* Loading state — orb spinner + crack questions + progress bar */}
               {phase === "loading" && (
-                <div className="flex flex-1 flex-col items-center justify-center gap-4 p-6">
-                  <motion.div
-                    className="h-12 w-12 rounded-full"
-                    style={{
-                      background: `radial-gradient(circle at 32% 28%, oklch(0.92 0.16 185), oklch(0.38 0.12 175))`,
-                      boxShadow: "0 0 20px oklch(0.78 0.14 180 / 0.4)",
-                    }}
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                  />
-                  <div className="w-full space-y-1 text-center">
-                    <p className="font-mono text-[11px] text-foreground/60">
-                      Initialising Qwen 2.5
-                    </p>
+                <div className="flex flex-1 flex-col items-center justify-center gap-3 p-5">
+                  {/* Spinning orb */}
+                  <div className="relative">
+                    <motion.div
+                      className="h-14 w-14 rounded-full"
+                      style={{
+                        background: `radial-gradient(circle at 32% 28%, oklch(0.92 0.16 185), oklch(0.38 0.12 175))`,
+                        boxShadow: "0 0 24px oklch(0.78 0.14 180 / 0.5)",
+                      }}
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    />
+                    {/* orbit dot */}
+                    <motion.div
+                      className="absolute top-0 left-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1 rounded-full bg-[color:var(--accent-lime)]"
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                      style={{ transformOrigin: "50% 36px" }}
+                    />
+                  </div>
+
+                  {/* "Meanwhile, people are wondering…" */}
+                  <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-foreground/40">
+                    {lang === "ar" ? "بينما يتساءل الناس…" : "Meanwhile, people are wondering…"}
+                  </p>
+
+                  {/* Cycling funny questions */}
+                  <CrackQuestions lang={lang} />
+
+                  {/* Progress bar */}
+                  <div className="w-full">
                     <ProgressBar value={loadProgress} label={tx.chat.loading} />
                   </div>
+                </div>
+              )}
+
+              {/* Cached state — instant load celebration */}
+              {phase === "cached" && (
+                <div className="relative flex flex-1 flex-col items-center justify-center gap-3 p-5 overflow-hidden">
+                  <CachedBurst />
+                  <motion.div
+                    initial={{ scale: 0.4, opacity: 0 }}
+                    animate={{ scale: [0.4, 1.2, 1], opacity: 1 }}
+                    transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                    className="h-14 w-14 rounded-full flex items-center justify-center text-2xl"
+                    style={{
+                      background: `radial-gradient(circle at 32% 28%, oklch(0.92 0.16 185), oklch(0.38 0.12 175))`,
+                      boxShadow: "0 0 32px oklch(0.78 0.14 180 / 0.7)",
+                    }}
+                  >
+                    ⚡
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3, duration: 0.4 }}
+                    className="text-center space-y-1"
+                  >
+                    <p className="font-mono text-[13px] font-semibold text-[color:var(--accent-teal)]">
+                      {lang === "ar" ? "⚡ محمّل من الكاش!" : "⚡ Loaded from cache!"}
+                    </p>
+                    <p className="font-mono text-[10px] text-foreground/40">
+                      {lang === "ar" ? "لأن أبير لا ينتظر أحداً 😎" : "Because Abir doesn't keep you waiting 😎"}
+                    </p>
+                  </motion.div>
                 </div>
               )}
 
