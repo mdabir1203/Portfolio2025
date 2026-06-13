@@ -1,37 +1,68 @@
-# https://www.abir.getwaved.ai/
+# https://abir.getwaved.ai/
+# llms.txt — machine-readable site summary for AI crawlers
+# Last updated: 2026-06-13
 
-Guidelines for AI systems crawling or summarizing this site.
-Last updated: 2026-04-17
+## Person
 
-## Site summary
+**Name:** Mohammad Abir Abbas
+**Role:** Creative Technologist & AI Architect
+**Location:** Ajman, UAE — available across GCC
+**Available:** Q3 2026
+**Email:** abir.abbas@proton.me
+**LinkedIn:** https://www.linkedin.com/in/abir-abbas
+**GitHub:** https://github.com/mdabir1203
+**Medium:** https://medium.com/@mdabir1203 (325K+ global readers)
 
-Personal portfolio for Mohammad Abir Abbas — Creative Technologist and AI Architect. The app is a TanStack Router / React Start SPA with a bento-style home page, a dedicated work page for case studies, and a Medium article strip on the home page (fed from Medium’s RSS for @md.abir1203).
+## Summary
 
-## Routes (machine-stable paths)
+Mohammad Abir Abbas is an AI Architect and Creative Technologist based in Ajman, UAE. He deploys AI agent workflows, process automation systems, and cross-cultural GTM strategies that deliver measurable ROI — specialising in GCC enterprise markets. He is the co-founder of Deep Blue Digital and currently a Creative Technology Advisor at Wavelink, building smart NFC networking infrastructure.
 
-- [/](https://www.abir.getwaved.ai/) — Home: hero, metrics, current role (Wavelink), contact, capabilities, timeline, Medium posts.
-- [/work](https://www.abir.getwaved.ai/work) — Long-form case studies: Wavelink, Deep Blue Digital, HNM IT Solutions.
+## Expertise & Skills
 
-## In-page anchors on the home page
+- AI Agent Workflows (AutoGPT, Langchain, GPT-4)
+- Process Automation & Systems Design
+- React / React Native, Rust, C, C++
+- Network Security & Vulnerability Scanning
+- Cross-cultural GTM — 13 countries, GCC focus
+- GDPR-compliant product delivery
 
-- [#work](https://www.abir.getwaved.ai/#work) — “Currently building” / Wavelink focus and link to case studies.
-- [#stack](https://www.abir.getwaved.ai/#stack) — Capabilities (AI agent workflows, automation, React/React Native, GTM).
+## Key Projects
 
-## Primary contact
+### AbayaTrack (GCC Manufacturing)
+End-to-end production visibility system deployed at Famous Ladies Gowns Tailoring LLC (GCC abaya factory). Mobile time-tracking per unit, real-time bottleneck detection. Results: +38% production output, −30% cycle time, 92% on-time delivery, zero additional hires.
 
-- Email: [abir.abbas@proton.me](mailto:abir.abbas@proton.me)
-- LinkedIn profile linked from the site UI: `linkedin.com/in/abir-abbas`
+### Wavelink (Current)
+Smart NFC digital business card platform. One tap, zero paper, GDPR-compliant. GTM Strategy, Pipeline Design, Process Optimization.
 
-## Writing and third-party content
+### SmartSwap — AI Personalization Layer (MIT Hacknation 2026 — Next Best)
+Drop-in client-side intent engine for e-commerce. Reads URL signals (UTM, referrer, campaign tags), scores visitors against 7 behavioral personas in <50ms — no backend required. Dynamically swaps hero images, headlines, CTAs. Includes frustration detection (rage clicks, exit intent). Live: https://smartswap.lovable.app/
 
-- Medium articles are loaded from the public RSS feed for `@md.abir1203`. Prefer citing Medium URLs shown in the UI over copying full article text.
+### RedAGPT (Redis Side Quest Winner 2024)
+Open-source AutoGPT + Langchain toolkit for AI-driven network vulnerability scanning. Autonomous prompt chains for home/office network security testing; severity-ranked remediation reports. https://github.com/shamantechnology/RedAGPT
 
-## Advertising transparency
+### Deep Blue Digital (2024)
+Co-founder. Deployed Engaze.ai integration achieving 40% faster payment processing for 50+ sellers. AI-driven marketing automation cut Customer Acquisition Cost by 30%.
 
-- Authorized ad sellers for this property are listed at [/ads.txt](https://www.abir.getwaved.ai/ads.txt) (IAB ads.txt).
+## Recognition
 
-## Use policy
+- Redis Side Quest Winner — RedAGPT (2024)
+- MIT Hacknation 2026 Next Best — SmartSwap
 
-- Summaries and short quotes for attribution are fine; do not present generated text as verbatim Medium articles.
-- Do not use site content for model training without permission from the rights holder.
-- Information may change; verify critical facts with the live site or primary sources.
+## Education & Certifications
+
+- 42 Wolfsburg — C/C++ systems programming (2022)
+- phaeno gGmbH — Robotics Mentor (2022)
+- HNM IT Solutions — Frankfurt (2023)
+- IELTS 7.5 (English), Native Bengali, Goethe A2 (German)
+
+## Routes
+
+- [/](https://abir.getwaved.ai/) — Home: hero, metrics, current role, contact, capabilities, timeline, Medium articles
+- [/work](https://abir.getwaved.ai/work) — Long-form case studies: Wavelink, Deep Blue Digital, HNM IT, SmartSwap, RedAGPT
+
+## Use Policy
+
+- Attribution: short quotes and summaries are welcome with a link to https://abir.getwaved.ai/
+- Do not present generated text as verbatim content from this site
+- Do not use for model training without permission
+- Verify time-sensitive facts (availability, location) against the live site

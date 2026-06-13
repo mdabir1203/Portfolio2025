@@ -25,31 +25,96 @@ function NotFoundComponent() {
   );
 }
 
+const SITE_URL = "https://abir.getwaved.ai";
+const FULL_NAME = "Mohammad Abir Abbas";
+const TITLE = "Mohammad Abir Abbas — Creative Technologist & AI Architect";
+const DESCRIPTION =
+  "AI Architect and Creative Technologist based in Ajman, UAE. I deploy AI workflows that protect enterprise assets and recapture thousands of engineering hours — turning complex tech into predictable ROI across GCC markets.";
+
+const JSON_LD = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: FULL_NAME,
+  url: SITE_URL,
+  image: `${SITE_URL}/og-image.jpg`,
+  jobTitle: "Creative Technologist & AI Architect",
+  description: DESCRIPTION,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Ajman",
+    addressCountry: "AE",
+  },
+  sameAs: [
+    "https://www.linkedin.com/in/abir-abbas",
+    "https://github.com/mdabir1203",
+    "https://medium.com/@mdabir1203",
+    "https://smartswap.lovable.app/",
+    "https://github.com/shamantechnology/RedAGPT",
+  ],
+  knowsAbout: [
+    "AI Agent Workflows",
+    "Process Automation",
+    "React",
+    "React Native",
+    "Rust",
+    "C",
+    "C++",
+    "Cross-cultural GTM",
+    "GCC Markets",
+    "Network Security",
+  ],
+  award: [
+    "Redis Side Quest Winner 2024 — RedAGPT",
+    "MIT Hacknation 2026 Next Best — SmartSwap",
+  ],
+  worksFor: {
+    "@type": "Organization",
+    name: "Wavelink",
+    url: "https://wavelink.com",
+  },
+});
+
 export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { title: TITLE },
+      { name: "description", content: DESCRIPTION },
+      { name: "author", content: FULL_NAME },
+      { name: "robots", content: "index, follow, max-snippet:-1, max-image-preview:large" },
+      { name: "keywords", content: "AI Architect, Creative Technologist, GCC, UAE, Ajman, AI workflows, process automation, React, Rust, AbayaTrack, Wavelink, SmartSwap, RedAGPT" },
+
+      // Open Graph
+      { property: "og:type", content: "profile" },
+      { property: "og:url", content: SITE_URL },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESCRIPTION },
+      { property: "og:locale", content: "en_US" },
+      { property: "og:locale:alternate", content: "ar_AE" },
+      { property: "profile:first_name", content: "Mohammad Abir" },
+      { property: "profile:last_name", content: "Abbas" },
+      { property: "profile:username", content: "abir-abbas" },
+
+      // Twitter / X
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: TITLE },
+      { name: "twitter:description", content: DESCRIPTION },
+      { name: "twitter:creator", content: "@mdabir1203" },
+
+      // Geo
+      { name: "geo.region", content: "AE-AJ" },
+      { name: "geo.placename", content: "Ajman, United Arab Emirates" },
     ],
     links: [
+      { rel: "canonical", href: SITE_URL },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap",
       },
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
     ],
   }),
   shellComponent: RootShell,
@@ -64,6 +129,8 @@ function RootShell({ children }: { children: React.ReactNode }) {
         <HeadContent />
         {/* Anti-flash: apply RTL before first paint if user previously chose Arabic */}
         <script dangerouslySetInnerHTML={{ __html: `try{var l=localStorage.getItem('lang');if(l==='ar'){document.documentElement.lang='ar';document.documentElement.dir='rtl';}}catch(e){}` }} />
+        {/* JSON-LD Person schema for AI crawlers and rich results */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON_LD }} />
       </head>
       <body>
         {children}
