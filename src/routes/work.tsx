@@ -125,8 +125,6 @@ const studies: CaseStudy[] = [
     ],
     outcomes: [
       { value: "Winner", label: "Redis Side Quest 2024", tone: "teal" },
-      { value: "−80%", label: "Documentation search time", tone: "lime" },
-      { value: "100%", label: "Semantic accuracy on test bank", tone: "amber" },
     ],
     stack: ["AutoGPT", "Langchain", "GPT-3", "Linux"],
     link: { label: "View on GitHub", href: "https://github.com/shamantechnology/RedAGPT" },
