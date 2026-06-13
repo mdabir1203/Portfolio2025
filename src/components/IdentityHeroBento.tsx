@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { translations } from "@/i18n/translations";
 import {
   motion,
   useMotionTemplate,
@@ -135,20 +137,15 @@ const pitchWord = {
 
 function PitchLine() {
   const reduce = useReducedMotion();
-  const words =
-    'I deploy AI workflows that protect enterprise assets and recapture thousands of engineering hours — turning "magic" tech into predictable ROI.'.split(
-      /(\s+)/,
-    );
-
-  const emphasis = new Set(["AI", "workflows", "predictable", "ROI."]);
+  const { lang } = useLanguage();
+  const tx = translations[lang];
+  const pitch = tx.hero.pitch;
+  const words = pitch.split(/(\s+)/);
+  const emphasis = new Set(["AI", "workflows", "predictable", "ROI.", "الذكاء", "الاصطناعي", "استثمار", "متوقع."]);
 
   if (reduce) {
     return (
-      <p className="mt-5 max-w-xl text-sm text-foreground/70 md:text-base">
-        I deploy <span className="text-foreground">AI workflows</span> that protect enterprise assets and
-        recapture thousands of engineering hours — turning &quot;magic&quot; tech into{" "}
-        <span className="text-foreground">predictable ROI</span>.
-      </p>
+      <p className="mt-5 max-w-xl text-sm text-foreground/70 md:text-base">{pitch}</p>
     );
   }
 
@@ -183,6 +180,8 @@ type IdentityHeroBentoProps = Omit<HTMLMotionProps<"div">, "children">;
 
 export default function IdentityHeroBento({ className, ...rest }: IdentityHeroBentoProps) {
   const reduce = useReducedMotion();
+  const { lang } = useLanguage();
+  const tx = translations[lang];
   const rootRef = useRef<HTMLDivElement>(null);
   const mx = useMotionValue(0.5);
   const my = useMotionValue(0.5);
@@ -252,7 +251,7 @@ export default function IdentityHeroBento({ className, ...rest }: IdentityHeroBe
           />
 
           <div className="relative z-[2] flex items-center justify-between">
-            <Tag>// Creative Technologist · 2026</Tag>
+            <Tag>{tx.hero.tag}</Tag>
             <motion.span
               initial={reduce ? false : { opacity: 0, scale: 0.6, rotate: -40 }}
               whileInView={reduce ? undefined : { opacity: 1, scale: 1, rotate: 0 }}
@@ -288,7 +287,7 @@ export default function IdentityHeroBento({ className, ...rest }: IdentityHeroBe
                 href="mailto:abir.abbas@proton.me"
                 className="inline-flex items-center gap-2 rounded-full bg-[color:var(--accent-teal)] px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.15em] text-[color:var(--ink)] transition-all hover:brightness-110 active:scale-95"
               >
-                Let's Talk
+                {tx.hero.cta}
               </a>
               <a
                 href="https://www.linkedin.com/in/abir-abbas"
@@ -296,7 +295,7 @@ export default function IdentityHeroBento({ className, ...rest }: IdentityHeroBe
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm font-mono uppercase tracking-[0.15em] text-foreground/70 transition-all hover:border-white/30 hover:text-foreground active:scale-95"
               >
-                LinkedIn
+                {tx.hero.linkedin}
               </a>
             </motion.div>
           </div>
@@ -309,10 +308,10 @@ export default function IdentityHeroBento({ className, ...rest }: IdentityHeroBe
             transition={{ delay: 1.15, duration: 0.55, ease: easeOutExpo }}
           >
             <span className="flex items-center gap-1.5">
-              <MapPin className="h-3 w-3" /> Ajman, UAE · Open across GCC
+              <MapPin className="h-3 w-3" /> {tx.hero.location}
             </span>
-            <span>13 Countries</span>
-            <span>325K+ Global Readers</span>
+            <span>{tx.hero.countries}</span>
+            <span>{tx.hero.readers}</span>
           </motion.div>
         </motion.div>
       </div>

@@ -353,3 +353,16 @@
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
 }
+
+/* Arabic RTL — Cairo font for full readability */
+html[dir="rtl"] body {
+  font-family: 'Cairo', system-ui, sans-serif;
+}
+
+html[dir="rtl"] .font-display {
+  font-family: 'Cairo', 'Instrument Serif', serif;
+}
+
+html[dir="rtl"] .font-mono {
+  font-family: 'Cairo', 'JetBrains Mono', monospace;
+}
