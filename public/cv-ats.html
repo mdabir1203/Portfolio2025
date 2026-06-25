@@ -3,96 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mohammad Abir Abbas - CV</title>
+    <title>Mohammad Abir Abbas — CV</title>
     <style>
+        /* ── Screen styles ── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+            line-height: 1.55;
+            color: #222;
+            background: #f5f5f5;
+        }
+
+        .page {
             max-width: 800px;
             margin: 40px auto;
-            padding: 20px;
+            padding: 48px 52px;
+            background: #fff;
+            box-shadow: 0 2px 16px rgba(0,0,0,.12);
         }
-        h1 { font-size: 24px; margin-bottom: 5px; color: #000; }
-        h2 { font-size: 18px; border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-top: 20px; color: #000; }
-        .contact { margin-bottom: 20px; font-size: 14px; }
-        .job { margin-bottom: 15px; }
-        .job-title { font-weight: bold; }
-        .company { font-style: italic; }
-        .date { float: right; color: #666; }
-        ul { margin-top: 5px; }
-        li { margin-bottom: 5px; }
-        .skills { font-weight: bold; }
+
+        h1 { font-size: 22px; font-weight: 700; color: #000; letter-spacing: .02em; }
+        .tagline { font-size: 12px; color: #555; margin-top: 2px; }
+        .contact {
+            margin-top: 6px;
+            font-size: 11.5px;
+            color: #444;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0 18px;
+        }
+        .contact a { color: #444; text-decoration: none; }
+
+        hr { border: none; border-top: 1.5px solid #ddd; margin: 14px 0 10px; }
+
+        h2 {
+            font-size: 10.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            color: #000;
+            margin-bottom: 8px;
+        }
+
+        section { margin-bottom: 14px; }
+
+        .entry { display: flex; justify-content: space-between; align-items: baseline; }
+        .entry-left { flex: 1; }
+        .entry-right { font-size: 11.5px; color: #555; white-space: nowrap; margin-left: 12px; }
+
+        .role { font-weight: 700; font-size: 13px; }
+        .org  { font-style: italic; color: #444; font-size: 12px; }
+
+        ul { margin: 4px 0 0 18px; }
+        li { margin-bottom: 3px; font-size: 12.5px; }
+
+        .skills-grid { display: grid; grid-template-columns: max-content 1fr; gap: 3px 10px; font-size: 12.5px; }
+        .skills-label { font-weight: 700; color: #000; }
+
+        .print-hint {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 12px;
+            color: #888;
+        }
+        .print-hint button {
+            background: #222;
+            color: #fff;
+            border: none;
+            padding: 6px 18px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        .print-hint button:hover { background: #444; }
+
+        /* ── Print styles ── */
+        @media print {
+            @page { size: A4; margin: 14mm 16mm; }
+
+            * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+            body { background: #fff; color: #000; font-size: 10pt; line-height: 1.45; }
+
+            /* Remove screen chrome */
+            .page { margin: 0; padding: 0; box-shadow: none; max-width: none; }
+            .print-hint { display: none; }
+
+            /* Suppress browser-appended URLs after links */
+            a::after { content: none !important; }
+            a { color: #000; text-decoration: none; }
+
+            h1 { font-size: 18pt; }
+            h2 { font-size: 8.5pt; margin-bottom: 5pt; page-break-after: avoid; }
+            .tagline { font-size: 9pt; }
+            .contact { font-size: 9pt; gap: 0 14px; }
+
+            .role { font-size: 10pt; }
+            .org  { font-size: 9.5pt; }
+            .entry-right { font-size: 9pt; }
+            li { font-size: 9.5pt; margin-bottom: 2pt; }
+
+            section { margin-bottom: 8pt; }
+            hr { margin: 6pt 0 5pt; border-top-color: #bbb; }
+
+            /* Keep each job block together — no mid-entry page breaks */
+            .job-block { page-break-inside: avoid; break-inside: avoid; margin-bottom: 7pt; }
+
+            /* Orphan/widow control */
+            p, li { orphans: 3; widows: 3; }
+
+            .skills-grid { font-size: 9.5pt; gap: 2pt 8pt; }
+
+            br { display: none; }
+        }
     </style>
 </head>
 <body>
+
+<div class="print-hint" id="hint">
+    <span>Save as PDF: click</span>
+    <button onclick="window.print()">Print / Save PDF</button>
+    <span>— then choose "Save as PDF" in the print dialog.</span>
+</div>
+
+<div class="page">
+
     <h1>Mohammad Abir Abbas</h1>
+    <div class="tagline">Creative Technologist &amp; AI Architect — GCC</div>
     <div class="contact">
-        Email: abir.abbas@proton.me | LinkedIn: linkedin.com/in/abir-abbas | Portfolio: abir.getwaved.ai
+        <a href="mailto:abir.abbas@proton.me">abir.abbas@proton.me</a>
+        <a href="https://www.linkedin.com/in/abir-abbas" target="_blank">linkedin.com/in/abir-abbas</a>
+        <a href="https://abir.getwaved.ai" target="_blank">abir.getwaved.ai</a>
+        <a href="https://github.com/mdabir1203" target="_blank">github.com/mdabir1203</a>
+        <span>Ajman, UAE · Available Q3 2026</span>
     </div>
 
-    <h2>Professional Summary</h2>
-    <p>Creative Technologist and AI Architect specializing in AI agent workflows and process automation. Proven track record of delivering measurable ROI through data-driven engineering and cross-cultural GTM strategies.</p>
+    <hr>
 
-    <h2>Experience</h2>
-    
-    <div class="job">
-        <span class="date">Jan 2025 — Present</span>
-        <div class="job-title">Chief Technical Advisor</div>
-        <div class="company">Wavelink — Smart NFC Networking</div>
+    <section>
+        <h2>Summary</h2>
+        <p>AI Architect and Creative Technologist deploying agent workflows, process automation, and cross-cultural GTM strategies that deliver measurable ROI — specialising in GCC enterprise markets. Co-founder of Deep Blue Digital; Creative Technology Advisor at Wavelink. 325K+ global readers on Medium.</p>
+    </section>
+
+    <section>
+        <h2>Experience</h2>
+
+        <div class="job-block">
+            <div class="entry">
+                <div class="entry-left">
+                    <div class="role">Chief Technical Advisor</div>
+                    <div class="org">Wavelink — Smart NFC Networking</div>
+                </div>
+                <div class="entry-right">Jan 2025 — Present</div>
+            </div>
+            <ul>
+                <li>Engineered smart NFC infrastructure replacing paper business cards; drove GDPR-compliant data policies for 100% day-one compliance.</li>
+                <li>Designed GTM strategy and partnership funnels aligned to 2025–26 roadmap.</li>
+            </ul>
+        </div>
+
+        <div class="job-block">
+            <div class="entry">
+                <div class="entry-left">
+                    <div class="role">Co-Founder</div>
+                    <div class="org">Deep Blue Digital — AI Commerce Automation</div>
+                </div>
+                <div class="entry-right">Sep 2024 — Aug 2025</div>
+            </div>
+            <ul>
+                <li>Integrated Engaze.ai payment automation for 50+ sellers, reducing processing time by 40%.</li>
+                <li>Built automated marketing pipelines (Midjourney + Zapier) cutting Customer Acquisition Cost by 30%.</li>
+                <li>Instrumented full-funnel analytics to attribute performance to specific creative variants.</li>
+            </ul>
+        </div>
+
+        <div class="job-block">
+            <div class="entry">
+                <div class="entry-left">
+                    <div class="role">IT Support Engineer</div>
+                    <div class="org">HNM IT Solutions — Frankfurt, Germany</div>
+                </div>
+                <div class="entry-right">Oct 2023 — Jan 2024</div>
+            </div>
+            <ul>
+                <li>Hardened distributed networks, maintaining 99.9% uptime for enterprise environments.</li>
+                <li>Built automated diagnostic playbooks, reducing Mean Time to Resolution by 35%.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>Key Projects</h2>
+
+        <div class="job-block">
+            <div class="entry">
+                <div class="entry-left"><div class="role">AbayaTrack — GCC Manufacturing Visibility</div></div>
+            </div>
+            <ul>
+                <li>End-to-end production visibility system at Famous Ladies Gowns Tailoring LLC: mobile time-tracking per unit, real-time bottleneck detection.</li>
+                <li>Results: +38% production output, −30% cycle time, 65% → 92% on-time delivery, zero additional hires.</li>
+            </ul>
+        </div>
+
+        <div class="job-block">
+            <div class="entry">
+                <div class="entry-left"><div class="role">SmartSwap — AI Personalisation Layer <span style="font-weight:400;font-style:italic">(MIT Hacknation 2026 — Next Best)</span></div></div>
+            </div>
+            <ul>
+                <li>Drop-in client-side intent engine scoring visitors against 7 behavioural personas in &lt;50 ms — no backend required.</li>
+                <li>Dynamically swaps hero images, headlines, and CTAs; includes rage-click and exit-intent detection.</li>
+            </ul>
+        </div>
+
+        <div class="job-block">
+            <div class="entry">
+                <div class="entry-left"><div class="role">RedAGPT <span style="font-weight:400;font-style:italic">(Winner: Redis Side Quest 2024)</span></div></div>
+            </div>
+            <ul>
+                <li>Open-source AutoGPT + Langchain toolkit for AI-driven network vulnerability scanning with severity-ranked remediation reports.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>Education &amp; Certifications</h2>
         <ul>
-            <li>Engineered smart NFC networking solutions to replace paper business cards.</li>
-            <li>Designed GTM strategy and partnership funnels aligned to 2025–26 roadmap.</li>
-            <li>Implemented GDPR-compliant data policies for 100% day-one compliance.</li>
+            <li><strong>42 Wolfsburg</strong> — Systems Programming, C/C++ (2022)</li>
+            <li><strong>phaeno gGmbH</strong> — Robotics Mentor (2022)</li>
+            <li><strong>Languages:</strong> English IELTS 7.5 · Bengali (Native) · German A2</li>
         </ul>
-    </div>
+    </section>
 
-    <div class="job">
-        <span class="date">Sep 2024 — Aug 2025</span>
-        <div class="job-title">Co-Founder</div>
-        <div class="company">Deep Blue Digital — AI Commerce Automation</div>
-        <ul>
-            <li>Integrated AI-powered payment systems (Engaze.ai) for 50+ sellers, reducing processing time by 40%.</li>
-            <li>Built automated marketing pipelines using Midjourney and Zapier, cutting CAC by 30%.</li>
-            <li>Instrumented full-funnel analytics to attribute performance to specific creative variants.</li>
-        </ul>
-    </div>
+    <section>
+        <h2>Technical Skills</h2>
+        <div class="skills-grid">
+            <span class="skills-label">Engineering</span>
+            <span>AI Agent Workflows · Langchain · AutoGPT · React · React Native · TypeScript · Node.js · Rust · C/C++ · PostgreSQL · Redis</span>
+            <span class="skills-label">Strategy</span>
+            <span>GTM Design · Pipeline Optimisation · Process Automation · GDPR Compliance · Cross-cultural GTM (13 countries)</span>
+            <span class="skills-label">Security</span>
+            <span>Network Vulnerability Scanning · Penetration Testing · MTTR Reduction</span>
+        </div>
+    </section>
 
-    <div class="job">
-        <span class="date">Oct 2023 — Jan 2024</span>
-        <div class="job-title">IT Support Engineer</div>
-        <div class="company">HNM IT Solutions — Frankfurt, Germany</div>
-        <ul>
-            <li>Hardened distributed networks, maintaining 99.9% uptime for enterprise environments.</li>
-            <li>Built automated diagnostic tests and MTTR playbooks, reducing resolution time by 35%.</li>
-        </ul>
-    </div>
+</div>
 
-    <h2>Key Projects</h2>
-
-    <div class="job">
-        <div class="job-title">Process Visibility Project (GCC Manufacturing)</div>
-        <ul>
-            <li>Implemented real-time time tracking for a manufacturing plant, increasing production output by 38%.</li>
-            <li>Reduced cycle time by 30% and improved on-time delivery from 65% to 92% without additional hires.</li>
-        </ul>
-    </div>
-
-    <div class="job">
-        <div class="job-title">RedAGPT (Winner: Redis Side Quest 2024)</div>
-        <ul>
-            <li>Built a Redis-powered AI agent for technical documentation retrieval using semantic search.</li>
-        </ul>
-    </div>
-
-    <h2>Education & Certifications</h2>
-    <ul>
-        <li>42 Wolfsburg — Software Engineering (C/C++)</li>
-        <li>Languages: English (IELTS 7.5), Bengali (Native), German (A2)</li>
-    </ul>
-
-    <h2>Technical Skills</h2>
-    <p><span class="skills">Core:</span> AI Agent Workflows, Process Automation, React, React Native, TypeScript, Node.js, Redis, PostgreSQL.</p>
-    <p><span class="skills">Strategy:</span> GTM Design, Data-driven Promo, Pipeline Optimization, GDPR Compliance.</p>
+<script>
+    if (new URLSearchParams(location.search).has('print')) {
+        document.getElementById('hint').style.display = 'none';
+        window.addEventListener('load', () => setTimeout(() => window.print(), 300));
+    }
+</script>
 </body>
 </html>

@@ -90,15 +90,17 @@ export default function Bento() {
           <a href="#stack" className="hover:text-foreground">{tx.nav.stack}</a>
           <a href="mailto:abir.abbas@proton.me" className="hover:text-foreground">{tx.nav.contact}</a>
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => window.print()}
+            <a
+              href="/Abir_Abbas_CV.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-foreground/70 hover:bg-white/10"
             >
-              <Download className="h-3 w-3" /> {tx.nav.resume}
-            </button>
+              <ArrowUpRight className="h-3 w-3" /> {tx.nav.resume}
+            </a>
             <a
-              href="/cv-ats.html"
-              download="Abir_Abbas_CV_ATS.html"
+              href="/Abir_Abbas_CV.pdf"
+              download="Abir_Abbas_CV.pdf"
               className="inline-flex items-center gap-1.5 rounded-full border border-[color:var(--accent-teal)]/40 bg-[color:var(--accent-teal)]/10 px-3 py-1 text-[color:var(--accent-teal)] hover:bg-[color:var(--accent-teal)]/20"
             >
               <Download className="h-3 w-3" /> {tx.nav.ats}
@@ -452,8 +454,8 @@ export default function Bento() {
             <p className="mt-2 text-xs text-foreground/60">{tx.recruiter.desc}</p>
           </div>
           <a
-            href="/cv-ats.html"
-            download="Abir_Abbas_CV_ATS.html"
+            href="/Abir_Abbas_CV.pdf"
+            download="Abir_Abbas_CV.pdf"
             className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[color:var(--accent-teal)] px-4 py-3 text-sm font-semibold uppercase tracking-wider text-[color:var(--ink)] transition-transform hover:scale-[1.02] active:scale-[0.98]"
           >
             <Download className="h-4 w-4" /> {tx.recruiter.cta}
@@ -488,10 +490,10 @@ export default function Bento() {
             <ArrowUpRight className="h-4 w-4" />
           </a>
           <a
-            href="/cv-ats.html"
-            download="Abir_Abbas_CV_ATS.html"
+            href="/Abir_Abbas_CV.pdf"
+            download="Abir_Abbas_CV.pdf"
             className="flex items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-foreground/70 active:scale-95 transition-transform"
-            aria-label="Download CV"
+            aria-label="Download CV (PDF)"
           >
             <Download className="h-4 w-4" />
           </a>

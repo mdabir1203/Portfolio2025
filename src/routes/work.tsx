@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowUpRight, Target, Cog, ShieldCheck, Mail, X, ZoomIn } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 import gccAbayaCaseStudy from "@/assets/case-study-gcc-abaya-bn.png";
+import smartswapCaseStudy from "@/assets/case-study-smartswap.webp";
 
 type CaseStudy = {
   slug: string;
@@ -143,12 +144,14 @@ const studies: CaseStudy[] = [
       "Added real-time frustration detection — rage clicks, scroll hesitation, exit intent — to trigger recovery flows before bounce, recovering sessions that would otherwise be lost.",
     ],
     outcomes: [
-      { value: "Next Best", label: "MIT Hacknation 2026", tone: "teal" },
-      { value: "<50ms", label: "Intent resolution, zero backend", tone: "lime" },
-      { value: "7", label: "Behavioral personas, drop-in deploy", tone: "amber" },
+      { value: "+38%", label: "Avg. uplift in conversion rate", tone: "teal" },
+      { value: "65–92%", label: "Increase in on-time revenue", tone: "lime" },
+      { value: "2.1x", label: "More revenue per visitor", tone: "amber" },
+      { value: "<50ms", label: "Intent-score speed, zero backend", tone: "teal" },
     ],
     stack: ["URL Signal Scoring", "Behavior Tracking", "Client-side AI", "React"],
     link: { label: "Live Demo", href: "https://smartswap.lovable.app/" },
+    image: smartswapCaseStudy,
   },
 ];
 
