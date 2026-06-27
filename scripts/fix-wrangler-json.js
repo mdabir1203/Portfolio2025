@@ -87,7 +87,7 @@ export default {
     if (
       env.ASSETS &&
       (path.startsWith('/assets/') ||
-        /\\.(ico|png|jpg|jpeg|webp|gif|svg|woff|woff2|ttf|eot|map|txt)$/.test(path))
+        /\\.(ico|png|jpg|jpeg|webp|gif|svg|woff|woff2|ttf|eot|map|txt|pdf|html|xml|json|webmanifest|md)$/.test(path))
     ) {
       return env.ASSETS.fetch(request);
     }
