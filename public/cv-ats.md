@@ -37,7 +37,11 @@ Creative Technologist and AI Architect specializing in AI agent workflows and pr
 - Implemented real-time time tracking for a manufacturing plant, increasing production output by 38%.
 - Reduced cycle time by 30% and improved on-time delivery from 65% to 92% without additional hires.
 
-### RedAGPT (Winner: Redis Side Quest 2024)
+### SmartSwap — MIT Hacknation 2026 (Next Top Project)
+- Built SmartSwap in 24 hours with Abhishek Kumar (Team Xerox) at MIT Hacknation 2026, hosted by the MIT Sloan AI Club with 1,000+ devs from 65+ countries.
+- Intent-driven token swapping for SMB websites: a lightweight plugin that reads third-party user data and adapts the page in real time.
+
+### RedAGPT (2nd Place: Redis Side Quest 2024)
 - Built a Redis-powered AI agent for technical documentation retrieval using semantic search.
 
 ---

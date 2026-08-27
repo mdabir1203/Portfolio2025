@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { ArrowLeft, ArrowUpRight, Target, Cog, ShieldCheck, Mail, X, ZoomIn } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Target, Cog, ShieldCheck, Mail, X, ZoomIn, FileText } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 import gccAbayaCaseStudy from "@/assets/case-study-gcc-abaya-bn.png";
 import smartswapCaseStudy from "@/assets/case-study-smartswap.webp";
@@ -21,6 +21,8 @@ type CaseStudy = {
   link?: { label: string; href: string };
   /** Optional hero infographic or visual for the case study. */
   image?: string;
+  /** Optional whitepaper / deep-dive PDF served from /public. */
+  whitepaper?: string;
 };
 
 const studies: CaseStudy[] = [
@@ -152,6 +154,7 @@ const studies: CaseStudy[] = [
     stack: ["URL Signal Scoring", "Behavior Tracking", "Client-side AI", "React"],
     link: { label: "Live Demo", href: "https://smartswap.lovable.app/" },
     image: smartswapCaseStudy,
+    whitepaper: "/smartswap-whitepaper.pdf",
   },
 ];
 
@@ -334,15 +337,30 @@ function WorkPage() {
                   </div>
                 </div>
 
-                {s.link && (
-                  <a
-                    href={s.link.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-6 inline-flex items-center gap-1 text-sm text-[color:var(--accent-teal)] transition-all hover:gap-2"
-                  >
-                    {s.link.label} <ArrowUpRight className="h-4 w-4" />
-                  </a>
+                {(s.link || s.whitepaper) && (
+                  <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+                    {s.link && (
+                      <a
+                        href={s.link.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 text-sm text-[color:var(--accent-teal)] transition-all hover:gap-2"
+                      >
+                        {s.link.label} <ArrowUpRight className="h-4 w-4" />
+                      </a>
+                    )}
+                    {s.whitepaper && (
+                      <a
+                        href={s.whitepaper}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 text-sm text-foreground/70 transition-all hover:gap-2 hover:text-foreground"
+                      >
+                        <FileText className="h-4 w-4" /> Read the whitepaper
+                        <span className="text-foreground/40">(PDF)</span>
+                      </a>
+                    )}
+                  </div>
                 )}
               </div>
 

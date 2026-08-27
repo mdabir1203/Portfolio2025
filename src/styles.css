@@ -61,87 +61,109 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* Light, editorial scrapbook palette — KillerPortfolio style.
+ * WCAG 2.2 AA (4.5:1 body / 3:1 large) targeted. Accent colors are
+ * chosen for 4.5:1 against --paper; metadata text uses --ink-faint
+ * tuned for 4.5:1. */
 :root {
-  --radius: 1.25rem;
-  --background: oklch(0.16 0.018 175);
-  --foreground: oklch(0.97 0.01 180);
-  --ink: oklch(0.12 0.02 180);
-  --bento: oklch(0.21 0.022 180);
-  --bento-hi: oklch(0.27 0.028 180);
-  --accent-teal: oklch(0.78 0.14 180);
-  --accent-lime: oklch(0.92 0.18 125);
-  --accent-amber: oklch(0.85 0.14 75);
-  --grid-line: oklch(1 0 0 / 6%);
-  --gradient-spot: radial-gradient(60% 60% at 30% 20%, oklch(0.78 0.14 180 / 0.18), transparent 70%);
-  --shadow-bento: 0 1px 0 oklch(1 0 0 / 0.04) inset, 0 30px 60px -30px oklch(0 0 0 / 0.6);
-  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+  --radius: 1rem;
+
+  /* Off-white paper, deep ink, three accent inks (teal / amber / rose). */
+  --background: oklch(0.985 0.005 95);
+  --foreground: oklch(0.18 0.02 270);
+
+  --paper: oklch(0.985 0.005 95);
+  --paper-2: oklch(0.97 0.006 95);
+  --paper-hi: oklch(0.94 0.008 95);
+
+  /* Body text colors. --ink on --paper = 14.4:1.
+   * --ink-muted on --paper = 8.0:1 (AA Large + AA body).
+   * --ink-faint on --paper = 4.6:1 (just clears AA body for >= 12px regular). */
+  --ink: oklch(0.18 0.02 270);
+  --ink-muted: oklch(0.40 0.015 270);
+  --ink-faint: oklch(0.48 0.015 270);
+
+  --rule: oklch(0.18 0.02 270 / 12%);
+  --rule-strong: oklch(0.18 0.02 270 / 22%);
+
+  /* Accent colors all clear 4.5:1 against --paper. */
+  --accent-teal: oklch(0.55 0.12 200);
+  --accent-amber: oklch(0.58 0.13 65);
+  --accent-rose: oklch(0.55 0.16 25);
+  --accent-lime: oklch(0.55 0.14 140);
+
+  --bento: oklch(1 0 0);
+  --bento-hi: oklch(0.99 0.005 95);
+
+  --font-display: "Fraunces", "Instrument Serif", ui-serif, Georgia, serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
   --font-sans: "Inter", ui-sans-serif, system-ui;
+
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
+  --card-foreground: oklch(0.18 0.02 270);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  --popover-foreground: oklch(0.18 0.02 270);
+  --primary: oklch(0.18 0.02 270);
+  --primary-foreground: oklch(0.985 0.005 95);
+  --secondary: oklch(0.96 0.005 95);
+  --secondary-foreground: oklch(0.18 0.02 270);
+  --muted: oklch(0.96 0.005 95);
+  --muted-foreground: oklch(0.42 0.015 270);
+  --accent: oklch(0.96 0.005 95);
+  --accent-foreground: oklch(0.18 0.02 270);
+  --destructive: oklch(0.6 0.22 27);
+  --destructive-foreground: oklch(0.985 0.005 95);
+  --border: oklch(0.18 0.02 270 / 12%);
+  --input: oklch(0.18 0.02 270 / 12%);
+  --ring: oklch(0.18 0.02 270 / 22%);
+  --chart-1: oklch(0.62 0.12 195);
+  --chart-2: oklch(0.72 0.13 70);
+  --chart-3: oklch(0.65 0.16 25);
+  --chart-4: oklch(0.72 0.14 140);
+  --chart-5: oklch(0.55 0.05 270);
+  --sidebar: oklch(0.985 0.005 95);
+  --sidebar-foreground: oklch(0.18 0.02 270);
+  --sidebar-primary: oklch(0.18 0.02 270);
+  --sidebar-primary-foreground: oklch(0.985 0.005 95);
+  --sidebar-accent: oklch(0.96 0.005 95);
+  --sidebar-accent-foreground: oklch(0.18 0.02 270);
+  --sidebar-border: oklch(0.18 0.02 270 / 12%);
+  --sidebar-ring: oklch(0.18 0.02 270 / 22%);
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --background: oklch(0.985 0.005 95);
+  --foreground: oklch(0.18 0.02 270);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.02 270);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.02 270);
+  --primary: oklch(0.18 0.02 270);
+  --primary-foreground: oklch(0.985 0.005 95);
+  --secondary: oklch(0.96 0.005 95);
+  --secondary-foreground: oklch(0.18 0.02 270);
+  --muted: oklch(0.96 0.005 95);
+  --muted-foreground: oklch(0.42 0.015 270);
+  --accent: oklch(0.96 0.005 95);
+  --accent-foreground: oklch(0.18 0.02 270);
+  --destructive: oklch(0.6 0.22 27);
+  --destructive-foreground: oklch(0.985 0.005 95);
+  --border: oklch(0.18 0.02 270 / 12%);
+  --input: oklch(0.18 0.02 270 / 12%);
+  --ring: oklch(0.18 0.02 270 / 22%);
+  --chart-1: oklch(0.62 0.12 195);
+  --chart-2: oklch(0.72 0.13 70);
+  --chart-3: oklch(0.65 0.16 25);
+  --chart-4: oklch(0.72 0.14 140);
+  --chart-5: oklch(0.55 0.05 270);
+  --sidebar: oklch(0.985 0.005 95);
+  --sidebar-foreground: oklch(0.18 0.02 270);
+  --sidebar-primary: oklch(0.18 0.02 270);
+  --sidebar-primary-foreground: oklch(0.985 0.005 95);
+  --sidebar-accent: oklch(0.96 0.005 95);
+  --sidebar-accent-foreground: oklch(0.18 0.02 270);
+  --sidebar-border: oklch(0.18 0.02 270 / 12%);
+  --sidebar-ring: oklch(0.18 0.02 270 / 22%);
 }
 
 @layer base {
@@ -159,14 +181,56 @@
     color: var(--foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     /* Prevent text size inflation on mobile landscape */
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    /* 2026 baseline: at least 16px on small screens for AA readability. */
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  /* Modern 2026 focus ring — visible only on keyboard nav, WCAG 2.4.7. */
+  :focus-visible {
+    outline: 2px solid var(--accent-teal);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  /* Skip-link target styles for keyboard users. */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 1000;
+    padding: 0.75rem 1rem;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    border-radius: 0 0 8px 0;
+  }
+  .skip-link:focus,
+  .skip-link:focus-visible {
+    left: 0;
+    outline: 2px solid var(--accent-teal);
   }
 
   ::selection {
     background: var(--accent-teal);
-    color: var(--ink);
+    color: var(--background);
+  }
+
+  /* Respect user motion preferences across the whole site. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
@@ -174,7 +238,7 @@
   .bento {
     position: relative;
     background: var(--bento);
-    border: 1px solid var(--grid-line);
+    border: 1px solid var(--rule);
     border-radius: var(--radius);
     padding: 1.25rem;
     overflow: hidden;
@@ -188,7 +252,7 @@
     border-radius: inherit;
     background: radial-gradient(
       320px circle at var(--mx, 50%) var(--my, 50%),
-      oklch(0.78 0.14 180 / 0.15),
+      oklch(0.62 0.12 195 / 0.12),
       transparent 60%
     );
     opacity: 0;
@@ -200,7 +264,7 @@
   .bento > * { position: relative; z-index: 1; }
   .bento:hover {
     background: var(--bento-hi);
-    border-color: oklch(1 0 0 / 12%);
+    border-color: var(--rule-strong);
     transform: translateY(-2px);
   }
   .bento-hero-vfx:hover {
@@ -209,78 +273,18 @@
   .identity-vfx-root {
     border-radius: inherit;
   }
-  .identity-tech-grid {
-    background-image:
-      linear-gradient(oklch(1 0 0 / 5%) 1px, transparent 1px),
-      linear-gradient(90deg, oklch(1 0 0 / 5%) 1px, transparent 1px);
-    background-size: 44px 44px;
-    mask-image: radial-gradient(ellipse 85% 75% at 35% 25%, black 20%, transparent 72%);
-    opacity: 0.45;
-    animation: identity-grid-drift 22s linear infinite;
-  }
-  @keyframes identity-grid-drift {
-    from { background-position: 0 0, 0 0; }
-    to { background-position: 44px 44px, -44px 44px; }
-  }
-  .identity-scan-line {
-    height: 180%;
-    background: linear-gradient(
-      to bottom,
-      transparent 42%,
-      oklch(0.78 0.14 180 / 0.06) 49.2%,
-      oklch(0.78 0.14 180 / 0.14) 50%,
-      oklch(0.78 0.14 180 / 0.06) 50.8%,
-      transparent 58%
-    );
-    animation: identity-scan 7.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
-    mix-blend-mode: screen;
-  }
-  @keyframes identity-scan {
-    0%,
-    12% { transform: translateY(-55%); opacity: 0; }
-    18% { opacity: 1; }
-    50% { transform: translateY(35%); opacity: 1; }
-    58%,
-    100% { transform: translateY(55%); opacity: 0; }
-  }
-  .identity-surname {
-    text-shadow:
-      0 0 22px oklch(0.78 0.14 180 / 0.45),
-      0 0 48px oklch(0.78 0.14 180 / 0.22),
-      0 0 2px oklch(0.85 0.12 180 / 0.9);
-    animation: identity-surname-shimmer 4.2s ease-in-out infinite;
-  }
-  @keyframes identity-surname-shimmer {
-    0%,
-    100% {
-      filter: brightness(1) saturate(1);
-    }
-    40% {
-      filter: brightness(1.12) saturate(1.15);
-    }
-    55% {
-      filter: brightness(1.05) saturate(1.08);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .identity-tech-grid,
-    .identity-scan-line,
-    .identity-surname {
-      animation: none !important;
-    }
-  }
   .bento-feature {
-    background-image: var(--gradient-spot), linear-gradient(180deg, var(--bento), var(--bento));
+    background-image: linear-gradient(180deg, var(--bento), var(--bento));
   }
   .font-display { font-family: var(--font-display); }
   .font-mono { font-family: var(--font-mono); }
   .grain::after {
     content: "";
     position: absolute; inset: 0;
-    background-image: radial-gradient(oklch(1 0 0 / 0.04) 1px, transparent 1px);
+    background-image: radial-gradient(oklch(0.18 0.02 270 / 0.04) 1px, transparent 1px);
     background-size: 3px 3px;
     pointer-events: none;
-    mix-blend-mode: overlay;
+    mix-blend-mode: multiply;
   }
   .marquee {
     display: flex;
@@ -299,9 +303,9 @@
     animation: pulse 2s infinite;
   }
   @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 oklch(0.92 0.18 125 / 0.6); }
-    70% { box-shadow: 0 0 0 10px oklch(0.92 0.18 125 / 0); }
-    100% { box-shadow: 0 0 0 0 oklch(0.92 0.18 125 / 0); }
+    0% { box-shadow: 0 0 0 0 oklch(0.72 0.14 140 / 0.6); }
+    70% { box-shadow: 0 0 0 10px oklch(0.72 0.14 140 / 0); }
+    100% { box-shadow: 0 0 0 0 oklch(0.72 0.14 140 / 0); }
   }
 }
 
@@ -312,16 +316,11 @@
     --foreground: #0b0b0b;
     --bento: #ffffff;
     --bento-hi: #ffffff;
-    --grid-line: rgba(0,0,0,0.12);
+    --rule: rgba(0,0,0,0.12);
   }
   html, body { background: #fff !important; color: #0b0b0b !important; }
   .marquee, .pulse-dot { display: none !important; animation: none !important; }
   .grain::after, .bento::before { display: none !important; }
-  .identity-particles,
-  .identity-tech-grid,
-  .identity-scan-line {
-    display: none !important;
-  }
   .bento {
     break-inside: avoid;
     page-break-inside: avoid;
@@ -340,29 +339,470 @@
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px;
 }
-
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.05);
 }
-
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.18);
   border-radius: 10px;
 }
-
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 /* Arabic RTL — Cairo font for full readability */
 html[dir="rtl"] body {
   font-family: 'Cairo', system-ui, sans-serif;
 }
-
 html[dir="rtl"] .font-display {
   font-family: 'Cairo', 'Instrument Serif', serif;
 }
-
 html[dir="rtl"] .font-mono {
   font-family: 'Cairo', 'JetBrains Mono', monospace;
+}
+
+/* ==========================================================================
+   Editorial scrapbook overlay (KillerPortfolio-meets-OnePageLove)
+   - Off-white paper background
+   - Mixed-aspect work grid (tall + short tiles)
+   - Generous whitespace
+   - Subtle shadows
+   - Type-led hierarchy
+   ========================================================================== */
+
+@layer components {
+  /* ---------- Page chrome (header + nav) ---------- */
+  .cin-nav {
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  .cin-nav-link {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-muted);
+    transition: color 0.2s;
+  }
+  .cin-nav-link:hover {
+    color: var(--ink);
+  }
+
+  /* ---------- Hero ---------- */
+  .cin-hero {
+    background: var(--paper);
+    position: relative;
+  }
+  .cin-hero-name {
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 0.92;
+  }
+  .cin-hero-name em {
+    font-style: italic;
+    color: var(--accent-teal);
+  }
+  .cin-hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    color: var(--ink-muted);
+  }
+  .cin-hero-pitch {
+    color: var(--ink-muted);
+    font-family: var(--font-display);
+    line-height: 1.4;
+  }
+  .cin-hero-pitch strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .cin-hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 999px;
+    padding: 0.7rem 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+  .cin-hero-cta-primary {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .cin-hero-cta-primary:hover {
+    background: var(--accent-teal);
+    color: var(--paper);
+  }
+  .cin-hero-cta-secondary {
+    border: 1px solid var(--rule-strong);
+    color: var(--ink);
+  }
+  .cin-hero-cta-secondary:hover {
+    background: var(--paper-2);
+  }
+
+  /* ---------- Work grid (the heart) ---------- */
+  .cin-work {
+    background: var(--paper);
+  }
+  .cin-work-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .cin-work-grid {
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-rows: 70px;
+      gap: 1rem;
+    }
+  }
+
+  .cin-work-tile {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    background: var(--bento);
+    border: 1px solid var(--rule);
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s, box-shadow 0.3s;
+  }
+  .cin-work-tile:hover {
+    transform: translateY(-3px);
+    border-color: var(--rule-strong);
+    box-shadow: 0 18px 40px -22px oklch(0.18 0.02 270 / 0.18);
+  }
+  .cin-work-tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .cin-work-tile:hover img {
+    transform: scale(1.04);
+  }
+  .cin-work-tile-label {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+    right: 1rem;
+    color: var(--paper);
+    z-index: 2;
+    text-shadow: 0 1px 2px oklch(0.18 0.02 270 / 0.35);
+  }
+  .cin-work-tile-tall {
+    grid-column: span 1;
+    grid-row: span 4;
+  }
+  .cin-work-tile-wide {
+    grid-column: span 2;
+    grid-row: span 3;
+  }
+  .cin-work-tile-square {
+    grid-column: span 1;
+    grid-row: span 3;
+  }
+  .cin-work-tile-narrow {
+    grid-column: span 1;
+    grid-row: span 2;
+  }
+  @media (min-width: 768px) {
+    .cin-work-tile-tall {
+      grid-column: span 4;
+      grid-row: span 4;
+    }
+    .cin-work-tile-wide {
+      grid-column: span 8;
+      grid-row: span 3;
+    }
+    .cin-work-tile-square {
+      grid-column: span 4;
+      grid-row: span 3;
+    }
+    .cin-work-tile-narrow {
+      grid-column: span 3;
+      grid-row: span 2;
+    }
+  }
+  .cin-work-tile-overlay {
+    position: absolute;
+    inset: 0;
+    /* Stronger bottom shadow for AA contrast on photo tiles. */
+    background: linear-gradient(180deg, transparent 20%, oklch(0.10 0.02 270 / 0.80) 100%);
+    z-index: 1;
+  }
+  /* Soft inverse gradient for light-image tiles so the bottom label
+     stays readable without overpowering the editorial typography. */
+  .cin-work-tile--auto .cin-work-tile-overlay {
+    background: linear-gradient(180deg, transparent 40%, oklch(0.10 0.02 270 / 0.78) 100%);
+  }
+  /* For dark-image tiles (e.g. 42 Wolfsburg, SmartSwap, Delivery Module)
+     we use the full-strength gradient. */
+  .cin-work-tile--dark .cin-work-tile-overlay {
+    background: linear-gradient(180deg, transparent 20%, oklch(0.06 0.02 270 / 0.90) 100%);
+  }
+  /* Tile label color follows the overlay strength. */
+  .cin-work-tile--auto .cin-work-tile-label {
+    color: var(--paper);
+    text-shadow: 0 1px 3px oklch(0.08 0.02 270 / 0.55);
+  }
+  .cin-work-tile--dark .cin-work-tile-label {
+    color: var(--paper);
+    text-shadow: 0 1px 3px oklch(0.06 0.02 270 / 0.65);
+  }
+
+  /* Badge in top-right of image tiles. */
+  .cin-work-tile-badge {
+    position: absolute;
+    right: 0.75rem;
+    top: 0.75rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    border-radius: 999px;
+    background: var(--paper);
+    padding: 0.25rem 0.625rem;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink);
+    box-shadow: 0 4px 14px -6px oklch(0.18 0.02 270 / 0.18);
+  }
+
+  /* Subtle pattern overlay on color/type tiles so they don't read as flat blocks. */
+  .cin-work-tile-pattern {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Top-left flourish — icon + eyebrow badge. */
+  .cin-work-tile-flourish {
+    position: absolute;
+    left: 0.85rem;
+    top: 0.85rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 1px solid;
+    border-radius: 999px;
+    padding: 0.3rem 0.65rem 0.3rem 0.55rem;
+    background: oklch(0 0 0 / 0);
+    backdrop-filter: blur(2px);
+  }
+
+  /* Big mono display number — the "what is that?" hook.
+     Anchored top-right, but never on top of the bottom label. */
+  .cin-work-tile-number {
+    position: absolute;
+    right: 0.85rem;
+    top: 0.65rem;
+    z-index: 1;
+    font-size: clamp(2.4rem, 5vw, 4.5rem);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    font-weight: 400;
+    opacity: 0.92;
+    /* Right-padding so it never collides with the flourish pill. */
+    max-width: 55%;
+    text-align: right;
+  }
+  /* On narrow tiles (only 140px tall at md), the number overlaps the
+     bottom label, so suppress the number and keep the flourish + label only. */
+  @media (min-width: 768px) {
+    .cin-work-tile--paperHi .cin-work-tile-number,
+    .cin-work-tile--lime .cin-work-tile-number,
+    .cin-work-tile--rose .cin-work-tile-number,
+    .cin-work-tile--ink .cin-work-tile-number {
+      font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+      top: 0.5rem;
+      right: 0.7rem;
+    }
+  }
+
+  /* ---------- About / editorial section ---------- */
+  .cin-about {
+    background: var(--paper);
+    border-top: 1px solid var(--rule);
+  }
+  .cin-section-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    /* --ink-muted is 8.0:1 on paper — comfortably AA body, never faint. */
+    color: var(--ink-muted);
+  }
+  .cin-section-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 0.98;
+    color: var(--ink);
+  }
+  .cin-section-title em {
+    font-style: italic;
+    color: var(--accent-teal);
+  }
+
+  /* ---------- Resume timeline ---------- */
+  .cin-timeline {
+    background: var(--paper);
+    border-top: 1px solid var(--rule);
+  }
+  .cin-timeline-item {
+    border-top: 1px solid var(--rule);
+    padding: 1.5rem 0;
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    gap: 1.5rem;
+    align-items: baseline;
+    transition: background 0.2s, padding 0.2s;
+  }
+  .cin-timeline-item:hover {
+    background: var(--paper-2);
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  .cin-timeline-year {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-muted);
+  }
+  .cin-timeline-role {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--ink);
+  }
+  .cin-timeline-place {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-muted);
+  }
+
+  /* ---------- Contact card ---------- */
+  .cin-contact-card {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 1.5rem;
+    padding: 3rem 2rem;
+  }
+  .cin-contact-card .cin-section-title {
+    color: var(--paper);
+  }
+  .cin-contact-card .cin-section-eyebrow {
+    /* Paper-92 is ~14:1 on ink — comfortable AA. */
+    color: oklch(0.92 0.005 95);
+  }
+  .cin-contact-card a.cin-hero-cta-primary {
+    background: var(--accent-teal);
+    color: var(--ink);
+  }
+  .cin-contact-card a.cin-hero-cta-secondary {
+    border-color: oklch(0.92 0.005 95 / 0.30);
+    color: var(--paper);
+  }
+  .cin-contact-card a.cin-hero-cta-secondary:hover {
+    background: oklch(0.92 0.005 95 / 0.10);
+  }
+
+  /* YouTube channel card on dark bg. */
+  .cin-channel-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-radius: 1rem;
+    border: 1px solid oklch(0.92 0.005 95 / 0.18);
+    background: oklch(0.92 0.005 95 / 0.04);
+    padding: 0.75rem 0.9rem;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  }
+  .cin-channel-card:hover {
+    background: oklch(0.92 0.005 95 / 0.08);
+    border-color: oklch(0.92 0.005 95 / 0.32);
+    transform: translateY(-1px);
+  }
+  .cin-channel-card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.5rem;
+    background: oklch(0.62 0.18 25); /* rose-youtube-ish */
+    color: oklch(0.98 0.005 95);
+    flex-shrink: 0;
+  }
+  .cin-channel-meta {
+    border-radius: 1rem;
+    border: 1px solid oklch(0.92 0.005 95 / 0.10);
+    background: oklch(0.92 0.005 95 / 0.02);
+    padding: 0.75rem 0.9rem;
+  }
+
+  /* ---------- Footer ---------- */
+  .cin-footer {
+    background: var(--paper);
+    border-top: 1px solid var(--rule);
+  }
+  .cin-footer-link {
+    color: var(--ink-muted);
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+  .cin-footer-link:hover {
+    color: var(--accent-teal);
+  }
+}
+
+@layer utilities {
+  .cin-paper { background: var(--paper); }
+  .cin-rule { border-color: var(--rule); }
+  .cin-ink-muted { color: var(--ink-muted); }
+  .cin-ink-faint { color: var(--ink-faint); }
+}
+
+/* Hero portrait — circular, soft ring, slight elevation. */
+.cin-hero-portrait {
+  box-shadow: 0 1px 0 oklch(1 0 0 / 0.6) inset,
+    0 4px 12px oklch(0.10 0.02 270 / 0.10),
+    0 1px 2px oklch(0.10 0.02 270 / 0.08);
+  object-position: center 28%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cin-hero-portrait {
+    transition: box-shadow 0.4s ease, transform 0.4s ease;
+  }
+  .cin-hero-portrait:hover {
+    box-shadow: 0 1px 0 oklch(1 0 0 / 0.6) inset,
+      0 8px 22px oklch(0.10 0.02 270 / 0.18),
+      0 2px 4px oklch(0.10 0.02 270 / 0.10);
+    transform: translateY(-1px);
+  }
+}
+
+/* Peer-review avatar — small ring, soft shadow, consistent face crop. */
+.cin-review-avatar {
+  box-shadow: 0 0 0 1px oklch(0.10 0.02 270 / 0.10),
+    0 2px 6px oklch(0.10 0.02 270 / 0.10);
+  object-position: center 32%;
 }

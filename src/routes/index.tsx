@@ -1,20 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Bento from "@/components/Bento";
+import { CinematicLanding } from "@/components/cinematic/CinematicLanding";
 
 export const Route = createFileRoute("/")({
-  component: Bento,
+  component: CinematicLanding,
   head: () => ({
     meta: [
       { title: "Mohammad Abir Abbas — Creative Technologist & AI Architect" },
       {
         name: "description",
         content:
-          "AI workflows that recapture engineering hours and protect enterprise assets. Wavelink CTA, ex-Deep Blue Digital. Bento portfolio.",
+          "Mohammad Abir Abbas — Creative Technologist & AI Architect. Built AbaYa-Track's Delivery Module: a value-weighted production dashboard that surfaced AED 111,246 of trapped backlog in 30 days (11.1:1 V:C). Based in the GCC.",
       },
-      { property: "og:title", content: "Mohammad Abir Abbas — Creative Technologist" },
+      { property: "og:title", content: "Mohammad Abir Abbas — Creative Technologist & AI Architect" },
       {
         property: "og:description",
-        content: "Scaling AI safely. Predictable ROI. Bento portfolio.",
+        content:
+          "AbaYa-Track's Delivery Module: AED 111K backlog recovered, 11.1:1 V:C. Real case study, real testimonials.",
       },
     ],
   }),
