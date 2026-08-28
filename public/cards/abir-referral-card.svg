@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Abir Referral Card — A6 (105×148mm) LANDSCAPE, double-sided.
+  Print: A6 landscape, 300gsm+, double-sided, no fit-to-page, no scaling.
+  Bleed: 3mm built in. Safe area: 6mm inset.
+
+  Layout: TWO A6 panels stacked in one SVG (front on top, back on bottom)
+  so a designer can proof both sides on one page. Cut along the dashed line.
+
+  Philosophy — a memento, not a flyer.
+  ─ FRONT ─ one strong thing. Big monogram. Name in serif italic. One proof line.
+  ─ BACK  ─ portrait, one URL, three promises, the QR, the sign-off.
+  No overlines, no marketing copy, no "scan me" arrows.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 297 420" width="297mm" height="420mm">
+  <defs>
+    <style>
+      .ink { fill: #0e0e0e; }
+      .ink-muted { fill: #5a5a5a; }
+      .ink-faint { fill: #8a8a8a; }
+      .teal { fill: #0c6b58; }
+      .paper { fill: #f7f3ec; }
+      .rule { stroke: #0e0e0e; stroke-width: 0.3; }
+      .rule-soft { stroke: #cfcdc6; stroke-width: 0.3; }
+      .serif { font-family: 'Fraunces', 'Instrument Serif', Georgia, 'Times New Roman', serif; }
+      .mono { font-family: 'JetBrains Mono', ui-monospace, Menlo, 'Courier New', monospace; }
+      .sans { font-family: 'Inter', system-ui, -apple-system, 'Helvetica Neue', sans-serif; }
+    </style>
+  </defs>
+
+  <!-- ════════════════════ FRONT (top half, 0..210) ════════════════════ -->
+  <g>
+    <rect width="297" height="210" class="paper"/>
+
+    <g transform="translate(20,20)">
+      <!-- Top hairline rule + micro signature -->
+      <line x1="0" y1="0" x2="257" y2="0" class="rule"/>
+      <text x="0" y="9" class="mono ink-faint" font-size="5.5" letter-spacing="2.2">
+        DUBAI · 2026
+      </text>
+      <text x="257" y="9" class="mono ink-faint" font-size="5.5" letter-spacing="2.2" text-anchor="end">
+        A6 · DOUBLE-SIDED
+      </text>
+
+      <!-- BIG monogram — anchors the whole front. Centered.
+              viewBox of monogram is 64x64. We scale it 1.6× → 102x102, drawn at -y 36 so it sits in the upper third. -->
+      <g transform="translate(78, 30)" fill="none" stroke="#0e0e0e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 22 14 L 50 14"/>
+        <path d="M 22 14 L 9 80"/>
+        <path d="M 50 14 L 63 80"/>
+        <path d="M 15 50 L 50 50"/>
+        <path d="M 50 50 C 68 50, 80 56, 80 65"/>
+        <path d="M 80 65 C 80 75, 68 80, 50 80"/>
+      </g>
+      <!-- Teal dot — drawn AFTER strokes so it sits on top. -->
+      <circle cx="158" cy="95" r="6.5" class="teal"/>
+
+      <!-- Italic serif name — the punchline. Hand-set feel, lower-third. -->
+      <text x="128" y="156" class="serif ink" font-size="28" font-weight="500" font-style="italic" text-anchor="middle" letter-spacing="-0.5">
+        Mohammad Abir Abbas.
+      </text>
+      <text x="128" y="168" class="mono ink-muted" font-size="6" letter-spacing="2.5" text-anchor="middle">
+        CREATIVE TECHNOLOGIST  ·  AI ARCHITECT
+      </text>
+
+      <!-- One proof line — italic, set in teal-accent serif. The whole point of the card. -->
+      <line x1="78" y1="180" x2="178" y2="180" class="rule-soft"/>
+      <text x="128" y="194" class="serif ink" font-size="9" font-weight="500" text-anchor="middle" font-style="italic">
+        Architected the <tspan font-weight="600" fill="#0c6b58">AED 111,246</tspan> Delivery Module
+      </text>
+      <text x="128" y="204" class="sans ink-muted" font-size="6.5" text-anchor="middle" letter-spacing="0.5">
+        Famous Abaya LLC  ·  11.1:1 V:C  ·  MIT Hacknation 2026
+      </text>
+
+      <!-- Tear-off stub at the bottom — code + URL. Dashed line above it = the cut. -->
+      <line x1="0" y1="221" x2="257" y2="221" stroke="#9a9890" stroke-width="0.4" stroke-dasharray="2 2"/>
+      <g transform="translate(0, 230)">
+        <text x="0" y="6" class="mono ink-faint" font-size="5.5" letter-spacing="2">
+          YOUR CODE
+        </text>
+        <text x="0" y="18" class="mono ink" font-size="11" font-weight="700" letter-spacing="3">
+          ABIR-INTRO
+        </text>
+        <text x="80" y="6" class="mono ink-faint" font-size="5.5" letter-spacing="2">
+          SCAN
+        </text>
+        <text x="80" y="18" class="serif ink" font-size="11" font-style="italic">
+          abir.getwaved.ai/c/intro
+        </text>
+        <text x="257" y="18" class="mono ink-faint" font-size="5.5" letter-spacing="2" text-anchor="end">
+          ✂  TEAR HERE
+        </text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ════════════════════ BACK (bottom half, 210..420) ════════════════════ -->
+  <g transform="translate(0, 210)">
+    <rect width="297" height="210" class="paper"/>
+
+    <g transform="translate(20,20)">
+      <!-- Top hairline rule + "from" signature -->
+      <line x1="0" y1="0" x2="257" y2="0" class="rule"/>
+      <text x="0" y="9" class="mono ink-faint" font-size="5.5" letter-spacing="2.2">
+        FROM THE DESK OF
+      </text>
+      <text x="257" y="9" class="mono ink-faint" font-size="5.5" letter-spacing="2.2" text-anchor="end">
+        abir.getwaved.ai
+      </text>
+
+      <!-- LEFT COLUMN — the QR, anchored top-left, 88×88pt. -->
+      <g transform="translate(0, 22)">
+        <image x="0" y="0" width="88" height="88" href="data:image/png;base64,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"/>
+      </g>
+      <text x="0" y="124" class="mono ink-faint" font-size="5.5" letter-spacing="2.2">
+        SCAN
+      </text>
+      <text x="0" y="135" class="serif ink" font-size="9" font-style="italic">
+        or open
+      </text>
+      <text x="0" y="146" class="sans ink" font-size="8" font-weight="500" letter-spacing="-0.2">
+        abir.getwaved.ai/c/intro
+      </text>
+
+      <!-- 3 stat tiles, even row -->
+      <g transform="translate(110, 28)">
+        <text x="0" y="0" class="mono ink-faint" font-size="5.5" letter-spacing="2.2">
+          THE NUMBERS
+        </text>
+        <line x1="0" y1="6" x2="148" y2="6" class="rule-soft"/>
+        <g transform="translate(0, 18)">
+          <text x="0" y="14" class="serif ink" font-size="20" font-weight="500" letter-spacing="-0.5">AED 111K</text>
+          <text x="0" y="24" class="sans ink-muted" font-size="6.5">backlog recovered</text>
+        </g>
+        <g transform="translate(58, 18)">
+          <text x="0" y="14" class="serif ink" font-size="20" font-weight="500" letter-spacing="-0.5">11.1:1</text>
+          <text x="0" y="24" class="sans ink-muted" font-size="6.5">value : cost</text>
+        </g>
+        <g transform="translate(110, 18)">
+          <text x="0" y="14" class="serif ink" font-size="20" font-weight="500" letter-spacing="-0.5">MIT</text>
+          <text x="0" y="24" class="sans ink-muted" font-size="6.5">Hacknation '26</text>
+        </g>
+      </g>
+
+      <!-- 3 promise lines -->
+      <g transform="translate(110, 88)">
+        <text x="0" y="0" class="mono ink-faint" font-size="5.5" letter-spacing="2.2">
+          15 SECONDS, THREE PROMISES
+        </text>
+        <line x1="0" y1="6" x2="148" y2="6" class="rule-soft"/>
+        <g transform="translate(0, 18)">
+          <text x="0" y="0" class="sans ink" font-size="8">
+            <tspan font-weight="600">A 30-sec Loom</tspan>
+            <tspan fill="#5a5a5a"> of the AED 111K story</tspan>
+          </text>
+          <text x="0" y="14" class="sans ink" font-size="8">
+            <tspan font-weight="600">My live calendar</tspan>
+            <tspan fill="#5a5a5a"> — pick a 15-min slot</tspan>
+          </text>
+          <text x="0" y="28" class="sans ink" font-size="8">
+            <tspan font-weight="600">vCard drop</tspan>
+            <tspan fill="#5a5a5a"> straight to your phone</tspan>
+          </text>
+        </g>
+      </g>
+
+      <!-- BOTTOM — the sign-off, big -->
+      <g transform="translate(0, 184)">
+        <line x1="0" y1="0" x2="257" y2="0" class="rule-soft"/>
+        <text x="0" y="10" class="mono ink-muted" font-size="5.5" letter-spacing="2.2">
+          NO NEWSLETTER  ·  NO SPAM  ·  UNSUBSCRIBE WITH ONE TAP
+        </text>
+      </g>
+    </g>
+  </g>
+
+  <!-- cut line between front and back -->
+  <line x1="0" y1="210" x2="297" y2="210" stroke="#cfcdc6" stroke-width="0.4" stroke-dasharray="2 2"/>
+</svg>

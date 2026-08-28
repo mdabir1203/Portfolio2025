@@ -1,0 +1,16 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Abbas;Mohammad;Abir;;;
+FN:Mohammad Abir Abbas
+ORG:Wavelink
+TITLE:Chief Technical Advisor
+EMAIL;TYPE=INTERNET,WORK:abir.abbas@proton.me
+TEL;TYPE=CELL,VOICE:+971543618066
+URL;TYPE=Work:https://abir.getwaved.ai
+URL;TYPE=LinkedIn:https://www.linkedin.com/in/abir-abbas
+URL;TYPE=GitHub:https://github.com/mdabir1203
+URL;TYPE=YouTube:https://www.youtube.com/@wavelinkd/playlists
+ADR;TYPE=WORK:;;;Ajman;;;UAE
+NOTE:Creative Technologist & AI Architect. Currently AI Solution Architect at Famous Abaya LLC. Architected the AED 111K Delivery Module (11.1:1 V:C). MIT Hacknation 2026 Next Top Project (SmartSwap, Team Xerox).
+REV:2026-08-28T00:00:00Z
+END:VCARD

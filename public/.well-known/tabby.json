@@ -1,0 +1,49 @@
+{
+  "service": "abir-referral",
+  "version": "1.0.0",
+  "issuer": {
+    "name": "Mohammad Abir Abbas",
+    "url": "https://abir.getwaved.ai",
+    "email": "abir.abbas@proton.me"
+  },
+  "contact_card": "https://abir.getwaved.ai/abir.vcf",
+  "distribution": {
+    "primary_code": "intro",
+    "base_url": "https://abir.getwaved.ai/c/",
+    "redirect_url": "https://abir.getwaved.ai/connect",
+    "card_svg": "/cards/abir-referral-card.svg",
+    "card_pdf": "/cards/abir-referral-card.pdf",
+    "qr_png": "/cards/qr-code.png"
+  },
+  "subscribe": {
+    "method": "POST",
+    "url": "https://abir.getwaved.ai/api/referral/subscribe",
+    "schema": {
+      "email": "string<email>",
+      "name": "string<optional>",
+      "code": "string<default=intro>",
+      "ref": "string<default=qr>"
+    }
+  },
+  "unsubscribe": {
+    "method": "POST",
+    "url": "https://abir.getwaved.ai/api/referral/unsubscribe"
+  },
+  "drip": {
+    "engine": "resend",
+    "schedule": [
+      {
+        "day": 0,
+        "subject": "Your 30-sec Loom of the AED 111K story"
+      },
+      {
+        "day": 3,
+        "subject": "The boardroom one-pager (PDF attached)"
+      },
+      {
+        "day": 7,
+        "subject": "One question, one calendar link"
+      }
+    ]
+  }
+}

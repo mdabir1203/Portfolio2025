@@ -30,6 +30,15 @@ const COLUMNS = [
       { label: "CV (PDF)", href: "/Abir_Abbas_CV.pdf", external: true, download: "Abir_Abbas_CV.pdf" },
       { label: "Resume (ATS)", href: "/resume-ats.pdf", external: true, download: "Abir_Abbas_Resume_ATS.pdf" },
       { label: "Press kit", href: "/press.zip", external: true, download: "Abbas_PressKit.zip" },
+      { label: "Referral card", href: "/cards/abir-referral-card.pdf", external: true, download: "Abbas_ReferralCard.pdf" },
+    ],
+  },
+  {
+    title: "Share",
+    links: [
+      { label: "QR landing", href: "/c/intro" },
+      { label: "vCard (contact)", href: "/abir.vcf", external: true, download: "Mohammad_Abir_Abbas.vcf" },
+      { label: "tabby.json (metadata)", href: "/.well-known/tabby.json", external: true },
     ],
   },
   {
@@ -46,7 +55,7 @@ export function Footer() {
   return (
     <footer className="cin-footer py-14 md:py-20">
       <div className="mx-auto w-full max-w-7xl px-6 md:px-10">
-        <div className="grid grid-cols-2 gap-10 border-b border-rule pb-10 md:grid-cols-4 md:gap-12">
+        <div className="grid grid-cols-2 gap-10 border-b border-rule pb-10 md:grid-cols-5 md:gap-10">
           {COLUMNS.map((col) => (
             <nav key={col.title} aria-label={col.title}>
               <h3 className="font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-ink-muted">

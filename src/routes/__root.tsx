@@ -116,6 +116,10 @@ export const Route = createRootRoute({
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      // Open metadata: AI crawlers and contact-book apps discover the
+      // referral system and the vCard through these well-known endpoints.
+      { rel: "alternate", type: "application/json", href: "/.well-known/tabby.json", title: "Abir Referral System" },
+      { rel: "alternate", type: "text/vcard", href: "/abir.vcf", title: "Mohammad Abir Abbas (vCard)" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
