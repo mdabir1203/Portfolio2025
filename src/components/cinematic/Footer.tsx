@@ -25,9 +25,9 @@ const COLUMNS = [
   {
     title: "Files",
     links: [
-      { label: "CV (PDF)", href: "/CV_Abir.pdf", external: true },
-      { label: "Resume (ATS)", href: "/resume-ats.pdf", external: true },
-      { label: "Press kit", href: "/press.zip", external: true },
+      { label: "CV (PDF)", href: "/Abir_Abbas_CV.pdf", external: true, download: "Abir_Abbas_CV.pdf" },
+      { label: "Resume (ATS)", href: "/resume-ats.pdf", external: true, download: "Abir_Abbas_Resume_ATS.pdf" },
+      { label: "Press kit", href: "/press.zip", external: true, download: "Abbas_PressKit.zip" },
     ],
   },
   {
@@ -58,6 +58,9 @@ export function Footer() {
                       className="cin-footer-link"
                       {...("external" in l && l.external
                         ? { target: "_blank", rel: "noreferrer" }
+                        : {})}
+                      {...("download" in l && l.download
+                        ? { download: l.download }
                         : {})}
                     >
                       {l.label}
