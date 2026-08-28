@@ -1,12 +1,13 @@
 {
   "service": "abir-referral",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "issuer": {
     "name": "Mohammad Abir Abbas",
     "url": "https://abir.getwaved.ai",
     "email": "abir.abbas@proton.me"
   },
   "contact_card": "https://abir.getwaved.ai/abir.vcf",
+  "description": "Event-driven 7-day referral drip. Day 0 fires on subscribe; Day 3 and Day 7 fire on the recipient opening the previous email (gated by Resend webhooks). No cron, no D1 — just Cloudflare KV + the Resend webhook handler.",
   "distribution": {
     "primary_code": "intro",
     "base_url": "https://abir.getwaved.ai/c/",
@@ -26,24 +27,38 @@
     }
   },
   "unsubscribe": {
+    "method": "GET",
+    "url": "https://abir.getwaved.ai/api/referral/unsubscribe?email={email}",
+    "one_click_post": "https://abir.getwaved.ai/api/referral/unsubscribe"
+  },
+  "webhook": {
+    "url": "https://abir.getwaved.ai/api/referral/webhook",
     "method": "POST",
-    "url": "https://abir.getwaved.ai/api/referral/unsubscribe"
+    "provider": "resend",
+    "signature": "svix-v1",
+    "events_handled": [
+      "email.sent",
+      "email.delivered",
+      "email.opened",
+      "email.clicked",
+      "email.bounced",
+      "email.complained"
+    ],
+    "drip_logic": "Day 3 fires the first time a recipient opens Day 0 AND it's been at least 72h since that open. Day 7 fires under the same rule at 168h, or 4 days after a Day-3 open. Bounces and complaints stop the drip for the row."
   },
   "drip": {
-    "engine": "resend",
+    "engine": "resend-webhook",
     "schedule": [
-      {
-        "day": 0,
-        "subject": "Your 30-sec Loom of the AED 111K story"
-      },
-      {
-        "day": 3,
-        "subject": "The boardroom one-pager (PDF attached)"
-      },
-      {
-        "day": 7,
-        "subject": "One question, one calendar link"
-      }
+      { "day": 0, "subject": "Your 30-sec Loom of the AED 111K story", "trigger": "subscribe" },
+      { "day": 3, "subject": "The boardroom one-pager (PDF attached)", "trigger": "day0.opened AND elapsed >= 72h" },
+      { "day": 7, "subject": "One question, one calendar link", "trigger": "day0.opened AND elapsed >= 168h" }
     ]
+  },
+  "storage": {
+    "type": "cloudflare-kv",
+    "binding": "REFERRALS",
+    "key_pattern": "email:<lowercase-email>",
+    "value_ttl_seconds": 7776000,
+    "notes": "Free tier is 100K reads/day, 1K writes/day. Each subscribe = 1 read + 1 write. Each webhook event = 1-2 reads + 1-2 writes. Well under the limit for personal-referral volume."
   }
 }

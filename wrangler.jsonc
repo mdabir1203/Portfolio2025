@@ -3,5 +3,19 @@
   "name": "portfolio2025-9zi",
   "compatibility_date": "2025-09-24",
   "compatibility_flags": ["nodejs_compat"],
-  "pages_build_output_dir": "dist/client"
+  "pages_build_output_dir": "dist/client",
+
+  // Cloudflare Pages bindings. These are read by the @cloudflare/vite-plugin
+  // at build time and exposed on globalThis at runtime (e.g. globalThis.REFERRALS).
+  //
+  // To provision: run `wrangler kv namespace create REFERRALS` from the project
+  // root, then paste the returned `id` below. Cloudflare will surface the
+  // binding in the Pages dashboard under Settings → Functions → KV namespace
+  // bindings, but having it here means the build knows about it too.
+  "kv_namespaces": [
+    {
+      "binding": "REFERRALS",
+      "id": "REPLACE_WITH_KV_NAMESPACE_ID"
+    }
+  ]
 }

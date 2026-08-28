@@ -14,6 +14,8 @@ import { Route as ConnectRouteImport } from './routes/connect'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CIndexRouteImport } from './routes/c/index'
 import { Route as CCodeRouteImport } from './routes/c/$code'
+import { Route as ApiReferralWebhookRouteImport } from './routes/api/referral/webhook'
+import { Route as ApiReferralUnsubscribeRouteImport } from './routes/api/referral/unsubscribe'
 
 const WorkRoute = WorkRouteImport.update({
   id: '/work',
@@ -40,6 +42,16 @@ const CCodeRoute = CCodeRouteImport.update({
   path: '/c/$code',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiReferralWebhookRoute = ApiReferralWebhookRouteImport.update({
+  id: '/api/referral/webhook',
+  path: '/api/referral/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiReferralUnsubscribeRoute = ApiReferralUnsubscribeRouteImport.update({
+  id: '/api/referral/unsubscribe',
+  path: '/api/referral/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +59,8 @@ export interface FileRoutesByFullPath {
   '/work': typeof WorkRoute
   '/c/$code': typeof CCodeRoute
   '/c/': typeof CIndexRoute
+  '/api/referral/unsubscribe': typeof ApiReferralUnsubscribeRoute
+  '/api/referral/webhook': typeof ApiReferralWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +68,8 @@ export interface FileRoutesByTo {
   '/work': typeof WorkRoute
   '/c/$code': typeof CCodeRoute
   '/c': typeof CIndexRoute
+  '/api/referral/unsubscribe': typeof ApiReferralUnsubscribeRoute
+  '/api/referral/webhook': typeof ApiReferralWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +78,37 @@ export interface FileRoutesById {
   '/work': typeof WorkRoute
   '/c/$code': typeof CCodeRoute
   '/c/': typeof CIndexRoute
+  '/api/referral/unsubscribe': typeof ApiReferralUnsubscribeRoute
+  '/api/referral/webhook': typeof ApiReferralWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/connect' | '/work' | '/c/$code' | '/c/'
+  fullPaths:
+    | '/'
+    | '/connect'
+    | '/work'
+    | '/c/$code'
+    | '/c/'
+    | '/api/referral/unsubscribe'
+    | '/api/referral/webhook'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/connect' | '/work' | '/c/$code' | '/c'
-  id: '__root__' | '/' | '/connect' | '/work' | '/c/$code' | '/c/'
+  to:
+    | '/'
+    | '/connect'
+    | '/work'
+    | '/c/$code'
+    | '/c'
+    | '/api/referral/unsubscribe'
+    | '/api/referral/webhook'
+  id:
+    | '__root__'
+    | '/'
+    | '/connect'
+    | '/work'
+    | '/c/$code'
+    | '/c/'
+    | '/api/referral/unsubscribe'
+    | '/api/referral/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +117,8 @@ export interface RootRouteChildren {
   WorkRoute: typeof WorkRoute
   CCodeRoute: typeof CCodeRoute
   CIndexRoute: typeof CIndexRoute
+  ApiReferralUnsubscribeRoute: typeof ApiReferralUnsubscribeRoute
+  ApiReferralWebhookRoute: typeof ApiReferralWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -116,6 +158,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/referral/webhook': {
+      id: '/api/referral/webhook'
+      path: '/api/referral/webhook'
+      fullPath: '/api/referral/webhook'
+      preLoaderRoute: typeof ApiReferralWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/referral/unsubscribe': {
+      id: '/api/referral/unsubscribe'
+      path: '/api/referral/unsubscribe'
+      fullPath: '/api/referral/unsubscribe'
+      preLoaderRoute: typeof ApiReferralUnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -125,6 +181,8 @@ const rootRouteChildren: RootRouteChildren = {
   WorkRoute: WorkRoute,
   CCodeRoute: CCodeRoute,
   CIndexRoute: CIndexRoute,
+  ApiReferralUnsubscribeRoute: ApiReferralUnsubscribeRoute,
+  ApiReferralWebhookRoute: ApiReferralWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
