@@ -3,19 +3,33 @@
   "name": "portfolio2025-9zi",
   "compatibility_date": "2025-09-24",
   "compatibility_flags": ["nodejs_compat"],
-  "pages_build_output_dir": "dist/client",
+  "pages_build_output_dir": "dist/client"
 
-  // Cloudflare Pages bindings. These are read by the @cloudflare/vite-plugin
-  // at build time and exposed on globalThis at runtime (e.g. globalThis.REFERRALS).
+  // Cloudflare KV binding for the referral drip store.
   //
-  // To provision: run `wrangler kv namespace create REFERRALS` from the project
-  // root, then paste the returned `id` below. Cloudflare will surface the
-  // binding in the Pages dashboard under Settings → Functions → KV namespace
-  // bindings, but having it here means the build knows about it too.
-  "kv_namespaces": [
-    {
-      "binding": "REFERRALS",
-      "id": "REPLACE_WITH_KV_NAMESPACE_ID"
-    }
-  ]
+  // This is currently INTENTIONALLY UNBOUND so the build can succeed
+  // before the namespace is provisioned. The KV-backed code paths in
+  // src/server/referral-store.ts are no-ops when REFERRALS is missing
+  // — the Day-0 email still sends, the drip just doesn't fire.
+  //
+  // To wire it up (one-time, in the Cloudflare dashboard):
+  //   1. Settings → Functions → KV namespace bindings → Add binding
+  //   2. Variable name: REFERRALS
+  //   3. KV namespace: create a new one (e.g. "portfolio-referrals")
+  //   4. Save and re-deploy. The build doesn't need to change.
+  //
+  // We removed the kv_namespaces array from this wrangler.jsonc because
+  // Cloudflare Pages rejects deploys whose KV namespace IDs aren't real
+  // (a 32-char hex string). The dashboard binding above achieves the
+  // same runtime effect — globalThis.REFERRALS will be available to
+  // the Pages Function at request time.
+  //
+  // Once the namespace is created, paste the id below and uncomment:
+  //
+  // "kv_namespaces": [
+  //   {
+  //     "binding": "REFERRALS",
+  //     "id": "<paste-real-id-here>"
+  //   }
+  // ]
 }
