@@ -46,16 +46,21 @@ export function BrandMark({
   className,
   decorative = true,
 }: BrandMarkProps) {
-  const ink =
-    variant === "inverse"
-      ? "var(--paper, #f7f3ec)"
-      : "var(--ink, #0e0e0e)";
-  const accent =
+  // We use `currentColor` for the strokes and a CSS var for the dot. That way
+  // the parent decides the ink color via `color:` (a real CSS property) and we
+  // never rely on `var(--x)` as a raw SVG attribute, which silently fails in
+  // many browsers.
+  const ink = "currentColor";
+  const dotFill =
     variant === "mono"
-      ? "transparent" // dot is invisible for mono
-      : variant === "inverse"
-        ? "var(--accent-teal, #0c6b58)"
-        : "var(--accent-teal, #0c6b58)";
+      ? "transparent"
+      : "var(--accent-teal, #0c6b58)";
+
+  // The wrapping <span> sets `color` so `currentColor` resolves correctly.
+  const colorStyle =
+    variant === "inverse"
+      ? { color: "var(--paper, #f7f3ec)" }
+      : { color: "var(--ink, #0e0e0e)" };
 
   return (
     <svg
@@ -66,7 +71,7 @@ export function BrandMark({
       width={size}
       height={size}
       className={className}
-      style={{ display: "block" }}
+      style={{ display: "block", ...colorStyle }}
     >
       {!decorative && title ? <title>{title}</title> : null}
       <g
@@ -91,7 +96,7 @@ export function BrandMark({
       </g>
       {/* Teal accent dot — the "period" at the end of the mark */}
       {variant !== "mono" && (
-        <circle cx={52} cy={44} r={DOT_R} fill={accent} />
+        <circle cx={52} cy={44} r={DOT_R} fill={dotFill} />
       )}
     </svg>
   );
@@ -106,7 +111,7 @@ export function BrandLockup({
   variant = "primary",
   className,
 }: Pick<BrandMarkProps, "size" | "variant" | "className">) {
-  const ink =
+  const wordmarkColor =
     variant === "inverse"
       ? "var(--paper, #f7f3ec)"
       : "var(--ink, #0e0e0e)";
@@ -127,7 +132,7 @@ export function BrandLockup({
             "var(--font-display, 'Fraunces', 'Instrument Serif', serif)",
           fontWeight: 500,
           letterSpacing: "-0.01em",
-          color: ink,
+          color: wordmarkColor,
           fontSize: size * 0.7,
         }}
       >
