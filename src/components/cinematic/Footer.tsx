@@ -1,7 +1,9 @@
+import { BrandMark } from "@/components/brand/BrandMark";
+
 /**
  * Footer — full directory, OnePageLove style.
  *
- * Four columns of links. No animation. Just navigation.
+ * Four columns of links. The monogram closes the page as a brand signature.
  */
 const COLUMNS = [
   {
@@ -72,8 +74,11 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.20em] text-ink-muted">
-          <div>© 2026 Mohammad Abir Abbas · Ajman, UAE</div>
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-6 font-mono text-[11px] uppercase tracking-[0.20em] text-ink-muted">
+          <div className="flex items-center gap-3">
+            <BrandMark size={26} variant="primary" />
+            <span>© 2026 Mohammad Abir Abbas · Ajman, UAE</span>
+          </div>
           <div>
             <span className="text-ink">·Wavelink 2025→</span>
             <span className="mx-2 text-ink-faint">·</span>

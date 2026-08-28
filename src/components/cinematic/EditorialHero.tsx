@@ -1,5 +1,6 @@
 import { Mail, ArrowUpRight, MapPin } from "lucide-react";
 import abirPortrait from "@/assets/abir-2026.webp";
+import { BrandMark } from "@/components/brand/BrandMark";
 
 /**
  * EditorialHero — calm, type-led. KillerPortfolio style.
@@ -65,6 +66,14 @@ export function EditorialHero() {
                   2026 · Suit · Dubai
                 </div>
               </div>
+            </div>
+
+            {/* Brand stamp — monogram + role line, sits below the identity row */}
+            <div className="mb-6 flex items-center gap-3 border-t border-rule pt-5">
+              <BrandMark size={24} variant="primary" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-muted">
+                by Mohammad Abir Abbas
+              </span>
             </div>
             <p className="font-display text-2xl leading-snug text-ink md:text-3xl">
               Creative Technologist <span className="text-ink-muted">&amp;</span>{" "}

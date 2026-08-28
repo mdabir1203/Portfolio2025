@@ -22,32 +22,82 @@ const doc = new PDFDocument({
 const ws = fs.createWriteStream(OUT);
 doc.pipe(ws);
 
+// ── Brand mark (top-left, ~64px) ─────────────────────────────────────────
+// Drawn with PDFKit vector primitives so it stays crisp at any zoom.
+function drawBrandMark(x, y, size) {
+  // Map our SVG viewBox (0..64) to the page (size px on the y axis).
+  const s = size / 64;
+  doc.save();
+  doc.lineWidth(4 * s);
+  doc.lineCap("round");
+  doc.lineJoin("round");
+  doc.strokeColor("#0e0e0e");
+  // flat apex
+  doc.moveTo(x + 14 * s, y + 10 * s).lineTo(x + 32 * s, y + 10 * s).stroke();
+  // left diagonal
+  doc.moveTo(x + 14 * s, y + 10 * s).lineTo(x + 6 * s, y + 54 * s).stroke();
+  // right diagonal
+  doc.moveTo(x + 32 * s, y + 10 * s).lineTo(x + 40 * s, y + 54 * s).stroke();
+  // crossbar
+  doc.moveTo(x + 10 * s, y + 34 * s).lineTo(x + 32 * s, y + 34 * s).stroke();
+  // D curve top
+  doc
+    .moveTo(x + 32 * s, y + 34 * s)
+    .bezierCurveTo(
+      x + 44 * s,
+      y + 34 * s,
+      x + 52 * s,
+      y + 38 * s,
+      x + 52 * s,
+      y + 44 * s
+    )
+    .stroke();
+  // D curve bottom
+  doc
+    .moveTo(x + 52 * s, y + 44 * s)
+    .bezierCurveTo(
+      x + 52 * s,
+      y + 50 * s,
+      x + 44 * s,
+      y + 54 * s,
+      x + 32 * s,
+      y + 54 * s
+    )
+    .stroke();
+  // teal accent dot
+  doc
+    .fillColor("#0c6b58")
+    .circle(x + 52 * s, y + 44 * s, 4.5 * s)
+    .fill();
+  doc.restore();
+}
+
+drawBrandMark(64, 50, 64);
+
 // Eyebrow
 doc
   .font("Helvetica-Bold")
   .fontSize(8)
   .fillColor("#6b6b6b")
-  .text("PRESS · BRAND SHEET · 2026", { characterSpacing: 2 });
+  .text("PRESS · BRAND SHEET · 2026", 144, 60, { characterSpacing: 2 });
 
-doc.moveDown(0.3);
+doc.moveDown(1.6);
 
 // Big name
 doc
   .font("Helvetica-Bold")
   .fontSize(34)
   .fillColor("#0e0e0e")
-  .text("Mohammad Abir Abbas", { lineGap: 0 });
+  .text("Mohammad Abir Abbas", 64, 150, { lineGap: 0 });
 
 // Italic teal last-name
 doc
   .font("Helvetica-Oblique")
   .fontSize(34)
   .fillColor("#0c6b58")
-  .text("is a Creative Technologist who ships.", {
+  .text("is a Creative Technologist who ships.", 64, 192, {
     lineGap: 4,
   });
-
-doc.moveDown(0.4);
 
 // Role
 doc
@@ -56,24 +106,25 @@ doc
   .fillColor("#3a3a3a")
   .text(
     "AI Architect  ·  Process Automation  ·  React + React Native  ·  GCC Manufacturing",
+    64,
+    248,
     { lineGap: 6 }
   );
 
 // Divider
 doc
-  .moveTo(64, doc.y)
-  .lineTo(548, doc.y)
+  .moveTo(64, 290)
+  .lineTo(548, 290)
   .lineWidth(0.5)
   .strokeColor("#cccccc")
   .stroke();
-doc.moveDown(0.7);
 
 // Two columns
 const left = 64;
 const right = 312;
 const colW = 240;
-let yL = doc.y;
-let yR = doc.y;
+let yL = 310;
+let yR = 310;
 
 function colH(x, y, eyebrow, title, body) {
   doc.x = x;
@@ -154,13 +205,18 @@ doc
   .strokeColor("#dddddd")
   .stroke();
 doc.moveDown(0.5);
+
+// Brand mark in the bottom-right corner (small signature).
+drawBrandMark(548 - 24, doc.y, 24);
 doc
   .font("Helvetica")
   .fontSize(7.5)
   .fillColor("#6b6b6b")
   .text(
     "© 2026 Mohammad Abir Abbas · Press kit current as of August 2026 · For interviews, partnerships, and speaking, reach abir.abbas@proton.me",
-    { characterSpacing: 0.5, lineGap: 1 }
+    64,
+    doc.y + 6,
+    { characterSpacing: 0.5, lineGap: 1, width: 480 }
   );
 
 doc.end();

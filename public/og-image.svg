@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <radialGradient id="bg" cx="30%" cy="20%" r="80%">
+      <stop offset="0%" stop-color="#f9f5ee"/>
+      <stop offset="100%" stop-color="#f1ebe1"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Top eyebrow -->
+  <text x="80" y="100" font-family="ui-monospace, 'JetBrains Mono', monospace" font-size="22" letter-spacing="3" fill="#6b6b6b" text-transform="uppercase">PERSONAL · BRAND · 2026</text>
+
+  <!-- Mark, large, centered-ish -->
+  <g transform="translate(80, 160)">
+    <g fill="none" stroke="#0e0e0e" stroke-width="11" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M 51 36 L 117 36"/>
+      <path d="M 51 36 L 22 198"/>
+      <path d="M 117 36 L 146 198"/>
+      <path d="M 36 124 L 117 124"/>
+      <path d="M 117 124 C 162 124, 191 138, 191 159"/>
+      <path d="M 191 159 C 191 181, 162 198, 117 198"/>
+    </g>
+    <circle cx="191" cy="159" r="16" fill="#0c6b58"/>
+  </g>
+
+  <!-- Wordmark + descriptor -->
+  <g transform="translate(360, 220)">
+    <text font-family="'Fraunces', 'Instrument Serif', serif" font-size="96" font-weight="500" fill="#0e0e0e">Mohammad Abir Abbas</text>
+    <text y="60" font-family="ui-monospace, 'JetBrains Mono', monospace" font-size="22" letter-spacing="3" fill="#3a3a3a" text-transform="uppercase">SYSTEMS · AI · MERGING · TECHNOLOGY · ARCHITECTURE</text>
+  </g>
+
+  <!-- Bottom info row -->
+  <g font-family="ui-monospace, 'JetBrains Mono', monospace" font-size="20" letter-spacing="2" fill="#6b6b6b" text-transform="uppercase">
+    <text x="80" y="560">Ajman, UAE · Available Q3 2026</text>
+    <text x="80" y="595">abir.getwaved.ai</text>
+  </g>
+</svg>

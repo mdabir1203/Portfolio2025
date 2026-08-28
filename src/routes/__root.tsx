@@ -92,6 +92,10 @@ export const Route = createRootRoute({
       { property: "og:description", content: DESCRIPTION },
       { property: "og:locale", content: "en_US" },
       { property: "og:locale:alternate", content: "ar_AE" },
+      { property: "og:image", content: `${SITE_URL}/og-image.svg` },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "Mohammad Abir Abbas — Creative Technologist & AI Architect" },
       { property: "profile:first_name", content: "Mohammad Abir" },
       { property: "profile:last_name", content: "Abbas" },
       { property: "profile:username", content: "abir-abbas" },
@@ -101,6 +105,7 @@ export const Route = createRootRoute({
       { name: "twitter:title", content: TITLE },
       { name: "twitter:description", content: DESCRIPTION },
       { name: "twitter:creator", content: "@mdabir1203" },
+      { name: "twitter:image", content: `${SITE_URL}/og-image.svg` },
 
       // Geo
       { name: "geo.region", content: "AE-AJ" },
@@ -108,6 +113,9 @@ export const Route = createRootRoute({
     ],
     links: [
       { rel: "canonical", href: SITE_URL },
+      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

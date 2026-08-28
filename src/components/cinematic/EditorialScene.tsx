@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { BrandMark } from "@/components/brand/BrandMark";
 
 /**
  * EditorialScene — the "in plain text" section.
@@ -116,6 +117,11 @@ export function EditorialScene() {
               </div>
             </div>
           </aside>
+        </div>
+
+        <div className="mt-12 flex items-center gap-3 border-t border-rule pt-6 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-muted md:mt-16">
+          <BrandMark size={22} variant="primary" />
+          <span>By Mohammad Abir Abbas · est. 2018 · Dubai</span>
         </div>
       </div>
     </section>
