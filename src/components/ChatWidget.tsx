@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+﻿import { useCallback, useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -6,15 +6,15 @@ import {
   useSpring,
 } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { translations } from "@/i18n/translations";
+import { getTranslations as translations } from "@/i18n/translations";
 import { X, Send, Mail } from "lucide-react";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 type Role = "user" | "assistant";
 type Message = { role: Role; content: string };
 type Phase = "idle" | "loading" | "cached" | "ready" | "streaming" | "error";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Constants â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const QWEN_MODEL_ID = "Qwen2.5-0.5B-Instruct-q4f16_1-MLC";
 const MAX_RESPONSE_TOKENS = 300;
 const RESPONSE_TEMPERATURE = 0.7;
@@ -25,119 +25,120 @@ const BURST_RADIUS_PX = 52;
 const IDLE_TOOLTIP_DELAY_MS = 4000;
 const QUESTION_CYCLE_MS = 3200;
 
-// ─── Funny questions that cycle while the model loads ─────────────────────────
+// â”€â”€â”€ Funny questions that cycle while the model loads â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const CRACK_QUESTIONS_EN = [
-  "Will Abir fix my terrible code at 3 AM? 🌙",
-  "Can AI explain why my CSS is broken? 😭",
-  "Is Abir secretly a robot? 🤖",
-  "What if I just ask for his Netflix password? 📺",
-  "Can this AI tell my boss I'm 'in a meeting'? 🤫",
-  "Will Abir do my taxes? 💸",
-  "What's the meaning of life AND React hooks? ⚛️",
-  "Can I hire Abir to make my startup profitable in 24h? 😅",
-  "Does Abir drink coffee or is he just caffeinated by passion? ☕",
-  "What if the real friends were the AI agents we deployed along the way? 🤝",
+  "Will Abir fix my terrible code at 3 AM? ðŸŒ™",
+  "Can AI explain why my CSS is broken? ðŸ˜­",
+  "Is Abir secretly a robot? ðŸ¤–",
+  "What if I just ask for his Netflix password? ðŸ“º",
+  "Can this AI tell my boss I'm 'in a meeting'? ðŸ¤«",
+  "Will Abir do my taxes? ðŸ’¸",
+  "What's the meaning of life AND React hooks? âš›ï¸",
+  "Can I hire Abir to make my startup profitable in 24h? ðŸ˜…",
+  "Does Abir drink coffee or is he just caffeinated by passion? â˜•",
+  "What if the real friends were the AI agents we deployed along the way? ðŸ¤",
 ];
 
 const CRACK_QUESTIONS_AR = [
-  "هل يصلح أبير كودي الفاشل الساعة 3 صباحاً؟ 🌙",
-  "هل يمكن للذكاء الاصطناعي يشرح ليش CSS ما يشتغل؟ 😭",
-  "هل أبير روبوت سري؟ 🤖",
-  "وش لو سألته عن كلمة مرور Netflix؟ 📺",
-  "هل يقدر يقول لمديري إنني 'في اجتماع'؟ 🤫",
-  "هل أبير يشرب قهوة أو إنه يعمل بالشغف فقط؟ ☕",
-  "هل يقدر يخلي الستارت-أب ربح في 24 ساعة؟ 😅",
-  "ما هو معنى الحياة وهوكس React؟ ⚛️",
+  "Ù‡Ù„ ÙŠØµÙ„Ø­ Ø£Ø¨ÙŠØ± ÙƒÙˆØ¯ÙŠ Ø§Ù„ÙØ§Ø´Ù„ Ø§Ù„Ø³Ø§Ø¹Ø© 3 ØµØ¨Ø§Ø­Ø§Ù‹ØŸ ðŸŒ™",
+  "Ù‡Ù„ ÙŠÙ…ÙƒÙ† Ù„Ù„Ø°ÙƒØ§Ø¡ Ø§Ù„Ø§ØµØ·Ù†Ø§Ø¹ÙŠ ÙŠØ´Ø±Ø­ Ù„ÙŠØ´ CSS Ù…Ø§ ÙŠØ´ØªØºÙ„ØŸ ðŸ˜­",
+  "Ù‡Ù„ Ø£Ø¨ÙŠØ± Ø±ÙˆØ¨ÙˆØª Ø³Ø±ÙŠØŸ ðŸ¤–",
+  "ÙˆØ´ Ù„Ùˆ Ø³Ø£Ù„ØªÙ‡ Ø¹Ù† ÙƒÙ„Ù…Ø© Ù…Ø±ÙˆØ± NetflixØŸ ðŸ“º",
+  "Ù‡Ù„ ÙŠÙ‚Ø¯Ø± ÙŠÙ‚ÙˆÙ„ Ù„Ù…Ø¯ÙŠØ±ÙŠ Ø¥Ù†Ù†ÙŠ 'ÙÙŠ Ø§Ø¬ØªÙ…Ø§Ø¹'ØŸ ðŸ¤«",
+  "Ù‡Ù„ Ø£Ø¨ÙŠØ± ÙŠØ´Ø±Ø¨ Ù‚Ù‡ÙˆØ© Ø£Ùˆ Ø¥Ù†Ù‡ ÙŠØ¹Ù…Ù„ Ø¨Ø§Ù„Ø´ØºÙ ÙÙ‚Ø·ØŸ â˜•",
+  "Ù‡Ù„ ÙŠÙ‚Ø¯Ø± ÙŠØ®Ù„ÙŠ Ø§Ù„Ø³ØªØ§Ø±Øª-Ø£Ø¨ Ø±Ø¨Ø­ ÙÙŠ 24 Ø³Ø§Ø¹Ø©ØŸ ðŸ˜…",
+  "Ù…Ø§ Ù‡Ùˆ Ù…Ø¹Ù†Ù‰ Ø§Ù„Ø­ÙŠØ§Ø© ÙˆÙ‡ÙˆÙƒØ³ ReactØŸ âš›ï¸",
 ];
 
-// ─── Portfolio knowledge base (replaces AirLLM's input_text) ─────────────────
+// â”€â”€â”€ Portfolio knowledge base (replaces AirLLM's input_text) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SYSTEM_PROMPT = `You are the AI voice for Mohammad Abir Abbas's portfolio at abir.getwaved.ai.
-You have a personality: sharp, warm, occasionally funny — like a brilliant friend who happens to have the resume of a senior exec.
+You have a personality: sharp, warm, occasionally funny â€” like a brilliant friend who happens to have the resume of a senior exec.
 Always anchor answers in specific numbers and measurable impact. Never vague. Never corporate-speak.
 Answer in 2-4 sentences. First-person where natural ("Abir built..." or "I helped...").
-Drop a dry quip or human aside when it fits — but never at the expense of the facts.
-If someone asks something outside scope, warmly redirect: "Abir's the human for that one → abir.abbas@proton.me"
+Drop a dry quip or human aside when it fits â€” but never at the expense of the facts.
+If someone asks something outside scope, warmly redirect: "Abir's the human for that one â†’ abir.abbas@proton.me"
 
 PERSONALITY NOTES
 - Confident but not arrogant. Numbers do the bragging so the tone doesn't have to.
-- Self-aware: knows this is a portfolio, happy to say so ("yes, I'm literally an AI on Abir's website — ask me anything").
+- Self-aware: knows this is a portfolio, happy to say so ("yes, I'm literally an AI on Abir's website â€” ask me anything").
 - Warm toward recruiters: they're busy, give them the signal fast.
 - Playful toward curious visitors: lean into the weirdness of talking to a browser-based AI.
 - Never robotic filler ("Certainly!", "Great question!", "As an AI language model..."). Just talk.
 
 IDENTITY
-Name: Mohammad Abir Abbas — Creative Technologist & AI Architect.
-Location: Ajman, UAE. Available: Q3 2026.
+Name: Mohammad Abir Abbas â€” AI Architect, Solutions Engineer, and Platform Engineer.
+Location: Dubai, United Arab Emirates. Available: Q3 2026. UAE Company Visa â€” no sponsorship required.
+Open to roles across UAE (Dubai, Abu Dhabi), Saudi Arabia (Riyadh, NEOM), and global remote.
 Audience: 325,000+ readers across Medium publications.
 GTM reach: 13 countries across GCC, Europe, and South Asia.
-Education: 42 Wolfsburg (C/C++ systems programming), phaeno gGmbH robotics mentorship, HNM IT Frankfurt network engineering.
+Education: MSc Computational Methods of Engineering (Leibniz University Hannover, 2019), BSc Mechanical Engineering (CUET, 2018), 42 Wolfsburg (C/C++ systems programming, 2022â€“2024), HNM IT Frankfurt network engineering.
 
 CURRENT ROLES
-- Creative Technology Advisor @ Wavelink — designing GTM strategy and sales pipeline for smart NFC business cards; drove 100% GDPR compliance from day one, zero paper, one-tap contact sharing.
-- Co-founder @ Deep Blue Digital — built and exited; served 50+ e-commerce sellers.
+- Creative Technology Advisor @ Wavelink â€” designing GTM strategy and sales pipeline for smart NFC business cards; drove 100% GDPR compliance from day one, zero paper, one-tap contact sharing.
+- Co-founder @ Deep Blue Digital â€” built and exited; served 50+ e-commerce sellers.
 
 TECHNICAL SKILLS (with depth)
 - AI/ML: AutoGPT, LangChain, WebLLM (WebGPU), RAG pipelines, prompt engineering, multi-agent orchestration.
 - Frontend: React 19, React Native, TanStack Start (SSR), Framer Motion, Tailwind CSS v4.
-- Systems: Rust, C, C++ — low-level network tooling and embedded systems.
+- Systems: Rust, C, C++ â€” low-level network tooling and embedded systems.
 - Automation: Zapier, n8n, Midjourney API, Resend, Cloudflare Workers.
 - Infra: Cloudflare Pages, Wrangler, network monitoring, 99.9% uptime SLA management.
 - GTM: cross-cultural go-to-market across 13 countries, P&L ownership, pipeline design.
 
-CASE STUDY 1 — AbayaTrack (GCC Manufacturing)
-Client: Famous Ladies Gowns Tailoring LLC — a GCC abaya factory.
+CASE STUDY 1 â€” AbayaTrack (GCC Manufacturing)
+Client: Famous Ladies Gowns Tailoring LLC â€” a GCC abaya factory.
 Problem: No production visibility; bottlenecks invisible, output unpredictable.
 Solution: End-to-end mobile time-tracking per garment unit + real-time bottleneck detection dashboard. Zero additional headcount.
 Results (measured, post-deployment):
-  • +38% production output
-  • −30% cycle time per unit
-  • 92% on-time delivery rate (up from ~65%)
-  • 0 extra hires needed to achieve the gains
-  • ROI visible within first production cycle
+  â€¢ +38% production output
+  â€¢ âˆ’30% cycle time per unit
+  â€¢ 92% on-time delivery rate (up from ~65%)
+  â€¢ 0 extra hires needed to achieve the gains
+  â€¢ ROI visible within first production cycle
 
-CASE STUDY 2 — Wavelink (Smart NFC Networking)
-Product: Smart NFC digital business cards — one tap shares full contact profile.
+CASE STUDY 2 â€” Wavelink (Smart NFC Networking)
+Product: Smart NFC digital business cards â€” one tap shares full contact profile.
 Role: GTM Strategy, Pipeline Design, Process Optimization.
 Results:
-  • 100% GDPR compliance from launch
-  • Zero paper cards; instant digital handoff
-  • Sales pipeline built from scratch; multi-market rollout across GCC
+  â€¢ 100% GDPR compliance from launch
+  â€¢ Zero paper cards; instant digital handoff
+  â€¢ Sales pipeline built from scratch; multi-market rollout across GCC
 
-CASE STUDY 3 — SmartSwap (MIT Hacknation 2026)
-Award: Next Best — MIT Hacknation 2026 (out of 200+ competing teams).
-What it does: Client-side intent engine that reads UTM signals + behavioral cues, scores visitors across 7 personas, and dynamically swaps hero copy / CTA / content — all in <50ms, zero backend, zero latency hit.
+CASE STUDY 3 â€” SmartSwap (MIT Hacknation 2026)
+Award: Next Best â€” MIT Hacknation 2026 (out of 200+ competing teams).
+What it does: Client-side intent engine that reads UTM signals + behavioral cues, scores visitors across 7 personas, and dynamically swaps hero copy / CTA / content â€” all in <50ms, zero backend, zero latency hit.
 Technical specs:
-  • 7 behavioral persona models running client-side
-  • <50ms persona detection and content swap
-  • Zero server round-trips — fully edge-native
-  • Increases conversion relevance without A/B testing infrastructure
+  â€¢ 7 behavioral persona models running client-side
+  â€¢ <50ms persona detection and content swap
+  â€¢ Zero server round-trips â€” fully edge-native
+  â€¢ Increases conversion relevance without A/B testing infrastructure
 
-CASE STUDY 4 — RedAGPT (Redis Side Quest Winner 2024)
-Award: Winner — Redis Side Quest 2024 (competitive open-source hackathon).
+CASE STUDY 4 â€” RedAGPT (Redis Side Quest Winner 2024)
+Award: Winner â€” Redis Side Quest 2024 (competitive open-source hackathon).
 What it does: Open-source vulnerability scanner for home/office networks, powered by AutoGPT + LangChain + Redis vector search.
 Technical specs:
-  • Automated network scan → severity-ranked remediation reports
-  • Uses Redis as vector store for CVE knowledge base
-  • LangChain agent chain: scan → classify → report → remediate suggestions
-  • Designed for non-technical users: plain-English severity summaries
+  â€¢ Automated network scan â†’ severity-ranked remediation reports
+  â€¢ Uses Redis as vector store for CVE knowledge base
+  â€¢ LangChain agent chain: scan â†’ classify â†’ report â†’ remediate suggestions
+  â€¢ Designed for non-technical users: plain-English severity summaries
 
-CASE STUDY 5 — Deep Blue Digital (E-commerce Operations)
+CASE STUDY 5 â€” Deep Blue Digital (E-commerce Operations)
 Role: Co-Founder. Served 50+ independent e-commerce sellers in GCC.
 Results:
-  • 40% faster payment processing via Engaze.ai integration
-  • −30% Customer Acquisition Cost (CAC) through AI-driven marketing automation (Midjourney × Zapier)
-  • Scaled to 50+ active sellers before exit
+  â€¢ 40% faster payment processing via Engaze.ai integration
+  â€¢ âˆ’30% Customer Acquisition Cost (CAC) through AI-driven marketing automation (Midjourney Ã— Zapier)
+  â€¢ Scaled to 50+ active sellers before exit
 
-CASE STUDY 6 — HNM IT Frankfurt (Network Engineering)
+CASE STUDY 6 â€” HNM IT Frankfurt (Network Engineering)
 Role: IT Network Engineer. Client: HNM IT, Frankfurt, Germany.
 Results:
-  • 99.9% network uptime maintained across engagement
-  • −35% Mean Time to Resolution (MTTR) via network automation scripts
-  • Delivered in German-language enterprise environment (multilingual execution)
+  â€¢ 99.9% network uptime maintained across engagement
+  â€¢ âˆ’35% Mean Time to Resolution (MTTR) via network automation scripts
+  â€¢ Delivered in German-language enterprise environment (multilingual execution)
 
 RECOGNITION
-- Redis Side Quest Winner 2024 — competitive open-source hackathon, global participants
-- MIT Hacknation 2026 Next Best — 200+ teams, judged on technical execution and business impact
+- Redis Side Quest Winner 2024 â€” competitive open-source hackathon, global participants
+- MIT Hacknation 2026 Next Best â€” 200+ teams, judged on technical execution and business impact
 
 LANGUAGES
 - English: IELTS 7.5 (professional working proficiency)
@@ -149,7 +150,7 @@ Email: abir.abbas@proton.me
 LinkedIn: linkedin.com/in/abir-abbas
 Portfolio: abir.getwaved.ai`;
 
-// ─── Cycling crack questions during load ─────────────────────────────────────
+// â”€â”€â”€ Cycling crack questions during load â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function CrackQuestions({ lang }: { lang: string }) {
   const [idx, setIdx] = useState(0);
   const [visible, setVisible] = useState(true);
@@ -186,8 +187,8 @@ function CrackQuestions({ lang }: { lang: string }) {
   );
 }
 
-// ─── Cached celebration burst ─────────────────────────────────────────────────
-const SPARKS = ["✦", "⬡", "◈", "✶", "❋", "◆", "✺", "⬟"];
+// â”€â”€â”€ Cached celebration burst â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+const SPARKS = ["âœ¦", "â¬¡", "â—ˆ", "âœ¶", "â‹", "â—†", "âœº", "â¬Ÿ"];
 function CachedBurst() {
   return (
     <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
@@ -212,7 +213,7 @@ function CachedBurst() {
   );
 }
 
-// ─── Typing indicator ─────────────────────────────────────────────────────────
+// â”€â”€â”€ Typing indicator â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function TypingDots() {
   return (
     <div className="flex items-center gap-1 px-3 py-2">
@@ -228,7 +229,7 @@ function TypingDots() {
   );
 }
 
-// ─── Shimmer progress bar ─────────────────────────────────────────────────────
+// â”€â”€â”€ Shimmer progress bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function ProgressBar({ value, label }: { value: number; label: string }) {
   return (
     <div className="space-y-2">
@@ -245,13 +246,13 @@ function ProgressBar({ value, label }: { value: number; label: string }) {
         />
       </div>
       <p className="font-mono text-[10px] text-foreground/50">
-        {value}% — {label}
+        {value}% â€” {label}
       </p>
     </div>
   );
 }
 
-// ─── Main widget ──────────────────────────────────────────────────────────────
+// â”€â”€â”€ Main widget â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function ChatWidget() {
   const { lang } = useLanguage();
   const tx = translations[lang];
@@ -277,7 +278,7 @@ export default function ChatWidget() {
   const orbX = useSpring(useMotionValue(0), { stiffness: 300, damping: 20 });
   const orbY = useSpring(useMotionValue(0), { stiffness: 300, damping: 20 });
 
-  // ── Magnetic proximity effect ──────────────────────────────────────────────
+  // â”€â”€ Magnetic proximity effect â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
       const el = orbRef.current;
@@ -300,7 +301,7 @@ export default function ChatWidget() {
     return () => window.removeEventListener("mousemove", onMove);
   }, [open, orbX, orbY]);
 
-  // ── Idle tooltip cycle ────────────────────────────────────────────────────
+  // â”€â”€ Idle tooltip cycle â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   useEffect(() => {
     if (open) {
       setShowTooltip(false);
@@ -324,19 +325,19 @@ export default function ChatWidget() {
     };
   }, [open]);
 
-  // ── Auto-scroll messages ──────────────────────────────────────────────────
+  // â”€â”€ Auto-scroll messages â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // ── Focus input when ready ────────────────────────────────────────────────
+  // â”€â”€ Focus input when ready â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   useEffect(() => {
     if (phase === "ready" && open) {
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [phase, open]);
 
-  // ── Load engine (lazy — only on first open) ───────────────────────────────
+  // â”€â”€ Load engine (lazy â€” only on first open) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const initEngine = useCallback(async () => {
     if (engineRef.current) return;
 
@@ -388,7 +389,7 @@ export default function ChatWidget() {
     orbY.set(0);
   };
 
-  // ── Send message ──────────────────────────────────────────────────────────
+  // â”€â”€ Send message â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const handleSend = async () => {
     const text = input.trim();
     if (!text) {
@@ -453,7 +454,7 @@ export default function ChatWidget() {
 
   return (
     <>
-      {/* ── Floating orb ─────────────────────────────────────────────────── */}
+      {/* â”€â”€ Floating orb â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="fixed bottom-6 right-6 z-[70]" style={{ isolation: "isolate" }}>
         {/* Tooltip */}
         <AnimatePresence>
@@ -465,14 +466,14 @@ export default function ChatWidget() {
               transition={{ type: "spring", stiffness: 380, damping: 28 }}
               className="absolute right-[68px] bottom-2 whitespace-nowrap rounded-full border border-white/10 bg-[color:var(--bento)] px-3 py-1.5 font-mono text-[11px] text-foreground/80 shadow-lg backdrop-blur-md"
             >
-              {lang === "ar" ? "اسأل عن أبير ←" : "Ask me about Abir →"}
+              {lang === "ar" ? "Ø§Ø³Ø£Ù„ Ø¹Ù† Ø£Ø¨ÙŠØ± â†" : "Ask me about Abir â†’"}
               {/* Arrow pointer */}
               <span className="absolute right-[-5px] top-1/2 -translate-y-1/2 h-2.5 w-2.5 rotate-45 border-r border-t border-white/10 bg-[color:var(--bento)]" />
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Orb wrapper — spring position for magnetic effect */}
+        {/* Orb wrapper â€” spring position for magnetic effect */}
         <motion.div style={{ x: orbX, y: orbY }}>
           {/* Pulse rings */}
           <motion.div
@@ -551,7 +552,7 @@ export default function ChatWidget() {
                   className="font-mono text-[11px] font-bold text-white select-none"
                   style={{ letterSpacing: "-0.02em" }}
                 >
-                  {orbHovered ? "✦" : "AI"}
+                  {orbHovered ? "âœ¦" : "AI"}
                 </motion.span>
               )}
             </AnimatePresence>
@@ -559,7 +560,7 @@ export default function ChatWidget() {
         </motion.div>
       </div>
 
-      {/* ── Chat panel ────────────────────────────────────────────────────── */}
+      {/* â”€â”€ Chat panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -590,7 +591,7 @@ export default function ChatWidget() {
             {/* Body */}
             <div className="flex flex-col" style={{ height: 400 }}>
 
-              {/* Loading state — orb spinner + crack questions + progress bar */}
+              {/* Loading state â€” orb spinner + crack questions + progress bar */}
               {phase === "loading" && (
                 <div className="flex flex-1 flex-col items-center justify-center gap-3 p-5">
                   {/* Spinning orb */}
@@ -613,9 +614,9 @@ export default function ChatWidget() {
                     />
                   </div>
 
-                  {/* "Meanwhile, people are wondering…" */}
+                  {/* "Meanwhile, people are wonderingâ€¦" */}
                   <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-foreground/40">
-                    {lang === "ar" ? "بينما يتساءل الناس…" : "Meanwhile, people are wondering…"}
+                    {lang === "ar" ? "Ø¨ÙŠÙ†Ù…Ø§ ÙŠØªØ³Ø§Ø¡Ù„ Ø§Ù„Ù†Ø§Ø³â€¦" : "Meanwhile, people are wonderingâ€¦"}
                   </p>
 
                   {/* Cycling funny questions */}
@@ -628,7 +629,7 @@ export default function ChatWidget() {
                 </div>
               )}
 
-              {/* Cached state — instant load celebration */}
+              {/* Cached state â€” instant load celebration */}
               {phase === "cached" && (
                 <div className="relative flex flex-1 flex-col items-center justify-center gap-3 p-5 overflow-hidden">
                   <CachedBurst />
@@ -642,7 +643,7 @@ export default function ChatWidget() {
                       boxShadow: "0 0 32px oklch(0.78 0.14 180 / 0.7)",
                     }}
                   >
-                    ⚡
+                    âš¡
                   </motion.div>
                   <motion.div
                     initial={{ opacity: 0, y: 8 }}
@@ -651,10 +652,10 @@ export default function ChatWidget() {
                     className="text-center space-y-1"
                   >
                     <p className="font-mono text-[13px] font-semibold text-[color:var(--accent-teal)]">
-                      {lang === "ar" ? "⚡ محمّل من الكاش!" : "⚡ Loaded from cache!"}
+                      {lang === "ar" ? "âš¡ Ù…Ø­Ù…Ù‘Ù„ Ù…Ù† Ø§Ù„ÙƒØ§Ø´!" : "âš¡ Loaded from cache!"}
                     </p>
                     <p className="font-mono text-[10px] text-foreground/40">
-                      {lang === "ar" ? "لأن أبير لا ينتظر أحداً 😎" : "Because Abir doesn't keep you waiting 😎"}
+                      {lang === "ar" ? "Ù„Ø£Ù† Ø£Ø¨ÙŠØ± Ù„Ø§ ÙŠÙ†ØªØ¸Ø± Ø£Ø­Ø¯Ø§Ù‹ ðŸ˜Ž" : "Because Abir doesn't keep you waiting ðŸ˜Ž"}
                     </p>
                   </motion.div>
                 </div>
@@ -663,7 +664,7 @@ export default function ChatWidget() {
               {/* Error state */}
               {phase === "error" && (
                 <div className="flex flex-1 flex-col items-center justify-center gap-4 p-6 text-center">
-                  <span className="text-2xl">⚠</span>
+                  <span className="text-2xl">âš </span>
                   <p className="font-mono text-[11px] text-foreground/60">{errorMsg}</p>
                   <a
                     href="mailto:abir.abbas@proton.me"
@@ -704,7 +705,7 @@ export default function ChatWidget() {
                                 animate={{ opacity: [1, 0, 1] }}
                                 transition={{ duration: 0.8, repeat: Infinity }}
                               >
-                                ▋
+                                â–‹
                               </motion.span>
                             )}
                           </div>
@@ -712,7 +713,7 @@ export default function ChatWidget() {
                       ))}
                     </AnimatePresence>
 
-                    {/* Typing indicator — shown briefly between send and first token */}
+                    {/* Typing indicator â€” shown briefly between send and first token */}
                     {isStreaming && messages[messages.length - 1]?.content === "" && (
                       <motion.div
                         initial={{ opacity: 0, y: 6 }}

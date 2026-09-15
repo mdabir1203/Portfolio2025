@@ -1,0 +1,414 @@
+Error: transport was disconnected, cannot call "fetchModule"
+    at reviveInvokeError (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:475:14)
+    at Object.invoke (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:549:11)
+    at async ModuleRunner.getModuleInformation (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1086:7)
+    at async request (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1103:83)
+    at async eval (C:/Users/mabba/Downloads/Portfolio2025/src/components/ContactForm.tsx:9:31)
+    at async ESModulesEvaluator.runInlinedModule (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:913:3)
+    at async ModuleRunner.directRequest (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1146:59)
+    at async ModuleRunner.cachedRequest (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1053:73)
+    at async eval (C:/Users/mabba/Downloads/Portfolio2025/src/components/cinematic/ContactSection.tsx:5:31)
+    at async ESModulesEvaluator.runInlinedModule (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:913:3)
+    at async ModuleRunner.directRequest (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1146:59)
+    at async ModuleRunner.cachedRequest (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1053:73)
+    at async eval (C:/Users/mabba/Downloads/Portfolio2025/src/components/cinematic/CinematicLanding.tsx:15:32)
+    at async ESModulesEvaluator.runInlinedModule (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:913:3)
+    at async ModuleRunner.directRequest (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1146:59)
+    at async ModuleRunner.cachedRequest (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1053:73)
+    at async eval (C:/Users/mabba/Downloads/Portfolio2025/src/routes/index.tsx?tsr-split=component:4:31)
+    at async ESModulesEvaluator.runInlinedModule (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:913:3)
+    at async ModuleRunner.directRequest (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1146:59)
+    at async ModuleRunner.cachedRequest (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1053:73)
+    at async Promise.all (index 0)
+    at async runLoader (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/@tanstack/router-core/dist/esm/load-matches.js:378:34)
+    at async handleLoader (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/@tanstack/router-core/dist/esm/load-matches.js:451:60)
+    at async loadRouteMatch (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/@tanstack/router-core/dist/esm/load-matches.js:484:4)
+    at async Promise.all (index 1)
+    at async loadMatches (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/@tanstack/router-core/dist/esm/load-matches.js:531:3)
+    at async file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/@tanstack/router-core/dist/esm/router.js:539:7 {
+  runnerError: Error: RunnerError
+      at reviveInvokeError (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:476:64)
+      at Object.invoke (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:549:11)
+      at async ModuleRunner.getModuleInformation (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1086:7)
+      at async request (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1103:83)
+      at async eval (C:/Users/mabba/Downloads/Portfolio2025/src/components/ContactForm.tsx:9:31)
+      at async ESModulesEvaluator.runInlinedModule (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:913:3)
+      at async ModuleRunner.directRequest (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1146:59)
+      at async ModuleRunner.cachedRequest (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1053:73)
+      at async eval (C:/Users/mabba/Downloads/Portfolio2025/src/components/cinematic/ContactSection.tsx:5:31)
+      at async ESModulesEvaluator.runInlinedModule (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:913:3)
+      at async ModuleRunner.directRequest (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1146:59)
+      at async ModuleRunner.cachedRequest (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1053:73)
+      at async eval (C:/Users/mabba/Downloads/Portfolio2025/src/components/cinematic/CinematicLanding.tsx:15:32)
+      at async ESModulesEvaluator.runInlinedModule (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:913:3)
+      at async ModuleRunner.directRequest (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1146:59)
+      at async ModuleRunner.cachedRequest (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1053:73)
+      at async eval (C:/Users/mabba/Downloads/Portfolio2025/src/routes/index.tsx?tsr-split=component:4:31)
+      at async ESModulesEvaluator.runInlinedModule (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:913:3)
+      at async ModuleRunner.directRequest (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1146:59)
+      at async ModuleRunner.cachedRequest (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/vite/dist/node/module-runner.js:1053:73)
+      at async Promise.all (index 0)
+      at async runLoader (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/@tanstack/router-core/dist/esm/load-matches.js:378:34)
+      at async handleLoader (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/@tanstack/router-core/dist/esm/load-matches.js:451:60)
+      at async loadRouteMatch (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/@tanstack/router-core/dist/esm/load-matches.js:484:4)
+      at async Promise.all (index 1)
+      at async loadMatches (file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/@tanstack/router-core/dist/esm/load-matches.js:531:3)
+      at async file:///C:/Users/mabba/Downloads/Portfolio2025/node_modules/@tanstack/router-core/dist/esm/router.js:539:7
+}
+
+[client] Runtime Error: Uncaught Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <Lazy>
+      <CinematicLanding>
+        <div lang="en" className="cin-landin...">
+          <FirstVisitSplash>
+          <TopNav>
+          <ManifestoBar>
+          <PassportBook>
+          <main className="pt-2">
+            <EditorialHero>
+            <WorkGrid>
+            <CaseStudySection>
+            <EditorialScene>
+            <PersonalitySection>
+            <PeerReviews>
+            <PathTimeline>
+            <MediumRail>
+            <YouTubeRail>
+            <FAQSection>
+            <ContactSection cvUrl="http://loc...">
+              <section id="contact" className="cin-work p...">
+                <div className="mx-auto w-...">
+                  <div className="cin-contac...">
+                    <div className="grid grid-...">
+                      <div>
+                      <div className="md:col-span-5">
+                        <div className="flex flex-...">
+                          <ContactForm>
+                          <CvDownloadQR url="http://loc..." variant="prominent" caption="Scan to do..." ...>
+                            <button type="button" onClick={function onClick} className="group flex...">
+                              <span>
+                              <span>
+                              <span className="flex items...">
+                                <span>
+                                <span className="flex flex-...">
+                                  <span>
+                                  <span>
+                                  <span className="mt-1 text-[11px] text-ink/45">
++                                   localhost:5173/cv
+-                                   /cv
+          ...
+ at http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:3653:13
+Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <Lazy>
+      <CinematicLanding>
+        <div lang="en" className="cin-landin...">
+          <FirstVisitSplash>
+          <TopNav>
+          <ManifestoBar>
+          <PassportBook>
+          <main className="pt-2">
+            <EditorialHero>
+            <WorkGrid>
+            <CaseStudySection>
+            <EditorialScene>
+            <PersonalitySection>
+            <PeerReviews>
+            <PathTimeline>
+            <MediumRail>
+            <YouTubeRail>
+            <FAQSection>
+            <ContactSection cvUrl="http://loc...">
+              <section id="contact" className="cin-work p...">
+                <div className="mx-auto w-...">
+                  <div className="cin-contac...">
+                    <div className="grid grid-...">
+                      <div>
+                      <div className="md:col-span-5">
+                        <div className="flex flex-...">
+                          <ContactForm>
+                          <CvDownloadQR url="http://loc..." variant="prominent" caption="Scan to do..." ...>
+                            <button type="button" onClick={function onClick} className="group flex...">
+                              <span>
+                              <span>
+                              <span className="flex items...">
+                                <span>
+                                <span className="flex flex-...">
+                                  <span>
+                                  <span>
+                                  <span className="mt-1 text-[11px] text-ink/45">
++                                   localhost:5173/cv
+-                                   /cv
+          ...
+
+    at throwOnHydrationMismatch (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:3653:13)
+    at prepareToHydrateHostInstance (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:3727:23)
+    at completeWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:8732:17)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:730:72)
+    at completeUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:12402:22)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:12308:29)
+    at workLoopConcurrentByScheduler (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:12290:11)
+    at renderRootConcurrent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:12272:71)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:11499:152)
+    at performWorkOnRootViaSchedulerTask (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:13238:9)
+
+[client] Runtime Error: Uncaught Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <Lazy>
+      <CinematicLanding>
+        <div lang="en" className="cin-landin...">
+          <FirstVisitSplash>
+          <TopNav>
+          <ManifestoBar>
+          <PassportBook>
+          <main className="pt-2">
+            <EditorialHero>
+            <WorkGrid>
+            <CaseStudySection>
+            <EditorialScene>
+            <PersonalitySection>
+            <PeerReviews>
+            <PathTimeline>
+            <MediumRail>
+            <YouTubeRail>
+            <FAQSection>
+            <ContactSection cvUrl="http://loc...">
+              <section id="contact" className="cin-work p...">
+                <div className="mx-auto w-...">
+                  <div className="cin-contac...">
+                    <div className="grid grid-...">
+                      <div>
+                      <div className="md:col-span-5">
+                        <div className="flex flex-...">
+                          <ContactForm>
+                          <CvDownloadQR url="http://loc..." variant="prominent" caption="Scan to do..." ...>
+                            <button type="button" onClick={function onClick} className="group flex...">
+                              <span>
+                              <span>
+                              <span className="flex items...">
+                                <span>
+                                <span className="flex flex-...">
+                                  <span>
+                                  <span>
+                                  <span className="mt-1 text-[11px] text-ink/45">
++                                   localhost:5173/cv
+-                                   /cv
+          ...
+ at http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:3653:13
+Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <Lazy>
+      <CinematicLanding>
+        <div lang="en" className="cin-landin...">
+          <FirstVisitSplash>
+          <TopNav>
+          <ManifestoBar>
+          <PassportBook>
+          <main className="pt-2">
+            <EditorialHero>
+            <WorkGrid>
+            <CaseStudySection>
+            <EditorialScene>
+            <PersonalitySection>
+            <PeerReviews>
+            <PathTimeline>
+            <MediumRail>
+            <YouTubeRail>
+            <FAQSection>
+            <ContactSection cvUrl="http://loc...">
+              <section id="contact" className="cin-work p...">
+                <div className="mx-auto w-...">
+                  <div className="cin-contac...">
+                    <div className="grid grid-...">
+                      <div>
+                      <div className="md:col-span-5">
+                        <div className="flex flex-...">
+                          <ContactForm>
+                          <CvDownloadQR url="http://loc..." variant="prominent" caption="Scan to do..." ...>
+                            <button type="button" onClick={function onClick} className="group flex...">
+                              <span>
+                              <span>
+                              <span className="flex items...">
+                                <span>
+                                <span className="flex flex-...">
+                                  <span>
+                                  <span>
+                                  <span className="mt-1 text-[11px] text-ink/45">
++                                   localhost:5173/cv
+-                                   /cv
+          ...
+
+    at throwOnHydrationMismatch (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:3653:13)
+    at prepareToHydrateHostInstance (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:3727:23)
+    at completeWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:8732:17)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:730:72)
+    at completeUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:12402:22)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:12308:29)
+    at workLoopConcurrentByScheduler (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:12290:11)
+    at renderRootConcurrent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:12272:71)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:11499:152)
+    at performWorkOnRootViaSchedulerTask (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:13238:9)
+
+[client] Runtime Error: Uncaught Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <Lazy>
+      <CinematicLanding>
+        <div lang="en" className="cin-landin...">
+          <FirstVisitSplash>
+          <TopNav>
+          <ManifestoBar>
+          <PassportBook>
+          <main className="pt-2">
+            <EditorialHero>
+            <WorkGrid>
+            <CaseStudySection>
+            <EditorialScene>
+            <PersonalitySection>
+            <PeerReviews>
+            <PathTimeline>
+            <MediumRail>
+            <YouTubeRail>
+            <FAQSection>
+            <ContactSection cvUrl="http://loc...">
+              <section id="contact" className="cin-work p...">
+                <div className="mx-auto w-...">
+                  <div className="cin-contac...">
+                    <div className="grid grid-...">
+                      <div>
+                      <div className="md:col-span-5">
+                        <div className="flex flex-...">
+                          <ContactForm>
+                          <CvDownloadQR url="http://loc..." variant="prominent" caption="Scan to do..." ...>
+                            <button type="button" onClick={function onClick} className="group flex...">
+                              <span>
+                              <span>
+                              <span className="flex items...">
+                                <span>
+                                <span className="flex flex-...">
+                                  <span>
+                                  <span>
+                                  <span className="mt-1 text-[11px] text-ink/45">
++                                   localhost:5173/cv
+-                                   /cv
+          ...
+ at http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:3653:13
+Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <Lazy>
+      <CinematicLanding>
+        <div lang="en" className="cin-landin...">
+          <FirstVisitSplash>
+          <TopNav>
+          <ManifestoBar>
+          <PassportBook>
+          <main className="pt-2">
+            <EditorialHero>
+            <WorkGrid>
+            <CaseStudySection>
+            <EditorialScene>
+            <PersonalitySection>
+            <PeerReviews>
+            <PathTimeline>
+            <MediumRail>
+            <YouTubeRail>
+            <FAQSection>
+            <ContactSection cvUrl="http://loc...">
+              <section id="contact" className="cin-work p...">
+                <div className="mx-auto w-...">
+                  <div className="cin-contac...">
+                    <div className="grid grid-...">
+                      <div>
+                      <div className="md:col-span-5">
+                        <div className="flex flex-...">
+                          <ContactForm>
+                          <CvDownloadQR url="http://loc..." variant="prominent" caption="Scan to do..." ...>
+                            <button type="button" onClick={function onClick} className="group flex...">
+                              <span>
+                              <span>
+                              <span className="flex items...">
+                                <span>
+                                <span className="flex flex-...">
+                                  <span>
+                                  <span>
+                                  <span className="mt-1 text-[11px] text-ink/45">
++                                   localhost:5173/cv
+-                                   /cv
+          ...
+
+    at throwOnHydrationMismatch (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:3653:13)
+    at prepareToHydrateHostInstance (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:3727:23)
+    at completeWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:8732:17)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:730:72)
+    at completeUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:12402:22)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:12308:29)
+    at workLoopConcurrentByScheduler (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:12290:11)
+    at renderRootConcurrent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:12272:71)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:11499:152)
+    at performWorkOnRootViaSchedulerTask (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=8a64002c:13238:9)

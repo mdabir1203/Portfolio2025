@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build && node scripts/fix-wrangler-json.js",
+    "build": "vite build && node scripts/fix-wrangler-json.js && node scripts/patch-worker-nul-strip.cjs",
     "build:dev": "vite build --mode development",
     "cv:pdf": "node scripts/cv-to-pdf.js",
     "preview": "vite preview",
@@ -109,6 +109,7 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
     "vite": "^7.3.1",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.8",
+    "wrangler": "^3.78.0"
   }
 }

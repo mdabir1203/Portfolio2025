@@ -1,0 +1,181 @@
+"""
+WhatsApp Web auto-sender for bed-space outreach.
+
+What it does:
+  1. Opens a tab to https://web.whatsapp.com/send?phone=<intl_number>&text=<encoded>
+  2. You scan the QR once, then for each new contact it pre-fills the chat.
+  3. You press Enter in the terminal to advance to the next contact, then click Send in WhatsApp Web.
+
+Requirements:
+  - Python 3.9+ (uses only stdlib)
+  - A Chromium-based browser (Chrome / Edge / Brave)
+  - WhatsApp Web already logged in (scan QR once)
+
+Usage:
+  python send_whatsapp.py              # interactive mode (press Enter to send next)
+  python send_whatsapp.py --delay 8    # wait 8s between contacts (lets you click Send)
+
+To customize:
+  - Edit CONTACTS below (name, phone in E.164 international format, message)
+  - Or pass --csv contacts.csv (columns: name,phone,message)
+"""
+
+import argparse
+import csv
+import sys
+import time
+import urllib.parse
+import webbrowser
+from pathlib import Path
+
+HERE = Path(__file__).parent
+
+DEFAULT_CONTACTS = [
+    {
+        "name": "Satwa Bedspace Instagram (ladies)",
+        "phone": "+971529331188",
+        "message": (
+            "Hi, saw your Satwa bedspace listing. "
+            "Single working professional, looking for bed space AED 600-700, "
+            "Satwa or Al Jafiliya, walking distance to Max Metro. "
+            "Need lower bunk + window bed. Available now?"
+        ),
+    },
+    {
+        "name": "Satwa Big Mosque capsule partition",
+        "phone": "+971522884786",
+        "message": (
+            "Hi, saw your capsule partition listing near Satwa Big Mosque. "
+            "Is it still available? I'm a single working professional, "
+            "looking for bed space AED 600-700 in Satwa, "
+            "walking distance to Max Metro. Need lower bunk + window bed."
+        ),
+    },
+    {
+        "name": "Satwa Roundabout (Abu Nasir)",
+        "phone": "+971566353859",
+        "message": (
+            "Hi Abu Nasir, saw your Satwa Roundabout bedspace listing. "
+            "Is the lower bed (AED 650) still available? "
+            "Single working professional, working near WTC. "
+            "When can I visit?"
+        ),
+    },
+    {
+        "name": "Satwa FB Group admin (Nazir Karim)",
+        "phone": "+971563229004",
+        "message": (
+            "Hi Nazir, just joined the Satwa Bedspace group. "
+            "Looking for bed space AED 600-700, Satwa or Al Jafiliya, "
+            "walking distance to Max Metro. Lower bunk + window bed preferred. "
+            "Any current options you can recommend?"
+        ),
+    },
+    {
+        "name": "Karama Bed Space FB admin (Rez Ez)",
+        "phone": "+971551519645",
+        "message": (
+            "Hi Rez, just joined the Karama Bed Space group. "
+            "Looking for bed space AED 600-700 in Karama, "
+            "near ADCB or Burjuman Metro. Lower bunk + window bed. "
+            "Any current options? Working near WTC, move-in ASAP."
+        ),
+    },
+    {
+        "name": "rentforroom.com Satwa aggregator (Abu Nasir)",
+        "phone": "+971503569919",
+        "message": (
+            "Hi, saw your Satwa listings on rentforroom.com. "
+            "Looking for bed space AED 600-700 in Satwa, "
+            "walking distance to Max Metro. Lower bunk + window bed. "
+            "What do you have available right now?"
+        ),
+    },
+    {
+        "name": "rentforroom Karama aggregator 1",
+        "phone": "+971508870458",
+        "message": (
+            "Hi, looking for bed space AED 600-700 in Karama, "
+            "near ADCB or Burjuman Metro. Lower bunk + window bed. "
+            "What do you have available right now? Move-in ASAP."
+        ),
+    },
+    {
+        "name": "rentforroom Karama aggregator 2",
+        "phone": "+971501659458",
+        "message": (
+            "Hi, looking for bed space AED 600-700 in Karama, "
+            "near ADCB or Burjuman Metro. Lower bunk + window bed. "
+            "What do you have available right now? Move-in ASAP."
+        ),
+    },
+    {
+        "name": "rentforroom Karama aggregator 3",
+        "phone": "+971567957047",
+        "message": (
+            "Hi, looking for bed space AED 600-700 in Karama, "
+            "near ADCB or Burjuman Metro. Lower bunk + window bed. "
+            "What do you have available right now? Move-in ASAP."
+        ),
+    },
+]
+
+
+def load_contacts(csv_path: Path | None) -> list[dict]:
+    if csv_path is None:
+        return DEFAULT_CONTACTS
+    contacts = []
+    with csv_path.open(encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            row["phone"] = row["phone"].strip()
+            row["message"] = row["message"].strip()
+            row["name"] = row.get("name", row["phone"]).strip()
+            contacts.append(row)
+    return contacts
+
+
+def open_chat(phone: str, message: str) -> None:
+    """Open WhatsApp Web chat with the given number and pre-filled message."""
+    # Strip non-digits, ensure E.164 starts with +
+    digits = "".join(ch for ch in phone if ch.isdigit() or ch == "+")
+    if not digits.startswith("+"):
+        digits = "+" + digits
+    url = f"https://web.whatsapp.com/send?phone={digits}&text={urllib.parse.quote(message)}"
+    webbrowser.open(url)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Open WhatsApp Web chats in sequence")
+    parser.add_argument("--csv", type=Path, help="Optional CSV with columns: name,phone,message")
+    parser.add_argument("--delay", type=float, default=4.0, help="Seconds to wait between contacts")
+    parser.add_argument("--start", type=int, default=0, help="Start index in the list")
+    parser.add_argument("--auto", action="store_true", help="No prompt between contacts (use --delay)")
+    args = parser.parse_args()
+
+    contacts = load_contacts(args.csv)
+    contacts = contacts[args.start:]
+
+    print(f"\nLoaded {len(contacts)} contact(s).")
+    print("Make sure WhatsApp Web is already logged in.")
+    print("For each contact, a browser tab will open with the chat pre-filled.")
+    print("Click Send in WhatsApp, then come back here and press Enter for the next.\n")
+
+    for i, c in enumerate(contacts, start=args.start):
+        print(f"\n[{i + 1}/{len(contacts) + args.start}] {c['name']}")
+        print(f"   Phone:   {c['phone']}")
+        print(f"   Message: {c['message'][:80]}{'...' if len(c['message']) > 80 else ''}")
+        open_chat(c["phone"], c["message"])
+        if args.auto:
+            time.sleep(args.delay)
+        else:
+            try:
+                input("   Press Enter for next contact (Ctrl+C to quit)...")
+            except KeyboardInterrupt:
+                print("\nStopped.")
+                return 0
+    print("\nAll contacts opened. Now click Send in each WhatsApp tab.")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

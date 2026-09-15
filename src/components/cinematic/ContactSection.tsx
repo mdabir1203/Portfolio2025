@@ -1,4 +1,6 @@
 import ContactForm from "@/components/ContactForm";
+import { KofiSupport } from "@/components/KofiSupport";
+import { CvDownloadQR } from "@/components/cinematic/CvDownloadQR";
 import { Mail, ArrowUpRight, MapPin, Phone } from "lucide-react";
 
 /**
@@ -11,17 +13,12 @@ import { Mail, ArrowUpRight, MapPin, Phone } from "lucide-react";
 // Inline YouTube mark — lucide-react in this version doesn't ship a YouTube icon.
 function YoutubeMark({ className = "h-4 w-4" }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden
-      className={className}
-    >
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
       <path d="M21.6 7.2a2.5 2.5 0 0 0-1.76-1.77C18.27 5 12 5 12 5s-6.27 0-7.84.43A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.76 1.77C5.73 19 12 19 12 19s6.27 0 7.84-.43a2.5 2.5 0 0 0 1.76-1.77A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8ZM10 15V9l5 3-5 3Z" />
     </svg>
   );
 }
-export function ContactSection() {
+export function ContactSection({ cvUrl }: { cvUrl?: string }) {
   return (
     <section id="contact" className="cin-work pb-20 pt-8 md:pb-28">
       <div className="mx-auto w-full max-w-7xl px-6 md:px-10">
@@ -32,14 +29,11 @@ export function ContactSection() {
               <h2 className="cin-section-title mt-4 text-5xl leading-[0.95] md:text-7xl">
                 Send a brief.
                 <br />
-                <em className="text-[color:var(--accent-teal)] not-italic">
-                  Get a film.
-                </em>
+                <em className="text-[color:var(--accent-teal)] not-italic">Get a film.</em>
               </h2>
               <p className="mt-6 max-w-xl text-base leading-relaxed text-paper md:text-lg">
-                One line is enough. Tell me the problem, the deadline, and
-                what success looks like. I'll come back with a plan, not a
-                pitch.
+                One line is enough. Tell me the problem, the deadline, and what success looks like.
+                I'll come back with a plan, not a pitch.
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -85,13 +79,44 @@ export function ContactSection() {
                   </span>
                   <ArrowUpRight className="h-4 w-4 shrink-0 text-paper/60 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-paper" />
                 </a>
-                <div className="cin-channel-meta">
+                <a
+                  href="/cards/abir-referral-card.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="cin-channel-card group"
+                >
+                  <span className="cin-channel-card-icon">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      className="h-4 w-4"
+                    >
+                      <rect x="3" y="3" width="7" height="7" />
+                      <rect x="14" y="3" width="7" height="7" />
+                      <rect x="3" y="14" width="7" height="7" />
+                      <path d="M14 14h3v3h-3zM18 18h3v3h-3z" />
+                    </svg>
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-mono text-[10px] uppercase tracking-[0.24em] text-paper/60">
+                      Hand out the card
+                    </span>
+                    <span className="mt-0.5 block truncate font-display text-base text-paper">
+                      Referral card · A6
+                    </span>
+                  </span>
+                  <ArrowUpRight className="h-4 w-4 shrink-0 text-paper/60 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-paper" />
+                </a>
+                <KofiSupport variant="card" />
+                <div className="cin-channel-meta sm:col-span-2">
                   <span className="block font-mono text-[10px] uppercase tracking-[0.24em] text-paper/60">
                     Reach
                   </span>
                   <span className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11px] uppercase tracking-[0.18em] text-paper/80">
                     <span className="inline-flex items-center gap-1.5">
-                      <MapPin className="h-3 w-3" /> Ajman, UAE
+                      <MapPin className="h-3 w-3" /> Dubai, UAE · Open to KSA &amp; remote
                     </span>
                     <span>·</span>
                     <span>13 Countries</span>
@@ -103,7 +128,17 @@ export function ContactSection() {
             </div>
 
             <div className="md:col-span-5">
-              <ContactForm />
+              <div className="flex flex-col gap-5">
+                <ContactForm />
+                {cvUrl ? (
+                  <CvDownloadQR
+                    url={cvUrl}
+                    variant="prominent"
+                    caption="Scan to download CV."
+                    subcaption="PDF · 2 pages · 90 KB · watermark baked in"
+                  />
+                ) : null}
+              </div>
             </div>
           </div>
         </div>

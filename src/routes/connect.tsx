@@ -5,8 +5,11 @@
 // Layered over the editorial palette so the page feels like a
 // sibling of the portfolio, not a sales landing page.
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BrandMark } from "@/components/brand/BrandMark";
+import { InteractiveQR } from "@/components/cinematic/InteractiveQR";
+import { KofiSupport } from "@/components/KofiSupport";
+import { useVisitorCode } from "@/hooks/useVisitorCode";
 import { Calendar, Download, FileText, ArrowUpRight } from "lucide-react";
 import { subscribeReferral } from "@/server/referral";
 
@@ -41,14 +44,25 @@ export const Route = createFileRoute("/connect")({
   }),
   head: () => ({
     meta: [
-      { title: "Mohammad Abir Abbas · 15 minutes that pay for themselves" },
+      { title: "Connect with Abir Abbas · AI Architect Dubai · 15 minutes that pay for themselves" },
       {
         name: "description",
         content:
-          "Book a 15-min chat with Abir. AI Architect at Famous Abaya LLC. Recovered AED 111K of trapped manufacturing backlog in 30 days.",
+          "Book a 15-min chat with Dubai-based AI Architect Mohammad Abir Abbas. Currently AI Solution Architect at Famous Abaya LLC. Recovered AED 111K of trapped manufacturing backlog in 30 days at 11.1:1 V:C. UAE Company Visa, no sponsorship.",
       },
-      { property: "og:title", content: "Mohammad Abir Abbas · 15 minutes that pay for themselves" },
+      {
+        name: "keywords",
+        content:
+          "hire AI Architect Dubai, contact AI Engineer UAE, AI consultation Dubai, Mohammad Abir Abbas contact, Abir Abbas hiring, AI architect GCC, connect AI Architect Riyadh, NEOM AI architect, remote AI consultation",
+      },
+      { property: "og:title", content: "Connect with Abir Abbas · AI Architect Dubai · 15 minutes that pay for themselves" },
       { property: "og:url", content: "https://abir.getwaved.ai/connect" },
+      { property: "og:description", content: "15 minutes with a Dubai AI Architect who recovered AED 111K of trapped backlog in 30 days. UAE Company Visa, no sponsorship." },
+      { name: "twitter:title", content: "Connect with Abir Abbas · AI Architect Dubai" },
+      { name: "twitter:description", content: "15 minutes with a Dubai AI Architect who recovered AED 111K of trapped backlog in 30 days. UAE Company Visa, no sponsorship." },
+    ],
+    links: [
+      { rel: "canonical", href: "https://abir.getwaved.ai/connect" },
     ],
   }),
   component: ConnectPage,
@@ -57,11 +71,30 @@ export const Route = createFileRoute("/connect")({
 function ConnectPage() {
   const navigate = useNavigate();
   const search = Route.useSearch();
+  const visitorCode = useVisitorCode(search.code);
+  const [shareUrl, setShareUrl] = useState<string>("https://abir.getwaved.ai/connect");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // The QR must encode the live URL the visitor is actually looking at, so
+  // the code in the QR matches the code in the URL bar. SSR-safe — the
+  // initial state is the canonical intro URL and we replace on mount.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    // If the URL came in via /c/:code wildcard, search.code is the wildcard
+    // value. We mirror that into the share URL so the QR preserves whatever
+    // attribution the visitor already has.
+    const params = new URLSearchParams();
+    if (visitorCode && visitorCode !== "INTRO") {
+      params.set("code", visitorCode.toLowerCase());
+    }
+    params.set("ref", search.ref ?? "qr");
+    const live = `${window.location.origin}/connect?${params.toString()}`;
+    setShareUrl(live);
+  }, [visitorCode, search.ref]);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -110,16 +143,53 @@ function ConnectPage() {
           <h1 className="font-display text-4xl font-medium leading-tight tracking-tight text-ink md:text-5xl">
             Fifteen minutes that
             <br />
-            <em className="text-[color:var(--accent-teal)] not-italic">
-              pay for themselves.
-            </em>
+            <em className="text-[color:var(--accent-teal)] not-italic">pay for themselves.</em>
           </h1>
           <p className="mt-6 max-w-xl text-lg text-ink-muted">
-            You scanned a QR. I'm{" "}
-            <strong className="text-ink">Mohammad Abir Abbas</strong>, AI
-            Architect at Famous Abaya LLC. Three options below — pick
-            whichever feels easiest right now.
+            You scanned a QR. I'm <strong className="text-ink">Mohammad Abir Abbas</strong>, AI
+            Architect at Famous Abaya LLC. Three options below — pick whichever feels easiest right
+            now.
           </p>
+
+          {/* Per-visitor referral ticket — a flat, calm, 2-up panel.
+              Renders on every page load, including when the URL was a bare
+              /c/intro. The code is yours for the session: forward the page
+              and your attribution travels with it. */}
+          <div
+            role="group"
+            className="mt-7 flex flex-col gap-4 rounded-2xl border border-rule bg-paper-2 p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:p-6"
+            aria-label="Your personal referral code"
+          >
+            <div className="min-w-0 flex-1">
+              <div className="font-mono text-[10px] uppercase tracking-[0.24em] text-ink-faint">
+                // your referral code
+              </div>
+              <div className="mt-1.5 flex flex-wrap items-baseline gap-2">
+                <span className="font-mono text-2xl font-medium tracking-[0.16em] text-ink sm:text-3xl">
+                  INTRO-{visitorCode}
+                </span>
+                <span className="rounded-full border border-rule bg-paper px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.22em] text-ink-muted">
+                  session-only
+                </span>
+              </div>
+              <p className="mt-2 text-sm text-ink-muted">
+                Forward this page — your code rides along. If they book a call, the next Loom has
+                your name at the top.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                if (typeof navigator !== "undefined" && navigator.clipboard) {
+                  navigator.clipboard.writeText(shareUrl).catch(() => undefined);
+                }
+              }}
+              className="inline-flex shrink-0 items-center justify-center gap-1.5 self-start rounded-md border border-rule bg-paper px-3 py-2 text-xs font-medium text-ink transition hover:border-[color:var(--accent-teal)] hover:text-[color:var(--accent-teal)] sm:self-auto"
+              aria-label="Copy your personal referral link"
+            >
+              Copy link
+            </button>
+          </div>
         </section>
 
         {/* Proof tiles — the only "show off" moment */}
@@ -181,10 +251,7 @@ function ConnectPage() {
               <FileText className="h-4 w-4" />
               30-sec Loom
             </a>
-            <a
-              href="/abir.vcf"
-              className="cin-hero-cta cin-hero-cta-secondary justify-center"
-            >
+            <a href="/abir.vcf" className="cin-hero-cta cin-hero-cta-secondary justify-center">
               <Download className="h-4 w-4" />
               vCard to phone
             </a>
@@ -204,9 +271,8 @@ function ConnectPage() {
                 over 7 days.
               </h2>
               <p className="mt-2 text-sm text-ink-muted">
-                No newsletter. Unsubscribe in one tap. Average open rate of
-                these three: I've never measured, but the people I send them
-                to actually reply.
+                No newsletter. Unsubscribe in one tap. Average open rate of these three: I've never
+                measured, but the people I send them to actually reply.
               </p>
 
               <form onSubmit={onSubmit} className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -234,14 +300,11 @@ function ConnectPage() {
                 </button>
               </form>
               {error && (
-                <p className="mt-3 text-xs text-[color:var(--accent-rose,#b94a4a)]">
-                  {error}
-                </p>
+                <p className="mt-3 text-xs text-[color:var(--accent-rose,#b94a4a)]">{error}</p>
               )}
               <p className="mt-3 text-[11px] text-ink-faint">
-                Schedule: <strong>Day 0</strong> · the Loom.{" "}
-                <strong>Day 3</strong> · the boardroom one-pager.{" "}
-                <strong>Day 7</strong> · a personal note + my cal.
+                Schedule: <strong>Day 0</strong> · the Loom. <strong>Day 3</strong> · the boardroom
+                one-pager. <strong>Day 7</strong> · a personal note + my cal.
               </p>
             </>
           ) : (
@@ -249,12 +312,9 @@ function ConnectPage() {
               <div className="font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--accent-teal)]">
                 // on the way
               </div>
-              <h2 className="mt-2 font-display text-2xl text-ink">
-                Check your inbox.
-              </h2>
+              <h2 className="mt-2 font-display text-2xl text-ink">Check your inbox.</h2>
               <p className="mt-3 text-sm text-ink-muted">
-                The Loom should land in ~30 seconds. If it doesn't, the spam
-                filter ate it — or just{" "}
+                The Loom should land in ~30 seconds. If it doesn't, the spam filter ate it — or just{" "}
                 <a
                   href="https://cal.com/abir-abbas/15min"
                   className="underline decoration-1 underline-offset-2 hover:text-ink"
@@ -280,9 +340,10 @@ function ConnectPage() {
               <BrandMark size={20} variant="primary" />
               <span>© 2026 Abbas</span>
             </div>
-            <div>
-              Dubai · abir.abbas@proton.me · +971 054 361 8066
-            </div>
+            <div>Dubai · abir.abbas@proton.me · +971 054 361 8066</div>
+          </div>
+          <div className="mt-3">
+            <KofiSupport variant="inline" />
           </div>
         </footer>
       </div>

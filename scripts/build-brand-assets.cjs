@@ -85,8 +85,9 @@ const ogImageSvg = `<?xml version="1.0" encoding="UTF-8"?>
 
   <!-- Bottom info row -->
   <g font-family="ui-monospace, 'JetBrains Mono', monospace" font-size="20" letter-spacing="2" fill="#6b6b6b" text-transform="uppercase">
-    <text x="80" y="560">Ajman, UAE · Available Q3 2026</text>
-    <text x="80" y="595">abir.getwaved.ai</text>
+    <text x="80" y="540">Dubai, UAE · Open to KSA &amp; remote</text>
+    <text x="80" y="575">UAE Company Visa · No sponsorship</text>
+    <text x="80" y="610">abir.getwaved.ai</text>
   </g>
 </svg>`;
 

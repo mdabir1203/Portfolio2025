@@ -32,7 +32,7 @@ const REVIEWS = [
 
 export function PeerReviews() {
   return (
-    <section className="border-t border-rule py-20 md:py-28">
+    <section id="reviews" className="border-t border-rule py-20 md:py-28">
       <div className="mx-auto w-full max-w-7xl px-6 md:px-10">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4 border-b border-rule pb-6 md:mb-14">
           <div>

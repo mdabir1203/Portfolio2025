@@ -164,24 +164,104 @@ const toneClass = {
   amber: "text-[color:var(--accent-amber)]",
 } as const;
 
+const ITEM_LIST_LD = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "@id": "https://abir.getwaved.ai/work#itemlist",
+  name: "Case studies — Mohammad Abir Abbas",
+  description:
+    "Quantified case studies from Dubai-based AI Architect Mohammad Abir Abbas, 2024–2026.",
+  itemListOrder: "https://schema.org/ItemListOrderDescending",
+  numberOfItems: 5,
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      item: {
+        "@type": "CreativeWork",
+        name: "AbaYa-Track Delivery Module (2026)",
+        url: "https://abir.getwaved.ai/work#abayatrack",
+        description:
+          "Value-weighted production dashboard for a Dubai abaya factory. Recovered AED 111,246 of trapped backlog in 30 days at 11.1:1 value-to-cost ratio. +38% production output, 65%→92% on-time delivery, zero additional hires.",
+        keywords: "AbaYa-Track, AI, manufacturing, UAE, GCC, Cloudflare Workers, value-to-cost ratio",
+      },
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      item: {
+        "@type": "CreativeWork",
+        name: "SmartSwap — MIT Hacknation 2026 (Next Best Project)",
+        url: "https://abir.getwaved.ai/work#smartswap",
+        description:
+          "Client-side intent engine for e-commerce. URL-signal scoring against 7 behavioural personas in under 50ms. No backend. MIT Sloan AI Club, 1,000+ developers from 65+ countries.",
+        keywords: "SmartSwap, MIT Hacknation 2026, intent engine, e-commerce, behavioural personas",
+      },
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      item: {
+        "@type": "CreativeWork",
+        name: "Wavelink — Smart NFC digital business cards",
+        url: "https://abir.getwaved.ai/work#wavelink",
+        description:
+          "Chief Technical Advisor. Engineered smart NFC infrastructure replacing paper business cards; 100% GDPR day-one compliance; GTM strategy and partnership funnels for 2025–26 roadmap.",
+        keywords: "Wavelink, NFC, GDPR, GCC, Dubai, smart business cards, GTM",
+      },
+    },
+    {
+      "@type": "ListItem",
+      position: 4,
+      item: {
+        "@type": "CreativeWork",
+        name: "Deep Blue Digital — AI Commerce Automation (2024–2025)",
+        url: "https://abir.getwaved.ai/work#deep-blue",
+        description:
+          "Co-founder. Engaze.ai payment integration for 50+ sellers — 40% faster processing. AI marketing automation (Midjourney + Zapier) — CAC cut 30%.",
+        keywords: "Deep Blue Digital, Engaze.ai, e-commerce, payment automation, AI marketing",
+      },
+    },
+    {
+      "@type": "ListItem",
+      position: 5,
+      item: {
+        "@type": "CreativeWork",
+        name: "RedAGPT — Redis Side Quest Winner 2024",
+        url: "https://abir.getwaved.ai/work#redagpt",
+        description:
+          "Open-source AutoGPT + Langchain toolkit for AI-driven network vulnerability scanning. Severity-ranked remediation reports. https://github.com/shamantechnology/RedAGPT",
+        keywords: "RedAGPT, Redis 2024, AutoGPT, Langchain, network security, vulnerability scanning",
+      },
+    },
+  ],
+};
+
 export const Route = createFileRoute("/work")({
   head: () => ({
     meta: [
-      { title: "Work — Mohammad Abir Abbas" },
+      { title: "Work — Mohammad Abir Abbas · AI Architect Dubai case studies" },
       {
         name: "description",
         content:
-          "Case studies: Wavelink GTM, GCC manufacturing visibility (Famous Ladies Gowns Tailoring LLC), Deep Blue Digital AI commerce, HNM IT network hardening. Measurable outcomes.",
+          "Case studies from Dubai-based AI Architect Mohammad Abir Abbas: AbaYa-Track (AED 111K recovered, 11.1:1 V:C), Wavelink GTM, SmartSwap (MIT Hacknation 2026), Deep Blue Digital AI commerce, RedAGPT (Redis 2024). Measurable outcomes across UAE and GCC.",
       },
-      { property: "og:title", content: "Work — Mohammad Abir Abbas" },
+      {
+        name: "keywords",
+        content:
+          "AI case studies Dubai, AbaYa-Track case study, Wavelink Dubai, SmartSwap MIT Hacknation, Deep Blue Digital, RedAGPT Redis, AI Architect UAE, manufacturing visibility Dubai, AED 111K recovery, value to cost ratio, GCC AI projects",
+      },
+      { property: "og:title", content: "Work — Mohammad Abir Abbas · AI Architect Dubai case studies" },
       {
         property: "og:description",
         content:
-          "Case studies across GTM, manufacturing visibility, AI commerce, and infrastructure—with measurable outcomes.",
+          "AbaYa-Track · Wavelink · SmartSwap · Deep Blue Digital · RedAGPT — case studies with measurable outcomes from a Dubai-based AI Architect.",
       },
+      { name: "twitter:title", content: "Work — Mohammad Abir Abbas · AI Architect Dubai case studies" },
+      { name: "twitter:description", content: "AbaYa-Track (AED 111K / 11.1:1 V:C), Wavelink, SmartSwap, RedAGPT — case studies with measurable outcomes." },
     ],
   }),
-  component: WorkPage,
+  component: WorkPageWithSchema,
 });
 
 function WorkPage() {
@@ -423,3 +503,18 @@ function WorkPage() {
     </main>
   );
 }
+
+// Wrap the page with a route-local ItemList JSON-LD so the case studies
+// surface as a machine-readable list (AI engines extract clean rows).
+function WorkPageWithSchema() {
+  return (
+    <>
+      <WorkPage />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ITEM_LIST_LD) }}
+      />
+    </>
+  );
+}
+

@@ -2,15 +2,25 @@ BEGIN:VCARD
 VERSION:3.0
 N:Abbas;Mohammad;Abir;;;
 FN:Mohammad Abir Abbas
-ORG:Wavelink
-TITLE:Chief Technical Advisor
+NICKNAME:Abir Abbas,mdabir1203
+ORG:Wavelink;Famous Abaya LLC
+TITLE:AI Architect · Solutions Engineer · Platform Engineer
+ROLE:AI Architect
 EMAIL;TYPE=INTERNET,WORK:abir.abbas@proton.me
 TEL;TYPE=CELL,VOICE:+971543618066
+TEL;TYPE=FAX:+971543618066
 URL;TYPE=Work:https://abir.getwaved.ai
 URL;TYPE=LinkedIn:https://www.linkedin.com/in/abir-abbas
 URL;TYPE=GitHub:https://github.com/mdabir1203
-URL;TYPE=YouTube:https://www.youtube.com/@wavelinkd/playlists
-ADR;TYPE=WORK:;;;Ajman;;;UAE
-NOTE:Creative Technologist & AI Architect. Currently AI Solution Architect at Famous Abaya LLC. Architected the AED 111K Delivery Module (11.1:1 V:C). MIT Hacknation 2026 Next Top Project (SmartSwap, Team Xerox).
-REV:2026-08-28T00:00:00Z
+URL;TYPE=Medium:https://medium.com/@md.abir1203
+URL;TYPE=YouTube:https://www.youtube.com/@wavelinkd
+ADR;TYPE=WORK:;;Dubai;;;;
+ADR;TYPE=HOME:;;Dubai;;;;
+LABEL;TYPE=WORK:Dubai\, United Arab Emirates
+LABEL;TYPE=HOME:Dubai\, United Arab Emirates
+TZ;VALUE=utc-offset:+0400
+GEO;TYPE=work:geo:25.2048,55.2708
+NOTE:AI Architect\, Solutions Engineer and Platform Engineer based in Dubai\, UAE. Deployed AbaYa-Track's AED 111K Delivery Module (11.1:1 V:C) at Famous Abaya LLC. MIT Hacknation 2026 Next Best (SmartSwap). Redis Side Quest Winner 2024 (RedAGPT). Available Q3 2026 — UAE Company Visa\, no sponsorship required. Open to AI Architect / Solutions Engineer / Platform Engineer / Developer Experience roles across UAE (Dubai\, Abu Dhabi)\, Saudi Arabia (Riyadh\, NEOM)\, and global remote. Languages: English (IELTS 7.5)\, Bengali (native)\, Arabic (working)\, German (A2).
+CATEGORIES:AI,Architecture,Solutions Engineering,Platform Engineering,Developer Experience,React Native,Cloudflare Workers,LangChain,AutoGPT,Process Automation,GCC,MENA,Dubai,Abu Dhabi,Riyadh,NEOM,Remote
+REV:2026-09-02T00:00:00Z
 END:VCARD

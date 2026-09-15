@@ -1,0 +1,269 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WhatsApp Outreach — Bed Space Search</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --bg: #0b0f1a;
+      --bg-2: #111727;
+      --bg-3: #1a2138;
+      --line: #243049;
+      --text: #e8ecf5;
+      --muted: #8b95b0;
+      --accent: #10b981;
+      --accent-2: #3b82f6;
+      --warn: #f59e0b;
+      --bad: #ef4444;
+      --good: #22c55e;
+    }
+    html, body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 32px 24px 64px; }
+
+    header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; }
+    h1 { font-size: 22px; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+    h1 .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-right: 10px; vertical-align: middle; animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+    .meta { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 32px; }
+    .stat {
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .stat .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+    .stat .value { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+    .stat .sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .stat.good .value { color: var(--good); }
+    .stat.warn .value { color: var(--warn); }
+    .stat.bad .value { color: var(--bad); }
+    .stat.accent .value { color: var(--accent); }
+
+    h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 0 0 12px; font-weight: 600; }
+
+    .contacts { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 12px; }
+    .card {
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: #364261; }
+    .card .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+    .card .name { font-weight: 600; font-size: 14px; line-height: 1.3; }
+    .card .phone { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; margin-top: 2px; }
+    .card .src { color: var(--muted); font-size: 11px; margin-top: 2px; }
+
+    .pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 600;
+      padding: 3px 8px; border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--bg-3);
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .pill.sent { color: #93c5fd; border-color: rgba(147,197,253,0.2); }
+    .pill.interested { color: var(--good); border-color: rgba(34,197,94,0.25); background: rgba(34,197,94,0.08); }
+    .pill.declined { color: var(--bad); border-color: rgba(239,68,68,0.25); background: rgba(239,68,68,0.08); }
+    .pill.unknown { color: var(--warn); border-color: rgba(245,158,11,0.25); }
+    .pill.price { color: var(--accent); border-color: rgba(16,185,129,0.25); }
+    .pill.available { color: var(--good); border-color: rgba(34,197,94,0.25); background: rgba(34,197,94,0.08); }
+    .pill.info { color: #c4b5fd; border-color: rgba(196,181,253,0.25); }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .tag {
+      font-size: 10px; padding: 2px 7px; border-radius: 4px;
+      background: rgba(59,130,246,0.1); color: #93c5fd;
+      border: 1px solid rgba(59,130,246,0.2);
+      font-weight: 500;
+    }
+
+    .timeline {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px 12px;
+      max-height: 200px;
+      overflow-y: auto;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .msg { display: flex; gap: 8px; margin-bottom: 8px; }
+    .msg:last-child { margin-bottom: 0; }
+    .msg .arrow { color: var(--muted); font-weight: 700; flex-shrink: 0; }
+    .msg.out .arrow { color: var(--accent-2); }
+    .msg.in .arrow { color: var(--good); }
+    .msg .body { color: var(--text); flex: 1; word-wrap: break-word; }
+    .msg .time { color: var(--muted); font-size: 10px; margin-top: 2px; }
+
+    .empty { text-align: center; padding: 24px; color: var(--muted); font-size: 12px; }
+
+    .statbar {
+      display: flex; gap: 8px; align-items: center; font-size: 11px; color: var(--muted);
+    }
+    .statbar .num { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+    .funnel { display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--bg-3); margin-top: 4px; }
+    .funnel .seg { transition: width 0.4s; }
+    .funnel .seg.good { background: var(--good); }
+    .funnel .seg.bad { background: var(--bad); }
+    .funnel .seg.pending { background: var(--bg-3); }
+
+    footer { color: var(--muted); font-size: 11px; margin-top: 32px; text-align: center; }
+    code { background: var(--bg-3); padding: 2px 6px; border-radius: 4px; font-size: 12px; color: #c4b5fd; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1><span class="dot"></span>WhatsApp Outreach — Bed Space Search</h1>
+      <span class="meta" id="meta">loading…</span>
+    </header>
+
+    <div class="grid" id="stats"></div>
+
+    <h2>Contacts</h2>
+    <div class="contacts" id="contacts"></div>
+
+    <footer>
+      Refreshes every 5s · source: <code>automation/outreach.sqlite3</code> · stop with <code>Ctrl+C</code>
+    </footer>
+  </div>
+
+  <script>
+    const intentLabels = {
+      sent: 'Sent',
+      available: 'Available',
+      price: 'Asked price',
+      info: 'Info',
+      declined: 'Declined',
+      unknown: 'Waiting',
+    };
+    function pillClass(intent, sent) {
+      if (!sent && !intent) return 'sent';
+      if (intent === 'available') return 'available';
+      if (intent === 'price') return 'price';
+      if (intent === 'decline') return 'declined';
+      if (intent === 'info') return 'info';
+      if (sent && !intent) return 'sent';
+      return 'unknown';
+    }
+    function pillText(intent, sent, inCount) {
+      if (inCount > 0 && intent) return intentLabels[intent] || intent;
+      if (sent) return 'Sent, no reply';
+      return 'Not sent';
+    }
+    function pill(intent, sent, inCount) {
+      const cls = pillClass(intent, sent);
+      const txt = pillText(intent, sent, inCount);
+      return '<span class="pill ' + cls + '"><span class="dot"></span>' + txt + '</span>';
+    }
+    function relTime(iso) {
+      if (!iso) return '—';
+      const d = new Date(iso.replace(' ', 'T') + (iso.endsWith('Z') ? '' : 'Z'));
+      const now = Date.now();
+      const diff = (now - d.getTime()) / 1000;
+      if (diff < 60) return 'just now';
+      if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+      if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+      if (diff < 604800) return Math.floor(diff / 86400) + 'd ago';
+      return d.toISOString().slice(0, 10);
+    }
+    function esc(s) {
+      if (!s) return '';
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    function tagsHtml(json) {
+      try {
+        const arr = JSON.parse(json || '[]');
+        if (!arr.length) return '';
+        return '<div class="tags">' + arr.map(t => '<span class="tag">' + esc(t) + '</span>').join('') + '</div>';
+      } catch (_) { return ''; }
+    }
+    function renderMsg(m) {
+      const dir = m.direction === 'out' ? 'out' : 'in';
+      const arrow = m.direction === 'out' ? '→' : '←';
+      const body = esc(m.body);
+      return '<div class="msg ' + dir + '"><span class="arrow">' + arrow + '</span><div><div class="body">' + body + '</div><div class="time">' + relTime(m.sent_at) + '</div></div></div>';
+    }
+    function render() {
+      fetch('/api/snapshot')
+        .then(r => r.json())
+        .then(snap => {
+          const t = snap.totals;
+          document.getElementById('meta').textContent =
+            'updated ' + relTime(snap.generatedAt) + ' · ' + t.contacts + ' contacts';
+
+          // Stats
+          const funnelSeg = (cls, pct) => '<div class="seg ' + cls + '" style="width:' + pct + '%"></div>';
+          const totalPct = t.contacts ? 100 / t.contacts : 100;
+          const html = [
+            stat('Contacts', t.contacts, 'total in database', ''),
+            stat('Sent', t.sent, 'first-touch messages delivered', 'accent'),
+            stat('Replies', t.replied, t.received + ' inbound total', ''),
+            stat('Interested', t.interested, 'available or asked price', 'good'),
+            stat('Declined', t.declined, 'no vacancy', 'bad'),
+            stat('Pending', t.pending, 'no reply yet', t.pending > 0 ? 'warn' : ''),
+          ].join('');
+          document.getElementById('stats').innerHTML = html;
+
+          // Contacts
+          const cards = snap.rows.map(r => {
+            const intent = r.last_intent;
+            const sent = r.out_count > 0;
+            const inCount = r.in_count || 0;
+            const p = pill(intent, sent, inCount);
+            const tags = tagsHtml(r.tags);
+            const timeline = (snap.timelines[r.id] || []).map(renderMsg).join('') ||
+              '<div class="empty">No messages yet</div>';
+            return '<div class="card">' +
+              '<div class="top"><div><div class="name">' + esc(r.name) + '</div>' +
+                '<div class="phone">' + esc(r.phone) + '</div>' +
+                '<div class="src">' + esc(r.source || '') + '</div></div>' + p + '</div>' +
+              tags +
+              '<div class="statbar">' +
+                '<span class="num">' + (r.out_count || 0) + '</span> sent · ' +
+                '<span class="num">' + inCount + '</span> received' +
+                (r.last_in ? ' · last reply ' + relTime(r.last_in) : '') +
+              '</div>' +
+              '<div class="timeline">' + timeline + '</div>' +
+            '</div>';
+          }).join('');
+          document.getElementById('contacts').innerHTML = cards ||
+            '<div class="empty">No contacts yet. Run <code>npm run seed</code> first.</div>';
+        })
+        .catch(e => {
+          document.getElementById('meta').textContent = 'connection lost — retrying…';
+        });
+    }
+    function stat(label, value, sub, cls) {
+      return '<div class="stat ' + (cls || '') + '">' +
+        '<div class="label">' + label + '</div>' +
+        '<div class="value">' + value + '</div>' +
+        '<div class="sub">' + (sub || '') + '</div>' +
+      '</div>';
+    }
+    render();
+    setInterval(render, 5000);
+  </script>
+</body>
+</html>
+

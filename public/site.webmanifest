@@ -1,0 +1,45 @@
+{
+  "name": "Mohammad Abir Abbas — AI Architect, Dubai UAE",
+  "short_name": "Abir Abbas",
+  "description": "AI Architect, Solutions & Platform Engineer in Dubai, UAE. AI agent workflows, process automation, GCC and global remote.",
+  "id": "/?utm_source=pwa",
+  "start_url": "/?utm_source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f9f5ee",
+  "theme_color": "#0e0e0e",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["productivity", "business", "developer"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/og-image.svg",
+      "sizes": "1200x630",
+      "type": "image/svg+xml",
+      "form_factor": "wide",
+      "label": "Mohammad Abir Abbas — AI Architect, Dubai UAE"
+    }
+  ],
+  "author": {
+    "name": "Mohammad Abir Abbas",
+    "url": "https://abir.getwaved.ai"
+  },
+  "publisher": {
+    "name": "Mohammad Abir Abbas"
+  }
+}

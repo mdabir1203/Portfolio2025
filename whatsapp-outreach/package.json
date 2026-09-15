@@ -1,0 +1,24 @@
+{
+  "name": "whatsapp-outreach",
+  "version": "3.0.0",
+  "description": "Multi-channel outreach (WhatsApp + LinkedIn DM + Email) with hyperpersonalization, day-by-day drip, and reply tracking",
+  "main": "automation/run.cjs",
+  "private": true,
+  "scripts": {
+    "start": "node automation/whatsapp_automation.cjs run",
+    "run": "node automation/run.cjs",
+    "seed": "node automation/run.cjs seed",
+    "send": "node automation/run.cjs send",
+    "listen": "node automation/run.cjs listen",
+    "drip": "node automation/run.cjs drip",
+    "dashboard": "node automation/dashboard.cjs",
+    "ui": "node serve.cjs",
+    "preview": "node automation/personalize.cjs",
+    "test": "node --test automation/__tests__/*.test.cjs"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.0.0",
+    "nodemailer": "^6.9.16",
+    "puppeteer-core": "^24.0.0"
+  }
+}

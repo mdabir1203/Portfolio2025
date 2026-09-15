@@ -1,6 +1,6 @@
-import { lazy, Suspense, useEffect, useRef } from "react";
+﻿import { lazy, Suspense, useEffect, useRef } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { translations } from "@/i18n/translations";
+import { getTranslations as translations } from "@/i18n/translations";
 import { motion } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import {
@@ -139,7 +139,7 @@ export default function Bento() {
 
       {/* Bento Grid */}
       <section className="mx-auto grid max-w-[1280px] auto-rows-[minmax(120px,auto)] grid-cols-1 gap-3 sm:grid-cols-4 md:grid-cols-6 md:gap-4">
-        {/* HERO — name + pitch (cinematic VFX) */}
+        {/* HERO â€” name + pitch (cinematic VFX) */}
         <IdentityHeroBento {...fade(0)} />
 
         {/* PORTRAIT */}
@@ -149,7 +149,7 @@ export default function Bento() {
         >
           <img
             src={abir}
-            alt="Mohammad Abir Abbas — Creative Technologist and AI Architect"
+            alt="Mohammad Abir Abbas â€” Creative Technologist and AI Architect"
             className="h-full w-full object-cover grayscale transition-[filter] duration-500 ease-out group-hover:grayscale-0 group-focus-within:grayscale-0"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--bento)] via-transparent to-transparent" />
@@ -158,7 +158,7 @@ export default function Bento() {
               <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--accent-teal)]">
                 Now
               </div>
-              <div className="text-sm text-foreground/90">CTA · Wavelink</div>
+              <div className="text-sm text-foreground/90">CTA Â· Wavelink</div>
             </div>
             <div className="flex flex-wrap justify-end gap-2">
               <a
@@ -206,7 +206,7 @@ export default function Bento() {
         <motion.div {...fade(0.15)} className="bento sm:col-span-2 md:col-span-2 active:scale-[0.97] transition-transform cursor-default">
           <Tag>{tx.metrics.m2tag}</Tag>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="font-display text-6xl leading-none text-[color:var(--accent-amber)]">−30%</span>
+            <span className="font-display text-6xl leading-none text-[color:var(--accent-amber)]">âˆ’30%</span>
           </div>
           <p className="mt-2 text-xs text-foreground/60">{tx.metrics.m2label}</p>
         </motion.div>
@@ -215,7 +215,7 @@ export default function Bento() {
         <motion.div {...fade(0.2)} className="bento md:col-span-2 active:scale-[0.97] transition-transform cursor-default">
           <Tag>{tx.metrics.m3tag}</Tag>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="font-display text-6xl leading-none text-[color:var(--accent-teal)]">−35%</span>
+            <span className="font-display text-6xl leading-none text-[color:var(--accent-teal)]">âˆ’35%</span>
           </div>
           <p className="mt-2 text-xs text-foreground/60">{tx.metrics.m3label}</p>
         </motion.div>
@@ -349,7 +349,7 @@ export default function Bento() {
           </div>
         </motion.div>
 
-        {/* GCC EXECUTIVE SIGNAL — AbayaTrack / Famous Ladies Gowns */}
+        {/* GCC EXECUTIVE SIGNAL â€” AbayaTrack / Famous Ladies Gowns */}
         <motion.div
           initial={{ opacity: 0, scale: 0.97, y: 20 }}
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
@@ -390,7 +390,7 @@ export default function Bento() {
           </div>
         </motion.div>
 
-        {/* GCC OPEN TO WORK — executive recruiter hook */}
+        {/* GCC OPEN TO WORK â€” executive recruiter hook */}
         <motion.div
           initial={{ opacity: 0, x: -16 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -418,7 +418,7 @@ export default function Bento() {
           </a>
         </motion.div>
 
-        {/* YOUTUBE — latest from @wavelinkd via public RSS */}
+        {/* YOUTUBE â€” latest from @wavelinkd via public RSS */}
         <motion.div {...fade(0.15)} className="bento sm:col-span-2 md:col-span-2">
           <Suspense
             fallback={
@@ -471,7 +471,7 @@ export default function Bento() {
         <span>{tx.footer.tagline}</span>
       </footer>
 
-      {/* Sticky mobile CTA — highest-conversion element on mobile */}
+      {/* Sticky mobile CTA â€” highest-conversion element on mobile */}
       <div className="md:hidden fixed bottom-0 inset-x-0 z-50 pb-[env(safe-area-inset-bottom)]">
         <div className="mx-3 mb-3 flex items-center gap-2 rounded-2xl border border-white/10 bg-[color:var(--bento)]/95 p-2.5 backdrop-blur-xl shadow-[0_-4px_32px_rgba(0,0,0,0.5)]">
           <a

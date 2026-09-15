@@ -1,0 +1,74 @@
+[
+  {
+    "id": "01-hero",
+    "file": "C:\\Users\\mabba\\Downloads\\Portfolio2025\\.record\\frames\\01-hero.png",
+    "note": "Hero — name + pitch",
+    "y": 0
+  },
+  {
+    "id": "02-work",
+    "file": "C:\\Users\\mabba\\Downloads\\Portfolio2025\\.record\\frames\\02-work.png",
+    "note": "Selected Work",
+    "y": 1100
+  },
+  {
+    "id": "03-case-top",
+    "file": "C:\\Users\\mabba\\Downloads\\Portfolio2025\\.record\\frames\\03-case-top.png",
+    "note": "Delivery Module — the headline",
+    "y": 2300
+  },
+  {
+    "id": "04-case-2",
+    "file": "C:\\Users\\mabba\\Downloads\\Portfolio2025\\.record\\frames\\04-case-2.png",
+    "note": "Case study — system map",
+    "y": 3100
+  },
+  {
+    "id": "05-iceberg",
+    "file": "C:\\Users\\mabba\\Downloads\\Portfolio2025\\.record\\frames\\05-iceberg.png",
+    "note": "Where the AED 111K sits",
+    "y": 4700
+  },
+  {
+    "id": "06-about",
+    "file": "C:\\Users\\mabba\\Downloads\\Portfolio2025\\.record\\frames\\06-about.png",
+    "note": "What I actually do",
+    "y": 6300
+  },
+  {
+    "id": "07-reviews",
+    "file": "C:\\Users\\mabba\\Downloads\\Portfolio2025\\.record\\frames\\07-reviews.png",
+    "note": "Peer reviews",
+    "y": 7300
+  },
+  {
+    "id": "08-path",
+    "file": "C:\\Users\\mabba\\Downloads\\Portfolio2025\\.record\\frames\\08-path.png",
+    "note": "From Wolfsburg to the Gulf",
+    "y": 8300
+  },
+  {
+    "id": "09-writing",
+    "file": "C:\\Users\\mabba\\Downloads\\Portfolio2025\\.record\\frames\\09-writing.png",
+    "note": "I write about the edges",
+    "y": 9600
+  },
+  {
+    "id": "10-watch",
+    "file": "C:\\Users\\mabba\\Downloads\\Portfolio2025\\.record\\frames\\10-watch.png",
+    "note": "I build in public",
+    "y": 10800
+  },
+  {
+    "id": "11-contact",
+    "file": "C:\\Users\\mabba\\Downloads\\Portfolio2025\\.record\\frames\\11-contact.png",
+    "note": "Send a brief. Get a film.",
+    "y": 12100
+  },
+  {
+    "id": "12-footer",
+    "file": "C:\\Users\\mabba\\Downloads\\Portfolio2025\\.record\\frames\\12-footer.png",
+    "note": "Footer + Ko-fi",
+    "y": 13100
+  }
+]

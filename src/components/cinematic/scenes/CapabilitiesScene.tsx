@@ -1,15 +1,15 @@
-import { useRef } from "react";
+﻿import { useRef } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { translations } from "@/i18n/translations";
+import { getTranslations as translations } from "@/i18n/translations";
 
 /**
- * Reel 03 — Capabilities, vertical swipe-stack.
+ * Reel 03 â€” Capabilities, vertical swipe-stack.
  *
  * Each card takes a full-screen beat. The card animates in from below
  * with a tactile "swipe" (translateY + scale + opacity), holds while
  * in view, and translates out as the next one takes over. No horizontal
- * track — this is the body language people use on social.
+ * track â€” this is the body language people use on social.
  *
  * On touch, this naturally pairs with the Lenis touch-snap behavior.
  * On desktop, vertical scroll is the primary control.
@@ -18,7 +18,7 @@ const CAPABILITIES = [
   {
     n: "01",
     title: "AI Agent Workflows",
-    body: "Production agents that route, decide, and self-correct — wired into your stack, not bolted on.",
+    body: "Production agents that route, decide, and self-correct â€” wired into your stack, not bolted on.",
     color: "teal",
     metric: "12+ agents in production",
   },
@@ -27,7 +27,7 @@ const CAPABILITIES = [
     title: "Process Automation",
     body: "The invisible machinery. From invoicing to inventory. Saves hours. Survives the 3am pager.",
     color: "lime",
-    metric: "−40% ops cost (avg)",
+    metric: "âˆ’40% ops cost (avg)",
   },
   {
     n: "03",
@@ -48,7 +48,7 @@ const CAPABILITIES = [
     title: "Cross-cultural GTM",
     body: "13 countries. Three languages. Two hemispheres. I've shipped in all of them.",
     color: "lime",
-    metric: "EN · BN · DE · AR",
+    metric: "EN Â· BN Â· DE Â· AR",
   },
 ] as const;
 
@@ -70,8 +70,8 @@ export function CapabilitiesScene() {
     offset: ["start start", "end end"],
   });
 
-  // Total section height = 100vh header + 5 × 100vh card beats + 30vh tail
-  // = 6.3 × 100vh → round to 630vh so the last card is reachable.
+  // Total section height = 100vh header + 5 Ã— 100vh card beats + 30vh tail
+  // = 6.3 Ã— 100vh â†’ round to 630vh so the last card is reachable.
 
   return (
     <section
@@ -79,12 +79,12 @@ export function CapabilitiesScene() {
       id="capabilities"
       className="cin-cap-section relative w-full"
     >
-      {/* Header — first beat (intro screen) */}
+      {/* Header â€” first beat (intro screen) */}
       <div className="cin-cap-header relative h-screen w-full">
         <div className="mx-auto flex h-full w-full max-w-7xl flex-col justify-end gap-6 px-6 pb-16 md:px-10 md:pb-20">
           <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/55">
             <span className="mr-3 inline-block h-px w-10 align-middle bg-foreground/30" />
-            // Reel 03 · Capabilities
+            // Reel 03 Â· Capabilities
           </div>
           <h2 className="font-display text-5xl leading-[0.92] tracking-tight md:text-7xl lg:text-8xl">
             The five things
@@ -95,12 +95,12 @@ export function CapabilitiesScene() {
             {tx.hero.pitch}
           </p>
           <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/45">
-            ↓ swipe
+            â†“ swipe
           </div>
         </div>
       </div>
 
-      {/* Five card beats — each one a full screen */}
+      {/* Five card beats â€” each one a full screen */}
       {CAPABILITIES.map((c, i) => (
         <CapabilityBeat
           key={c.n}
@@ -114,7 +114,7 @@ export function CapabilitiesScene() {
       {/* Tail */}
       <div className="cin-cap-tail relative flex h-[30vh] w-full items-center justify-center">
         <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/45">
-          ↓ next: the case study
+          â†“ next: the case study
         </div>
       </div>
     </section>
@@ -167,7 +167,7 @@ function CapabilityBeat({
     [0.96, 1, 1, 1, 0.98],
   );
 
-  // The number scrolls independently — feels like it's racing ahead.
+  // The number scrolls independently â€” feels like it's racing ahead.
   const numY = useTransform(
     scrollYProgress,
     [start, end],

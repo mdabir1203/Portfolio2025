@@ -10,6 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorkRouteImport } from './routes/work'
+import { Route as RecruiterRouteImport } from './routes/recruiter'
+import { Route as PreviewRouteImport } from './routes/preview'
+import { Route as CvRouteImport } from './routes/cv'
 import { Route as ConnectRouteImport } from './routes/connect'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CIndexRouteImport } from './routes/c/index'
@@ -20,6 +23,21 @@ import { Route as ApiReferralUnsubscribeRouteImport } from './routes/api/referra
 const WorkRoute = WorkRouteImport.update({
   id: '/work',
   path: '/work',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecruiterRoute = RecruiterRouteImport.update({
+  id: '/recruiter',
+  path: '/recruiter',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PreviewRoute = PreviewRouteImport.update({
+  id: '/preview',
+  path: '/preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CvRoute = CvRouteImport.update({
+  id: '/cv',
+  path: '/cv',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConnectRoute = ConnectRouteImport.update({
@@ -56,6 +74,9 @@ const ApiReferralUnsubscribeRoute = ApiReferralUnsubscribeRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/connect': typeof ConnectRoute
+  '/cv': typeof CvRoute
+  '/preview': typeof PreviewRoute
+  '/recruiter': typeof RecruiterRoute
   '/work': typeof WorkRoute
   '/c/$code': typeof CCodeRoute
   '/c/': typeof CIndexRoute
@@ -65,6 +86,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/connect': typeof ConnectRoute
+  '/cv': typeof CvRoute
+  '/preview': typeof PreviewRoute
+  '/recruiter': typeof RecruiterRoute
   '/work': typeof WorkRoute
   '/c/$code': typeof CCodeRoute
   '/c': typeof CIndexRoute
@@ -75,6 +99,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/connect': typeof ConnectRoute
+  '/cv': typeof CvRoute
+  '/preview': typeof PreviewRoute
+  '/recruiter': typeof RecruiterRoute
   '/work': typeof WorkRoute
   '/c/$code': typeof CCodeRoute
   '/c/': typeof CIndexRoute
@@ -86,6 +113,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/connect'
+    | '/cv'
+    | '/preview'
+    | '/recruiter'
     | '/work'
     | '/c/$code'
     | '/c/'
@@ -95,6 +125,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/connect'
+    | '/cv'
+    | '/preview'
+    | '/recruiter'
     | '/work'
     | '/c/$code'
     | '/c'
@@ -104,6 +137,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/connect'
+    | '/cv'
+    | '/preview'
+    | '/recruiter'
     | '/work'
     | '/c/$code'
     | '/c/'
@@ -114,6 +150,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ConnectRoute: typeof ConnectRoute
+  CvRoute: typeof CvRoute
+  PreviewRoute: typeof PreviewRoute
+  RecruiterRoute: typeof RecruiterRoute
   WorkRoute: typeof WorkRoute
   CCodeRoute: typeof CCodeRoute
   CIndexRoute: typeof CIndexRoute
@@ -128,6 +167,27 @@ declare module '@tanstack/react-router' {
       path: '/work'
       fullPath: '/work'
       preLoaderRoute: typeof WorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recruiter': {
+      id: '/recruiter'
+      path: '/recruiter'
+      fullPath: '/recruiter'
+      preLoaderRoute: typeof RecruiterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/preview': {
+      id: '/preview'
+      path: '/preview'
+      fullPath: '/preview'
+      preLoaderRoute: typeof PreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cv': {
+      id: '/cv'
+      path: '/cv'
+      fullPath: '/cv'
+      preLoaderRoute: typeof CvRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/connect': {
@@ -178,6 +238,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ConnectRoute: ConnectRoute,
+  CvRoute: CvRoute,
+  PreviewRoute: PreviewRoute,
+  RecruiterRoute: RecruiterRoute,
   WorkRoute: WorkRoute,
   CCodeRoute: CCodeRoute,
   CIndexRoute: CIndexRoute,

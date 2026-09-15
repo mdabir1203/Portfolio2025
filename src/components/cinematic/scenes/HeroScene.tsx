@@ -1,4 +1,4 @@
-import { useRef, useMemo, Suspense } from "react";
+﻿import { useRef, useMemo, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { motion, useScroll, useTransform, useMotionValue, useMotionTemplate, useReducedMotion } from "framer-motion";
 import { MapPin, ArrowUpRight, Mail } from "lucide-react";
@@ -17,10 +17,10 @@ function LinkedinIcon({ className = "" }: { className?: string }) {
 }
 import * as THREE from "three";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { translations } from "@/i18n/translations";
+import { getTranslations as translations } from "@/i18n/translations";
 
 /* ------------------------------------------------------------------
- * 3D wireframe particle field — the only R3F scene in the site.
+ * 3D wireframe particle field â€” the only R3F scene in the site.
  * Pure imperatively-driven; no React state on the render path.
  * ---------------------------------------------------------------- */
 function NeuralField({ reduce }: { reduce: boolean }) {
@@ -86,7 +86,7 @@ function HeroScene3D({ reduce }: { reduce: boolean }) {
 }
 
 /* ------------------------------------------------------------------
- * Bento cell — glassmorphism 2.0 card primitive.
+ * Bento cell â€” glassmorphism 2.0 card primitive.
  * - Soft translucent background
  * - Gradient border (1px via mask-image)
  * - Noise overlay
@@ -164,7 +164,7 @@ function Kbd({ children }: { children: React.ReactNode }) {
 }
 
 /* ------------------------------------------------------------------
- * CinematicHero — the hybrid landing hero.
+ * CinematicHero â€” the hybrid landing hero.
  *
  * Top half (visible above the fold, no scroll needed):
  *   - Massive kinetic serif name
@@ -264,7 +264,7 @@ export function CinematicHero() {
               <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--accent-lime)] shadow-[0_0_10px_var(--accent-lime)]" />
               {tx.hero.tag}
             </span>
-            <span className="text-foreground/30">·</span>
+            <span className="text-foreground/30">Â·</span>
             <span className="text-foreground/55">{tx.hero.location}</span>
           </motion.div>
 
@@ -292,7 +292,7 @@ export function CinematicHero() {
           >
             <p className="cin-hero-pitch col-span-1 max-w-2xl text-lg leading-relaxed text-foreground/75 md:col-span-7 md:text-xl">
               I deploy AI workflows that protect enterprise assets and
-              recapture thousands of engineering hours — turning{" "}
+              recapture thousands of engineering hours â€” turning{" "}
               <span className="text-foreground">"magic" tech</span> into{" "}
               <span className="text-foreground">predictable ROI.</span>
             </p>
@@ -332,7 +332,7 @@ export function CinematicHero() {
           </div>
 
           <div className="cin-hero-bento-grid grid auto-rows-[minmax(0,1fr)] grid-cols-2 gap-3 md:grid-cols-12 md:gap-4">
-            {/* Cell 1 — Identity (tall, left) */}
+            {/* Cell 1 â€” Identity (tall, left) */}
             <BentoCell
               className="col-span-2 md:col-span-5 md:row-span-2"
               tone="teal"
@@ -352,15 +352,15 @@ export function CinematicHero() {
                   <span className="inline-flex items-center gap-1.5">
                     <MapPin className="h-3.5 w-3.5" /> {tx.hero.location}
                   </span>
-                  <span className="text-foreground/30">·</span>
+                  <span className="text-foreground/30">Â·</span>
                   <span>{tx.hero.countries}</span>
-                  <span className="text-foreground/30">·</span>
+                  <span className="text-foreground/30">Â·</span>
                   <span>{tx.hero.readers}</span>
                 </div>
               </div>
             </BentoCell>
 
-            {/* Cell 2 — Now (small, top right) */}
+            {/* Cell 2 â€” Now (small, top right) */}
             <BentoCell className="col-span-1 md:col-span-4" tone="lime">
               <div className="flex h-full flex-col gap-3">
                 <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/55">
@@ -374,7 +374,7 @@ export function CinematicHero() {
               </div>
             </BentoCell>
 
-            {/* Cell 3 — Available (small, top far right) */}
+            {/* Cell 3 â€” Available (small, top far right) */}
             <BentoCell className="col-span-1 md:col-span-3" tone="amber">
               <div className="flex h-full flex-col gap-3">
                 <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/55">
@@ -389,7 +389,7 @@ export function CinematicHero() {
               </div>
             </BentoCell>
 
-            {/* Cell 4 — Metric (medium) */}
+            {/* Cell 4 â€” Metric (medium) */}
             <BentoCell className="col-span-1 md:col-span-4" tone="teal">
               <div className="flex h-full flex-col gap-3">
                 <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/55">
@@ -399,13 +399,13 @@ export function CinematicHero() {
                   <span className="text-[color:var(--accent-teal)]">+38%</span>
                 </div>
                 <div className="text-sm text-foreground/70">
-                  Production output at AbaYa-Track — same headcount, smarter
+                  Production output at AbaYa-Track â€” same headcount, smarter
                   visibility.
                 </div>
               </div>
             </BentoCell>
 
-            {/* Cell 5 — Recognition / neobrutalist (medium) */}
+            {/* Cell 5 â€” Recognition / neobrutalist (medium) */}
             <BentoCell className="col-span-1 md:col-span-5" tone="amber">
               <div className="flex h-full flex-col gap-3">
                 <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/55">
@@ -420,7 +420,7 @@ export function CinematicHero() {
                       RedAGPT
                     </div>
                     <div className="text-xs text-amber-200/80">
-                      Redis Side Quest · Winner
+                      Redis Side Quest Â· Winner
                     </div>
                   </div>
                   <div className="cin-bento-brutal rounded-2xl border-2 border-teal-300/60 bg-teal-300/10 p-3">
@@ -431,14 +431,14 @@ export function CinematicHero() {
                       SmartSwap
                     </div>
                     <div className="text-xs text-teal-200/80">
-                      Hacknation · Next Best
+                      Hacknation Â· Next Best
                     </div>
                   </div>
                 </div>
               </div>
             </BentoCell>
 
-            {/* Cell 6 — Stack (wide, bottom) */}
+            {/* Cell 6 â€” Stack (wide, bottom) */}
             <BentoCell className="col-span-2 md:col-span-7" tone="default">
               <div className="flex h-full flex-col gap-4">
                 <div className="flex items-center justify-between">
@@ -462,7 +462,7 @@ export function CinematicHero() {
               </div>
             </BentoCell>
 
-            {/* Cell 7 — Languages (small) */}
+            {/* Cell 7 â€” Languages (small) */}
             <BentoCell className="col-span-1 md:col-span-3">
               <div className="flex h-full flex-col gap-3">
                 <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/55">
@@ -485,7 +485,7 @@ export function CinematicHero() {
               </div>
             </BentoCell>
 
-            {/* Cell 8 — Numbers (small) */}
+            {/* Cell 8 â€” Numbers (small) */}
             <BentoCell className="col-span-1 md:col-span-2">
               <div className="flex h-full flex-col justify-between gap-2">
                 <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/55">

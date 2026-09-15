@@ -9,7 +9,7 @@
   <rect width="1200" height="630" fill="url(#bg)"/>
 
   <!-- Top eyebrow -->
-  <text x="80" y="100" font-family="ui-monospace, 'JetBrains Mono', monospace" font-size="22" letter-spacing="3" fill="#6b6b6b" text-transform="uppercase">PERSONAL · BRAND · 2026</text>
+  <text x="80" y="100" font-family="ui-monospace, 'JetBrains Mono', monospace" font-size="22" letter-spacing="3" fill="#6b6b6b" text-transform="uppercase">AI · ARCHITECT · DUBAI · 2026</text>
 
   <!-- Mark, large, centered-ish -->
   <g transform="translate(80, 160)">
@@ -27,12 +27,19 @@
   <!-- Wordmark + descriptor -->
   <g transform="translate(360, 220)">
     <text font-family="'Fraunces', 'Instrument Serif', serif" font-size="96" font-weight="500" fill="#0e0e0e">Mohammad Abir Abbas</text>
-    <text y="60" font-family="ui-monospace, 'JetBrains Mono', monospace" font-size="22" letter-spacing="3" fill="#3a3a3a" text-transform="uppercase">SYSTEMS · AI · MERGING · TECHNOLOGY · ARCHITECTURE</text>
+    <text y="60" font-family="ui-monospace, 'JetBrains Mono', monospace" font-size="22" letter-spacing="3" fill="#3a3a3a" text-transform="uppercase">AI · ARCHITECT · SOLUTIONS · PLATFORM</text>
+  </g>
+
+  <!-- Credentials row -->
+  <g font-family="ui-monospace, 'JetBrains Mono', monospace" font-size="20" letter-spacing="2" fill="#3a3a3a" text-transform="uppercase">
+    <text x="360" y="370">MIT HACKNATION 2026 · REDIS 2024</text>
+    <text x="360" y="400">AED 111K RECOVERED · 11.1:1 V:C</text>
   </g>
 
   <!-- Bottom info row -->
   <g font-family="ui-monospace, 'JetBrains Mono', monospace" font-size="20" letter-spacing="2" fill="#6b6b6b" text-transform="uppercase">
-    <text x="80" y="560">Ajman, UAE · Available Q3 2026</text>
-    <text x="80" y="595">abir.getwaved.ai</text>
+    <text x="80" y="540">Dubai, UAE · Open to KSA &amp; remote</text>
+    <text x="80" y="575">UAE Company Visa · No sponsorship</text>
+    <text x="80" y="610">abir.getwaved.ai</text>
   </g>
 </svg>

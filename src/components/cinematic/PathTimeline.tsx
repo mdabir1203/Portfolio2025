@@ -1,9 +1,14 @@
 /**
  * PathTimeline — light, calm, editorial.
  *
- * Plain list of stops. No pinned scroll, no rail, no animation.
- * Year / Role / Place. Hover shows a hint background.
+ * Plain list of stops. Year / Role / Place. Subtle microinteraction:
+ * each year marker carries a PulseDot that hints "live data", and
+ * stops slide up faintly on scroll into view. Honors reduced-motion.
  */
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
+import { PulseDot } from "./microinteractions/PulseDot";
+
 const STOPS = [
   { year: "2026", role: "Famous Abaya LLC", place: "AI Solution Architect · UAE", note: "Architected the AbaYa-Track Delivery Module: floor events → employee/order map → value engine → delivery dashboard. Recovered AED 111K in trapped backlog (11.1:1 V:C)." },
   { year: "2026", role: "MIT Hacknation 2026", place: "Next Top Project · MIT Sloan AI Club", note: "24-hour global sprint, 1,000+ devs, 65+ countries. Built SmartSwap: intent-driven token swapping for SMB websites, Team Xerox with Abhishek Kumar." },
@@ -15,12 +20,18 @@ const STOPS = [
 ] as const;
 
 export function PathTimeline() {
+  const reduce = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-10% 0px" });
   return (
     <section id="path" className="cin-timeline py-20 md:py-28">
       <div className="mx-auto w-full max-w-7xl px-6 md:px-10">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4 border-b border-rule pb-6 md:mb-14">
           <div>
-            <div className="cin-section-eyebrow">// Path</div>
+            <div className="cin-section-eyebrow flex items-center gap-2">
+              <PulseDot size={9} />
+              <span>// Path</span>
+            </div>
             <h2 className="cin-section-title mt-3 text-4xl md:text-6xl">
               From Wolfsburg
               <br />
@@ -32,13 +43,23 @@ export function PathTimeline() {
           </div>
         </div>
 
-        <ul className="border-t border-rule">
-          {STOPS.map((s) => (
-            <li
+        <ul className="border-t border-rule" ref={ref as React.RefObject<HTMLUListElement>}>
+          {STOPS.map((s, i) => (
+            <motion.li
               key={`${s.year}-${s.role}`}
               className="cin-timeline-item"
+              initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+              transition={{
+                duration: 0.55,
+                ease: [0.16, 1, 0.3, 1],
+                delay: reduce ? 0 : i * 0.06,
+              }}
             >
-              <span className="cin-timeline-year">{s.year}</span>
+              <span className="cin-timeline-year flex items-center gap-2">
+                <PulseDot size={7} label={`stop ${i + 1}`} />
+                {s.year}
+              </span>
               <div>
                 <div className="cin-timeline-role">{s.role}</div>
                 <p className="mt-1 max-w-xl text-sm leading-relaxed text-ink-muted md:text-base">
@@ -48,7 +69,7 @@ export function PathTimeline() {
               <span className="cin-timeline-place">
                 {s.place}
               </span>
-            </li>
+            </motion.li>
           ))}
         </ul>
       </div>

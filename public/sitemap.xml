@@ -7,36 +7,85 @@
   <!-- Home -->
   <url>
     <loc>https://abir.getwaved.ai/</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://abir.getwaved.ai/images/profile.webp</image:loc>
-      <image:title>Mohammad Abir Abbas — AI Architect &amp; Creative Technologist</image:title>
+      <image:loc>https://abir.getwaved.ai/og-image.svg</image:loc>
+      <image:title>Mohammad Abir Abbas — AI Architect, Dubai UAE</image:title>
+      <image:caption>AI Architect in Dubai. AbaYa-Track AED 111K Delivery Module, 11.1:1 V:C. Available Q3 2026 across UAE, KSA, and remote.</image:caption>
     </image:image>
   </url>
 
   <!-- Work / Case Studies -->
   <url>
     <loc>https://abir.getwaved.ai/work</loc>
-    <lastmod>2026-06-15</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
-  <!-- Static assets that search engines index as canonical content -->
+  <!-- Connect / Intro chat -->
+  <url>
+    <loc>https://abir.getwaved.ai/connect</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- ATS CV (HTML — indexable, parseable) -->
   <url>
     <loc>https://abir.getwaved.ai/cv-ats.html</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
+  <!-- vCard (machine-readable contact record) -->
+  <url>
+    <loc>https://abir.getwaved.ai/abir.vcf</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- llms.txt — explicitly surfaced for AI crawlers -->
   <url>
     <loc>https://abir.getwaved.ai/llms.txt</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
+  </url>
+
+  <!-- Web manifest -->
+  <url>
+    <loc>https://abir.getwaved.ai/site.webmanifest</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Resume PDF (alternate of cv-ats.html) -->
+  <url>
+    <loc>https://abir.getwaved.ai/resume-ats.pdf</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://abir.getwaved.ai/Abir_Abbas_CV.pdf</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Press kit (zip of brand assets + bio) -->
+  <url>
+    <loc>https://abir.getwaved.ai/press.zip</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
 
 </urlset>

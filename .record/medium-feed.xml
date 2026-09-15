@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:cc="http://cyber.law.harvard.edu/rss/creativeCommonsRssModule.html">
+    <channel>
+        <title><![CDATA[Stories by Mohammad Abir Abbas on Medium]]></title>
+        <description><![CDATA[Stories by Mohammad Abir Abbas on Medium]]></description>
+        <link>https://medium.com/@md.abir1203?source=rss-b62bf3bb75c7------2</link>
+        <image>
+            <url>https://cdn-images-1.medium.com/fit/c/150/150/1*kK_P2-bb1e42bk6ceyyugA.png</url>
+            <title>Stories by Mohammad Abir Abbas on Medium</title>
+            <link>https://medium.com/@md.abir1203?source=rss-b62bf3bb75c7------2</link>
+        </image>
+        <generator>Medium</generator>
+        <lastBuildDate>Wed, 02 Sep 2026 06:34:20 GMT</lastBuildDate>
+        <atom:link href="https://medium.com/@md.abir1203/feed" rel="self" type="application/rss+xml"/>
+        <webMaster><![CDATA[yourfriends@medium.com]]></webMaster>
+        <atom:link href="http://medium.superfeedr.com" rel="hub"/>
+        <item>
+            <title><![CDATA[How We Fixed a Production Data Integrity Bug That Turned 5,898 Factory Logs Into 0 Completed…]]></title>
+            <description><![CDATA[<div class="medium-feed-item"><p class="medium-feed-image"><a href="https://levelup.gitconnected.com/how-we-fixed-a-production-data-integrity-bug-that-turned-5-898-factory-logs-into-0-completed-d6469d27d31a?source=rss-b62bf3bb75c7------2"><img src="https://cdn-images-1.medium.com/max/1152/1*OsYzkcpHDaaaHoyhymPO_A.png" width="1152"></a></p><p class="medium-feed-snippet">An AbayaTrack engineering postmortem case study on schema drift, timestamp mismatches, synthetic identities, SQLite snapshots, and&#x2026;</p><p class="medium-feed-link"><a href="https://levelup.gitconnected.com/how-we-fixed-a-production-data-integrity-bug-that-turned-5-898-factory-logs-into-0-completed-d6469d27d31a?source=rss-b62bf3bb75c7------2">Continue reading on Level Up Coding »</a></p></div>]]></description>
+            <link>https://levelup.gitconnected.com/how-we-fixed-a-production-data-integrity-bug-that-turned-5-898-factory-logs-into-0-completed-d6469d27d31a?source=rss-b62bf3bb75c7------2</link>
+            <guid isPermaLink="false">https://medium.com/p/d6469d27d31a</guid>
+            <category><![CDATA[wavelink]]></category>
+            <category><![CDATA[software-development]]></category>
+            <category><![CDATA[ai]]></category>
+            <category><![CDATA[software-engineering]]></category>
+            <category><![CDATA[nfc]]></category>
+            <dc:creator><![CDATA[Mohammad Abir Abbas]]></dc:creator>
+            <pubDate>Mon, 31 Aug 2026 10:09:13 GMT</pubDate>
+            <atom:updated>2026-08-31T10:10:31.547Z</atom:updated>
+        </item>
+        <item>
+            <title><![CDATA[Does Zero-Copy NAPI Really Enable On-Device AI and 90% Gross Margins?]]></title>
+            <description><![CDATA[<div class="medium-feed-item"><p class="medium-feed-snippet">Zero-copy NAPI is real engineering &#x2014; but does it unlock local LLMs and 90% gross margins? We ran the math.</p><p class="medium-feed-link"><a href="https://medium.com/@md.abir1203/does-zero-copy-napi-really-enable-on-device-ai-and-90-gross-margins-376b33c77789?source=rss-b62bf3bb75c7------2">Continue reading on Medium »</a></p></div>]]></description>
+            <link>https://medium.com/@md.abir1203/does-zero-copy-napi-really-enable-on-device-ai-and-90-gross-margins-376b33c77789?source=rss-b62bf3bb75c7------2</link>
+            <guid isPermaLink="false">https://medium.com/p/376b33c77789</guid>
+            <dc:creator><![CDATA[Mohammad Abir Abbas]]></dc:creator>
+            <pubDate>Sat, 22 Aug 2026 12:20:57 GMT</pubDate>
+            <atom:updated>2026-08-22T12:20:57.224Z</atom:updated>
+        </item>
+        <item>
+            <title><![CDATA[Edge-Native OLTP vs. Lakehouse OLAP: An Atomic-Scale Architectural Teardown]]></title>
+            <description><![CDATA[<div class="medium-feed-item"><p class="medium-feed-snippet">Cloudflare D1 vs Apache Iceberg vs DuckDB</p><p class="medium-feed-link"><a href="https://towardsdev.com/edge-native-oltp-vs-lakehouse-olap-an-atomic-scale-architectural-teardown-f8ac1f86905c?source=rss-b62bf3bb75c7------2">Continue reading on Towards Dev »</a></p></div>]]></description>
+            <link>https://towardsdev.com/edge-native-oltp-vs-lakehouse-olap-an-atomic-scale-architectural-teardown-f8ac1f86905c?source=rss-b62bf3bb75c7------2</link>
+            <guid isPermaLink="false">https://medium.com/p/f8ac1f86905c</guid>
+            <category><![CDATA[google-cloud-platform]]></category>
+            <category><![CDATA[cloud-computing]]></category>
+            <category><![CDATA[serverless]]></category>
+            <category><![CDATA[audit]]></category>
+            <category><![CDATA[data]]></category>
+            <dc:creator><![CDATA[Mohammad Abir Abbas]]></dc:creator>
+            <pubDate>Wed, 19 Aug 2026 20:56:02 GMT</pubDate>
+            <atom:updated>2026-08-19T20:56:02.004Z</atom:updated>
+        </item>
+        <item>
+            <title><![CDATA[How Does a Social Media Spam Filter Work?]]></title>
+            <description><![CDATA[<div class="medium-feed-item"><p class="medium-feed-snippet">Short answer: Social-media spam filters use AI, machine learning, and behavioral signals to determine whether an account or piece of&#x2026;</p><p class="medium-feed-link"><a href="https://towardsdev.com/how-does-a-social-media-spam-filter-work-12f71468d1a8?source=rss-b62bf3bb75c7------2">Continue reading on Towards Dev »</a></p></div>]]></description>
+            <link>https://towardsdev.com/how-does-a-social-media-spam-filter-work-12f71468d1a8?source=rss-b62bf3bb75c7------2</link>
+            <guid isPermaLink="false">https://medium.com/p/12f71468d1a8</guid>
+            <category><![CDATA[software-development]]></category>
+            <category><![CDATA[software-engineering]]></category>
+            <category><![CDATA[social-media]]></category>
+            <category><![CDATA[spam-filter]]></category>
+            <dc:creator><![CDATA[Mohammad Abir Abbas]]></dc:creator>
+            <pubDate>Tue, 18 Aug 2026 04:34:31 GMT</pubDate>
+            <atom:updated>2026-08-25T11:47:36.877Z</atom:updated>
+        </item>
+        <item>
+            <title><![CDATA[Demystifying HarmonyOS NEXT: A Deep Dive Into the Architecture, ArkUI, and Distributed Core]]></title>
+            <description><![CDATA[<div class="medium-feed-item"><p class="medium-feed-image"><a href="https://medium.com/@md.abir1203/demystifying-harmonyos-next-a-deep-dive-into-the-architecture-arkui-and-distributed-core-a223e66cb615?source=rss-b62bf3bb75c7------2"><img src="https://cdn-images-1.medium.com/max/2600/1*qllEndk65bIPV8JOPdP0Rw.png" width="5245"></a></p><p class="medium-feed-snippet">A world-class, under-the-hood breakdown of Huawei&#x2019;s &#x201C;Pure HarmonyOS&#x201D; SDK for engineers and architects.</p><p class="medium-feed-link"><a href="https://medium.com/@md.abir1203/demystifying-harmonyos-next-a-deep-dive-into-the-architecture-arkui-and-distributed-core-a223e66cb615?source=rss-b62bf3bb75c7------2">Continue reading on Medium »</a></p></div>]]></description>
+            <link>https://medium.com/@md.abir1203/demystifying-harmonyos-next-a-deep-dive-into-the-architecture-arkui-and-distributed-core-a223e66cb615?source=rss-b62bf3bb75c7------2</link>
+            <guid isPermaLink="false">https://medium.com/p/a223e66cb615</guid>
+            <category><![CDATA[mobile-app-development]]></category>
+            <category><![CDATA[harmony-os]]></category>
+            <category><![CDATA[huawei]]></category>
+            <category><![CDATA[software-development]]></category>
+            <category><![CDATA[distributed-systems]]></category>
+            <dc:creator><![CDATA[Mohammad Abir Abbas]]></dc:creator>
+            <pubDate>Sun, 16 Aug 2026 22:32:52 GMT</pubDate>
+            <atom:updated>2026-08-16T22:44:21.665Z</atom:updated>
+        </item>
+        <item>
+            <title><![CDATA[HarmonyOS NEXT: A First-Principles Systems Breakdown of the Distributed Core, ArkUI, and Edge AI…]]></title>
+            <link>https://levelup.gitconnected.com/harmonyos-next-a-first-principles-systems-breakdown-of-the-distributed-core-arkui-and-edge-ai-64d5e080e17e?source=rss-b62bf3bb75c7------2</link>
+            <guid isPermaLink="false">https://medium.com/p/64d5e080e17e</guid>
+            <dc:creator><![CDATA[Mohammad Abir Abbas]]></dc:creator>
+            <pubDate>Thu, 13 Aug 2026 01:20:18 GMT</pubDate>
+            <atom:updated>2026-08-21T16:20:47.498Z</atom:updated>
+        </item>
+        <item>
+            <title><![CDATA[Demystifying HarmonyOS NEXT: A Deep Dive Into the Architecture, ArkUI, and Distributed Core]]></title>
+            <description><![CDATA[<div class="medium-feed-item"><p class="medium-feed-snippet">A world-class, under-the-hood breakdown of Huawei&#x2019;s &#x201C;Pure HarmonyOS&#x201D; SDK for environment and right tools.</p><p class="medium-feed-link"><a href="https://levelup.gitconnected.com/demystifying-harmonyos-next-a-deep-dive-into-the-architecture-arkui-and-distributed-core-8f1617c9423d?source=rss-b62bf3bb75c7------2">Continue reading on Level Up Coding »</a></p></div>]]></description>
+            <link>https://levelup.gitconnected.com/demystifying-harmonyos-next-a-deep-dive-into-the-architecture-arkui-and-distributed-core-8f1617c9423d?source=rss-b62bf3bb75c7------2</link>
+            <guid isPermaLink="false">https://medium.com/p/8f1617c9423d</guid>
+            <dc:creator><![CDATA[Mohammad Abir Abbas]]></dc:creator>
+            <pubDate>Wed, 12 Aug 2026 17:29:11 GMT</pubDate>
+            <atom:updated>2026-08-21T16:20:30.944Z</atom:updated>
+        </item>
+        <item>
+            <title><![CDATA[DataFlow vs Quadrabay vs VFS Global: Which Is Best for UAE Degree Recognition in 2026?]]></title>
+            <description><![CDATA[<div class="medium-feed-item"><p class="medium-feed-snippet">A practical guide to UAE foreign degree verification, MoHESR Qualification Recognition, DataFlow, Quadrabay, VFS Global, processing, costs&#x2026;</p><p class="medium-feed-link"><a href="https://medium.com/@md.abir1203/dataflow-vs-quadrabay-vs-vfs-global-which-is-best-for-uae-degree-recognition-in-2026-a962054717b5?source=rss-b62bf3bb75c7------2">Continue reading on Medium »</a></p></div>]]></description>
+            <link>https://medium.com/@md.abir1203/dataflow-vs-quadrabay-vs-vfs-global-which-is-best-for-uae-degree-recognition-in-2026-a962054717b5?source=rss-b62bf3bb75c7------2</link>
+            <guid isPermaLink="false">https://medium.com/p/a962054717b5</guid>
+            <category><![CDATA[masters-degree]]></category>
+            <category><![CDATA[uae]]></category>
+            <category><![CDATA[recognition]]></category>
+            <category><![CDATA[dubai]]></category>
+            <dc:creator><![CDATA[Mohammad Abir Abbas]]></dc:creator>
+            <pubDate>Tue, 11 Aug 2026 17:52:22 GMT</pubDate>
+            <atom:updated>2026-08-14T08:55:41.223Z</atom:updated>
+        </item>
+        <item>
+            <title><![CDATA[The Enterprise Pivot: How Securing Environmental Credentials Rewires a Company for Scale]]></title>
+            <description><![CDATA[<div class="medium-feed-item"><p class="medium-feed-snippet">Modern enterprise growth is no longer merely a function of top-line revenue expansion or efficient code deployment. Market dynamics demand&#x2026;</p><p class="medium-feed-snippet">A short answer: Social-media spam filters use AI, machine learning, and behavioral signals to determine whether an account or piece of&#x2026;</p></div>]]></description>
+            <link>https://python.plainenglish.io/the-enterprise-pivot-how-securing-environmental-credentials-rewires-a-company-for-scale-b0061552eadc?source=rss-b62bf3bb75c7------2</link>
+            <guid isPermaLink="false">https://medium.com/p/b0061552eadc</guid>
+            <category><![CDATA[cyberattack]]></category>
+            <category><![CDATA[cybersecurity]]></category>
+            <category><![CDATA[software-development]]</category>
+            <category><![CDATA[cloud-computing]]></category>
+            <dc:creator><![CDATA[Mohammad Abir Abbas]]></dc:creator>
+            <pubDate>Mon, 10 Aug 2026 22:32:21 GMT</pubDate>
+            <atom:updated>2026-08-10T22:32:21.959Z</atom:updated>
+        </item>
+        <item>
+            <title><![CDATA[The Internet Is Not Reliable Enough for the Next Generation of EVs]]></title>
+            <description><![CDATA[<div class="medium-feed-item"><p class="medium-feed-snippet">From rural Finland to Bangladesh and GCC highways, why resilient OTA should be designed around connectivity windows &#x2014; not continuous&#x2026;</p><p class="medium-feed-link"><a href="https://medium.com/@md.abir1203/the-internet-is-not-reliable-enough-for-the-next-generation-of-evs-bdf2991de3db?source=rss-b62bf3bb75c7------2">Continue reading on Medium »</a></p></div>]]></description>
+            <link>https://medium.com/@md.abir1203/the-internet-is-not-reliable-enough-for-the-next-generation-of-evs-bdf2991de3db?source=rss-b62bf3bb75c7------2</link>
+            <guid isPermaLink="false">https://medium.com/p/bdf2991de3db</guid>
+            <dc:creator><![CDATA[Mohammad Abir Abbas]]></dc:creator>
+            <pubDate>Sun, 09 Aug 2026 10:34:21 GMT</pubDate>
+            <atom:updated>2026-08-09T10:34:21.412Z</atom:updated>
+        </item>
+    </channel>
+</rss>

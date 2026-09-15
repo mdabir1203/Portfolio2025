@@ -87,9 +87,12 @@ const doc = new PDFDocument({
   size: "LETTER",
   margins: { top: 54, bottom: 54, left: 64, right: 64 },
   info: {
-    Title: "Mohammad Abir Abbas — Resume (ATS)",
+    Title: "Mohammad Abir Abbas — AI Architect · Dubai, UAE (Resume ATS)",
     Author: "Mohammad Abir Abbas",
-    Subject: "Creative Technologist & AI Architect",
+    Subject: "AI Architect · Solutions Engineer · Platform Engineer — Dubai, UAE",
+    Keywords: "AI Architect Dubai, AI Architect UAE, Solutions Engineer Dubai, Platform Engineer UAE, Developer Experience, React Native, Cloudflare Workers, LangChain, AutoGPT, RAG, GCC, MENA, Saudi Arabia, Riyadh, NEOM, Remote, Mohammed Abir Abbas, Abir Abbas, mdabir1203, Wavelink, Famous Abaya",
+    Creator: "Mohammad Abir Abbas",
+    Producer: "abir.getwaved.ai/resume",
   },
 });
 
@@ -106,13 +109,18 @@ doc
   .font("Helvetica")
   .fontSize(11)
   .fillColor("#444444")
-  .text("Creative Technologist & AI Architect", { lineGap: 4 });
+  .text("AI Architect · Solutions Engineer · Platform Engineer", { lineGap: 1 });
+doc
+  .font("Helvetica")
+  .fontSize(9.5)
+  .fillColor("#555555")
+  .text("Dubai, UAE · Open to KSA & remote · UAE Company Visa (no sponsorship)", { lineGap: 4 });
 doc
   .font("Helvetica")
   .fontSize(9.5)
   .fillColor("#555555")
   .text(
-    "abir.abbas@proton.me  |  linkedin.com/in/abir-abbas  |  abir.getwaved.ai",
+    "abir.abbas@proton.me  |  +971 54 361 8066  |  linkedin.com/in/abir-abbas  |  abir.getwaved.ai  |  github.com/mdabir1203  |  medium.com/@md.abir1203",
     { lineGap: 10 }
   );
 

@@ -23,6 +23,10 @@ export function TopNav() {
         <nav className="hidden items-center gap-7 md:flex" aria-label="Primary">
           <a href="#work" className="cin-nav-link">Work</a>
           <a href="#about" className="cin-nav-link">About</a>
+          <a href="#personality" className="cin-nav-link">
+            <span aria-hidden style={{ color: '#0f7569' }}>ENFP</span>
+            <span className="ml-1.5">Personality</span>
+          </a>
           <a href="#path" className="cin-nav-link">Path</a>
           <a
             href="https://www.linkedin.com/in/abir-abbas"
