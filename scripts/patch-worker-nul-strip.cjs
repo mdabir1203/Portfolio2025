@@ -34,6 +34,26 @@ export default {
 
 const PATCHED = `import ssrHandler from './server.js';
 
+// /cv shortcut — serve the CV PDF with Content-Disposition: attachment so
+// phones and desktops download instead of inline-render. Mirrors the dev
+// route in src/routes/cv.tsx; we duplicate it here because Pages Functions
+// don't expose env.ASSETS to the route handler.
+async function serveCvAttachment(request, env) {
+  if (!env.ASSETS) return new Response('CV unavailable in this environment', { status: 404 });
+  const pdfReq = new Request(new URL('/Abir_Abbas_CV.pdf', request.url), request);
+  const pdfRes = await env.ASSETS.fetch(pdfReq);
+  if (!pdfRes.ok) return new Response('CV not found', { status: 404 });
+  const headers = new Headers(pdfRes.headers);
+  headers.set('Content-Type', 'application/pdf');
+  headers.set('Content-Disposition',
+    'attachment; filename="Mohammad-Abir-Abbas-CV.pdf"; ' +
+    "filename*=UTF-8''Mohammad%20Abir%20Abbas%20CV.pdf");
+  headers.set('Cache-Control', 'public, max-age=3600');
+  headers.set('X-Content-Type-Options', 'nosniff');
+  headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  return new Response(pdfRes.body, { status: pdfRes.status, headers });
+}
+
 // HTML5 §13.2.5.1: U+0000 in stream is a parse error.
 // TanStack Router's SSR match serialization can emit NUL bytes in
 // hydration script IDs. Strip them from text/html responses before
@@ -66,6 +86,11 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const path = url.pathname;
+
+    // QR scan entry point — handle /cv before the regex check so it
+    // doesn't get caught by the .pdf fallback (which would serve inline).
+    if (path === '/cv') return serveCvAttachment(request, env);
+
     if (
       env.ASSETS &&
       (path.startsWith('/assets/') ||

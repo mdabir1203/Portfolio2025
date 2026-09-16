@@ -1,129 +1,162 @@
-import fs from 'fs';
-import path from 'path';
+// scripts/fix-wrangler-json.js
+//
+// Post-build fixup for Cloudflare Pages deployment. Idempotent.
+//
+//   1. Sanitize dist/client/wrangler.json (the @cloudflare/vite-plugin emits
+//      a verbose config that Pages rejects — empty triggers, dev.* flags,
+//      absolute paths, dozens of unused top-level fields).
+//
+//   2. Write dist/client/_worker.js — a static-asset-aware wrapper around
+//      the SSR handler. Pages sends ALL requests through this worker in
+//      advanced mode, so without it, CSS/JS return HTML and the page renders
+//      unstyled.
+//
+//   3. Copy dist/server/server.js → dist/client/server.js — the worker's
+//      `import ssrHandler from './server.js'` resolves relative to its own
+//      directory.
+//
+//   4. Merge dist/server/assets/* → dist/client/assets/* so the SSR bundle
+//      can find its code-split chunks (which live next to the worker).
+//
+// All four steps are required. If any one fails, the script exits non-zero
+// with a clear message. Previously this script swallowed errors silently —
+// that's why builds would succeed locally but the deployed site would 404 on
+// every request.
 
-const configPath = path.resolve(process.cwd(), 'dist/client/wrangler.json');
+import fs from 'node:fs';
+const { existsSync, statSync, mkdirSync, readdirSync, readFileSync, writeFileSync, copyFileSync } = fs;
+import path from 'node:path';
 
-if (fs.existsSync(configPath)) {
-  try {
-    const rawData = fs.readFileSync(configPath, 'utf-8');
-    const config = JSON.parse(rawData);
+const ROOT = process.cwd();
+const CONFIG = path.resolve(ROOT, 'dist/client/wrangler.json');
+const SERVER = path.resolve(ROOT, 'dist/server/server.js');
+const SERVER_ASSETS = path.resolve(ROOT, 'dist/server/assets');
+const WORKER = path.resolve(ROOT, 'dist/client/_worker.js');
+const CLIENT_SERVER = path.resolve(ROOT, 'dist/client/server.js');
+const CLIENT_ASSETS = path.resolve(ROOT, 'dist/client/assets');
 
-    // Fix "triggers"
-    if (config.triggers && Object.keys(config.triggers).length === 0) {
-      delete config.triggers;
-    }
+const INVALID_TOP_LEVEL = [
+  'assets', 'topLevelName', 'jsx_factory', 'jsx_fragment', 'definedEnvironments',
+  'ai_search_namespaces', 'ai_search', 'secrets_store_secrets', 'unsafe_hello_world',
+  'flagship', 'worker_loaders', 'ratelimits', 'vpc_services', 'vpc_networks',
+  'python_modules', 'configPath', 'userConfigPath', 'legacy_env', 'rules',
+  'cloudchamber', 'pipelines', 'logfwdr',
+];
 
-    // Fix "dev"
-    if (config.dev) {
-      delete config.dev.enable_containers;
-      delete config.dev.generate_types;
-    }
+const WORKER_WRAPPER = `import ssrHandler from './server.js';
 
-    // Fix absolute path in pages_build_output_dir
-    // Since this config is ALREADY inside the output directory (dist/client),
-    // the path should be '.' relative to this config file.
-    if (config.pages_build_output_dir) {
-      config.pages_build_output_dir = '.';
-    }
+// /cv shortcut — serve the CV PDF with Content-Disposition: attachment so
+// phones and desktops download instead of inline-render. The route handler
+// in src/routes/cv.tsx covers dev mode (where this worker doesn't run);
+// we duplicate the logic here because Cloudflare Pages Functions don't
+// give the route handler a handle to env.ASSETS, and reading
+// process.cwd()+"/public/Abir_Abbas_CV.pdf" returns nothing in prod.
+async function serveCvAttachment(request, env) {
+  if (!env.ASSETS) return new Response('CV unavailable in this environment', { status: 404 });
+  const pdfReq = new Request(new URL('/Abir_Abbas_CV.pdf', request.url), request);
+  const pdfRes = await env.ASSETS.fetch(pdfReq);
+  if (!pdfRes.ok) return new Response('CV not found', { status: 404 });
+  const headers = new Headers(pdfRes.headers);
+  headers.set('Content-Type', 'application/pdf');
+  headers.set('Content-Disposition',
+    'attachment; filename="Mohammad-Abir-Abbas-CV.pdf"; ' +
+    "filename*=UTF-8''Mohammad%20Abir%20Abbas%20CV.pdf");
+  headers.set('Cache-Control', 'public, max-age=3600');
+  headers.set('X-Content-Type-Options', 'nosniff');
+  headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  return new Response(pdfRes.body, { status: pdfRes.status, headers });
+}
 
-    // Remove unexpected top-level fields that cause validation errors on Cloudflare Pages
-    const invalidTopLevelKeys = [
-      "assets",
-      "topLevelName",
-      "jsx_factory",
-      "jsx_fragment",
-      "definedEnvironments",
-      "ai_search_namespaces",
-      "ai_search",
-      "secrets_store_secrets",
-      "unsafe_hello_world",
-      "flagship",
-      "worker_loaders",
-      "ratelimits",
-      "vpc_services",
-      "vpc_networks",
-      "python_modules",
-      "configPath",
-      "userConfigPath",
-      "legacy_env",
-      "rules",
-      "cloudchamber",
-      "pipelines",
-      "logfwdr"
-    ];
-
-    for (const key of invalidTopLevelKeys) {
-      delete config[key];
-    }
-
-    // Remove empty arrays and objects (except vars) to keep the config clean
-    for (const key in config) {
-      if (key === 'vars' || key === 'name' || key === 'compatibility_date' || key === 'compatibility_flags' || key === 'pages_build_output_dir') {
-        continue;
-      }
-      if (Array.isArray(config[key]) && config[key].length === 0) {
-        delete config[key];
-      } else if (typeof config[key] === 'object' && config[key] !== null && Object.keys(config[key]).length === 0) {
-        delete config[key];
-      }
-    }
-
-    fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
-    console.log('[fix-wrangler-json] Successfully sanitized dist/client/wrangler.json for Cloudflare Pages deployment.');
-
-    // Ensure SSR Worker is in the right place for Cloudflare Pages
-    const serverPath = path.resolve(process.cwd(), 'dist/server/server.js');
-    const workerPath = path.resolve(process.cwd(), 'dist/client/_worker.js');
-    
-    if (fs.existsSync(serverPath)) {
-      // _worker.js must route static assets to env.ASSETS (Cloudflare Pages advanced mode
-      // sends ALL requests through the worker — without this, CSS/JS return HTML and the
-      // page renders unstyled).
-      const workerWrapper = `import ssrHandler from './server.js';
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    const path = url.pathname;
+    const p = url.pathname;
+
+    // QR scan entry point — handle /cv before the regex check so it doesn't
+    // get caught by the .pdf fallback below (it would serve inline).
+    if (p === '/cv') return serveCvAttachment(request, env);
+
     if (
       env.ASSETS &&
-      (path.startsWith('/assets/') ||
-        /\\.(ico|png|jpg|jpeg|webp|gif|svg|woff|woff2|ttf|eot|map|txt|pdf|html|xml|json|webmanifest|md)$/.test(path))
+      (p.startsWith('/assets/') ||
+        /\\.(ico|png|jpg|jpeg|webp|gif|svg|woff|woff2|ttf|eot|map|txt|pdf|html|xml|json|webmanifest|md)$/.test(p))
     ) {
       return env.ASSETS.fetch(request);
     }
     return ssrHandler.fetch(request, env, ctx);
-  }
+  },
 };
 `;
-      fs.writeFileSync(workerPath, workerWrapper, 'utf-8');
-      console.log('[fix-wrangler-json] Successfully wrote static-asset-aware _worker.js to dist/client/_worker.js');
 
-      // Also expose server.js at dist/client/server.js so client chunk imports
-      // of the form `import ... from "../server.js"` resolve during Cloudflare's
-      // Pages bundling pass (chunks live in dist/client/assets/, so ../server.js
-      // resolves to dist/client/server.js).
-      const serverJsClientPath = path.resolve(process.cwd(), 'dist/client/server.js');
-      fs.copyFileSync(serverPath, serverJsClientPath);
-      console.log('[fix-wrangler-json] Successfully copied dist/server/server.js to dist/client/server.js');
-      
-      // Copy server assets to client assets so the worker can find its chunks
-      const serverAssetsDir = path.resolve(process.cwd(), 'dist/server/assets');
-      const clientAssetsDir = path.resolve(process.cwd(), 'dist/client/assets');
-      
-      if (fs.existsSync(serverAssetsDir)) {
-        if (!fs.existsSync(clientAssetsDir)) {
-          fs.mkdirSync(clientAssetsDir, { recursive: true });
-        }
-        const assets = fs.readdirSync(serverAssetsDir);
-        for (const asset of assets) {
-          fs.copyFileSync(path.join(serverAssetsDir, asset), path.join(clientAssetsDir, asset));
-        }
-        console.log('[fix-wrangler-json] Successfully merged server assets into dist/client/assets');
-      }
-    }
-  } catch (err) {
-    console.error('[fix-wrangler-json] Error processing wrangler.json:', err);
-  }
+let failed = false;
+function ok(msg)  { console.log(`  ✓ ${msg}`); }
+function bad(msg) { console.error(`  ✗ ${msg}`); failed = true; }
+
+// ── Step 1: sanitize wrangler.json ──────────────────────────────────────────
+if (!existsSync(CONFIG)) {
+  console.log(`[fix-wrangler-json] dist/client/wrangler.json missing — skipping (no Cloudflare plugin output).`);
 } else {
-  console.log('[fix-wrangler-json] dist/client/wrangler.json not found, skipping.');
+  try {
+    const raw = readFileSync(CONFIG, 'utf-8');
+    const cfg = JSON.parse(raw);
+    if (cfg.triggers && Object.keys(cfg.triggers).length === 0) delete cfg.triggers;
+    if (cfg.dev) {
+      delete cfg.dev.enable_containers;
+      delete cfg.dev.generate_types;
+    }
+    if (cfg.pages_build_output_dir) cfg.pages_build_output_dir = '.';
+    for (const k of INVALID_TOP_LEVEL) delete cfg[k];
+    for (const k of Object.keys(cfg)) {
+      if (['vars','name','compatibility_date','compatibility_flags','pages_build_output_dir'].includes(k)) continue;
+      if (Array.isArray(cfg[k]) && cfg[k].length === 0) delete cfg[k];
+      else if (cfg[k] && typeof cfg[k] === 'object' && !Array.isArray(cfg[k]) && Object.keys(cfg[k]).length === 0) delete cfg[k];
+    }
+    writeFileSync(CONFIG, JSON.stringify(cfg, null, 2), 'utf-8');
+    ok('sanitized dist/client/wrangler.json');
+  } catch (err) {
+    bad(`failed to sanitize wrangler.json: ${err.message}`);
+  }
 }
+
+// ── Step 2: write _worker.js (only if SSR bundle exists) ────────────────────
+if (!existsSync(SERVER)) {
+  bad(`dist/server/server.js not found — vite build did not produce the SSR bundle. Cloudflare Pages deployment will 404 every request.`);
+} else {
+  try {
+    writeFileSync(WORKER, WORKER_WRAPPER, 'utf-8');
+    ok(`wrote dist/client/_worker.js (${(statSync(WORKER).size / 1024).toFixed(1)} KB)`);
+  } catch (err) {
+    bad(`failed to write _worker.js: ${err.message}`);
+  }
+
+  // ── Step 3: copy server.js into client/ ────────────────────────────────────
+  try {
+    copyFileSync(SERVER, CLIENT_SERVER);
+    ok('copied dist/server/server.js → dist/client/server.js');
+  } catch (err) {
+    bad(`failed to copy server.js: ${err.message}`);
+  }
+
+  // ── Step 4: merge server assets → client assets ────────────────────────────
+  if (existsSync(SERVER_ASSETS)) {
+    try {
+      if (!existsSync(CLIENT_ASSETS)) mkdirSync(CLIENT_ASSETS, { recursive: true });
+      let merged = 0;
+      for (const asset of readdirSync(SERVER_ASSETS)) {
+        copyFileSync(path.join(SERVER_ASSETS, asset), path.join(CLIENT_ASSETS, asset));
+        merged++;
+      }
+      ok(`merged ${merged} server assets → dist/client/assets`);
+    } catch (err) {
+      bad(`failed to merge server assets: ${err.message}`);
+    }
+  } else {
+    bad(`dist/server/assets not found — SSR chunks missing. /cv and other routes will fail to load.`);
+  }
+}
+
+if (failed) {
+  console.error('[fix-wrangler-json] FAIL — deployment would 404. Fix the errors above and re-run.');
+  process.exit(1);
+}
+console.log('[fix-wrangler-json] OK — Cloudflare Pages output ready.');
