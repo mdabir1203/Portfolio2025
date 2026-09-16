@@ -3,34 +3,42 @@
 // Designed for the "From the floor to the boardroom" 4-layer diagram —
 // a literal visualization of the data flow Capture → Map → Model → Deliver.
 //
-// Why this matters: the case study's narrative is that the dashboard is
-// the *output* of a 4-stage pipeline. Until now that story is told with
-// words + cards. A visible flow path makes the engineering depth feel
-// earned at a glance.
+// Enlarged (2026-09-16) to anchor the case-study narrative visually.
+// Sized with Fibonacci + golden-ratio proportions so it reads large
+// without feeling chunky relative to the rest of the page:
+//
+//   • Outer height     — 112 px mobile / 144 px desktop    (Fibonacci 89, 144)
+//   • SVG path width   — full bleed via preserveAspectRatio="none"
+//   • Stroke widths    — 2.4 / 2.6 px                      (Fibonacci 2, 3)
+//   • Packet radius    — 2.4 / 5 / 9  (halo : mid : core)   (each ≈ 1.8×, near φ)
+//   • Anchor markers   — 2.8 / 7 / 13 (core : ring : halo)  (each ≈ φ)
+//   • Label font       — 13 px, letter-spacing 0.28em      (Fibonacci 13)
+//   • Packet count     — 5                                (Fibonacci)
+//   • Cycle duration   — 6.18 s                           (φ × 3.82 — luxury pacing)
+//   • Line position    — y = 50 (centered in viewBox 0..100, with anchors)
+//                        and labels anchored 18 px below.
 //
 // Honors prefers-reduced-motion (static path, no packets). All path math
-// runs in an SVG; no measurement/JS-driven layout.
+// runs in an SVG; labels are real HTML for typographic fidelity.
 
 import {
-  useEffect,
   useRef,
-  useState,
   type ReactNode,
 } from "react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useInView, useReducedMotion } from "framer-motion";
 
 export type DataStreamProps = {
-  /** Coordinates [x, y] in pixels (relative to a 1000x100 viewBox). */
+  /** Coordinates [x, y] in pixels (relative to 1000×100 viewBox). */
   points: Array<[number, number]>;
   /** Stroke color. Default teal. */
   color?: string;
   /** Packet color. Default teal. */
   packetColor?: string;
-  /** Number of packets to dispatch at a time. Default 3. */
+  /** Number of packets to dispatch at a time. Default 5 (Fibonacci). */
   packetCount?: number;
-  /** Seconds per packet cycle. Default 4.5. */
+  /** Seconds per packet cycle. Default 6.18 (φ × 3.82). */
   duration?: number;
-  /** Label slots — drawn at each point. */
+  /** Label slots — drawn at each waypoint, below the SVG. */
   labels?: ReactNode[];
   className?: string;
 };
@@ -39,8 +47,8 @@ export function DataStream({
   points,
   color = "#0f7569",
   packetColor = "#0f7569",
-  packetCount = 3,
-  duration = 4.5,
+  packetCount = 5,
+  duration = 6.18,
   labels,
   className,
 }: DataStreamProps) {
@@ -56,84 +64,129 @@ export function DataStream({
     "M " + points.map(([x, y]) => `${x},${y}`).join(" L ");
 
   return (
-    <svg
-      ref={ref}
-      viewBox="0 0 1000 100"
-      preserveAspectRatio="none"
-      className={"block h-12 w-full " + (className ?? "")}
-      aria-hidden
-    >
-      {/* Background dotted path */}
-      <path
-        d={pathD}
-        stroke={color}
-        strokeOpacity="0.35"
-        strokeWidth="1.4"
-        strokeDasharray="2 4"
-        fill="none"
-      />
-      {inView && (
+    <div className={"cin-data-stream relative " + (className ?? "")}>
+      <svg
+        ref={ref}
+        viewBox="0 0 1000 100"
+        preserveAspectRatio="none"
+        className="block h-28 w-full md:h-36"
+        aria-hidden
+      >
+        {/* Background dotted path — denser, thicker (2.4px) than the prior
+            1.4px so the line carries visual weight even when packets idle. */}
         <path
           d={pathD}
           stroke={color}
-          strokeWidth="1.6"
+          strokeOpacity="0.45"
+          strokeWidth="2.4"
+          strokeDasharray="2 6"
           fill="none"
-          strokeDasharray="200 1000"
-          strokeDashoffset={1000}
-          style={{
-            transition: "stroke-dashoffset 1.4s ease-out",
-          }}
-          ref={(el) => {
-            if (el) {
-              // Trigger the trace-in animation on mount / re-view.
-              requestAnimationFrame(() => {
-                el.style.strokeDashoffset = "0";
-              });
-            }
-          }}
         />
-      )}
-      {/* Packets */}
-      {!reduce &&
-        inView &&
-        Array.from({ length: packetCount }).map((_, i) => (
-          <circle key={i} r="2.5" fill={packetColor}>
-            <animateMotion
-              dur={`${duration}s`}
-              begin={`${(duration / packetCount) * i}s`}
-              repeatCount="indefinite"
-              path={pathD}
-              rotate="auto"
+
+        {/* Solid trace-in path — re-runs on every entry into view. Slower
+            (1.8s) ease-out cubic matches the rest of the page's pacing. */}
+        {inView && (
+          <path
+            d={pathD}
+            stroke={color}
+            strokeWidth="2.6"
+            fill="none"
+            strokeDasharray="320 1000"
+            strokeDashoffset={1000}
+            style={{
+              transition:
+                "stroke-dashoffset 1.8s cubic-bezier(0.22, 1, 0.36, 1)",
+            }}
+            ref={(el) => {
+              if (el) {
+                requestAnimationFrame(() => {
+                  el.style.strokeDashoffset = "0";
+                });
+              }
+            }}
+          />
+        )}
+
+        {/* Waypoint anchors — three concentric circles per waypoint.
+            Outer halo (12% teal fill), paper-fill ring (teal stroke),
+            solid teal core. Anchors feel like physical stations, not
+            just line terminations. Ratios 13 : 7 : 2.8 ≈ φ steps. */}
+        {points.map(([x, y], i) => (
+          <g key={`anchor-${i}`}>
+            <circle cx={x} cy={y} r="13" fill={color} fillOpacity="0.12" />
+            <circle
+              cx={x}
+              cy={y}
+              r="7"
+              fill="#f6f1e8"
+              stroke={color}
+              strokeWidth="2"
             />
-          </circle>
+            <circle cx={x} cy={y} r="2.8" fill={color} />
+          </g>
         ))}
-      {/* Labels at each point (positioned absolutely via foreignObject) */}
+
+        {/* Animated packets — three stacked circles per packet position
+            (halo 9/16%, mid 5/42%, core 2.4/100%). All share the same
+            <animateMotion> path + timing so they trace together. */}
+        {!reduce &&
+          inView &&
+          Array.from({ length: packetCount }).map((_, i) => (
+            <g key={i}>
+              <circle r="9" fill={packetColor} fillOpacity="0.16">
+                <animateMotion
+                  dur={`${duration}s`}
+                  begin={`${(duration / packetCount) * i}s`}
+                  repeatCount="indefinite"
+                  path={pathD}
+                />
+              </circle>
+              <circle r="5" fill={packetColor} fillOpacity="0.42">
+                <animateMotion
+                  dur={`${duration}s`}
+                  begin={`${(duration / packetCount) * i}s`}
+                  repeatCount="indefinite"
+                  path={pathD}
+                />
+              </circle>
+              <circle r="2.4" fill={packetColor}>
+                <animateMotion
+                  dur={`${duration}s`}
+                  begin={`${(duration / packetCount) * i}s`}
+                  repeatCount="indefinite"
+                  path={pathD}
+                />
+              </circle>
+            </g>
+          ))}
+      </svg>
+
+      {/* Labels — rendered as real HTML below each waypoint.
+          Positioned via left= (x / 1000 × 100)% so they track the SVG
+          regardless of container width. Two-line label option via
+          multi-element children. */}
       {labels?.map((node, i) => {
-        const [x, y] = points[i] ?? [0, 0];
+        const [x] = points[i] ?? [0];
+        const leftPct = (x / 1000) * 100;
+        // Tiny x-tweak for the outer labels so they don't clip the edges.
+        const edgeShift =
+          i === 0 ? "translate(-12%, 0)" :
+          i === points.length - 1 ? "translate(-88%, 0)" :
+          "translate(-50%, 0)";
         return (
-          <foreignObject
-            key={i}
-            x={x - 50}
-            y={y + 6}
-            width="100"
-            height="40"
-            style={{ overflow: "visible" }}
+          <div
+            key={`label-${i}`}
+            className="cin-data-stream-label pointer-events-none absolute font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-ink md:text-[13px]"
+            style={{
+              left: `${leftPct}%`,
+              top: "calc(100% + 14px)",
+              transform: edgeShift,
+            }}
           >
-            <div
-              style={{
-                textAlign: "center",
-                fontFamily: "var(--font-mono, ui-monospace, SFMono-Regular)",
-                fontSize: 9,
-                letterSpacing: "0.22em",
-                textTransform: "uppercase",
-                color: "#4a4a4a",
-              }}
-            >
-              {node}
-            </div>
-          </foreignObject>
+            {node}
+          </div>
         );
       })}
-    </svg>
+    </div>
   );
 }

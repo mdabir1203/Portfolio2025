@@ -171,18 +171,20 @@ export function CaseStudySection() {
             </div>
           </Reveal>
 
-          {/* Animated data flow between the 4 system cards */}
-          <div className="mb-2 px-4 md:px-8">
+          {/* Animated data flow between the 4 system cards.
+              No side padding — the SVG must span the same width as the
+              4-col card grid below so each waypoint sits above its card. */}
+          <div className="mb-14 md:mb-16">
             <DataStream
               points={[
-                [120, 50],
-                [370, 50],
-                [620, 50],
-                [880, 50],
+                [125, 50],
+                [375, 50],
+                [625, 50],
+                [875, 50],
               ]}
               labels={["Capture", "Map", "Model", "Deliver"]}
-              packetCount={3}
-              duration={5}
+              packetCount={5}
+              duration={6.18}
             />
           </div>
 
