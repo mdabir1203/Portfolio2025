@@ -1,13 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <rect width="64" height="64" rx="12" fill="#f7f3ec"/>
-  <g fill="none" stroke="#0e0e0e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M 14 10 L 32 10"/>
-    <path d="M 14 10 L 6 54"/>
-    <path d="M 32 10 L 40 54"/>
-    <path d="M 10 34 L 32 34"/>
-    <path d="M 32 34 C 44 34, 52 38, 52 44"/>
-    <path d="M 52 44 C 52 50, 44 54, 32 54"/>
+  <!--
+    Abir Abbas brandmark — favicon-grade.
+    Faithful to the production 3D mark (folded-ribbon "A" with red disc
+    and Dubai skyline) but reduced to shapes that survive 16x16 rendering:
+      • Two strokes forming a triangular A peak
+      • A single red disc on the left half of the crossbar
+      • A 3-tower Dubai skyline silhouette tucked into the right slope
+    Colours: paper #f6f1e8 background, brand green #006a4e, flag red #f42a41.
+  -->
+  <defs>
+    <linearGradient id="ribbon" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1f7a5e"/>
+      <stop offset="100%" stop-color="#006a4e"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Paper background, rounded so the favicon tile reads as a single object -->
+  <rect width="64" height="64" rx="12" fill="#f6f1e8"/>
+
+  <!-- The A — two strokes that meet at the apex, splaying at the base.
+       Drawn as filled paths so the bottom flares look like ribbon ends
+       rather than thin lines. -->
+  <g fill="url(#ribbon)">
+    <!-- Left stroke of the A -->
+    <path d="M 32 8
+             L 38 8
+             L 26 52
+             Q 25 56 22 56
+             L 18 56
+             Q 14 56 16 52
+             L 28 11
+             Q 29 8 32 8 Z"/>
+    <!-- Right stroke of the A -->
+    <path d="M 32 8
+             L 26 8
+             L 38 52
+             Q 39 56 42 56
+             L 46 56
+             Q 50 56 48 52
+             L 36 11
+             Q 35 8 32 8 Z"/>
   </g>
-  <circle cx="52" cy="44" r="5.5" fill="#0c6b58"/>
+
+  <!-- Red disc — Bangladesh flag red, sits on the left interior of the A.
+       Positioned to read at small sizes: 1/5 of height from the left
+       baseline, vertically centred. -->
+  <circle cx="22" cy="38" r="6" fill="#f42a41"/>
+
+  <!-- Dubai skyline silhouette tucked into the right interior of the A.
+       Three towers — Burj Khalifa (tallest), a stepped tower, and a slim
+       minaret-like spire. Designed at a stroke width that disappears at
+       16x16 but reads as architecture at 32x32 and up. -->
+  <g fill="#0c3a2a" opacity="0.92">
+    <!-- Burj Khalifa (tallest, leftmost in the right-interior) -->
+    <path d="M 33 56 L 33 26 Q 33 24 35 24 L 35 18 Q 35 17 36 17 L 36 24 L 37 24 L 37 17 Q 37 16 38 16 L 38 24 L 39 24 L 39 18 Q 39 17 40 17 L 40 56 Z"/>
+    <!-- Stepped tower -->
+    <path d="M 41 56 L 41 36 L 44 36 L 44 30 L 46 30 L 46 36 L 48 36 L 48 56 Z"/>
+    <!-- Slim spire -->
+    <path d="M 50 56 L 50 28 L 51 28 L 51 24 L 52 24 L 52 28 L 53 28 L 53 56 Z"/>
+  </g>
 </svg>

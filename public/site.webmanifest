@@ -7,8 +7,8 @@
   "scope": "/",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#f9f5ee",
-  "theme_color": "#0e0e0e",
+  "background_color": "#f6f1e8",
+  "theme_color": "#006a4e",
   "lang": "en",
   "dir": "ltr",
   "categories": ["productivity", "business", "developer"],
@@ -20,17 +20,35 @@
       "purpose": "any"
     },
     {
+      "src": "/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
       "src": "/apple-touch-icon.png",
       "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/android-chrome-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/android-chrome-512.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
   ],
   "screenshots": [
     {
-      "src": "/og-image.svg",
+      "src": "/og-image.png",
       "sizes": "1200x630",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "form_factor": "wide",
       "label": "Mohammad Abir Abbas — AI Architect, Dubai UAE"
     }
