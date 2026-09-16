@@ -28,7 +28,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { RickshawWheel, PersianGirih } from './CulturalBits';
+import { BangladeshFlag, PersianGirih } from './CulturalBits';
 
 const QUOTE_WORDS = ['Impossible', 'is', 'something', 'till you', 'attempt.'];
 const ATTRIBUTION = '— the page you\u2019ve just opened';
@@ -174,26 +174,59 @@ export function FirstVisitSplash() {
             }}
           />
 
-          {/* Top-left cultural accent — a spinning rickshaw wheel that
-              settles just before the quote lands. Bangladeshi roots, in
-              three lines of SVG. */}
+          {/* Top-left cultural accent — Bangladesh flag with the pulsing red
+              disc. Positioned per photography principles:
+              • Rule-of-thirds (≈ 33% from each edge) places the focal disc
+                where the eye lands first on Western F-pattern scan paths.
+              • Slight inward offset (left-[6%] top-[8%]) creates negative
+                space that amplifies the saturated red against the paper.
+              • Drop-shadow + the disc's 2.6s heartbeat-pulse hijack
+                attention toward this corner before the eye sweeps to the
+                central quote. The label "বীর চট্টলা" — the honorific for
+                Chittagong, the city of origin — anchors the place. */}
           <motion.div
-            className="absolute left-6 top-6 hidden sm:block"
-            initial={{ opacity: 0, y: -8 }}
+            className="cin-splash-flag absolute left-[6%] top-[8%] hidden sm:block"
+            initial={{ opacity: 0, scale: 0.92, y: -6 }}
             animate={
               reduce
-                ? { opacity: 1, y: 0 }
+                ? { opacity: 1, scale: 1, y: 0 }
                 : {
                     opacity: 1,
+                    scale: 1,
                     y: 0,
-                    transition: { delay: 0.15, duration: 0.5 },
+                    transition: { delay: 0.15, duration: 0.6, ease: [0.2, 0.8, 0.2, 1] },
                   }
             }
             aria-hidden
           >
-            <RickshawWheel size={48} color="#0f7569" speed={0.5} />
-            <div className="mt-1 text-center font-mono text-[9px] uppercase tracking-[0.22em] text-ink-faint">
-              ঢাকা
+            <BangladeshFlag size={72} />
+            {/* Subtle leading-line — a hairline dotted rule pointing toward
+                the central quote, so the corner accent directs the eye
+                inward rather than fighting the main message. */}
+            <svg
+              aria-hidden
+              className="pointer-events-none absolute left-full top-1/2 ml-3 hidden md:block"
+              width="120"
+              height="14"
+              viewBox="0 0 120 14"
+              fill="none"
+            >
+              <line
+                x1="0"
+                y1="7"
+                x2="110"
+                y2="7"
+                stroke="#0f7569"
+                strokeOpacity="0.32"
+                strokeWidth="1"
+                strokeDasharray="2 5"
+                strokeLinecap="round"
+              />
+              {/* Tiny terminal dot at the end — the eye "lands" on it. */}
+              <circle cx="113" cy="7" r="1.6" fill="#0f7569" fillOpacity="0.55" />
+            </svg>
+            <div className="mt-2 text-center font-mono text-[10px] uppercase tracking-[0.28em] text-ink-faint">
+              বীর চট্টলা
             </div>
           </motion.div>
 

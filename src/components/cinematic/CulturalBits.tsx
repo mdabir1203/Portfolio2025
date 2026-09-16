@@ -5,6 +5,7 @@
 //   * <PersianGirih />     — geometric tile pattern (Iranian/Persian)
 //   * <CompassRose />      — rotating compass needle (wanderer motif)
 //   * <RickshawWheel />    — spinning wheel (Bangladeshi rickshaw)
+//   * <BangladeshFlag />   — green field + red disc, pulsing (onboarding accent)
 //   * <HennaStamp />       — passport stamp medallion (14 countries)
 //
 // All four are hand-drawn SVG, zero asset deps, framer-motion driven.
@@ -241,7 +242,70 @@ export function RickshawWheel({
 }
 
 /* ------------------------------------------------------------------ */
-/* 4. HennaStamp — a passport-stamp medallion for the 14 countries.   */
+/* 4. BangladeshFlag — the green field with the red disc.              */
+/*    Spec-faithful: 5:3 aspect, red disc diameter = 1/5 of height,   */
+/*    centered at (9/20, 1/2) per the Government of Bangladesh spec.   */
+/*    Animation: subtle scale-pulse on the red disc (heartbeat).       */
+/*    Honors prefers-reduced-motion.                                   */
+/* ------------------------------------------------------------------ */
+const FLAG_GREEN = '#006a4e'; // Bangladesh flag green
+const FLAG_RED = '#f42a41';   // Bangladesh flag red
+
+export function BangladeshFlag({
+  className = '',
+  /** Render HEIGHT in px. Width derives from 5:3 aspect. */
+  size = 64,
+  /** When true (default), pulses the red disc. Set false for static. */
+  pulse = true,
+}: {
+  className?: string;
+  size?: number;
+  pulse?: boolean;
+}) {
+  const reduce = useReducedMotion();
+  const w = (size * 5) / 3;
+  const h = size;
+  return (
+    <motion.svg
+      width={w}
+      height={h}
+      viewBox="0 0 500 300"
+      className={className}
+      aria-hidden
+      style={{
+        overflow: 'visible',
+        filter:
+          'drop-shadow(0 6px 18px rgba(15, 117, 105, 0.18)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.08))',
+      }}
+    >
+      {/* Green field. The slight rx softens the corners without changing the spec. */}
+      <rect width="500" height="300" fill={FLAG_GREEN} rx="3" />
+      {/* Red disc — pulsing. Scale-pivot at the disc's own center. */}
+      <motion.circle
+        cx="225"
+        cy="150"
+        r="60"
+        fill={FLAG_RED}
+        style={{ originX: '225px', originY: '150px', originZ: 0 }}
+        animate={
+          !pulse || reduce
+            ? { scale: 1 }
+            : {
+                scale: [1, 1.045, 1],
+                transition: {
+                  duration: 2.6,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                },
+              }
+        }
+      />
+    </motion.svg>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* 5. HennaStamp — a passport-stamp medallion for the 14 countries.   */
 /*    Circular ink mark with country code + roman + Bengali numeral.  */
 /* ------------------------------------------------------------------ */
 export interface StampProps {
