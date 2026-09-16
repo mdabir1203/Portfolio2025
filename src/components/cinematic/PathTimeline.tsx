@@ -10,6 +10,8 @@ import { useRef } from "react";
 import { PulseDot } from "./microinteractions/PulseDot";
 
 const STOPS = [
+  { year: "2018", role: "BSc Mechanical Engineering", place: "Chittagong University of Engineering & Technology · BD", note: "Where it started. First degree, five years, the first time I saw engineering as a way to ship things that mattered." },
+  { year: "2019", role: "MSc Computational Methods of Engineering", place: "Leibniz University Hannover · DE", note: "Numerical methods on top of mechanical foundations. The pivot that made everything since possible — Germany, then the Gulf." },
   { year: "2026", role: "Famous Abaya LLC", place: "AI Solution Architect · UAE", note: "Architected the AbaYa-Track Delivery Module: floor events → employee/order map → value engine → delivery dashboard. Recovered AED 111K in trapped backlog (11.1:1 V:C)." },
   { year: "2026", role: "MIT Hacknation 2026", place: "Next Top Project · MIT Sloan AI Club", note: "24-hour global sprint, 1,000+ devs, 65+ countries. Built SmartSwap: intent-driven token swapping for SMB websites, Team Xerox with Abhishek Kumar." },
   { year: "2025", role: "Wavelink", place: "CTA · GCC", note: "NFC digital business cards + Review Stand for personal brands and businesses. Reputation management & verified trust signals for the AI-driven economy." },
@@ -39,7 +41,7 @@ export function PathTimeline() {
             </h2>
           </div>
           <div className="cin-section-eyebrow text-right">
-            <div>7 stops · 3 languages</div>
+            <div>9 stops · 3 languages</div>
           </div>
         </div>
 
