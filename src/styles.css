@@ -671,7 +671,7 @@ html[dir="rtl"] .font-mono {
     display: grid;
     grid-template-columns: 100px 1fr auto;
     gap: 1.5rem;
-    align-items: baseline;
+    align-items: start;
     transition: background 0.2s, padding 0.2s;
   }
   .cin-timeline-item:hover {
@@ -684,10 +684,15 @@ html[dir="rtl"] .font-mono {
     font-size: 12px;
     font-weight: 500;
     color: var(--ink-muted);
+    /* Sit the year (and its PulseDot) on the first line of the role title. */
+    padding-top: 0.55rem;
+    /* Keep year + PulseDot locked to the top edge of the row. */
+    align-self: start;
   }
   .cin-timeline-role {
     font-family: var(--font-display);
     font-size: 1.4rem;
+    line-height: 1.15;
     color: var(--ink);
   }
   .cin-timeline-place {
@@ -697,6 +702,11 @@ html[dir="rtl"] .font-mono {
     text-transform: uppercase;
     letter-spacing: 0.16em;
     color: var(--ink-muted);
+    /* Match the year column's top inset so the right rail reads as a parallel line. */
+    padding-top: 0.55rem;
+    align-self: start;
+    text-align: right;
+    max-width: 28ch;
   }
 
   /* ---------- Contact card ---------- */

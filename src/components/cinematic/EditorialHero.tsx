@@ -96,6 +96,7 @@ export function EditorialHero() {
             <div
               ref={identityRef}
               onWheel={onIdentityScroll}
+              className="md:pt-2"
               style={{
                 transform: reduce
                   ? undefined
@@ -103,17 +104,34 @@ export function EditorialHero() {
                 willChange: reduce ? undefined : "transform",
               }}
             >
-              {/* Portrait + meta — the "identity card" that parallaxes gently */}
-              <div className="mb-6 flex items-center gap-4">
-                <img
-                  src={abirPortrait}
-                  alt="Mohammad Abir Abbas"
-                  width={72}
-                  height={72}
-                  loading="eager"
-                  className="cin-hero-portrait h-[72px] w-[72px] rounded-full object-cover ring-1 ring-rule"
-                />
-                <div className="cin-hero-eyebrow">
+              {/* Portrait + meta — the "identity card" that parallaxes gently.
+                  Headshot at hero-scale, left-aligned, eye-level with the H1
+                  so the recruiter's first scan lands on the face. */}
+              <div className="mb-6">
+                <div className="relative shrink-0">
+                  {/* Soft accent halo so the headshot reads on the paper background
+                      even when the photo background is light. */}
+                  <div
+                    aria-hidden
+                    className="absolute -inset-3 rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(15,117,105,0.20),transparent_60%)] blur-md"
+                  />
+                  <img
+                    src={abirPortrait}
+                    alt="Mohammad Abir Abbas — headshot, Dubai 2026"
+                    width={300}
+                    height={300}
+                    loading="eager"
+                    decoding="async"
+                    className="cin-hero-portrait relative h-[160px] w-[160px] rounded-full object-cover ring-[4px] ring-[color:var(--accent-teal)]/85 shadow-[0_32px_80px_-18px_rgba(15,117,105,0.65),0_12px_32px_-12px_rgba(0,0,0,0.3)] transition-transform duration-500 ease-out hover:scale-[1.03] sm:h-[240px] sm:w-[240px] md:h-[300px] md:w-[300px]"
+                  />
+                  {/* Available dot — same PulseDot microinteraction, sits at the
+                      bottom-right of the headshot so it's visible without a badge. */}
+                  <span
+                    aria-hidden
+                    className="absolute bottom-3 right-3 inline-block h-4 w-4 rounded-full border-[3px] border-paper bg-[color:var(--accent-lime)] shadow-[0_0_0_4px_rgba(15,117,105,0.20)]"
+                  />
+                </div>
+                <div className="cin-hero-eyebrow mt-4">
                   <div>// Identity</div>
                   <div className="mt-1 text-[10px] text-ink-faint">
                     2026 · Suit · Dubai

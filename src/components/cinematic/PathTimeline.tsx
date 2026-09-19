@@ -11,14 +11,17 @@ import { PulseDot } from "./microinteractions/PulseDot";
 
 const STOPS = [
   { year: "2018", role: "BSc Mechanical Engineering", place: "Chittagong University of Engineering & Technology · BD", note: "Where it started. First degree, five years, the first time I saw engineering as a way to ship things that mattered." },
-  { year: "2019", role: "MSc Computational Methods of Engineering", place: "Leibniz University Hannover · DE", note: "Numerical methods on top of mechanical foundations. The pivot that made everything since possible — Germany, then the Gulf." },
-  { year: "2026", role: "Famous Abaya LLC", place: "AI Solution Architect · UAE", note: "Architected the AbaYa-Track Delivery Module: floor events → employee/order map → value engine → delivery dashboard. Recovered AED 111K in trapped backlog (11.1:1 V:C)." },
-  { year: "2026", role: "MIT Hacknation 2026", place: "Next Top Project · MIT Sloan AI Club", note: "24-hour global sprint, 1,000+ devs, 65+ countries. Built SmartSwap: intent-driven token swapping for SMB websites, Team Xerox with Abhishek Kumar." },
-  { year: "2025", role: "Wavelink", place: "CTA · GCC", note: "NFC digital business cards + Review Stand for personal brands and businesses. Reputation management & verified trust signals for the AI-driven economy." },
-  { year: "2024", role: "Deep Blue Digital", place: "Co-founder · Dubai", note: "AI-driven marketing automation. Engaze.ai integration. 50+ sellers." },
-  { year: "2023", role: "HNM IT", place: "Frankfurt · IT Support", note: "99.9% uptime. MTTR: industry-leading." },
+  { year: "2019", role: "MSc Computational Methods of Engineering", place: "Leibniz University Hannover · DE", note: "Fundamental learning. Numerical methods on top of mechanical foundations. The pivot that made everything since possible — Germany, then the Gulf." },
+  { year: "2020", role: "German language and culture adoption", place: "B2 Goethe Zertifikat · Hannover", note: "From A2 to working-fluency. The trains run on the minute and so should you. German is a precision instrument — it teaches you to think in compound nouns." },
+  { year: "2021", role: "Cross-cultural training", place: "AIESEC Hannover · VP", note: "Placed 2 interns with German companies. Unblocked the team's payment-due issues while handling a team of 5. Different lens on the same autumn cohort. The year I learned to run a room full of strangers." },
+  { year: "2021", role: "Strategy, foundations & adaptive learning", place: "Self-directed · 2019–2021", note: "Crafted the strategy and planning for career-changing skillsets. Foundational learning about technology, organization, and how to adapt with the changing technological environment and AI. The year I learned to learn — and to unlearn." },
   { year: "2022", role: "42 Wolfsburg", place: "Peer · C/C++", note: "2 years of intensive peer programming. The fundamentals." },
   { year: "2022", role: "phaeno gGmbH", place: "Robotics mentor", note: "Taught kids to build robots. Built my teaching in return." },
+  { year: "2023", role: "HNM IT", place: "Frankfurt · IT Support", note: "99.9% uptime. MTTR: industry-leading." },
+  { year: "2024", role: "Deep Blue Digital", place: "Co-founder · Dubai", note: "AI-driven marketing automation. Engaze.ai integration. 50+ sellers." },
+  { year: "2025", role: "Wavelink", place: "CTA · GCC", note: "NFC digital business cards + Review Stand for personal brands and businesses. Reputation management & verified trust signals for the AI-driven economy." },
+  { year: "2026", role: "MIT Hacknation 2026", place: "Next Top Project · MIT Sloan AI Club", note: "24-hour global sprint, 1,000+ devs, 65+ countries. Built SmartSwap: intent-driven token swapping for SMB websites, Team Xerox with Abhishek Kumar." },
+  { year: "2026", role: "Famous Abaya LLC", place: "AI Solution Architect · UAE", note: "Architected the AbaYa-Track Delivery Module: floor events → employee/order map → value engine → delivery dashboard. Recovered AED 111K in trapped backlog (11.1:1 V:C)." },
 ] as const;
 
 export function PathTimeline() {
@@ -41,7 +44,7 @@ export function PathTimeline() {
             </h2>
           </div>
           <div className="cin-section-eyebrow text-right">
-            <div>9 stops · 3 languages</div>
+            <div>12 stops · 3 languages</div>
           </div>
         </div>
 

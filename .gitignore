@@ -8,6 +8,13 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dev server runtime artifacts (verification-evidence is otherwise useful)
+verification-evidence/app.pid
+verification-evidence/app.out
+verification-evidence/app.err
+verification-evidence/dev-stdout.log
+verification-evidence/dev-stderr.log
+
 node_modules
 dist
 dist-ssr
