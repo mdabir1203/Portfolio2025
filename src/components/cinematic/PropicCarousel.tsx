@@ -33,40 +33,39 @@ import portraitArchitect from "@/assets/abir-2026.webp";
  *   Closer      : translateY 60 → 0,        opacity 0→1, 0.8 s, cubic(0.2,0.8,0.2,1)
  *
  * The carousel compresses the most dramatic of these — entrancePop —
- * into every 1.15 s cycle, then layers on two more beats from the
- * sheet: a **direction split** (first 3 slides tilt CCW, last 3
- * tilt CW — like the Accent and Main-Subject tiles entering from
- * opposite edges of the bento) and a **Z-axis wiggle** (scale
- * pulses 0.78 → 1.13 → 0.94 → 1.06 → 0.99 → 1, simulating the photo
- * wobbling toward and away from the camera as it lands).
+ * into every 1.9 s cycle (was 1.15 s — slowed down so each photo gets
+ * enough on-screen time to read), then layers on two more beats from
+ * the sheet: a **direction split** (first 3 slides tilt CCW, last 3
+ * tilt CW) and a **Z-axis wiggle** (4-keyframe scale oscillation, was
+ * 6 — fewer states per cycle so the eye can follow the photo instead
+ * of strobing through micro-bounces).
  *
  *   Direction split
- *     Slides 0-2 (DRIFTER, ARRIVED, GROUNDED)  : rotate initial = -16°
+ *     Slides 0-2 (DRIFTER, ARRIVED, GROUNDED)  : rotate initial = -12°
  *                                                enter rotates CCW → settles 0°
- *     Slides 3-5 (EXPRESSIVE, SPEAKER, ARCHITECT): rotate initial = +16°
+ *     Slides 3-5 (EXPRESSIVE, SPEAKER, ARCHITECT): rotate initial = +12°
  *                                                enter rotates CW → settles 0°
  *
- *   Z-axis wiggle (5-keyframe scale oscillation)
- *     [0.78, 1.13, 0.94, 1.06, 0.99, 1]    cubic(0.34, 1.56, 0.64, 1), 0.65 s
- *     Reads as the photo popping toward the camera, then bouncing
- *     back away, then settling — the depth-pulse the sheet implies
- *     with its loopBob + loopBreathe recipes.
+ *   Z-axis wiggle (4-keyframe scale oscillation)
+ *     [0.82, 1.07, 0.98, 1]    cubic(0.34, 1.56, 0.64, 1), 0.95 s
+ *     Reads as the photo dropping in, micro-popping toward the camera,
+ *     settling. One breath instead of three.
  *
- *   Photo enter   : scale [0.78, 1.13, 0.94, 1.06, 0.99, 1]
- *                   rotate [±16, ∓8, ±4, ∓2, ±1, 0]  (Z wiggle on top)
- *                   y [14, -4, 2, -1, 0]
+ *   Photo enter   : scale [0.82, 1.07, 0.98, 1]
+ *                   rotate [±12, ∓4, ±1.5, 0]
+ *                   y [16, -3, 1, 0]
  *                   opacity 0 → 1
- *                   cubic(0.34, 1.56, 0.64, 1), 0.65 s
- *   Photo exit    : scale 1 → 0.92, rotate 0° → ±7°, y 0 → -10
+ *                   cubic(0.34, 1.56, 0.64, 1), 0.95 s
+ *   Photo exit    : scale 1 → 0.94, rotate 0° → ±5°, y 0 → -8
  *                   (continues in the same rotational direction it entered)
- *                   0.28 s easeIn
- *   Halo          : scale [0.88, 1.28, 1], opacity [0.55, 1, 0.85]
- *                   1.15 s easeInOut, syncs with the slide change
- *   Available dot : scale [0.82, 1.22, 1], opacity [0.85, 1, 0.9]
- *                   1.15 s easeInOut, beats with the halo
- *   Identity word : scale [0.78, 1.12, 0.96, 1], y [18, -4, 1, 0]
- *                   rotate [±5, ∓2.5, ±1, 0], opacity 0 → 1
- *                   cubic(0.34, 1.56, 0.64, 1), 0.55 s
+ *                   0.4 s easeIn
+ *   Halo          : scale [0.88, 1.20, 1], opacity [0.55, 1, 0.85]
+ *                   1.9 s easeInOut, syncs with the slide change
+ *   Available dot : scale [0.85, 1.16, 1], opacity [0.85, 1, 0.9]
+ *                   1.9 s easeInOut, beats with the halo
+ *   Identity word : scale [0.84, 1.06, 0.98, 1], y [14, -2, 1, 0]
+ *                   rotate [±4, ∓1.5, ±0.5, 0], opacity 0 → 1
+ *                   cubic(0.34, 1.56, 0.64, 1), 0.75 s
  *                   colour flash from sun-yellow (#f4a261) to accent-teal
  *                   over 0.4 s
  *
@@ -143,8 +142,11 @@ const SLIDES: Slide[] = [
   },
 ];
 
-/** Cycle period in ms. 1.15 s per slide ≈ 6.9 s full loop. */
-const CYCLE_MS = 1150;
+/** Cycle period in ms. 1.9 s per slide ≈ 11.4 s full loop.
+    Slowed from 1.15 s → 1.9 s so each photo gets enough on-screen time
+    to read; the bounce plays out over a longer window instead of feeling
+    like a strobe. */
+const CYCLE_MS = 1900;
 
 /** Overshoot ease used by the motion sheet's entranceScale / entrancePop.
     Slightly punchier than the default ease-out, gives the bounce-in. */
@@ -170,42 +172,45 @@ function useIsMobile() {
   return isMobile;
 }
 
-/** Motion recipes by viewport. Mobile values:
- *   - smaller rotation amplitudes (±6° vs ±16°)
- *   - fewer keyframes (3 vs 6) — quicker, easier to read
- *   - shorter durations (0.45 s vs 0.65 s)
- *   - softer overshoot curve
- * Desktop values keep the full Bento Burst DNA. */
+/** Motion recipes by viewport. Slower + fewer-keyframe than v3:
+ *   - 4-keyframe pop (was 6) — the wiggle settles in one breath instead
+ *     of three, so the eye can follow the photo
+ *   - Longer durations: 0.95 s desktop, 0.7 s mobile
+ *   - Reduced scale overshoot: 1.10 → 1.07 desktop, 1.06 mobile
+ *   - Reduced rotate amplitude: 16° → 12° desktop, 6° → 5° mobile
+ *   - Slightly larger drop (y: 16 → 18) to compensate for slower timing
+ *     — gives the photo "weight" as it lands
+ * Mobile values are still gentler so text stays legible mid-cycle. */
 const RECIPES = {
   desktop: {
-    rot: [16, -8, 4, -2, 1, 0] as const,
-    rotInitial: 16,
-    rotExit: 7,
-    scale: [0.78, 1.13, 0.94, 1.06, 0.99, 1] as const,
-    y: [14, -4, 2, -1, 0, 0] as const,
-    enterDur: 0.65,
-    exitDur: 0.28,
+    rot: [12, -4, 1.5, 0] as const,
+    rotInitial: 12,
+    rotExit: 5,
+    scale: [0.82, 1.07, 0.98, 1] as const,
+    y: [16, -3, 1, 0] as const,
+    enterDur: 0.95,
+    exitDur: 0.4,
     ease: SPRING,
-    times: [0, 0.32, 0.55, 0.74, 0.88, 1] as const,
+    times: [0, 0.45, 0.75, 1] as const,
   },
   mobile: {
-    // gentler 3-keyframe — pop, micro-bounce, settle
-    rot: [6, -2, 0.5, 0] as const,
-    rotInitial: 6,
-    rotExit: 3,
-    scale: [0.88, 1.05, 0.99, 1] as const,
-    y: [8, -2, 1, 0] as const,
-    enterDur: 0.45,
-    exitDur: 0.22,
+    // gentler 4-keyframe — drop, small pop, settle, rest
+    rot: [5, -1.5, 0.5, 0] as const,
+    rotInitial: 5,
+    rotExit: 2.5,
+    scale: [0.92, 1.04, 0.99, 1] as const,
+    y: [9, -2, 1, 0] as const,
+    enterDur: 0.7,
+    exitDur: 0.32,
     ease: SPRING_SOFT,
-    times: [0, 0.5, 0.78, 1] as const,
+    times: [0, 0.45, 0.75, 1] as const,
   },
 };
 
 /** Per-slide "imperfect" jitter — a small translateX offset that varies
     across the 6 slides so the carousel feels organic, not mechanical.
     Desktop only — mobile drops it so the photo stays centered. */
-const JITTER_X_DESKTOP = [-6, 4, -3, 5, -4, 6] as const;
+const JITTER_X_DESKTOP = [-5, 3, -3, 4, -3, 5] as const;
 
 export interface PropicCarouselProps {
   /** Optional extra className applied to the outer wrapper. */
@@ -257,14 +262,15 @@ export function PropicCarousel({ className }: PropicCarouselProps) {
           className="absolute -inset-3 rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(15,117,105,0.38),rgba(244,162,97,0.24)_45%,transparent_70%)] blur-md"
         />
 
-        {/* Crossfading image stack. Each slide slams into place with the
-            motion sheet's entrancePop recipe, then layers on:
-              • Direction split — first 3 slides tilt CCW (-16° initial),
-                last 3 tilt CW (+16° initial). The opposite edges of the
+        {/* Crossfading image stack. Each slide drops into place with the
+            motion sheet's entrancePop recipe (slowed — 0.95 s enter vs
+            the original 0.65 s), then layers on:
+              • Direction split — first 3 slides tilt CCW (-12° initial),
+                last 3 tilt CW (+12° initial). The opposite edges of the
                 bento grid.
-              • Z-axis wiggle — 5-keyframe scale oscillation
-                [0.78, 1.13, 0.94, 1.06, 0.99, 1] simulates the photo
-                wobbling toward and away from the camera as it lands.
+              • Z-axis wiggle — 4-keyframe scale oscillation
+                [0.82, 1.07, 0.98, 1] simulates the photo dropping in,
+                micro-popping toward the camera, settling. One breath.
             Exit continues in the same rotational direction it entered,
             so CCW slides leave CCW and CW slides leave CW. */}
         <div
