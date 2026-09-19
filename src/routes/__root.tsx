@@ -37,9 +37,13 @@ const ALIASES = [
   "Abir",
   "mdabir1203",
 ];
-const TITLE = "Mohammad Abir Abbas — AI Architect, Solutions & Platform Engineer in Dubai, UAE";
+const TITLE = "Mohammad Abir Abbas — Creative Technologist, AI Strategist & Emerging Technology Architect · Dubai, UAE";
 const DESCRIPTION =
-  "Mohammad Abir Abbas — AI Architect and Solutions Engineer in Dubai, UAE. I design AI agent workflows, process automation, and platform tooling that ship to GCC production — Dubai, Abu Dhabi, Saudi Arabia, and global remote teams. Built AbaYa-Track (AED 111K recovered, 11.1:1 V:C). Available Q3 2026.";
+  "Mohammad Abir Abbas — Creative Technologist, AI Strategist & Emerging Technology Architect in Dubai, UAE. Working at the intersection of AI, product, systems architecture, business strategy and physical operations — helping founders, SMEs and enterprises across the GCC turn emerging technologies into business advantage. Built AbaYa-Track (AED 111K recovered, 11.1:1 V:C). Available Q3 2026.";
+const ROLE_LINE =
+  "Creative Technologist, AI Strategist & Emerging Technology Architect · Dubai, UAE";
+const OPERATING_PRINCIPLE =
+  "Sense → Understand → Predict → Decide → Act → Measure → Learn. AI should not simply generate information — it should improve how an organization operates.";
 
 const ALTERNATE_NAMES = [
   "Mohammad Abir Abbas",
@@ -61,7 +65,7 @@ const PERSON_LD = {
   alternateName: ALTERNATE_NAMES,
   url: SITE_URL,
   image: `${SITE_URL}/og-image.png`,
-  jobTitle: "AI Architect, Solutions & Platform Engineer",
+  jobTitle: "Creative Technologist, AI Strategist & Emerging Technology Architect",
   description: DESCRIPTION,
   email: "mailto:abir.abbas@proton.me",
   telephone: "+971-54-361-8066",
@@ -252,7 +256,7 @@ const PROFILE_PAGE_LD = {
     cssSelector: ["h1", "section.hero p", "[data-speakable]"],
   },
   keywords:
-    "AI Architect Dubai, AI Architect UAE, AI Engineer Dubai, Solutions Engineer Dubai, Platform Engineer UAE, Developer Experience, React Native Dubai, Cloudflare Workers, AI agent workflows, GCC AI talent, Saudi Arabia AI, Riyadh AI, NEOM, remote AI engineer, multilingual engineer, MENA AI",
+    "Creative Technologist Dubai, AI Strategist UAE, Emerging Technology Architect GCC, AI Engineer Dubai, Solutions Engineer Dubai, Platform Engineer UAE, Developer Experience, React Native Dubai, Cloudflare Workers, AI agent workflows, GCC AI talent, Saudi Arabia AI, Riyadh AI, NEOM, remote AI engineer, multilingual engineer, MENA AI, technology leverage, GCC founders, GCC SMEs, GCC enterprises",
 };
 
 // ── BreadcrumbList (for the home route) ────────────────────────────────────
@@ -278,7 +282,7 @@ const FAQ_LD = {
       name: "Who is Mohammad Abir Abbas?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Mohammad Abir Abbas is an AI Architect, Solutions Engineer, and Platform Engineer based in Dubai, UAE. He deploys AI agent workflows, process automation, and cross-cultural product engineering for GCC enterprise and global remote teams. MIT Hacknation 2026 Next Best, Redis Side Quest Winner 2024, 325K+ Medium readers.",
+        text: "Mohammad Abir Abbas is a Creative Technologist, AI Strategist & Emerging Technology Architect based in Dubai, UAE. He works at the intersection of AI, product, systems architecture, business strategy and physical operations — helping founders, SMEs and enterprises across the GCC turn emerging technologies into business advantage. MIT Hacknation 2026 Next Best, Redis Side Quest Winner 2024, 325K+ Medium readers.",
       },
     },
     {
@@ -326,7 +330,7 @@ const FAQ_LD = {
       name: "What kind of roles is Abir looking for?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Mid-level roles in AI Architecture, Solutions Engineering, Platform Engineering, or Developer Experience. UAE (Dubai/Abu Dhabi), Saudi Arabia (Riyadh/NEOM), or global remote. Salary band: AED 18,000 – 25,000 / month in the GCC.",
+        text: "Mid-level roles where Creative Technology, AI Strategy and Emerging Technology Architecture compound — Solutions Engineering, Platform Engineering, Developer Experience, or AI Product Leadership. UAE (Dubai/Abu Dhabi), Saudi Arabia (Riyadh/NEOM), or global remote. Salary band: AED 18,000 – 25,000 / month in the GCC.",
       },
     },
     {
@@ -367,14 +371,14 @@ export const Route = createRootRoute({
       {
         name: "keywords",
         content:
-          "AI Architect Dubai, AI Architect UAE, AI Engineer Dubai, AI Architect GCC, Solutions Engineer Dubai, Platform Engineer UAE, Developer Experience Dubai, React Native Dubai, Cloudflare Workers developer, AI agent workflows, LangChain engineer, process automation GCC, MENA AI talent, Saudi Arabia AI architect, Riyadh AI engineer, NEOM, multilingual engineer, Bengali AI engineer, Bangladeshi AI engineer, remote AI engineer, MLOps, RAG engineer, edge AI, AbaYa-Track, SmartSwap, RedAGPT, Mohammad Abir Abbas, Abir Abbas, mdabir1203, Wavelink",
+          "Creative Technologist Dubai, AI Strategist UAE, Emerging Technology Architect GCC, AI Engineer Dubai, Solutions Engineer Dubai, Platform Engineer UAE, Developer Experience Dubai, React Native Dubai, Cloudflare Workers developer, AI agent workflows, LangChain engineer, process automation GCC, MENA AI talent, Saudi Arabia AI architect, Riyadh AI engineer, NEOM, multilingual engineer, Bengali AI engineer, Bangladeshi AI engineer, remote AI engineer, MLOps, RAG engineer, edge AI, AbaYa-Track, SmartSwap, RedAGPT, Mohammad Abir Abbas, Abir Abbas, mdabir1203, Wavelink",
       },
-      { name: "subject", content: "AI Architect & Solutions Engineer portfolio" },
-      { name: "Classification", content: "Technology, AI, Software Engineering" },
+      { name: "subject", content: "Creative Technologist, AI Strategist & Emerging Technology Architect portfolio" },
+      { name: "Classification", content: "Technology, AI, Software Engineering, Creative Technology" },
       { name: "designer", content: FULL_NAME },
       { name: "owner", content: FULL_NAME },
       { name: "reply-to", content: "abir.abbas@proton.me" },
-      { name: "category", content: "AI Architecture, Solutions Engineering, Platform Engineering" },
+      { name: "category", content: "Creative Technology, AI Strategy, Emerging Technology Architecture" },
 
       // Open Graph
       { property: "og:type", content: "profile" },
@@ -390,7 +394,7 @@ export const Route = createRootRoute({
       { property: "og:image:type", content: "image/png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "Mohammad Abir Abbas — AI Architect, Solutions & Platform Engineer in Dubai, UAE" },
+      { property: "og:image:alt", content: "Mohammad Abir Abbas — Creative Technologist, AI Strategist & Emerging Technology Architect in Dubai, UAE" },
       { property: "og:determiner", content: "" },
       { property: "og:see_also", content: "https://github.com/mdabir1203" },
       { property: "og:see_also", content: "https://medium.com/@md.abir1203" },
@@ -407,9 +411,9 @@ export const Route = createRootRoute({
       { name: "twitter:site", content: "@mdabir1203" },
       { name: "twitter:creator", content: "@mdabir1203" },
       { name: "twitter:image", content: `${SITE_URL}/og-image.png` },
-      { name: "twitter:image:alt", content: "Mohammad Abir Abbas — AI Architect, Solutions & Platform Engineer in Dubai, UAE" },
+      { name: "twitter:image:alt", content: "Mohammad Abir Abbas — Creative Technologist, AI Strategist & Emerging Technology Architect in Dubai, UAE" },
       { name: "twitter:label1", content: "Role" },
-      { name: "twitter:data1", content: "AI Architect · Solutions Engineer · Platform Engineer" },
+      { name: "twitter:data1", content: ROLE_LINE },
       { name: "twitter:label2", content: "Location" },
       { name: "twitter:data2", content: "Dubai, UAE (open to KSA & remote)" },
       { name: "twitter:label3", content: "Availability" },
@@ -422,11 +426,11 @@ export const Route = createRootRoute({
       { name: "ICBM", content: "25.2048, 55.2708" },
       { name: "coverage", content: "Worldwide" },
       { name: "distribution", content: "Global" },
-      { name: "target", content: "AI Architect Dubai, AI Engineer UAE, Solutions Engineer GCC, Platform Engineer, Developer Experience, React Native, Cloudflare Workers, MENA AI, Saudi Arabia, Riyadh, NEOM, remote" },
-      { name: "audience", content: "Technical recruiters, hiring managers, engineering leaders in Dubai, Abu Dhabi, Riyadh, NEOM, GCC, and global remote" },
-      { name: "recruitment", content: "Open to AI Architect, Solutions Engineer, Platform Engineer, Developer Experience, React Native roles in UAE, KSA, and remote" },
+      { name: "target", content: "Creative Technologist Dubai, AI Strategist UAE, Emerging Technology Architect GCC, Solutions Engineer GCC, Platform Engineer, Developer Experience, React Native, Cloudflare Workers, MENA AI, Saudi Arabia, Riyadh, NEOM, remote, GCC founders, GCC SMEs, GCC enterprises" },
+      { name: "audience", content: "Founders, technical recruiters, hiring managers, engineering leaders, GCC SMEs and enterprises in Dubai, Abu Dhabi, Riyadh, NEOM, and global remote" },
+      { name: "recruitment", content: "Open to Creative Technologist, AI Strategist, Emerging Technology Architect, Solutions Engineer, Platform Engineer, Developer Experience, React Native roles in UAE, KSA, and remote" },
       { name: "visa-status", content: "UAE Company Visa — no sponsorship required" },
-      { name: "abstract", content: "AI Architect in Dubai shipping production AI agent workflows, process automation, and platform tooling across GCC and global remote teams." },
+      { name: "abstract", content: "Creative Technologist in Dubai turning emerging technologies into business leverage for founders, SMEs and enterprises across the GCC and global remote teams." },
     ],
     links: [
       { rel: "canonical", href: SITE_URL },

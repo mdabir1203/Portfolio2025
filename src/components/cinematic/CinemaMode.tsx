@@ -62,7 +62,7 @@ const BEATS: Beat[] = [
     intoMs: 1400,
     outMs: 1700,
     caption: "Mohammad Abir Abbas.",
-    sub: "AI Architect · Dubai",
+    sub: "Creative Technologist · Dubai",
   },
   {
     id: "work",
@@ -432,7 +432,7 @@ export function CinemaMode() {
                 transition={{ duration: 0.5, delay: 0.55 }}
                 className="mt-4 font-mono text-[11px] tracking-[0.32em] text-paper/65"
               >
-                AI ARCHITECT · DUBAI
+                CREATIVE TECHNOLOGIST · DUBAI
               </motion.div>
             </div>
           </motion.div>

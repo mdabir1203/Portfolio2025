@@ -170,7 +170,7 @@ const ITEM_LIST_LD = {
   "@id": "https://abir.getwaved.ai/work#itemlist",
   name: "Case studies — Mohammad Abir Abbas",
   description:
-    "Quantified case studies from Dubai-based AI Architect Mohammad Abir Abbas, 2024–2026.",
+    "Quantified case studies from Dubai-based Creative Technologist Mohammad Abir Abbas, 2024–2026.",
   itemListOrder: "https://schema.org/ItemListOrderDescending",
   numberOfItems: 5,
   itemListElement: [
@@ -240,24 +240,24 @@ const ITEM_LIST_LD = {
 export const Route = createFileRoute("/work")({
   head: () => ({
     meta: [
-      { title: "Work — Mohammad Abir Abbas · AI Architect Dubai case studies" },
+      { title: "Work — Mohammad Abir Abbas · Creative Technologist Dubai case studies" },
       {
         name: "description",
         content:
-          "Case studies from Dubai-based AI Architect Mohammad Abir Abbas: AbaYa-Track (AED 111K recovered, 11.1:1 V:C), Wavelink GTM, SmartSwap (MIT Hacknation 2026), Deep Blue Digital AI commerce, RedAGPT (Redis 2024). Measurable outcomes across UAE and GCC.",
+          "Case studies from Dubai-based Creative Technologist Mohammad Abir Abbas: AbaYa-Track (AED 111K recovered, 11.1:1 V:C), Wavelink GTM, SmartSwap (MIT Hacknation 2026), Deep Blue Digital AI commerce, RedAGPT (Redis 2024). Measurable outcomes across UAE and GCC.",
       },
       {
         name: "keywords",
         content:
-          "AI case studies Dubai, AbaYa-Track case study, Wavelink Dubai, SmartSwap MIT Hacknation, Deep Blue Digital, RedAGPT Redis, AI Architect UAE, manufacturing visibility Dubai, AED 111K recovery, value to cost ratio, GCC AI projects",
+          "AI case studies Dubai, AbaYa-Track case study, Wavelink Dubai, SmartSwap MIT Hacknation, Deep Blue Digital, RedAGPT Redis, Creative Technologist UAE, manufacturing visibility Dubai, AED 111K recovery, value to cost ratio, GCC AI projects, technology leverage",
       },
-      { property: "og:title", content: "Work — Mohammad Abir Abbas · AI Architect Dubai case studies" },
+      { property: "og:title", content: "Work — Mohammad Abir Abbas · Creative Technologist Dubai case studies" },
       {
         property: "og:description",
         content:
-          "AbaYa-Track · Wavelink · SmartSwap · Deep Blue Digital · RedAGPT — case studies with measurable outcomes from a Dubai-based AI Architect.",
+          "AbaYa-Track · Wavelink · SmartSwap · Deep Blue Digital · RedAGPT — case studies with measurable outcomes from a Dubai-based Creative Technologist.",
       },
-      { name: "twitter:title", content: "Work — Mohammad Abir Abbas · AI Architect Dubai case studies" },
+      { name: "twitter:title", content: "Work — Mohammad Abir Abbas · Creative Technologist Dubai case studies" },
       { name: "twitter:description", content: "AbaYa-Track (AED 111K / 11.1:1 V:C), Wavelink, SmartSwap, RedAGPT — case studies with measurable outcomes." },
     ],
   }),

@@ -54,22 +54,29 @@ export function EditorialHero() {
 
             {/* 2026 AEO answer-first block: 40-60 words, named-entity-dense,
                 positioned immediately after the H1 so AI engines that screenshot
-                the first paragraph get a quotable, complete answer. */}
+                the first paragraph get a quotable, complete answer.
+
+                Realigned with the LinkedIn profile: Creative Technologist,
+                AI Strategist & Emerging Technology Architect — focused on
+                GCC founders, SMEs and enterprises turning emerging
+                technologies into business advantage. */}
             <p className="cin-hero-answer mt-8 max-w-3xl text-base leading-relaxed text-ink-muted md:text-lg">
-              <strong className="text-ink">Mohammad Abir Abbas is an AI
-              Architect, Solutions Engineer, and Platform Engineer based in
-              Dubai, UAE</strong> — deploying AI agent workflows (LangChain,
-              AutoGPT, RAG), process automation, and platform tooling for GCC
-              enterprise and global remote teams. The AbaYa-Track Delivery
-              Module recovered <strong className="text-ink">AED 111,246</strong> of
-              trapped manufacturing backlog in 30 days at 11.1:1 value-to-cost.
-              Available Q3 2026.
+              <strong className="text-ink">Mohammad Abir Abbas is a
+              Creative Technologist, AI Strategist &amp; Emerging
+              Technology Architect based in Dubai, UAE</strong> — working
+              at the intersection of AI, product, systems architecture,
+              business strategy and physical operations. He helps founders,
+              SMEs and enterprises across the GCC turn emerging technologies
+              into business advantage. The AbaYa-Track Delivery Module
+              recovered <strong className="text-ink">AED 111,246</strong> of
+              trapped manufacturing backlog in 30 days at 11.1:1
+              value-to-cost. Available Q3 2026.
             </p>
 
             <p className="cin-hero-pitch mt-6 max-w-2xl text-xl md:text-2xl">
-              I deploy <strong>AI workflows</strong> that protect enterprise
-              assets and recapture thousands of engineering hours — turning
-              {" "}<strong>"magic" tech</strong> into predictable ROI.
+              <strong>Technology is valuable when it creates leverage.</strong>{" "}
+              AI should not simply generate information — it should improve how
+              an organization operates. Sense&nbsp;→&nbsp;Understand&nbsp;→&nbsp;Predict&nbsp;→&nbsp;Decide&nbsp;→&nbsp;Act&nbsp;→&nbsp;Measure&nbsp;→&nbsp;Learn.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">

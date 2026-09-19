@@ -232,7 +232,7 @@ export async function sendDay7(sub: Subscriber): Promise<{ ok: boolean; reason?:
       <tr><td align="center"><table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;">
         <tr><td style="padding:8px 0;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:2px;color:#6b6b6b;text-transform:uppercase;">Ref · ${escapeHtml(sub.code)} · Day 7 · last one</td></tr>
         <tr><td style="padding:8px 0;font-family:Georgia,serif;font-size:28px;color:#0e0e0e;">One question.</td></tr>
-        <tr><td style="padding:16px 0;font-size:16px;line-height:1.6;color:#0e0e0e;">Is there a role on your team in the next 90 days where an AI Architect who ships would help? If yes, <a href="${CAL_URL}" style="color:#0c6b58;font-weight:500;">15 minutes here</a> and I'll bring the case study tailored to your stack. If no, no follow-up, I promise.</td></tr>
+        <tr><td style="padding:16px 0;font-size:16px;line-height:1.6;color:#0e0e0e;">Is there a role on your team in the next 90 days where a Creative Technologist who ships would help? If yes, <a href="${CAL_URL}" style="color:#0c6b58;font-weight:500;">15 minutes here</a> and I'll bring the case study tailored to your stack. If no, no follow-up, I promise.</td></tr>
         <tr><td style="padding:24px 0;font-size:16px;color:#0e0e0e;">— Abir</td></tr>
         <tr><td style="padding-top:24px;border-top:1px solid #e5e1d8;font-size:11px;color:#6b6b6b;font-family:ui-monospace,monospace;letter-spacing:1px;">END OF SEQUENCE · UNSUBSCRIBE mailto:abir.abbas@proton.me?subject=unsubscribe</td></tr>
       </table></td></tr>

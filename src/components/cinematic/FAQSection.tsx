@@ -414,12 +414,12 @@ export function FAQSection({
 export const RECRUITER_FAQ: FAQItem[] = [
   {
     q: "Who is Mohammad Abir Abbas, in one paragraph?",
-    a: "Mohammad Abir Abbas is an AI Architect and Solutions Engineer based in Dubai, UAE. He ships AI agent workflows (LangChain, AutoGPT, RAG), process automation, and platform tooling for GCC enterprise and global remote teams. The AbaYa-Track Delivery Module recovered AED 111,246 of trapped manufacturing backlog in 30 days at an 11.1:1 value-to-cost ratio. MIT Hacknation 2026 Next Best, Redis Side Quest Winner 2024.",
+    a: "Mohammad Abir Abbas is a Creative Technologist, AI Strategist & Emerging Technology Architect based in Dubai, UAE. He works at the intersection of AI, product, systems architecture, business strategy and physical operations — helping founders, SMEs and enterprises across the GCC turn emerging technologies into business advantage, from identifying high-value opportunities to designing, building and measuring the systems that make them real. Operating principle: Sense → Understand → Predict → Decide → Act → Measure → Learn. The AbaYa-Track Delivery Module recovered AED 111,246 of trapped manufacturing backlog in 30 days at an 11.1:1 value-to-cost ratio. MIT Hacknation 2026 Next Best, Redis Side Quest Winner 2024.",
     receipt: { label: "Case study", href: "#case-study" },
   },
   {
     q: "Where is Abir based, and where will he actually show up?",
-    a: "Dubai, UAE — already on the ground. UAE Company Visa held, no sponsorship needed. Available Q3 2026 for AI Architect, Solutions Engineer, Platform Engineer, and Developer Experience roles across Dubai, Abu Dhabi, Riyadh, NEOM, and worldwide remote. He'll be in your office on day one, not day thirty.",
+    a: "Dubai, UAE — already on the ground. UAE Company Visa held, no sponsorship needed. Available Q3 2026 for Creative Technologist, AI Strategist, Emerging Technology Architect, Solutions Engineer, Platform Engineer, and Developer Experience roles across Dubai, Abu Dhabi, Riyadh, NEOM, and worldwide remote. He'll be in your office on day one, not day thirty.",
     receipt: { label: "Visa status", href: "https://abir.getwaved.ai/abir.vcf" },
   },
   {
@@ -434,7 +434,7 @@ export const RECRUITER_FAQ: FAQItem[] = [
   },
   {
     q: "What's his salary band, honestly?",
-    a: "AED 18,000 – 25,000 per month in the GCC for a mid-level AI Architect, Solutions Engineer, or Platform Engineer role. Negotiable up for the right scope — Dubai-based, on-shore, no visa cost, no onboarding tax. For comparison, that's 30–40% under the Dubai mid-level market band for someone with shipped AI-to-production experience.",
+    a: "AED 18,000 – 25,000 per month in the GCC for a mid-level Creative Technologist, AI Strategist, Solutions Engineer, or Platform Engineer role. Negotiable up for the right scope — Dubai-based, on-shore, no visa cost, no onboarding tax. For comparison, that's 30–40% under the Dubai mid-level market band for someone with shipped AI-to-production experience.",
     receipt: { label: "Open roles", href: "#contact" },
   },
   {

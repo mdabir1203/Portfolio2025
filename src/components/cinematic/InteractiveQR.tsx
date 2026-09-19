@@ -171,7 +171,7 @@ export function InteractiveQR({ url, label = "Your QR", code }: Props) {
         canShare?: (data: ShareData) => boolean;
       };
       const data: ShareData = {
-        title: "Abir Abbas — AI Architect",
+        title: "Abir Abbas — Creative Technologist",
         text: "Fifteen minutes that pay for themselves. Scan my QR.",
         url,
       };

@@ -5,9 +5,9 @@ const HOWTO_LD = {
   "@context": "https://schema.org",
   "@type": "HowTo",
   "@id": "https://abir.getwaved.ai/recruiter#howto-hire",
-  name: "How to hire Mohammad Abir Abbas (AI Architect, Dubai) in 5 steps",
+  name: "How to hire Mohammad Abir Abbas (Creative Technologist · AI Strategist · Emerging Technology Architect, Dubai) in 5 steps",
   description:
-    "A short, 24-hour hiring flow for technical recruiters and hiring managers who want to bring Mohammad Abir Abbas onto an AI Architect, Solutions Engineer, or Platform Engineer role in Dubai, Abu Dhabi, Riyadh, NEOM, or global remote.",
+    "A short, 24-hour hiring flow for founders, SMEs, technical recruiters and hiring managers who want to bring Mohammad Abir Abbas onto a Creative Technologist, AI Strategist, Emerging Technology Architect, Solutions Engineer, or Platform Engineer role in Dubai, Abu Dhabi, Riyadh, NEOM, or global remote.",
   totalTime: "P1D",
   estimatedCost: { "@type": "MonetaryAmount", currency: "AED", value: "0" },
   tool: [
@@ -57,24 +57,24 @@ export const Route = createFileRoute("/recruiter")({
   head: () => ({
     meta: [
       {
-        title: "Recruiter Brief — Mohammad Abir Abbas · AI Architect Dubai (Q3 2026, no sponsorship)",
+        title: "Recruiter Brief — Mohammad Abir Abbas · Creative Technologist Dubai (Q3 2026, no sponsorship)",
       },
       {
         name: "description",
         content:
-          "Recruiter brief for Mohammad Abir Abbas — AI Architect, Solutions Engineer, and Platform Engineer in Dubai, UAE. Available Q3 2026 across UAE, KSA, and remote. UAE Company Visa, no sponsorship. Recent wins: AbaYa-Track AED 111K recovered (11.1:1 V:C), Wavelink NFC, SmartSwap (MIT Hacknation 2026), RedAGPT (Redis 2024).",
+          "Recruiter brief for Mohammad Abir Abbas — Creative Technologist, AI Strategist & Emerging Technology Architect in Dubai, UAE. Available Q3 2026 across UAE, KSA, and remote. UAE Company Visa, no sponsorship. Recent wins: AbaYa-Track AED 111K recovered (11.1:1 V:C), Wavelink NFC, SmartSwap (MIT Hacknation 2026), RedAGPT (Redis 2024).",
       },
       {
         name: "keywords",
         content:
-          "AI Architect Dubai, AI Architect UAE, AI Engineer Dubai, Solutions Engineer Dubai, Platform Engineer UAE, Developer Experience, React Native Dubai, hire AI Architect, recruiting AI engineer Dubai, GCC AI talent, MENA AI, Saudi Arabia, Riyadh, NEOM, remote AI, Mohammed Abir Abbas, Abir Abbas, mdabir1203, Wavelink, AbaYa-Track",
+          "Creative Technologist Dubai, AI Strategist UAE, Emerging Technology Architect GCC, AI Engineer Dubai, Solutions Engineer Dubai, Platform Engineer UAE, Developer Experience, React Native Dubai, hire Creative Technologist, recruiting AI engineer Dubai, GCC AI talent, MENA AI, Saudi Arabia, Riyadh, NEOM, remote AI, GCC founders, GCC SMEs, GCC enterprises, Mohammed Abir Abbas, Abir Abbas, mdabir1203, Wavelink, AbaYa-Track",
       },
       { name: "robots", content: "index, follow" },
       { property: "og:type", content: "profile" },
       { property: "og:url", content: "https://abir.getwaved.ai/recruiter" },
       {
         property: "og:title",
-        content: "Recruiter Brief — Mohammad Abir Abbas · AI Architect Dubai (Q3 2026, no sponsorship)",
+        content: "Recruiter Brief — Mohammad Abir Abbas · Creative Technologist Dubai (Q3 2026, no sponsorship)",
       },
       {
         property: "og:description",

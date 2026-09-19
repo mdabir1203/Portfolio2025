@@ -46,8 +46,8 @@ export const translations = {
       langSwitch: 'عر',
     },
     hero: {
-      tag: '// AI Architect · Dubai · 2026',
-      pitch: 'I deploy AI workflows that protect enterprise assets and recapture thousands of engineering hours — turning "magic" tech into predictable ROI.',
+      tag: '// Creative Technologist · Dubai · 2026',
+      pitch: 'Technology is valuable when it creates leverage — I help GCC founders, SMEs and enterprises turn emerging technologies into business advantage. Sense → Understand → Predict → Decide → Act → Measure → Learn.',
       emphasisWords: ['AI', 'workflows', 'predictable', 'ROI.'] as readonly string[],
       cta: "Let's Talk",
       linkedin: 'LinkedIn',
@@ -210,9 +210,9 @@ export const translations = {
       langSwitch: 'EN',
     },
     hero: {
-      tag: '// مهندس ذكاء اصطناعي · دبي · 2026',
-      pitch: 'أطرح سير عمل الذكاء الاصطناعي التي تحمي أصول المؤسسات وتستعيد آلاف ساعات الهندسة — محوّلاً التقنية السحرية إلى عائد استثمار متوقع.',
-      emphasisWords: ['الذكاء', 'الاصطناعي', 'استثمار', 'متوقع.'] as readonly string[],
+      tag: '// تقني مبدع · دبي · 2026',
+      pitch: 'التقنية قيّمة عندما تصنع رافعة — أساعد المؤسسين والشركات الصغيرة والمتوسطة والمؤسسات في الخليج على تحويل التقنيات الناشئة إلى ميزة تجارية. استشعر → افهم → توقّع → قرّر → تصرّف → قِس → تعلّم.',
+      emphasisWords: ['التقنية', 'رافعة', 'ميزة', 'تعلّم.'] as readonly string[],
       cta: 'لنتحدث',
       linkedin: 'لينكد إن',
       location: 'دبي، الإمارات · متاح في السعودية وعبر العمل عن بُعد',

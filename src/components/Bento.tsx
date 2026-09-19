@@ -149,7 +149,7 @@ export default function Bento() {
         >
           <img
             src={abir}
-            alt="Mohammad Abir Abbas â€” Creative Technologist and AI Architect"
+            alt="Mohammad Abir Abbas — Creative Technologist, AI Strategist & Emerging Technology Architect"
             className="h-full w-full object-cover grayscale transition-[filter] duration-500 ease-out group-hover:grayscale-0 group-focus-within:grayscale-0"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--bento)] via-transparent to-transparent" />

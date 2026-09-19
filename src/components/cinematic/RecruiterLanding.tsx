@@ -106,15 +106,16 @@ export function RecruiterLanding() {
       <section className="px-6 pb-10 pt-16 md:px-12 md:pb-20 md:pt-24">
         <div className="mx-auto max-w-7xl">
           <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-accent-teal">
-            // AI Architect · Solutions Engineer · Platform Engineer
+            // Creative Technologist · AI Strategist · Emerging Technology Architect
           </div>
           <h1 className="mt-6 max-w-5xl font-display text-5xl leading-[1.05] text-paper md:text-7xl">
-            I deploy AI workflows that ship to GCC production.
+            Technology is valuable when it creates leverage.
           </h1>
           <p className="mt-6 max-w-3xl text-lg text-paper/80 md:text-xl">
-            Mid-level AI Architect and Solutions Engineer based in Dubai. Open to
-            UAE (Dubai · Abu Dhabi), Saudi Arabia (Riyadh · NEOM), and global
-            remote roles. UAE Company Visa held — no sponsorship required.
+            Creative Technologist, AI Strategist &amp; Emerging Technology
+            Architect based in Dubai. Open to UAE (Dubai · Abu Dhabi), Saudi
+            Arabia (Riyadh · NEOM), and global remote roles. UAE Company Visa
+            held — no sponsorship required.
           </p>
 
           {/* CTAs — three routes, recruiter-relevant */}
@@ -317,9 +318,9 @@ const HOWTO_LD = {
   "@context": "https://schema.org",
   "@type": "HowTo",
   "@id": "https://abir.getwaved.ai/recruiter#howto-hire",
-  name: "How to hire Mohammad Abir Abbas (AI Architect, Dubai) in 5 steps",
+  name: "How to hire Mohammad Abir Abbas (Creative Technologist, AI Strategist & Emerging Technology Architect, Dubai) in 5 steps",
   description:
-    "A short, 24-hour hiring flow for technical recruiters and hiring managers who want to bring Mohammad Abir Abbas onto an AI Architect, Solutions Engineer, or Platform Engineer role in Dubai, Abu Dhabi, Riyadh, NEOM, or global remote.",
+    "A short, 24-hour hiring flow for founders, SMEs, technical recruiters and hiring managers who want to bring Mohammad Abir Abbas onto a Creative Technologist, AI Strategist, Emerging Technology Architect, Solutions Engineer, or Platform Engineer role in Dubai, Abu Dhabi, Riyadh, NEOM, or global remote.",
   totalTime: "P1D",
   estimatedCost: { "@type": "MonetaryAmount", currency: "AED", value: "0" },
   tool: [

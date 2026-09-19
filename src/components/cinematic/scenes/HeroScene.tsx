@@ -345,7 +345,7 @@ export function CinematicHero() {
                   <h2 className="font-display text-3xl leading-tight md:text-4xl lg:text-5xl">
                     Creative Technologist
                     <br />
-                    <span className="text-foreground/70">& AI Architect</span>
+                    <span className="text-foreground/70">AI Strategist &amp; Emerging Technology Architect</span>
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2 text-sm text-foreground/70">

@@ -56,7 +56,7 @@ export function PersonalityCollage() {
           </div>
 
           <div className="mt-8 flex flex-wrap gap-2">
-            {['AI Architect', 'Dubai · UAE', 'Q3 2026 available', 'UAE Company Visa'].map((tag) => (
+            {['Creative Technologist', 'AI Strategist', 'Emerging Tech Architect', 'Dubai · UAE', 'Q3 2026 available', 'UAE Company Visa'].map((tag) => (
               <span
                 key={tag}
                 className="rounded-full border border-[#1a1a1a]/15 bg-white/60 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-[#1a1a1a]"

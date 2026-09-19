@@ -44,22 +44,22 @@ export const Route = createFileRoute("/connect")({
   }),
   head: () => ({
     meta: [
-      { title: "Connect with Abir Abbas · AI Architect Dubai · 15 minutes that pay for themselves" },
+      { title: "Connect with Abir Abbas · Creative Technologist Dubai · 15 minutes that pay for themselves" },
       {
         name: "description",
         content:
-          "Book a 15-min chat with Dubai-based AI Architect Mohammad Abir Abbas. Currently AI Solution Architect at Famous Abaya LLC. Recovered AED 111K of trapped manufacturing backlog in 30 days at 11.1:1 V:C. UAE Company Visa, no sponsorship.",
+          "Book a 15-min chat with Dubai-based Creative Technologist Mohammad Abir Abbas. Currently AI Solution Architect at Famous Abaya LLC. Recovered AED 111K of trapped manufacturing backlog in 30 days at 11.1:1 V:C. UAE Company Visa, no sponsorship.",
       },
       {
         name: "keywords",
         content:
-          "hire AI Architect Dubai, contact AI Engineer UAE, AI consultation Dubai, Mohammad Abir Abbas contact, Abir Abbas hiring, AI architect GCC, connect AI Architect Riyadh, NEOM AI architect, remote AI consultation",
+          "hire Creative Technologist Dubai, contact AI Strategist UAE, AI consultation Dubai, Mohammad Abir Abbas contact, Abir Abbas hiring, Creative Technologist GCC, connect Creative Technologist Riyadh, NEOM, remote AI consultation, technology leverage, GCC founders, GCC SMEs, GCC enterprises",
       },
-      { property: "og:title", content: "Connect with Abir Abbas · AI Architect Dubai · 15 minutes that pay for themselves" },
+      { property: "og:title", content: "Connect with Abir Abbas · Creative Technologist Dubai · 15 minutes that pay for themselves" },
       { property: "og:url", content: "https://abir.getwaved.ai/connect" },
-      { property: "og:description", content: "15 minutes with a Dubai AI Architect who recovered AED 111K of trapped backlog in 30 days. UAE Company Visa, no sponsorship." },
-      { name: "twitter:title", content: "Connect with Abir Abbas · AI Architect Dubai" },
-      { name: "twitter:description", content: "15 minutes with a Dubai AI Architect who recovered AED 111K of trapped backlog in 30 days. UAE Company Visa, no sponsorship." },
+      { property: "og:description", content: "15 minutes with a Dubai Creative Technologist who recovered AED 111K of trapped backlog in 30 days. UAE Company Visa, no sponsorship." },
+      { name: "twitter:title", content: "Connect with Abir Abbas · Creative Technologist Dubai" },
+      { name: "twitter:description", content: "15 minutes with a Dubai Creative Technologist who recovered AED 111K of trapped backlog in 30 days. UAE Company Visa, no sponsorship." },
     ],
     links: [
       { rel: "canonical", href: "https://abir.getwaved.ai/connect" },
