@@ -2,7 +2,7 @@ import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/r
 import { LanguageProvider } from "@/contexts/LanguageContext";
 
 import appCss from "../styles.css?url";
-import abirPortrait from "../assets/abir-2026.webp?url";
+import abirPortrait from "../assets/portrait-drifter.webp?url";
 
 function NotFoundComponent() {
   return (
