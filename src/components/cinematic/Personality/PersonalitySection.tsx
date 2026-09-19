@@ -18,7 +18,7 @@ export function PersonalitySection() {
   return (
     <div
       id="personality"
-      className="relative w-full overflow-x-hidden"
+      className="cin-personality-zone relative w-full overflow-x-hidden"
       aria-label="ENFP Personality — Mohammad Abir Abbas"
     >
       <PersonalityHero />

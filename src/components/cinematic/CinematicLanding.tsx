@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { TopNav } from "@/components/cinematic/TopNav";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { ManifestoBar } from "@/components/cinematic/ManifestoBar";
 import { FirstVisitSplash } from "@/components/cinematic/FirstVisitSplash";
 import { PassportBook } from "@/components/cinematic/PassportBook";
@@ -84,6 +85,11 @@ export function CinematicLanding() {
     <div lang={lang} className="cin-landing relative w-full overflow-x-hidden bg-paper text-ink">
       <FirstVisitSplash />
       <TopNav />
+      {/* Theme toggle — fixed top-right, always visible, separate from
+          the menu so it never gets buried inside the dropdown panel. */}
+      <div className="fixed right-4 top-3 z-40 md:right-6 md:top-4">
+        <ThemeToggle />
+      </div>
       <ManifestoBar />
       <PassportBook />
       <main id="main" className="pt-2" tabIndex={-1}>

@@ -27,6 +27,13 @@ import { ThemeToggle } from "@/components/theme/ThemeToggle";
  *     desktop link, separate mobile button — both SSR-rendered.
  *   - All interactive elements have a visible focus ring (focus-visible)
  *     and a 48x48 minimum touch target.
+ *
+ * Theme toggle (light/dark mode): lives in the top-right corner as a
+ * fixed-position element OUTSIDE this header, always visible regardless
+ * of menu state. It's a sibling of the header, not nested inside the
+ * dropdown panel. This keeps the toggle discoverable without forcing the
+ * user to open the menu first, and prevents the panel from being cluttered
+ * with theme controls.
  */
 
 type NavItem = {
@@ -206,12 +213,12 @@ export function TopNav() {
               </a>
             );
           })}
-          {/* Theme toggle — sits at the right edge of the desktop nav */}
-          <ThemeToggle />
         </nav>
       </div>
 
-      {/* Mobile dropdown panel — absolutely positioned below the bar */}
+      {/* Mobile dropdown panel — absolutely positioned below the bar.
+          Theme toggle is NOT inside this panel; it lives in the fixed
+          top-right corner outside the header so it's always discoverable. */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -227,10 +234,10 @@ export function TopNav() {
               id={panelId}
               role="menu"
               aria-label="Primary navigation"
-              className="mx-4 mt-2 overflow-hidden rounded-lg border border-rule bg-paper shadow-[0_24px_64px_-12px_rgba(0,0,0,0.18)]"
+              className="mx-4 mt-2 overflow-hidden rounded-xl border border-rule bg-paper shadow-[0_32px_80px_-12px_rgba(0,0,0,0.35),0_8px_24px_-8px_rgba(0,0,0,0.18)]"
             >
               <nav aria-label="Primary">
-                <ul role="none" className="flex flex-col py-1">
+                <ul role="none" className="flex flex-col">
                   {NAV_ITEMS.map((item, i) => {
                     const isCurrent =
                       activeId !== null && item.href === `#${activeId}`;
@@ -244,10 +251,10 @@ export function TopNav() {
                           aria-current={isCurrent ? "page" : undefined}
                           target={item.external ? "_blank" : undefined}
                           rel={item.external ? "noreferrer" : undefined}
-                          className={`flex min-h-[48px] items-center gap-2 px-5 py-3 text-base transition-colors hover:bg-ink/5 focus-visible:bg-ink/5 focus-visible:outline-none ${
+                          className={`flex min-h-[48px] items-center gap-2 px-5 py-3 text-base font-medium transition-colors hover:bg-ink/5 focus-visible:bg-ink/5 focus-visible:outline-none ${
                             item.emphasis
-                              ? "font-semibold text-ink"
-                              : "text-ink-muted"
+                              ? "text-ink"
+                              : "text-ink"
                           }`}
                         >
                           {item.prefix && (
@@ -270,14 +277,27 @@ export function TopNav() {
                     );
                   })}
                 </ul>
-                {/* Theme toggle — sits below the nav items with a subtle
-                    top border, matching the panel's typographic system. */}
-                <div className="border-t border-rule px-1 py-1">
-                  <ThemeToggle variant="panel" />
-                </div>
               </nav>
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Full-viewport scrim — appears whenever the mobile menu is open
+          so content behind the panel is dimmed (not bleeding through).
+          Hidden on desktop where the dropdown is not used. */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            key="mobile-nav-scrim"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+            className="fixed inset-0 top-[64px] z-[-1] bg-ink/40 backdrop-blur-[2px] md:hidden"
+            data-mobile-nav-scrim
+            aria-hidden="true"
+          />
         )}
       </AnimatePresence>
     </header>

@@ -436,6 +436,67 @@
   }
 }
 
+/* === Cinematic Personality zone — dark mode overrides ===
+ * The Personality chapter (Hero / MoodDial / Strip / Wall / Collage)
+ * intentionally hardcodes its cream-and-ink palette (#f6f1e8 paper,
+ * #1a1a1a ink, #3a3a3a body, #4a4a4a muted, #6a6a6a faint) so the
+ * editorial warmth reads in light mode. In dark mode we swap those
+ * hex values to the theme tokens — without refactoring every component
+ * file. The selectors use Tailwind's atomic-class attribute pattern
+ * (`[class*="bg-[#f6f1e8]"]`) so we win against arbitrary-value utility
+ * rules regardless of declaration order. The `!important` is the safety
+ * net for specificity. ENFP dimension accents (#0f7569 teal,
+ * #c95f3b amber-red, #5d6cc4 indigo, #c89241 gold) are kept — they
+ * already clear AA on both paper surfaces.
+ */
+.dark .cin-personality-zone {
+  color: var(--ink);
+}
+.dark .cin-personality-zone [class*="bg-[#f6f1e8]"] {
+  background-color: var(--background) !important;
+}
+.dark .cin-personality-zone [class*="bg-white"] {
+  background-color: var(--paper-2) !important;
+}
+.dark .cin-personality-zone [class*="text-[#1a1a1a]"] {
+  color: var(--ink) !important;
+}
+.dark .cin-personality-zone [class*="text-[#3a3a3a]"] {
+  color: var(--ink-muted) !important;
+}
+.dark .cin-personality-zone [class*="text-[#4a4a4a]"] {
+  color: var(--ink-muted) !important;
+}
+.dark .cin-personality-zone [class*="text-[#6a6a6a]"] {
+  color: var(--ink-faint) !important;
+}
+.dark .cin-personality-zone [class*="border-[#1a1a1a]"] {
+  border-color: var(--rule) !important;
+}
+.dark .cin-personality-zone [class*="border-black"] {
+  border-color: var(--rule) !important;
+}
+/* Edge fade gradients over the cream bg (left/right of PersonalityStrip).
+ * Tailwind encodes `from-[#f6f1e8]` as `--tw-gradient-from: #f6f1e8`. */
+.dark .cin-personality-zone [class*="from-[#f6f1e8]"] {
+  --tw-gradient-from: var(--background) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+/* Focus rings offset the cream bg; in dark mode they should offset the dark canvas. */
+.dark .cin-personality-zone [class*="ring-offset-[#f6f1e8]"] {
+  --tw-ring-offset-color: var(--background) !important;
+}
+/* Selection highlight (teal) sits on cream in light mode, dark canvas here. */
+.dark .cin-personality-zone ::selection {
+  background: var(--accent-teal);
+  color: var(--background);
+}
+/* Three.js constellation ambient light uses #f6f1e8 — push it warmer
+ * for dark mode so the ENFP starfield still reads "warm". */
+.dark .cin-personality-zone canvas {
+  filter: hue-rotate(-10deg) saturate(0.9);
+}
+
 @media print {
   @page { size: A4; margin: 12mm; }
   :root {
