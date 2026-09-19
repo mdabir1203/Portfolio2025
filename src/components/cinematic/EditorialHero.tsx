@@ -1,10 +1,82 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Mail, ArrowUpRight, MapPin } from "lucide-react";
 import { BrandMark } from "@/components/brand/BrandMark";
 import { Magnetic } from "./microinteractions/Magnetic";
 import { PulseDot } from "./microinteractions/PulseDot";
 import { PropicCarousel } from "./PropicCarousel";
 import { useReducedMotion } from "framer-motion";
+
+/**
+ * Typewriter — single-pass text-reveal animation.
+ *
+ * Renders the full string char-by-char with a blinking caret. On
+ * prefers-reduced-motion the full string is shown immediately and the
+ * caret is omitted. The caret is decorative (`aria-hidden`); the full
+ * text lives in an `.sr-only` span so screen readers announce the whole
+ * sentence in one go instead of one character per re-render.
+ *
+ * Pauses a beat (`delay`) before starting so it doesn't collide with
+ * the page-paint fade or the hero eyebrow's PulseDot.
+ */
+function Typewriter({
+  text,
+  speed = 38,
+  delay = 320,
+  className,
+}: {
+  text: string;
+  speed?: number;
+  delay?: number;
+  className?: string;
+}) {
+  const reduce = useReducedMotion();
+  const [shown, setShown] = useState(reduce ? text : "");
+  const [done, setDone] = useState(reduce);
+
+  useEffect(() => {
+    if (reduce) {
+      setShown(text);
+      setDone(true);
+      return;
+    }
+    setShown("");
+    setDone(false);
+    let i = 0;
+    let tickId = 0;
+    let delayId = 0;
+    delayId = window.setTimeout(() => {
+      const tick = () => {
+        i += 1;
+        if (i >= text.length) {
+          setShown(text);
+          setDone(true);
+          return;
+        }
+        setShown(text.slice(0, i));
+        tickId = window.setTimeout(tick, speed);
+      };
+      tick();
+    }, delay);
+    return () => {
+      window.clearTimeout(delayId);
+      window.clearTimeout(tickId);
+    };
+  }, [text, speed, delay, reduce]);
+
+  return (
+    <span className={className}>
+      <span className="sr-only">{text}</span>
+      <span aria-hidden="true">{shown}</span>
+      {!done && (
+        <span
+          aria-hidden="true"
+          className="ml-0.5 inline-block h-[0.85em] w-[3px] translate-y-[3px] bg-current align-baseline"
+          style={{ animation: "cin-caret 0.9s steps(1) infinite" }}
+        />
+      )}
+    </span>
+  );
+}
 
 /**
  * EditorialHero — calm, type-led. KillerPortfolio style.
@@ -46,7 +118,24 @@ export function EditorialHero() {
               <span>Dubai, UAE · Open to KSA &amp; remote</span>
             </div>
 
-            <h1 className="cin-hero-name text-[clamp(2.8rem,9vw,7.5rem)]">
+            {/* Single operating quote — typewriter-revealed above the H1 so
+                it's the first thing the page says. Sits between the eyebrow
+                and the name so the eye lands on it before scanning the
+                identity line. */}
+            <p
+              aria-label="Technology is valuable when it creates leverage."
+              className="cin-hero-quote font-display text-[clamp(1.5rem,3.4vw,2.4rem)] leading-[1.18] text-ink"
+            >
+              <span aria-hidden="true" className="mr-2 select-none text-[color:var(--accent-teal)]">“</span>
+              <Typewriter
+                text="Technology is valuable when it creates leverage."
+                speed={42}
+                delay={280}
+              />
+              <span aria-hidden="true" className="ml-1 select-none text-[color:var(--accent-teal)]">”</span>
+            </p>
+
+            <h1 className="cin-hero-name mt-6 text-[clamp(2.8rem,9vw,7.5rem)]">
               Mohammad
               <br />
               Abir <em>Abbas.</em>
@@ -71,12 +160,6 @@ export function EditorialHero() {
               recovered <strong className="text-ink">AED 111,246</strong> of
               trapped manufacturing backlog in 30 days at 11.1:1
               value-to-cost. Available Q3 2026.
-            </p>
-
-            <p className="cin-hero-pitch mt-6 max-w-2xl text-xl md:text-2xl">
-              <strong>Technology is valuable when it creates leverage.</strong>{" "}
-              AI should not simply generate information — it should improve how
-              an organization operates. Sense&nbsp;→&nbsp;Understand&nbsp;→&nbsp;Predict&nbsp;→&nbsp;Decide&nbsp;→&nbsp;Act&nbsp;→&nbsp;Measure&nbsp;→&nbsp;Learn.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">

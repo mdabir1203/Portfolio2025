@@ -19,7 +19,7 @@ import portraitArchitect from "@/assets/abir-2026.webp";
  * ── Motion DNA: "Bento Burst" ─────────────────────────────────────────
  *
  * Inspired by the "Summer Splash Transitions" motion sheet, which
- * encodes four entrance recipes on a bento grid:
+ * encodes five entrance recipes on a bento grid:
  *
  *   Hero        : scale 0.85 → 1.03 → 1,    opacity 0→1, 0.8 s, overshoot
  *                 loopPulse  scale 1 ↔ 1.02, 4 s ease-in-out
@@ -30,25 +30,30 @@ import portraitArchitect from "@/assets/abir-2026.webp";
  *                 loopWiggle rotate -3° ↔ 3°, 2.5 s
  *   Main Subject: translateX 60 → 0,         opacity 0→1, 0.9 s, cubic(0.25,1,0.5,1)
  *                 loopBreathe scaleY 1 ↔ 1.015, 4 s
+ *   Closer      : translateY 60 → 0,        opacity 0→1, 0.8 s, cubic(0.2,0.8,0.2,1)
  *
- * The carousel compresses these into a 1.15 s cycle without losing
- * the bouncy character. Keyframes are tuned so the photo *settles*
- * into place (scale 0.85 → 1.06 → 0.98 → 1, rotate -6° → 2° → -1° → 0°)
- * — the overshoot + counter-overshoot gives the wiggle-into-place
- * the motion sheet calls "entrancePop". Identity words use the same
- * overshoot curve with a translateY drop-in for a "drop & bounce".
+ * The carousel compresses the most dramatic of these — entrancePop —
+ * into every 1.15 s cycle. Each photo whips into place with a full
+ * four-axis animation (scale + rotate + drop-in + opacity), like the
+ * Highlight tile being slammed onto the bento grid and rebounding.
+ * Keyframes are tuned so the photo *settles* into place
+ * (scale 0.80 → 1.10 → 0.97 → 1, rotate -12° → 5° → -2° → 0°,
+ *  y 14 → -4 → 1 → 0) — the overshoot + counter-overshoot gives the
+ * "wiggle-into-place" the motion sheet calls entrancePop. Identity
+ * words use the same recipe with a stronger drop & bounce.
  *
- *   Photo enter   : scale [0.85, 1.06, 0.98, 1]  rotate [-6, 2, -1, 0]
- *                   opacity 0 → 1
- *                   cubic(0.34, 1.56, 0.64, 1), 0.5 s
- *   Photo exit    : scale 1 → 0.94, rotate 0° → 5°
+ *   Photo enter   : scale [0.80, 1.10, 0.97, 1]  rotate [-12, 5, -2, 0]
+ *                   y [14, -4, 1, 0]  opacity 0 → 1
+ *                   cubic(0.34, 1.56, 0.64, 1), 0.6 s
+ *   Photo exit    : scale 1 → 0.92, rotate 0° → 7°, y 0 → -10
  *                   0.28 s easeIn
- *   Halo          : scale [0.92, 1.22, 1], opacity [0.65, 1, 0.85]
+ *   Halo          : scale [0.88, 1.28, 1], opacity [0.55, 1, 0.85]
  *                   1.15 s easeInOut, syncs with the slide change
- *   Available dot : scale [0.85, 1.18, 1], opacity [0.85, 1, 0.9]
+ *   Available dot : scale [0.82, 1.22, 1], opacity [0.85, 1, 0.9]
  *                   1.15 s easeInOut, beats with the halo
- *   Identity word : scale [0.82, 1.08, 0.97, 1], y [16, 0], rotate [-3, 1.5, 0]
- *                   opacity 0 → 1, cubic(0.34, 1.56, 0.64, 1), 0.5 s
+ *   Identity word : scale [0.78, 1.12, 0.96, 1], y [18, -4, 1, 0]
+ *                   rotate [-5, 2.5, 0], opacity 0 → 1
+ *                   cubic(0.34, 1.56, 0.64, 1), 0.55 s
  *                   colour flash from sun-yellow (#f4a261) to accent-teal
  *                   over 0.4 s
  *
@@ -166,20 +171,20 @@ export function PropicCarousel({ className }: PropicCarouselProps) {
         <motion.div
           key={reduceMotion ? "halo-static" : `halo-${active}`}
           aria-hidden="true"
-          initial={{ opacity: 0.65, scale: 0.92 }}
-          animate={{ opacity: [0.65, 1, 0.85], scale: [0.92, 1.22, 1] }}
+          initial={{ opacity: 0.55, scale: 0.88 }}
+          animate={{ opacity: [0.55, 1, 0.85], scale: [0.88, 1.28, 1] }}
           transition={{
             duration: CYCLE_MS / 1000,
             ease: SMOOTH,
             times: [0, 0.35, 1],
           }}
-          className="absolute -inset-3 rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(15,117,105,0.36),rgba(244,162,97,0.22)_45%,transparent_70%)] blur-md"
+          className="absolute -inset-3 rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(15,117,105,0.38),rgba(244,162,97,0.24)_45%,transparent_70%)] blur-md"
         />
 
-        {/* Crossfading image stack. Each slide settles into place with the
-            "entrancePop + counter-overshoot" pattern from the motion sheet:
-            scale 0.85 -> 1.06 -> 0.98 -> 1, rotate -6deg -> 2deg -> -1deg -> 0.
-            Exit shrinks slightly and tilts away so the next slide reads as
+        {/* Crossfading image stack. Each slide slams into place with the
+            motion sheet's entrancePop recipe: scale 0.80 -> 1.10 -> 0.97 -> 1,
+            rotate -12° -> 5° -> -2° -> 0°, drop from y=14 and bounce back.
+            Exit shrinks, tilts, and lifts away so the next slide reads as
             the real beat, not a crossfade. */}
         <div className="relative h-full w-full overflow-hidden rounded-full ring-[4px] ring-[color:var(--accent-teal)]/85 shadow-[0_32px_80px_-18px_rgba(15,117,105,0.65),0_12px_32px_-12px_rgba(0,0,0,0.3)]">
           {SLIDES.map((slide, i) => {
@@ -200,7 +205,7 @@ export function PropicCarousel({ className }: PropicCarouselProps) {
                 initial={
                   reduceMotion
                     ? false
-                    : { opacity: 0, scale: 0.85, rotate: -6 }
+                    : { opacity: 0, scale: 0.8, rotate: -12, y: 14 }
                 }
                 animate={
                   reduceMotion
@@ -208,37 +213,44 @@ export function PropicCarousel({ className }: PropicCarouselProps) {
                     : isActive
                       ? {
                           opacity: 1,
-                          scale: [0.85, 1.06, 0.98, 1],
-                          rotate: [-6, 2, -1, 0],
+                          scale: [0.8, 1.1, 0.97, 1],
+                          rotate: [-12, 5, -2, 0],
+                          y: [14, -4, 1, 0],
                         }
-                      : { opacity: 0, scale: 0.94, rotate: 5 }
+                      : { opacity: 0, scale: 0.92, rotate: 7, y: -10 }
                 }
                 exit={
                   reduceMotion
                     ? { opacity: 0 }
-                    : { opacity: 0, scale: 0.94, rotate: 5 }
+                    : { opacity: 0, scale: 0.92, rotate: 7, y: -10 }
                 }
                 transition={
                   reduceMotion
                     ? { duration: 0.2 }
                     : isActive
                       ? {
-                          opacity: { duration: 0.2, ease: "easeOut" },
+                          opacity: { duration: 0.18, ease: "easeOut" },
                           scale: {
-                            duration: 0.5,
+                            duration: 0.6,
                             ease: SPRING,
-                            times: [0, 0.55, 0.82, 1],
+                            times: [0, 0.5, 0.78, 1],
                           },
                           rotate: {
-                            duration: 0.5,
+                            duration: 0.6,
                             ease: SPRING,
-                            times: [0, 0.55, 0.82, 1],
+                            times: [0, 0.5, 0.78, 1],
+                          },
+                          y: {
+                            duration: 0.55,
+                            ease: SPRING,
+                            times: [0, 0.5, 0.78, 1],
                           },
                         }
                       : {
-                          opacity: { duration: 0.18, ease: "easeIn" },
-                          scale: { duration: 0.28, ease: "easeIn" },
-                          rotate: { duration: 0.28, ease: "easeIn" },
+                          opacity: { duration: 0.16, ease: "easeIn" },
+                          scale: { duration: 0.26, ease: "easeIn" },
+                          rotate: { duration: 0.26, ease: "easeIn" },
+                          y: { duration: 0.26, ease: "easeIn" },
                         }
                 }
                 draggable={false}
@@ -254,8 +266,8 @@ export function PropicCarousel({ className }: PropicCarouselProps) {
           <motion.span
             key={reduceMotion ? "dot-static" : `dot-${active}`}
             aria-hidden="true"
-            initial={{ scale: 0.85, opacity: 0.85 }}
-            animate={{ scale: [0.85, 1.18, 1], opacity: [0.85, 1, 0.9] }}
+            initial={{ scale: 0.82, opacity: 0.85 }}
+            animate={{ scale: [0.82, 1.22, 1], opacity: [0.85, 1, 0.9] }}
             transition={{
               duration: CYCLE_MS / 1000,
               ease: SMOOTH,
@@ -267,8 +279,8 @@ export function PropicCarousel({ className }: PropicCarouselProps) {
         </div>
       </div>
 
-      {/* Identity word — drops in from below with a strong bounce and a
-          small rotation settle, the same wiggle-into-place the photos use.
+      {/* Identity word — drops in from below with a stronger bounce and a
+          bigger rotation settle, the same "drop & bounce" the photos use.
           Colour briefly flashes from sun-yellow (#f4a261) back to
           accent-teal over 0.4 s, echoing the warm pop the motion sheet
           uses for its hero accents. */}
@@ -276,21 +288,21 @@ export function PropicCarousel({ className }: PropicCarouselProps) {
         <AnimatePresence mode="sync" initial={false}>
           <motion.div
             key={current.identity}
-            initial={reduceMotion ? false : { opacity: 0, y: 16, scale: 0.82, rotate: -3 }}
+            initial={reduceMotion ? false : { opacity: 0, y: 18, scale: 0.78, rotate: -5 }}
             animate={
               reduceMotion
                 ? { opacity: 1, y: 0, scale: 1, rotate: 0 }
-                : { opacity: 1, y: 0, scale: [0.82, 1.08, 0.97, 1], rotate: [-3, 1.5, 0] }
+                : { opacity: 1, y: [18, -4, 1, 0], scale: [0.78, 1.12, 0.96, 1], rotate: [-5, 2.5, 0] }
             }
-            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -10, scale: 0.94, rotate: 3 }}
+            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -12, scale: 0.92, rotate: 4 }}
             transition={
               reduceMotion
                 ? { duration: 0.2 }
                 : {
                     opacity: { duration: 0.18, ease: "easeOut" },
-                    y: { duration: 0.45, ease: SPRING },
-                    scale: { duration: 0.5, ease: SPRING, times: [0, 0.55, 0.82, 1] },
-                    rotate: { duration: 0.5, ease: SPRING, times: [0, 0.55, 0.82, 1] },
+                    y: { duration: 0.55, ease: SPRING, times: [0, 0.5, 0.78, 1] },
+                    scale: { duration: 0.55, ease: SPRING, times: [0, 0.5, 0.78, 1] },
+                    rotate: { duration: 0.55, ease: SPRING, times: [0, 0.5, 0.78, 1] },
                   }
             }
             className="absolute inset-0 flex items-center gap-2"
