@@ -131,39 +131,80 @@
   --sidebar-ring: oklch(0.18 0.02 270 / 22%);
 }
 
+/* Dark, deep teal-cyan gradient — Abu Dhabi Gov Services / Aurora palette.
+ * Background gradient is layered on top of the base via body::before
+ * (see below) so the gradient survives without breaking `--background`
+ * as a usable color value for `bg-background` / `text-foreground` etc.
+ *
+ * Text contrast targets (WCAG 2.2 AA, ≥4.5:1 body):
+ *   --ink (#e6f5f2 oklch 0.94) on --paper (oklch 0.20)         = ~14:1 AAA
+ *   --ink-muted on --paper                                     = ~9:1 AAA
+ *   --ink-faint on --paper                                     = ~5.4:1 AA
+ */
 .dark {
-  --background: oklch(0.985 0.005 95);
-  --foreground: oklch(0.18 0.02 270);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.02 270);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.02 270);
-  --primary: oklch(0.18 0.02 270);
-  --primary-foreground: oklch(0.985 0.005 95);
-  --secondary: oklch(0.96 0.005 95);
-  --secondary-foreground: oklch(0.18 0.02 270);
-  --muted: oklch(0.96 0.005 95);
-  --muted-foreground: oklch(0.42 0.015 270);
-  --accent: oklch(0.96 0.005 95);
-  --accent-foreground: oklch(0.18 0.02 270);
-  --destructive: oklch(0.6 0.22 27);
-  --destructive-foreground: oklch(0.985 0.005 95);
-  --border: oklch(0.18 0.02 270 / 12%);
-  --input: oklch(0.18 0.02 270 / 12%);
-  --ring: oklch(0.18 0.02 270 / 22%);
-  --chart-1: oklch(0.62 0.12 195);
-  --chart-2: oklch(0.72 0.13 70);
-  --chart-3: oklch(0.65 0.16 25);
-  --chart-4: oklch(0.72 0.14 140);
-  --chart-5: oklch(0.55 0.05 270);
-  --sidebar: oklch(0.985 0.005 95);
-  --sidebar-foreground: oklch(0.18 0.02 270);
-  --sidebar-primary: oklch(0.18 0.02 270);
-  --sidebar-primary-foreground: oklch(0.985 0.005 95);
-  --sidebar-accent: oklch(0.96 0.005 95);
-  --sidebar-accent-foreground: oklch(0.18 0.02 270);
-  --sidebar-border: oklch(0.18 0.02 270 / 12%);
-  --sidebar-ring: oklch(0.18 0.02 270 / 22%);
+  /* Base paper — deep teal-navy. The body::before paints the gradient
+   * OVER this so it shows through; bento surfaces sit above it. */
+  --background: oklch(0.18 0.04 195);
+  --foreground: oklch(0.94 0.018 180);
+
+  /* Layered surfaces — each step +0.04 in lightness for visible hierarchy
+   * on the dark canvas, all carrying the same teal hue (195°) so they
+   * read as "depth through one color", not "different colors". */
+  --paper: oklch(0.20 0.04 195);
+  --paper-2: oklch(0.24 0.045 195);
+  --paper-hi: oklch(0.28 0.05 195);
+
+  /* Body text colors — high contrast against the deep teal paper. */
+  --ink: oklch(0.94 0.018 180);
+  --ink-muted: oklch(0.78 0.025 190);
+  --ink-faint: oklch(0.62 0.03 195);
+
+  /* Rules / borders — translucent off-white so they pick up the teal hue. */
+  --rule: oklch(0.94 0.018 180 / 12%);
+  --rule-strong: oklch(0.94 0.018 180 / 22%);
+
+  /* Accents — brighter for dark surfaces, each clears 4.5:1 against
+   * the darkest paper. */
+  --accent-teal: oklch(0.82 0.14 195);
+  --accent-amber: oklch(0.82 0.16 70);
+  --accent-rose: oklch(0.78 0.18 25);
+  --accent-lime: oklch(0.82 0.16 145);
+
+  /* Bento cards — glass-morphism-friendly teal surfaces. */
+  --bento: oklch(0.22 0.045 195);
+  --bento-hi: oklch(0.26 0.05 195);
+
+  /* shadcn-style tokens — all flipped to dark equivalents. */
+  --card: oklch(0.22 0.045 195);
+  --card-foreground: oklch(0.94 0.018 180);
+  --popover: oklch(0.22 0.045 195);
+  --popover-foreground: oklch(0.94 0.018 180);
+  --primary: oklch(0.82 0.14 195);
+  --primary-foreground: oklch(0.14 0.03 195);
+  --secondary: oklch(0.26 0.05 195);
+  --secondary-foreground: oklch(0.94 0.018 180);
+  --muted: oklch(0.26 0.05 195);
+  --muted-foreground: oklch(0.72 0.025 190);
+  --accent: oklch(0.26 0.05 195);
+  --accent-foreground: oklch(0.94 0.018 180);
+  --destructive: oklch(0.70 0.20 27);
+  --destructive-foreground: oklch(0.94 0.018 180);
+  --border: oklch(0.94 0.018 180 / 14%);
+  --input: oklch(0.94 0.018 180 / 14%);
+  --ring: oklch(0.82 0.14 195 / 60%);
+  --chart-1: oklch(0.78 0.14 195);
+  --chart-2: oklch(0.80 0.16 70);
+  --chart-3: oklch(0.74 0.18 25);
+  --chart-4: oklch(0.80 0.16 145);
+  --chart-5: oklch(0.70 0.05 270);
+  --sidebar: oklch(0.20 0.04 195);
+  --sidebar-foreground: oklch(0.94 0.018 180);
+  --sidebar-primary: oklch(0.82 0.14 195);
+  --sidebar-primary-foreground: oklch(0.14 0.03 195);
+  --sidebar-accent: oklch(0.26 0.05 195);
+  --sidebar-accent-foreground: oklch(0.94 0.018 180);
+  --sidebar-border: oklch(0.94 0.018 180 / 14%);
+  --sidebar-ring: oklch(0.82 0.14 195 / 60%);
 }
 
 @layer base {
@@ -185,9 +226,88 @@
     /* Prevent text size inflation on mobile landscape */
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
-    /* 2026 baseline: at least 16px on small screens for AA readability. */
+    /* 2026 baseline: 16px desktop / 17px mobile so phone readers get
+     * AA body contrast even when zoomed out. Slightly looser line-height
+     * on mobile (1.65 vs 1.55) for one-thumb readability. */
     font-size: 16px;
     line-height: 1.55;
+    /* Smooth theme switch — variables that change get crossfaded over 0.4s.
+     * Color/bg only; transform/opacity stay snappy. */
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
+  /* Mobile readability pass — phones get bigger type, looser leading,
+   * more paragraph breathing room. The clamps above already do most of
+   * the work; this just smooths the long-form body copy. */
+  @media (max-width: 767px) {
+    html, body {
+      font-size: 17px;
+      line-height: 1.65;
+    }
+    p {
+      /* Looser paragraph rhythm so eyes can pick the next line easily. */
+      margin-top: 1.1em;
+      margin-bottom: 1.1em;
+    }
+    /* Ensure tap targets hit the 48×48 minimum even when the visible
+     * element is smaller. Nav links + theme toggle already do this; this
+     * is the safety net for inline links inside paragraphs. */
+    a:not(.cin-nav-link):not([class*="cin-cta"]):not([class*="btn"]) {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+  }
+
+  /* Dark-mode gradient — layered radial highlights over a deep teal
+   * linear gradient, like the Abu Dhabi Government Services hero:
+   * organic cyan curves washing across a deep teal canvas. The
+   * overlay sits fixed at -1 so it stays in place during scroll, and
+   * only shows under .dark (light mode keeps the flat paper bg). */
+  body {
+    position: relative;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        ellipse 60% 50% at 85% 8%,
+        oklch(0.42 0.14 195 / 0.42),
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 50% 45% at 12% 92%,
+        oklch(0.36 0.13 200 / 0.38),
+        transparent 65%
+      ),
+      radial-gradient(
+        ellipse 70% 40% at 50% 50%,
+        oklch(0.30 0.10 188 / 0.22),
+        transparent 70%
+      ),
+      linear-gradient(
+        180deg,
+        oklch(0.14 0.035 195) 0%,
+        oklch(0.20 0.045 195) 50%,
+        oklch(0.16 0.04 195) 100%
+      );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .dark body::before {
+    opacity: 1;
+  }
+
+  /* Glass-morphism surface for cards/sections in dark mode — lets the
+   * gradient bleed through, gives cards a subtle teal tint at the edges. */
+  .dark .cin-bento,
+  .dark [class*="bg-paper"] {
+    backdrop-filter: blur(12px) saturate(1.1);
+    -webkit-backdrop-filter: blur(12px) saturate(1.1);
   }
 
   /* Modern 2026 focus ring — visible only on keyboard nav, WCAG 2.4.7. */

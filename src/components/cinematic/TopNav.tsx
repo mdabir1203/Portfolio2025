@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { BrandMark } from "@/components/brand/BrandMark";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 /**
  * TopNav — calm header with the A monogram on the left and primary nav
@@ -205,6 +206,8 @@ export function TopNav() {
               </a>
             );
           })}
+          {/* Theme toggle — sits at the right edge of the desktop nav */}
+          <ThemeToggle />
         </nav>
       </div>
 
@@ -267,6 +270,11 @@ export function TopNav() {
                     );
                   })}
                 </ul>
+                {/* Theme toggle — sits below the nav items with a subtle
+                    top border, matching the panel's typographic system. */}
+                <div className="border-t border-rule px-1 py-1">
+                  <ThemeToggle variant="panel" />
+                </div>
               </nav>
             </div>
           </motion.div>

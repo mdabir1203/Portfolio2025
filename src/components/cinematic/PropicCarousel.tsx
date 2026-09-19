@@ -149,8 +149,63 @@ const CYCLE_MS = 1150;
 /** Overshoot ease used by the motion sheet's entranceScale / entrancePop.
     Slightly punchier than the default ease-out, gives the bounce-in. */
 const SPRING = [0.34, 1.56, 0.64, 1] as const;
+/** Gentler overshoot for mobile — keeps the bounce feel but stops short
+    of the values that make text alongside hard to read. */
+const SPRING_SOFT = [0.4, 1.3, 0.5, 1] as const;
 /** Steadier ease for the loop pulse. */
 const SMOOTH = "easeInOut" as const;
+
+/** Match-media hook. Returns false during SSR; updates after mount.
+    Used to scale the bounce down on mobile so text stays readable. */
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mq = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+  return isMobile;
+}
+
+/** Motion recipes by viewport. Mobile values:
+ *   - smaller rotation amplitudes (±6° vs ±16°)
+ *   - fewer keyframes (3 vs 6) — quicker, easier to read
+ *   - shorter durations (0.45 s vs 0.65 s)
+ *   - softer overshoot curve
+ * Desktop values keep the full Bento Burst DNA. */
+const RECIPES = {
+  desktop: {
+    rot: [16, -8, 4, -2, 1, 0] as const,
+    rotInitial: 16,
+    rotExit: 7,
+    scale: [0.78, 1.13, 0.94, 1.06, 0.99, 1] as const,
+    y: [14, -4, 2, -1, 0, 0] as const,
+    enterDur: 0.65,
+    exitDur: 0.28,
+    ease: SPRING,
+    times: [0, 0.32, 0.55, 0.74, 0.88, 1] as const,
+  },
+  mobile: {
+    // gentler 3-keyframe — pop, micro-bounce, settle
+    rot: [6, -2, 0.5, 0] as const,
+    rotInitial: 6,
+    rotExit: 3,
+    scale: [0.88, 1.05, 0.99, 1] as const,
+    y: [8, -2, 1, 0] as const,
+    enterDur: 0.45,
+    exitDur: 0.22,
+    ease: SPRING_SOFT,
+    times: [0, 0.5, 0.78, 1] as const,
+  },
+};
+
+/** Per-slide "imperfect" jitter — a small translateX offset that varies
+    across the 6 slides so the carousel feels organic, not mechanical.
+    Desktop only — mobile drops it so the photo stays centered. */
+const JITTER_X_DESKTOP = [-6, 4, -3, 5, -4, 6] as const;
 
 export interface PropicCarouselProps {
   /** Optional extra className applied to the outer wrapper. */
@@ -159,6 +214,7 @@ export interface PropicCarouselProps {
 
 export function PropicCarousel({ className }: PropicCarouselProps) {
   const reduceMotion = useReducedMotion();
+  const isMobile = useIsMobile();
   const [active, setActive] = useState(0);
 
   useEffect(() => {
@@ -168,6 +224,10 @@ export function PropicCarousel({ className }: PropicCarouselProps) {
     }, CYCLE_MS);
     return () => window.clearInterval(id);
   }, [reduceMotion]);
+
+  // Pick the motion recipe for this viewport. SSR defaults to desktop
+  // so the first paint uses the full DNA, then swaps on hydration.
+  const recipe = isMobile ? RECIPES.mobile : RECIPES.desktop;
 
   const current = SLIDES[reduceMotion ? 0 : active];
   // Direction split mirror: -1 for first 3 slides (CCW), +1 for last 3 (CW).
@@ -215,14 +275,15 @@ export function PropicCarousel({ className }: PropicCarouselProps) {
             const isActive = i === (reduceMotion ? 0 : active);
             // Direction split: first 3 slides rotate CCW (-1), last 3 rotate CW (+1)
             const dir = i < 3 ? -1 : 1;
-            // 5-keyframe wiggle — overshoot + counter-overshoot + tiny settle wiggle
-            const ROT_KEYS = [16, -8, 4, -2, 1, 0] as const;
-            const SCALE_KEYS = [0.78, 1.13, 0.94, 1.06, 0.99, 1] as const;
-            const Y_KEYS = [14, -4, 2, -1, 0, 0] as const;
+            // Viewport-aware motion recipe — mobile uses gentler values
+            const R = recipe;
+            // Per-slide "imperfect" jitter — small translateX variation,
+            // desktop only so the mobile photo stays centered for reading
+            const jitterX = isMobile ? 0 : JITTER_X_DESKTOP[i];
             // Apply direction only to rotation (scale and y wiggle uniformly)
-            const rotateEnter = ROT_KEYS.map((v) => v * dir);
-            const rotateInitial = 16 * dir;
-            const rotateExit = 7 * dir;
+            const rotateEnter = R.rot.map((v) => v * dir);
+            const rotateInitial = R.rotInitial * dir;
+            const rotateExit = R.rotExit * dir;
             return (
               <motion.img
                 key={slide.identity}
@@ -241,9 +302,10 @@ export function PropicCarousel({ className }: PropicCarouselProps) {
                     ? false
                     : {
                         opacity: 0,
-                        scale: SCALE_KEYS[0],
+                        scale: R.scale[0],
                         rotate: rotateInitial,
-                        y: Y_KEYS[0],
+                        y: R.y[0],
+                        x: jitterX,
                       }
                 }
                 animate={
@@ -252,21 +314,23 @@ export function PropicCarousel({ className }: PropicCarouselProps) {
                     : isActive
                       ? {
                           opacity: 1,
-                          scale: SCALE_KEYS,
+                          scale: R.scale,
                           rotate: rotateEnter,
-                          y: Y_KEYS,
+                          y: R.y,
+                          x: 0,
                         }
                       : {
                           opacity: 0,
                           scale: 0.92,
                           rotate: rotateExit,
                           y: -10,
+                          x: -jitterX * 0.5,
                         }
                 }
                 exit={
                   reduceMotion
                     ? { opacity: 0 }
-                    : { opacity: 0, scale: 0.92, rotate: rotateExit, y: -10 }
+                    : { opacity: 0, scale: 0.92, rotate: rotateExit, y: -10, x: -jitterX * 0.5 }
                 }
                 transition={
                   reduceMotion
@@ -275,27 +339,31 @@ export function PropicCarousel({ className }: PropicCarouselProps) {
                       ? {
                           opacity: { duration: 0.18, ease: "easeOut" },
                           scale: {
-                            duration: 0.65,
-                            ease: SPRING,
-                            // 6-keyframe: pop, overshoot, counter, mini-bounce, settle
-                            times: [0, 0.32, 0.55, 0.74, 0.88, 1],
+                            duration: R.enterDur,
+                            ease: R.ease,
+                            times: R.times,
                           },
                           rotate: {
-                            duration: 0.65,
-                            ease: SPRING,
-                            times: [0, 0.32, 0.55, 0.74, 0.88, 1],
+                            duration: R.enterDur,
+                            ease: R.ease,
+                            times: R.times,
                           },
                           y: {
-                            duration: 0.6,
-                            ease: SPRING,
-                            times: [0, 0.32, 0.55, 0.74, 0.88, 1],
+                            duration: R.enterDur * 0.92,
+                            ease: R.ease,
+                            times: R.times,
+                          },
+                          x: {
+                            duration: R.enterDur * 0.8,
+                            ease: R.ease,
                           },
                         }
                       : {
                           opacity: { duration: 0.16, ease: "easeIn" },
-                          scale: { duration: 0.28, ease: "easeIn" },
-                          rotate: { duration: 0.28, ease: "easeIn" },
-                          y: { duration: 0.28, ease: "easeIn" },
+                          scale: { duration: R.exitDur, ease: "easeIn" },
+                          rotate: { duration: R.exitDur, ease: "easeIn" },
+                          y: { duration: R.exitDur, ease: "easeIn" },
+                          x: { duration: R.exitDur, ease: "easeIn" },
                         }
                 }
                 draggable={false}
@@ -326,10 +394,8 @@ export function PropicCarousel({ className }: PropicCarouselProps) {
 
       {/* Identity word — drops in with the same direction split + Z-wiggle
           as its photo, so the word tracks the slide it's labelling.
-          Slides 0-2 tilt CCW (-5° initial), slides 3-5 tilt CW (+5°).
-          Scale wiggles [0.76, 1.14, 0.94, 1.06, 1] in time with the
-          photo's Z-pulse. Colour briefly flashes from sun-yellow (#f4a261)
-          back to accent-teal over 0.4 s. */}
+          On mobile the bounce is gentler (4-keyframe vs 6-keyframe) so
+          the word stays legible mid-cycle. */}
       <div className="relative mt-4 h-7 overflow-hidden">
         <AnimatePresence mode="sync" initial={false}>
           <motion.div
@@ -339,9 +405,9 @@ export function PropicCarousel({ className }: PropicCarouselProps) {
                 ? false
                 : {
                     opacity: 0,
-                    y: 18,
-                    scale: 0.76,
-                    rotate: currentDir < 0 ? -5 : 5,
+                    y: recipe.y[0] + 4,
+                    scale: recipe.scale[0],
+                    rotate: (currentDir < 0 ? -5 : 5) * (isMobile ? 0.6 : 1),
                   }
             }
             animate={
@@ -349,11 +415,9 @@ export function PropicCarousel({ className }: PropicCarouselProps) {
                 ? { opacity: 1, y: 0, scale: 1, rotate: 0 }
                 : {
                     opacity: 1,
-                    y: [18, -4, 2, -1, 0, 0],
-                    scale: [0.76, 1.14, 0.94, 1.06, 0.99, 1],
-                    rotate: currentDir < 0
-                      ? [-5, 3, -1.5, 1, -0.5, 0]
-                      : [5, -3, 1.5, -1, 0.5, 0],
+                    y: 0,
+                    scale: 1,
+                    rotate: 0,
                   }
             }
             exit={
@@ -361,9 +425,9 @@ export function PropicCarousel({ className }: PropicCarouselProps) {
                 ? { opacity: 0 }
                 : {
                     opacity: 0,
-                    y: -12,
-                    scale: 0.92,
-                    rotate: currentDir < 0 ? -4 : 4,
+                    y: -10,
+                    scale: 0.94,
+                    rotate: currentDir < 0 ? -3 : 3,
                   }
             }
             transition={
@@ -371,9 +435,21 @@ export function PropicCarousel({ className }: PropicCarouselProps) {
                 ? { duration: 0.2 }
                 : {
                     opacity: { duration: 0.18, ease: "easeOut" },
-                    y: { duration: 0.6, ease: SPRING, times: [0, 0.32, 0.55, 0.74, 0.88, 1] },
-                    scale: { duration: 0.6, ease: SPRING, times: [0, 0.32, 0.55, 0.74, 0.88, 1] },
-                    rotate: { duration: 0.6, ease: SPRING, times: [0, 0.32, 0.55, 0.74, 0.88, 1] },
+                    y: {
+                      duration: recipe.enterDur * 0.9,
+                      ease: recipe.ease,
+                      times: recipe.times,
+                    },
+                    scale: {
+                      duration: recipe.enterDur * 0.95,
+                      ease: recipe.ease,
+                      times: recipe.times,
+                    },
+                    rotate: {
+                      duration: recipe.enterDur * 0.95,
+                      ease: recipe.ease,
+                      times: recipe.times,
+                    },
                   }
             }
             className="absolute inset-0 flex items-center gap-2"

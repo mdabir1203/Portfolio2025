@@ -469,6 +469,14 @@ function RootShell({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        {/* Anti-flash: apply theme before first paint so dark-mode users
+            never see a white flash. Runs before React hydrates; safe even
+            if localStorage throws (the try/catch keeps the parser happy). */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var p=localStorage.getItem('abir-theme');var m=p==='dark'||(p!=='light'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);var c=document.documentElement.classList;if(m){c.add('dark');document.documentElement.setAttribute('data-theme','dark');}else{c.remove('dark');document.documentElement.setAttribute('data-theme','light');}}catch(e){}})();`,
+          }}
+        />
         {/* Anti-flash: apply RTL before first paint if user previously chose Arabic */}
         <script
           dangerouslySetInnerHTML={{
