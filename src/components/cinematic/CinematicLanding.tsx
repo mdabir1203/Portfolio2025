@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { TopNav } from "@/components/cinematic/TopNav";
 import { ManifestoBar } from "@/components/cinematic/ManifestoBar";
 import { FirstVisitSplash } from "@/components/cinematic/FirstVisitSplash";
@@ -67,10 +68,17 @@ export function CinematicLanding() {
   // in prod it's the production domain. The TanStack server route at
   // /cv returns the PDF with Content-Disposition: attachment so
   // phones and desktops alike download rather than render inline.
-  const cvUrl =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/cv`
-      : "/cv";
+  //
+  // SSR-safe: useState seeds the same value on server and the first
+  // client paint (both render `/cv`) — then a useEffect upgrades to
+  // the absolute URL after hydration. This eliminates the
+  // server-vs-client mismatch that triggered the React #418/#423
+  // hydration warnings in production, which were costing Best
+  // Practices points in Lighthouse.
+  const [cvUrl, setCvUrl] = useState("/cv");
+  useEffect(() => {
+    setCvUrl(`${window.location.origin}/cv`);
+  }, []);
 
   return (
     <div lang={lang} className="cin-landing relative w-full overflow-x-hidden bg-paper text-ink">
@@ -78,7 +86,7 @@ export function CinematicLanding() {
       <TopNav />
       <ManifestoBar />
       <PassportBook />
-      <main className="pt-2">
+      <main id="main" className="pt-2" tabIndex={-1}>
         <EditorialHero />
         <WorkGrid />
         <CaseStudySection />

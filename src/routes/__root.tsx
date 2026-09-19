@@ -2,6 +2,7 @@ import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/r
 import { LanguageProvider } from "@/contexts/LanguageContext";
 
 import appCss from "../styles.css?url";
+import abirPortrait from "../assets/abir-2026.webp?url";
 
 function NotFoundComponent() {
   return (
@@ -443,6 +444,10 @@ export const Route = createRootRoute({
       { rel: "manifest", href: "/site.webmanifest" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      // LCP image — preload so the hero headshot arrives with the first
+      // byte of HTML instead of waiting for the JS bundle to discover it.
+      // 2026 web-vitals: this is the single biggest LCP lever on the page.
+      { rel: "preload", as: "image", href: abirPortrait, fetchPriority: "high" as const },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap",
@@ -488,6 +493,19 @@ function RootShell({ children }: { children: React.ReactNode }) {
         />
       </head>
       <body>
+        {/*
+          Skip-to-content link — WCAG 2.4.1 Bypass Blocks (Level A).
+          Visually hidden until it receives keyboard focus, then slides
+          into the top-left corner. The target is the <main id="main">
+          in CinematicLanding, which is tabIndex={-1} so it can take
+          programmatic focus without polluting the tab order.
+        */}
+        <a
+          href="#main"
+          className="skip-link"
+        >
+          Skip to main content
+        </a>
         {children}
         <Scripts />
       </body>
