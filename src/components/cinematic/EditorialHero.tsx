@@ -108,12 +108,14 @@ export function EditorialHero() {
                   personality reel (DRIFTER → ARRIVED → GROUNDED →
                   EXPRESSIVE → SPEAKER → ARCHITECT) cycling at 1.15 s/slide.
                   Each photo gets its own chrome (halo, ring, available dot)
-                  and a single identity word below it. */}
+                  and a single identity word below it. No square background
+                  — the carousel is transparent so the photo floats on the
+                  paper directly. */}
               <div className="mb-6">
-                <PropicCarousel className="cin-hero-portrait h-[160px] w-[160px] transition-transform duration-500 ease-out hover:scale-[1.03] sm:h-[240px] sm:w-[240px] md:h-[300px] md:w-[300px]" />
+                <PropicCarousel className="h-[160px] w-[160px] sm:h-[240px] sm:w-[240px] md:h-[300px] md:w-[300px]" />
                 <div className="cin-hero-eyebrow mt-2">
                   <div className="text-[10px] text-ink-faint">
-                    Dubai · 2026 · 6 frames
+                    Dubai · 2026
                   </div>
                 </div>
               </div>
