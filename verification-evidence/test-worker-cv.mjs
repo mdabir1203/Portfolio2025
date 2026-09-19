@@ -1,6 +1,6 @@
 // verification-evidence/test-worker-cv.mjs
 // End-to-end smoke test of the production worker's /cv handling.
-// We mock env.ASSETS with the real Abir_Abbas_CV.pdf bytes from dist/client/
+// We mock env.ASSETS with the real Abir_Abbas_FullStackDeveloper_CV_2026.pdf bytes from dist/client/
 // and confirm the worker returns a 200 with correct attachment headers.
 
 import { readFileSync, writeFileSync, unlinkSync, mkdtempSync } from "node:fs";
@@ -10,7 +10,7 @@ import { tmpdir } from "node:os";
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const workerPath = resolve(projectRoot, "dist/client/_worker.js");
-const pdfPath = resolve(projectRoot, "dist/client/Abir_Abbas_CV.pdf");
+const pdfPath = resolve(projectRoot, "dist/client/Abir_Abbas_FullStackDeveloper_CV_2026.pdf");
 
 // Strip the `import ssrHandler from './server.js'` and replace ssrHandler.fetch
 // calls with a stub. We write the result to a temp file so dynamic import can
@@ -34,7 +34,7 @@ const env = {
   ASSETS: {
     async fetch(request) {
       const url = new URL(request.url);
-      if (url.pathname === "/Abir_Abbas_CV.pdf") {
+      if (url.pathname === "/Abir_Abbas_FullStackDeveloper_CV_2026.pdf") {
         return new Response(pdfBytes, {
           status: 200,
           headers: { "content-type": "application/pdf", "content-length": String(pdfBytes.length) },
@@ -60,8 +60,8 @@ function check(label, ok, detail = "") {
   check("/cv content-type === application/pdf", res.headers.get("content-type") === "application/pdf", res.headers.get("content-type"));
   const cd = res.headers.get("content-disposition") ?? "";
   check("/cv content-disposition includes 'attachment'", cd.includes("attachment"), cd);
-  check("/cv content-disposition has ASCII filename", cd.includes('filename="Mohammad-Abir-Abbas-CV.pdf"'), cd);
-  check("/cv content-disposition has UTF-8 filename*", cd.includes("filename*=UTF-8''Mohammad%20Abir%20Abbas%20CV.pdf"), cd.slice(0, 100));
+  check("/cv content-disposition has ASCII filename", cd.includes('filename="Abir_Abbas_FullStackDeveloper_CV_2026.pdf"'), cd);
+  check("/cv content-disposition has UTF-8 filename*", cd.includes("filename*=UTF-8''Abir_Abbas_FullStackDeveloper_CV_2026.pdf"), cd.slice(0, 100));
   check("/cv cache-control === public, max-age=3600", res.headers.get("cache-control") === "public, max-age=3600");
   check("/cv x-content-type-options === nosniff", res.headers.get("x-content-type-options") === "nosniff");
   check("/cv referrer-policy === strict-origin-when-cross-origin", res.headers.get("referrer-policy") === "strict-origin-when-cross-origin");

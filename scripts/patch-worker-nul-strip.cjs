@@ -40,7 +40,7 @@ const PATCHED = `import ssrHandler from './server.js';
 // don't expose env.ASSETS to the route handler.
 async function serveCvAttachment(request, env) {
   if (!env.ASSETS) return new Response('CV unavailable in this environment', { status: 404 });
-  const pdfReq = new Request(new URL('/Abir_Abbas_CV.pdf', request.url), request);
+  const pdfReq = new Request(new URL('/Abir_Abbas_FullStackDeveloper_CV_2026.pdf', request.url), request);
   const pdfRes = await env.ASSETS.fetch(pdfReq);
   if (!pdfRes.ok) return new Response('CV not found', { status: 404 });
   const headers = new Headers(pdfRes.headers);

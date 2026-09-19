@@ -3,7 +3,7 @@
 // so phones and desktops both download (instead of render inline).
 //
 // Why a custom route:
-//   - `public/Abir_Abbas_CV.pdf` is also exposed at its raw path.
+//   - `public/Abir_Abbas_FullStackDeveloper_CV_2026.pdf` is also exposed at its raw path.
 //   - The CV download QR encodes `/cv.pdf` — a stable, short URL.
 //   - Mobile browsers (iOS Safari, Android Chrome) inconsistently
 //     respect Content-Disposition on .pdf URLs. Adding it explicitly
@@ -21,7 +21,7 @@ import type { Plugin } from "vite";
 
 const PDF_PATH = path.resolve(
   process.cwd(),
-  "public/Abir_Abbas_CV.pdf",
+  "public/Abir_Abbas_FullStackDeveloper_CV_2026.pdf",
 );
 
 export function cvPdfPlugin(): Plugin {
@@ -38,7 +38,7 @@ export function cvPdfPlugin(): Plugin {
         const stat = fs.statSync(PDF_PATH);
         res.setHeader("Content-Type", "application/pdf");
         res.setHeader("Content-Length", String(stat.size));
-        res.setHeader("Content-Disposition", 'attachment; filename="Mohammad-Abir-Abbas-CV.pdf"');
+        res.setHeader("Content-Disposition", 'attachment; filename="Abir_Abbas_FullStackDeveloper_CV_2026.pdf"');
         res.setHeader("Cache-Control", "public, max-age=3600");
         // Light anti-leech headers — discourage hot-linking.
         res.setHeader("X-Content-Type-Options", "nosniff");

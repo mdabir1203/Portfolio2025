@@ -19,6 +19,7 @@ import {
   BookOpen,
   Factory,
   BriefcaseBusiness,
+  Languages,
 } from "lucide-react";
 import abir from "@/assets/abir.webp";
 import IdentityHeroBento from "@/components/IdentityHeroBento";
@@ -91,7 +92,7 @@ export default function Bento() {
           <a href="mailto:abir.abbas@proton.me" className="hover:text-foreground">{tx.nav.contact}</a>
           <div className="flex items-center gap-2">
             <a
-              href="/Abir_Abbas_CV.pdf"
+              href="/Abir_Abbas_FullStackDeveloper_CV_2026.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-foreground/70 hover:bg-white/10"
@@ -99,8 +100,8 @@ export default function Bento() {
               <ArrowUpRight className="h-3 w-3" /> {tx.nav.resume}
             </a>
             <a
-              href="/Abir_Abbas_CV.pdf"
-              download="Abir_Abbas_CV.pdf"
+              href="/Abir_Abbas_FullStackDeveloper_CV_2026.pdf"
+              download="Abir_Abbas_FullStackDeveloper_CV_2026.pdf"
               className="inline-flex items-center gap-1.5 rounded-full border border-[color:var(--accent-teal)]/40 bg-[color:var(--accent-teal)]/10 px-3 py-1 text-[color:var(--accent-teal)] hover:bg-[color:var(--accent-teal)]/20"
             >
               <Download className="h-3 w-3" /> {tx.nav.ats}
@@ -318,15 +319,54 @@ export default function Bento() {
           </Suspense>
         </motion.div>
 
-        {/* LANGUAGES */}
+        {/* LANGUAGES — flag-coded tiles */}
         <motion.div {...fade(0.25)} className="bento sm:col-span-4 md:col-span-2">
-          <Tag>{tx.spoken.tag}</Tag>
-          <div className="mt-4 grid grid-cols-3 gap-3">
-            {tx.spoken.langs.map((x) => (
-              <div key={x.l} className="rounded-lg border border-white/5 bg-white/[0.02] p-3">
-                <div className="font-display text-2xl">{x.l}</div>
-                <div className="font-mono text-[10px] uppercase tracking-wider text-foreground/50">{x.s}</div>
-              </div>
+          <div className="flex items-center justify-between">
+            <Tag>{tx.spoken.tag}</Tag>
+            <Languages className="h-3.5 w-3.5 text-foreground/40" aria-hidden />
+          </div>
+          <h3 className="mt-3 font-display text-xl leading-tight md:text-2xl">
+            {tx.spoken.heading}
+          </h3>
+          <p className="mt-1 text-[11px] leading-relaxed text-foreground/55">
+            {tx.spoken.sub}
+          </p>
+          <div className="mt-4 grid grid-cols-2 gap-2.5">
+            {tx.spoken.langs.map((lang) => (
+              <motion.div
+                key={lang.code}
+                whileHover={{ y: -2 }}
+                transition={{ type: "spring", stiffness: 320, damping: 22 }}
+                className="group relative overflow-hidden rounded-lg border border-white/[0.06] bg-white/[0.025] p-2.5 transition-colors hover:border-[color:var(--accent-teal)]/35 hover:bg-[color:var(--accent-teal)]/[0.04]"
+              >
+                <div className="flex items-start justify-between gap-1">
+                  <span
+                    className="text-2xl leading-none transition-transform duration-300 group-hover:scale-110"
+                    aria-hidden
+                  >
+                    {lang.flag}
+                  </span>
+                  <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-foreground/45">
+                    {lang.code}
+                  </span>
+                </div>
+                <div className="mt-1.5">
+                  <div className="font-display text-lg leading-none text-foreground">
+                    {lang.native}
+                  </div>
+                  <div className="mt-0.5 font-mono text-[10px] uppercase tracking-wider text-foreground/55">
+                    {lang.english}
+                  </div>
+                </div>
+                <div className="mt-2 flex items-center justify-between gap-1.5">
+                  <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-[color:var(--accent-teal)]">
+                    {lang.proficiency}
+                  </span>
+                  <span className="truncate text-right text-[9px] leading-tight text-foreground/45">
+                    {lang.detail}
+                  </span>
+                </div>
+              </motion.div>
             ))}
           </div>
         </motion.div>
@@ -390,29 +430,60 @@ export default function Bento() {
           </div>
         </motion.div>
 
-        {/* GCC OPEN TO WORK â€” executive recruiter hook */}
+        {/* GCC OPEN TO WORK — categorized by Gulf market */}
         <motion.div
           initial={{ opacity: 0, x: -16 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.6, ease: [0.2, 0.8, 0.2, 1], delay: 0.1 }}
-          className="bento sm:col-span-4 md:col-span-2 flex flex-col justify-between"
+          className="bento sm:col-span-4 md:col-span-2 flex flex-col"
         >
           <div className="flex items-center gap-2">
             <BriefcaseBusiness className="h-4 w-4 text-[color:var(--accent-lime)]" />
             <Tag>{tx.gcc.tag}</Tag>
           </div>
-          <div className="mt-4 space-y-3">
-            {tx.gcc.items.map((line) => (
-              <div key={line} className="flex items-start gap-2 text-sm text-foreground/75">
-                <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[color:var(--accent-lime)]" />
-                {line}
-              </div>
-            ))}
-          </div>
+          <h3 className="mt-3 font-display text-xl leading-tight md:text-2xl">
+            {tx.gcc.heading}
+          </h3>
+          <p className="mt-1 text-[11px] leading-relaxed text-foreground/55">
+            {tx.gcc.sub}
+          </p>
+          <ul className="mt-4 flex-1 space-y-1.5">
+            {tx.gcc.markets.map((m) => {
+              const toneClass =
+                m.statusTone === "lime"
+                  ? "border-[color:var(--accent-lime)]/40 bg-[color:var(--accent-lime)]/[0.08] text-[color:var(--accent-lime)]"
+                  : "border-[color:var(--accent-teal)]/30 bg-[color:var(--accent-teal)]/[0.05] text-[color:var(--accent-teal)]";
+              return (
+                <li
+                  key={m.country}
+                  className="group flex items-center gap-2 rounded-lg border border-white/[0.04] bg-white/[0.015] px-2 py-1.5 transition-colors hover:border-white/[0.08]"
+                >
+                  <span className="text-base leading-none" aria-hidden>
+                    {m.flag}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="font-display text-sm leading-tight text-foreground">
+                        {m.country}
+                      </span>
+                      <span className="truncate font-mono text-[10px] text-foreground/55">
+                        {m.cities}
+                      </span>
+                    </div>
+                  </div>
+                  <span
+                    className={`shrink-0 rounded-full border px-1.5 py-px font-mono text-[9px] uppercase tracking-[0.18em] ${toneClass}`}
+                  >
+                    {m.status}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
           <a
             href="mailto:abir.abbas@proton.me?subject=Executive%20Opportunity%20%E2%80%94%20GCC"
-            className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[color:var(--accent-lime)]/30 bg-[color:var(--accent-lime)]/[0.06] py-3 text-xs font-semibold uppercase tracking-[0.15em] text-[color:var(--accent-lime)] transition-all hover:bg-[color:var(--accent-lime)]/10 active:scale-95"
+            className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[color:var(--accent-lime)]/30 bg-[color:var(--accent-lime)]/[0.06] py-2.5 text-xs font-semibold uppercase tracking-[0.15em] text-[color:var(--accent-lime)] transition-all hover:bg-[color:var(--accent-lime)]/10 active:scale-95"
           >
             <Mail className="h-3.5 w-3.5" /> {tx.gcc.cta}
           </a>
@@ -454,8 +525,8 @@ export default function Bento() {
             <p className="mt-2 text-xs text-foreground/60">{tx.recruiter.desc}</p>
           </div>
           <a
-            href="/Abir_Abbas_CV.pdf"
-            download="Abir_Abbas_CV.pdf"
+            href="/Abir_Abbas_FullStackDeveloper_CV_2026.pdf"
+            download="Abir_Abbas_FullStackDeveloper_CV_2026.pdf"
             className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[color:var(--accent-teal)] px-4 py-3 text-sm font-semibold uppercase tracking-wider text-[color:var(--ink)] transition-transform hover:scale-[1.02] active:scale-[0.98]"
           >
             <Download className="h-4 w-4" /> {tx.recruiter.cta}
@@ -490,8 +561,8 @@ export default function Bento() {
             <ArrowUpRight className="h-4 w-4" />
           </a>
           <a
-            href="/Abir_Abbas_CV.pdf"
-            download="Abir_Abbas_CV.pdf"
+            href="/Abir_Abbas_FullStackDeveloper_CV_2026.pdf"
+            download="Abir_Abbas_FullStackDeveloper_CV_2026.pdf"
             className="flex items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-foreground/70 active:scale-95 transition-transform"
             aria-label="Download CV (PDF)"
           >

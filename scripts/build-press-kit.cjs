@@ -1,7 +1,7 @@
 // Bundle the press kit into /public/press.zip so the Footer's "Press kit" link works.
 // Contents:
 //   - brand-onepager.pdf   (one-page brand sheet)
-//   - CV.pdf               (existing public/Abir_Abbas_CV.pdf, renamed for clarity)
+//   - CV.pdf               (existing public/Abir_Abbas_FullStackDeveloper_CV_2026.pdf, renamed for clarity)
 //   - smartswap-whitepaper.pdf
 //   - portrait-2026.webp   (editorial hero portrait)
 //   - portrait-bento.webp  (legacy bento portrait)
@@ -36,7 +36,7 @@ mustExist(path.join(PRESS_DIR, "brand-onepager.pdf"), "brand one-pager PDF");
 const files = [
   // PDFs
   { src: path.join(PRESS_DIR, "brand-onepager.pdf"), name: "brand-onepager.pdf" },
-  { src: path.join(PUBLIC_DIR, "Abir_Abbas_CV.pdf"), name: "CV.pdf" },
+  { src: path.join(PUBLIC_DIR, "Abir_Abbas_FullStackDeveloper_CV_2026.pdf"), name: "CV.pdf" },
   { src: path.join(PUBLIC_DIR, "smartswap-whitepaper.pdf"), name: "smartswap-whitepaper.pdf" },
   // Portraits
   { src: path.join(ASSETS_DIR, "abir-2026.webp"), name: "portraits/portrait-2026.webp" },

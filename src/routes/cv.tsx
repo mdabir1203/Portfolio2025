@@ -2,7 +2,7 @@
 // so phones and desktops alike download (instead of rendering inline).
 //
 // Why this is a TanStack server route and not just a static file:
-//   - `public/Abir_Abbas_CV.pdf` is also exposed at its raw path for
+//   - `public/Abir_Abbas_FullStackDeveloper_CV_2026.pdf` is also exposed at its raw path for
 //     direct linking, but `/cv` is the stable, short URL the QR code
 //     encodes. Same handler in dev (Vite middleware plugin) and prod
 //     (this route) so behaviour is identical end-to-end.
@@ -21,7 +21,7 @@ import { readFile, stat } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import path from "node:path";
 
-const PDF_REL = path.resolve(process.cwd(), "public/Abir_Abbas_CV.pdf");
+const PDF_REL = path.resolve(process.cwd(), "public/Abir_Abbas_FullStackDeveloper_CV_2026.pdf");
 
 export const Route = createFileRoute("/cv")({
   server: {
@@ -46,8 +46,8 @@ export const Route = createFileRoute("/cv")({
             // for prettier download names while still falling back
             // to plain ASCII for older clients.
             "content-disposition":
-              'attachment; filename="Mohammad-Abir-Abbas-CV.pdf"; ' +
-              "filename*=UTF-8''Mohammad%20Abir%20Abbas%20CV.pdf",
+              'attachment; filename="Abir_Abbas_FullStackDeveloper_CV_2026.pdf"; ' +
+              "filename*=UTF-8''Abir_Abbas_FullStackDeveloper_CV_2026.pdf",
             "cache-control": "public, max-age=3600",
             "x-content-type-options": "nosniff",
             "referrer-policy": "strict-origin-when-cross-origin",
@@ -62,7 +62,7 @@ export const Route = createFileRoute("/cv")({
           headers: {
             "content-type": "application/pdf",
             "content-length": String(s.size),
-            "content-disposition": 'attachment; filename="Mohammad-Abir-Abbas-CV.pdf"',
+            "content-disposition": 'attachment; filename="Abir_Abbas_FullStackDeveloper_CV_2026.pdf"',
           },
         });
       },

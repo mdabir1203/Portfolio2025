@@ -60,7 +60,7 @@
   Access-Control-Allow-Origin: *
 
 # ── The CV PDF — explicit content-type & inline-preview hint ────────────────
-/Abir_Abbas_CV.pdf
+/Abir_Abbas_FullStackDeveloper_CV_2026.pdf
   Content-Type: application/pdf
   Content-Disposition: inline
   X-Content-Type-Options: nosniff

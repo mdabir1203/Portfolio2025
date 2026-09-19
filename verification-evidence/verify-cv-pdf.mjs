@@ -11,7 +11,7 @@ const mod = await import(`./${libPath.replace(/^node_modules\//, "../")}`).catch
 });
 
 const pdfParse = mod.default || mod;
-const buf = readFileSync("public/Abir_Abbas_CV.pdf");
+const buf = readFileSync("public/Abir_Abbas_FullStackDeveloper_CV_2026.pdf");
 const data = await pdfParse(buf);
 const text = data.text;
 

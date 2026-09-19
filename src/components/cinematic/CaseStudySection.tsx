@@ -557,7 +557,7 @@ export function CaseStudySection() {
         <div className="mt-14 flex justify-center">
           <Magnetic strength={18} fieldWidth={120}>
             <a
-              href="/Abir_Abbas_CV.pdf"
+              href="/Abir_Abbas_FullStackDeveloper_CV_2026.pdf"
               className="cin-hero-cta"
               aria-label="Download the full case study PDF"
             >

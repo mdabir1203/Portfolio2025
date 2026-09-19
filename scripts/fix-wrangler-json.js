@@ -50,10 +50,10 @@ const WORKER_WRAPPER = `import ssrHandler from './server.js';
 // in src/routes/cv.tsx covers dev mode (where this worker doesn't run);
 // we duplicate the logic here because Cloudflare Pages Functions don't
 // give the route handler a handle to env.ASSETS, and reading
-// process.cwd()+"/public/Abir_Abbas_CV.pdf" returns nothing in prod.
+// process.cwd()+"/public/Abir_Abbas_FullStackDeveloper_CV_2026.pdf" returns nothing in prod.
 async function serveCvAttachment(request, env) {
   if (!env.ASSETS) return new Response('CV unavailable in this environment', { status: 404 });
-  const pdfReq = new Request(new URL('/Abir_Abbas_CV.pdf', request.url), request);
+  const pdfReq = new Request(new URL('/Abir_Abbas_FullStackDeveloper_CV_2026.pdf', request.url), request);
   const pdfRes = await env.ASSETS.fetch(pdfReq);
   if (!pdfRes.ok) return new Response('CV not found', { status: 404 });
   const headers = new Headers(pdfRes.headers);

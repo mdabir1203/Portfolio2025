@@ -5,7 +5,7 @@ import os from "node:os";
 import { pathToFileURL } from "node:url";
 
 /**
- * Regenerates public/Abir_Abbas_CV.pdf from public/cv-ats.html using a headless
+ * Regenerates public/Abir_Abbas_FullStackDeveloper_CV_2026.pdf from public/cv-ats.html using a headless
  * Chromium-based browser. The HTML's @media print / @page CSS drives the layout.
  *
  * Usage: npm run cv:pdf
@@ -13,7 +13,7 @@ import { pathToFileURL } from "node:url";
 
 const root = process.cwd();
 const srcHtml = path.resolve(root, "public/cv-ats.html");
-const outPdf = path.resolve(root, "public/Abir_Abbas_CV.pdf");
+const outPdf = path.resolve(root, "public/Abir_Abbas_FullStackDeveloper_CV_2026.pdf");
 
 if (!fs.existsSync(srcHtml)) {
   console.error(`[cv:pdf] Source not found: ${srcHtml}`);
@@ -77,7 +77,7 @@ try {
   );
 
   const sizeKb = Math.round(fs.statSync(outPdf).size / 1024);
-  console.log(`[cv:pdf] Wrote public/Abir_Abbas_CV.pdf (${sizeKb} KB) using ${path.basename(browser)}`);
+  console.log(`[cv:pdf] Wrote public/Abir_Abbas_FullStackDeveloper_CV_2026.pdf (${sizeKb} KB) using ${path.basename(browser)}`);
 } catch (err) {
   console.error(`[cv:pdf] Failed to generate PDF: ${err.message}`);
   process.exit(1);

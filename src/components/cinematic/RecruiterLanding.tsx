@@ -127,7 +127,7 @@ export function RecruiterLanding() {
               Book a 15-min chat →
             </a>
             <a
-              href="https://abir.getwaved.ai/Abir_Abbas_CV.pdf"
+              href="https://abir.getwaved.ai/Abir_Abbas_FullStackDeveloper_CV_2026.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-md border border-paper/30 px-6 py-3 font-mono text-sm uppercase tracking-[0.12em] text-paper transition hover:border-accent-teal hover:text-accent-teal"

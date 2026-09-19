@@ -34,9 +34,9 @@ const COLUMNS = [
     links: [
       {
         label: "CV (PDF)",
-        href: "/Abir_Abbas_CV.pdf",
+        href: "/Abir_Abbas_FullStackDeveloper_CV_2026.pdf",
         external: true,
-        download: "Abir_Abbas_CV.pdf",
+        download: "Abir_Abbas_FullStackDeveloper_CV_2026.pdf",
       },
       {
         label: "Resume (ATS)",
