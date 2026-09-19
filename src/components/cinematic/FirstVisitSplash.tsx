@@ -12,19 +12,28 @@
 // Long enough to actually read the line, short enough to feel like an
 // entrance, not a paywall.
 //
-// We don't have a .riv file in the repo, so the state machine lives in
-// code. Same conceptual model (states + inputs + triggers), but
-// React-rendered. Easy to swap for a real Rive component later.
-//
-// Quote (one line, with a deliberate en-dash for emphasis):
-//   "Impossible is something till you attempt."
-// Attribution:
-//   — the page you've just opened
-// Why this quote: it sets the tone for the rest of the site — every
-// section after the splash is the proof that the attempt was made.
+// === DIAGONAL KINETIC OPENER (v3) ===
+// After Effects-style treatment:
+//   - Quote container sits on a -8° diagonal axis (left-bottom → top-right).
+//   - Each word enters from below-left (translate(-, +)) with per-word
+//     stagger, so they "roll up the diagonal" in sequence. Word-to-word
+//     delta: x -38px / y +18px relative to the previous settled position.
+//     That stair-step IS the diagonal — no rotation needed on the words
+//     themselves, only on the container.
+//   - Three parallax layers drift at different speeds during entry:
+//       * PersianGirih (background)  : -1.0×  (slowest)
+//       * grain dots               : -0.55×
+//       * words + underline + CTA  : -0.25× (fastest, foreground)
+//     The depth illusion is the rate-of-arrival gap, not literal 3D.
+//   - Wavy underline draws ALONG the diagonal (transform skewY matches
+//     container), so it visually extends the line of words.
+//   - A faint "comet" streak trails the last word — a moving gradient
+//     blur that fades behind the punchline ("attempt."), reinforcing
+//     the kinetic flow.
 //
 // Reduced-motion behaviour:
-//   * No stagger, no rotation. Just a 600ms fade-in, hold ~1200ms, fade-out.
+//   * No stagger, no rotation, no parallax. Just a 600ms fade-in,
+//     hold ~1200ms, fade-out.
 
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
@@ -149,34 +158,78 @@ export function FirstVisitSplash() {
         >
           {/* Paper backdrop — same off-white as the rest of the site. */}
           <div className="absolute inset-0 bg-[#f6f1e8]" />
-          {/* Persian girih — low-opacity geometric tile pattern, ties the
-              opener to the ManifestoBar's girih background. */}
-          <div className="absolute inset-0" aria-hidden>
-            <PersianGirih className="h-full w-full" opacity={0.04} />
-          </div>
-          {/* Editorial scrapbook grain — barely visible, just enough texture. */}
-          <div
+
+          {/* Parallax layer 1 (deepest, slowest): Persian girih tile pattern.
+              Drifts upward + leftward during entry, slower than foreground. */}
+          <motion.div
+            className="absolute inset-0"
+            aria-hidden
+            initial={{ opacity: 0, x: 28, y: 50 }}
+            animate={
+              reduce
+                ? { opacity: 0.04 }
+                : {
+                    opacity: 0.04,
+                    x: 0,
+                    y: 0,
+                    transition: { duration: 1.6, ease: [0.2, 0.8, 0.2, 1] },
+                  }
+            }
+          >
+            <PersianGirih className="h-full w-full" opacity={1} />
+          </motion.div>
+
+          {/* Parallax layer 2 (middle): grain dots. Mid-speed drift. */}
+          <motion.div
             className="absolute inset-0 opacity-[0.04] mix-blend-multiply"
             aria-hidden
+            initial={{ opacity: 0, x: 16, y: 28 }}
+            animate={
+              reduce
+                ? { opacity: 0.04 }
+                : {
+                    opacity: 0.04,
+                    x: 0,
+                    y: 0,
+                    transition: { duration: 1.2, ease: [0.2, 0.8, 0.2, 1] },
+                  }
+            }
             style={{
               backgroundImage:
                 'radial-gradient(circle at 1px 1px, #1a1a1a 1px, transparent 1.5px)',
               backgroundSize: '4px 4px',
             }}
           />
-          {/* Warm vignette in the corners — gives the splash depth. */}
-          <div
+
+          {/* Parallax layer 2b: warm vignette — pulses in sync with the
+              last word reveal so the corners deepen as the punchline lands. */}
+          <motion.div
             className="pointer-events-none absolute inset-0"
             aria-hidden
+            initial={{ opacity: 0 }}
+            animate={
+              reduce
+                ? { opacity: 1 }
+                : {
+                    opacity: 1,
+                    transition: {
+                      duration: 0.9,
+                      delay: 0.25 +
+                        ENTRY_STAGGER_MS * (QUOTE_WORDS.length - 1) * 0.001,
+                    },
+                  }
+            }
             style={{
               background:
                 'radial-gradient(ellipse at center, transparent 55%, rgba(15,117,105,0.06) 100%)',
             }}
           />
 
-          {/* Center cluster */}
+          {/* Parallax layer 3 (foreground, fastest): the diagonal quote axis.
+              Sits on a -8° rotation so the words read left-bottom → top-right.
+              Container drifts down-left to settle; words ride on top. */}
           <div className="relative z-10 flex h-full w-full items-center justify-center px-6">
-            <div className="mx-auto w-full max-w-4xl text-center">
+            <div className="mx-auto w-full max-w-5xl text-center">
               {/* Eyebrow — same `// 00` language the rest of the site uses. */}
               <motion.div
                 className="font-mono text-[11px] font-medium uppercase tracking-[0.32em] text-[#4a4a4a]"
@@ -191,83 +244,181 @@ export function FirstVisitSplash() {
                 // 00 — the opener
               </motion.div>
 
-              {/* Quote — word-by-word stagger reveal. */}
-              <h1
+              {/* Quote — kinetic diagonal reveal.
+                  Container rotates -8° so words read left-bottom → top-right.
+                  Each word enters from further down-left than the previous
+                  one (delta: x -42px, y +22px) and animates into its
+                  settled position. The word-to-word stair-step is the
+                  diagonal — the rotation just locks the axis. */}
+              <motion.h1
                 id="first-visit-splash-quote"
-                className="mt-8 font-serif text-[clamp(2.6rem,8vw,6.5rem)] font-normal leading-[1.05] tracking-[-0.02em] text-[#1a1a1a]"
-              >
-                <span aria-hidden>
-                  {QUOTE_WORDS.map((word, i) => (
-                    <motion.span
-                      key={`${word}-${i}`}
-                      className="inline-block"
-                      initial={{ opacity: 0, y: 18, rotate: -1.5 }}
-                      animate={
-                        reduce
-                          ? { opacity: 1, y: 0, rotate: 0 }
-                          : {
-                              opacity: 1,
-                              y: 0,
-                              rotate: 0,
-                              transition: {
-                                duration: 0.7,
-                                delay: 0.25 + i * (ENTRY_STAGGER_MS / 1000),
-                                ease: [0.2, 0.8, 0.2, 1],
-                              },
-                            }
+                className="mt-8 font-serif text-[clamp(2.4rem,7.6vw,6rem)] font-normal leading-[1.05] tracking-[-0.02em] text-[#1a1a1a]"
+                style={{
+                  transform: 'rotate(-8deg)',
+                  transformOrigin: '50% 60%',
+                }}
+                initial={reduce ? { opacity: 1 } : { opacity: 1, x: 0, y: 0 }}
+                animate={
+                  reduce
+                    ? { opacity: 1 }
+                    : {
+                        x: 0,
+                        y: 0,
+                        transition: { duration: 0.9, ease: [0.2, 0.8, 0.2, 1] },
                       }
-                      style={{ marginRight: '0.28em' }}
-                    >
-                      {/* The word "attempt." gets the teal accent — the punchline. */}
-                      {i === QUOTE_WORDS.length - 1 ? (
-                        <span style={{ color: '#0f7569' }}>{word}</span>
-                      ) : (
-                        word
-                      )}
-                    </motion.span>
-                  ))}
+                }
+              >
+                <span aria-hidden className="inline-block">
+                  {QUOTE_WORDS.map((word, i) => {
+                    // Per-word entry offset: each word starts further
+                    // down-left than the previous, so the stagger creates
+                    // a diagonal "rolling-up" feel rather than a flat line.
+                    // Settled position is the line; entry starts at
+                    // (entryOffsetX, entryOffsetY) which the animation
+                    // interpolates to (0, 0).
+                    const entryOffsetX = -(QUOTE_WORDS.length - 1 - i) * 42;
+                    const entryOffsetY = (QUOTE_WORDS.length - 1 - i) * 22;
+                    return (
+                      <motion.span
+                        key={`${word}-${i}`}
+                        className="inline-block"
+                        initial={
+                          reduce
+                            ? { opacity: 1, x: 0, y: 0, filter: 'blur(0px)' }
+                            : {
+                                opacity: 0,
+                                x: entryOffsetX - 24,
+                                y: entryOffsetY + 12,
+                                filter: 'blur(6px)',
+                              }
+                        }
+                        animate={
+                          reduce
+                            ? { opacity: 1, x: 0, y: 0, filter: 'blur(0px)' }
+                            : {
+                                opacity: 1,
+                                x: 0,
+                                y: 0,
+                                filter: 'blur(0px)',
+                                transition: {
+                                  duration: 0.85,
+                                  delay:
+                                    0.3 +
+                                    i * (ENTRY_STAGGER_MS / 1000),
+                                  ease: [0.16, 0.84, 0.24, 1],
+                                },
+                              }
+                        }
+                        style={{
+                          marginRight: '0.28em',
+                          // The settled y-offset for each word keeps the
+                          // stair-step visible AFTER the entry animation —
+                          // so the quote always reads diagonal, not just
+                          // during entrance.
+                          transform: `translateY(${i * 14}px)`,
+                        }}
+                      >
+                        {/* The word "attempt." gets the teal accent — the punchline. */}
+                        {i === QUOTE_WORDS.length - 1 ? (
+                          <span style={{ color: '#0f7569' }}>{word}</span>
+                        ) : (
+                          word
+                        )}
+                      </motion.span>
+                    );
+                  })}
                 </span>
                 {/* Screen-reader-only full quote — no word stagger for AT. */}
                 <span className="sr-only">
                   {QUOTE_WORDS.join(' ')} {ATTRIBUTION}
                 </span>
-              </h1>
+              </motion.h1>
 
-              {/* Wavy underline — same flourish as the other sections. */}
-              <motion.div
-                className="mx-auto mt-6 max-w-[200px]"
-                initial={{ opacity: 0 }}
-                animate={
-                  reduce
-                    ? { opacity: 1 }
-                    : {
-                        opacity: 1,
-                        transition: {
-                          delay:
-                            0.25 + ENTRY_STAGGER_MS * QUOTE_WORDS.length * 0.001,
-                          duration: 0.6,
-                        },
-                      }
-                }
-              >
-                <svg viewBox="0 0 200 14" className="h-3 w-full" aria-hidden>
-                  <motion.path
-                    d="M2 9 Q 25 1, 50 7 T 100 7 T 150 7 T 198 7"
-                    fill="none"
-                    stroke="#0f7569"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{
-                      duration: 1.0,
-                      ease: 'easeInOut',
-                      delay:
-                        0.25 + ENTRY_STAGGER_MS * QUOTE_WORDS.length * 0.001,
+              {/* Comet trail — a soft gradient streak that sweeps along
+                  the diagonal AFTER the punchline lands. Suggests kinetic
+                  motion continuing past the last word. Skipped under
+                  reduced-motion.
+                  Outer wrapper handles the -8° rotation so motion.div's
+                  transform animations don't clobber it. */}
+              {!reduce && (
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-32 w-[120%] -translate-x-1/2 -translate-y-1/2"
+                  style={{ transform: 'translate(-50%, -50%) rotate(-8deg)' }}
+                >
+                  <motion.div
+                    className="h-full w-full"
+                    initial={{ opacity: 0, x: -120, y: 80, scale: 0.6 }}
+                    animate={{
+                      opacity: [0, 0.45, 0],
+                      x: 120,
+                      y: -60,
+                      scale: 1.0,
+                      transition: {
+                        duration: 1.8,
+                        delay:
+                          0.3 +
+                          ENTRY_STAGGER_MS * QUOTE_WORDS.length * 0.001 +
+                          0.2,
+                        ease: [0.2, 0.8, 0.2, 1],
+                      },
+                    }}
+                    style={{
+                      background:
+                        'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(15,117,105,0.18) 0%, rgba(15,117,105,0.06) 40%, transparent 70%)',
+                      filter: 'blur(8px)',
                     }}
                   />
-                </svg>
-              </motion.div>
+                </div>
+              )}
+
+              {/* Wavy underline — diagonal flourish matching the quote axis.
+                  Outer wrapper handles the -8° rotation so motion.div's
+                  x/opacity animations don't clobber it. Draws in AFTER
+                  the last word settles. */}
+              <div
+                className="mx-auto mt-6 max-w-[280px]"
+                style={{ transform: 'rotate(-8deg)' }}
+              >
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={
+                    reduce
+                      ? { opacity: 1, x: 0 }
+                      : {
+                          opacity: 1,
+                          x: 0,
+                          transition: {
+                            delay:
+                              0.3 +
+                              ENTRY_STAGGER_MS * QUOTE_WORDS.length * 0.001 +
+                              0.05,
+                            duration: 0.6,
+                          },
+                        }
+                  }
+                >
+                  <svg viewBox="0 0 240 18" className="h-4 w-full" aria-hidden>
+                    <motion.path
+                      d="M2 12 Q 30 2, 60 10 T 120 10 T 180 10 T 238 10"
+                      fill="none"
+                      stroke="#0f7569"
+                      strokeWidth="2.4"
+                      strokeLinecap="round"
+                      initial={{ pathLength: 0 }}
+                      animate={{ pathLength: 1 }}
+                      transition={{
+                        duration: 1.1,
+                        ease: [0.2, 0.8, 0.2, 1],
+                        delay:
+                          0.3 +
+                          ENTRY_STAGGER_MS * QUOTE_WORDS.length * 0.001 +
+                          0.05,
+                      }}
+                    />
+                  </svg>
+                </motion.div>
+              </div>
 
               {/* Attribution — fades in once the quote has settled. */}
               <motion.p
