@@ -6,41 +6,28 @@
  * do the talking. Title is the product surface; the "$100K Blind Spot"
  * subtitle is the hook from slide 1 of the deck.
  *
- * Microinteractions layer:
- *   - Reveal       : eyebrow → title → body stagger
- *   - CountUp      : every big number animates from 0 → final
- *   - PulseDot     : sonar heartbeat next to chapter numbers
- *   - TiltCard     : subtle 3D tilt on the 4-layer system cards (desktop)
- *   - TerminalCard : hover/tap reveals a JSON snippet behind each variable
- *   - Magnetic     : CTAs drift toward the cursor (desktop)
+ * 2026-09-21 redesign — "Horizontal Studio Track":
+ *   The 4-stage architecture now reads as a horizontal track on desktop
+ *   (CSS scroll-snap, one stage per viewport), and a clean vertical
+ *   stack on mobile. The earlier "Engineer's Notebook" approach
+ *   (wobbly hand-drawn SVG connectors, scribbled margin annotations,
+ *   rotated text, strikethroughs, wavy underlines, imperfect ink
+ *   stamps) was retired — it broke readability, accessibility, and
+ *   the boutique studio design language. The new direction:
  *
- * 2026-09-21 redesign — "The Engineer's Notebook · Thinking Bridges":
- *   The "system we built" section used to be 4 polished TiltCards. It
- *   is now a single editorial column where the SPACE BETWEEN writings
- *   carries the step-by-step process as bold, imperfect, attention-
- *   hooking artifacts:
- *     · Working-Notes opener strip    — paper tape + page number + date
- *     · Alive margin rail             — hand-drawn stage icons + unique
- *                                        wobble connectors per stage + real
- *                                        marginalia (← start, → close, *, ✱)
- *     · Inline typographic moves      — wavy underlines, highlight tape,
- *                                        mono-formatted formulas, slightly
- *                                        irregular paragraph indentation
- *     · Thinking Bridges (3 of them)  — hand-drawn Venn (capture→map),
- *                                        worked-out equation (map→model),
- *                                        sketched bar chart (model→deliver).
- *                                        Each carries a mono-font annotation
- *                                        AND a margin scribble.
- *     · Final Figure climax           — hand-drawn rectangle around the
- *                                        AED 111,246 number + verified
- *                                        circular stamp + scribbled "≈
- *                                        11.1× ROI" written three times
- *                                        with one circled
+ *     · Clean serif display + italic for titles (no rotation, no wobble)
+ *     · Generous whitespace between panels
+ *     · Subtle horizontal divider between stages
+ *     · Sticky progress rail on the right (visible on desktop)
+ *     · Proper semantic <article> per stage with aria-labelledby
+ *     · Keyboard nav: ←/→ arrow keys move between stages
+ *     · prefers-reduced-motion: falls back to vertical stack
+ *     · Snap points: stage | stage | stage | stage | close
  *
- *   The process lives BETWEEN the writings, not as separate cards. The
- *   prose IS the flow; the artifacts are the cognitive scar tissue left
- *   where one thought handed off to the next.
+ *   Below the track: the same Blind Spot, Value Engine, Iceberg,
+ *   VIP Lever, ROI, closing line and CTA — unchanged.
  */
+import { useEffect, useRef, useState } from "react";
 import { CountUp } from "./microinteractions/CountUp";
 import { Magnetic } from "./microinteractions/Magnetic";
 import { PulseDot } from "./microinteractions/PulseDot";
@@ -56,30 +43,21 @@ const PIPELINE = [
 ] as const;
 
 /**
- * The system we built. The Delivery Module is not a screen — it's the
- * last stage of a four-stage architecture that maps each employee on the
- * floor to a value-weighted line on the dashboard.
- *
- * `icon`           — hand-drawn SVG glyph for the margin rail
- * `connectorSeed`  — small integer offset that perturbs the wobble path
- * `bridge`         — which ThinkingBridge renders below this paragraph
- * `scribble`       — mono-font marginalia shown in the right gutter
+ * The system we built — the 4-stage architecture. Each stage gets a
+ * clean editorial panel: stage number + name on the left rail, italic
+ * serif title + body prose on the right. No rotations, no strikethroughs,
+ * no hand-drawn decorations.
  */
 const SYSTEM = [
   {
     n: "01",
     layer: "Capture",
     title: "Floor → Event stream",
-    icon: "aperture" as const,
-    connectorSeed: 0,
-    bridge: "venn" as const,
-    scribble: "(2 days on this tuple)",
     body: (
       <>
-        Every station on the floor emits a <WavyUnderline>QR-scan event</WavyUnderline>.
-        Cutting table, embroidery queue, QC station, dispatch. The event is a
-        tuple:{" "}
-        <code className="rounded bg-paper-2 px-1.5 py-0.5 font-mono text-[0.85em] text-[color:var(--accent-teal)]">
+        Every station on the floor emits a QR-scan event — cutting table,
+        embroidery queue, QC station, dispatch. The event is a tuple:{" "}
+        <code className="rounded bg-paper-2 px-1.5 py-0.5 font-mono text-[0.78em] text-accent-teal">
           (employee_id, station_id, order_id, sku, timestamp)
         </code>
         .
@@ -90,18 +68,11 @@ const SYSTEM = [
     n: "02",
     layer: "Map",
     title: "Employee ↔ Order ↔ Value",
-    icon: "nodes" as const,
-    connectorSeed: 7,
-    bridge: "formula" as const,
-    scribble: "(5 vars, 5 weights, 1 truth)",
     body: (
       <>
-        Each order is joined to its invoice price, SKU history, tier (VIP /
-        Standard), and time-on-floor. Each employee gets a live production
-        map: orders touched, time on each, current bottleneck. The join is
-        not a SQL JOIN{" "}
-        <span className="font-display text-[1.2em] leading-none text-[color:var(--accent-teal)]">↔</span>{" "}
-        it's the join that decides what the manager will see.
+        Each order is joined to its invoice price, SKU history, tier
+        (VIP / Standard), and time-on-floor. Each employee gets a live
+        production map: orders touched, time on each, current bottleneck.
       </>
     ),
   },
@@ -109,16 +80,13 @@ const SYSTEM = [
     n: "03",
     layer: "Model",
     title: "Value engine",
-    icon: "gear" as const,
-    connectorSeed: 13,
-    bridge: "barchart" as const,
-    scribble: "(this took 4 evenings)",
     body: (
       <>
-        Five variables — price, SKU history, status, tier, aging — collapse
-        into one weighted AED number per order. Same formula runs offline
-        in the factory SQL.js cache and online in the Cloudflare Worker:{" "}
-        <code className="block mt-2 rounded-lg border border-rule bg-paper-2 px-3 py-2 font-mono text-[0.78em] leading-relaxed text-ink md:inline md:whitespace-nowrap">
+        Five variables — price, SKU history, status, tier, aging —
+        collapse into one weighted AED number per order. Same formula
+        runs offline in the factory SQL.js cache and online in the
+        Cloudflare Worker:{" "}
+        <code className="block mt-3 rounded-lg border border-rule bg-paper-2 px-3 py-2 font-mono text-[0.78em] leading-relaxed text-ink md:inline md:whitespace-nowrap">
           0.40·p + 0.20·s + 0.15·st + 0.15·t + 0.10·a
         </code>
       </>
@@ -128,17 +96,12 @@ const SYSTEM = [
     n: "04",
     layer: "Deliver",
     title: "The Delivery Module",
-    icon: "plane" as const,
-    connectorSeed: 21,
-    bridge: null,
-    scribble: "(the close)",
     body: (
       <>
         The boardroom view. The bottleneck you saw is the Confirmed →
-        Processing handoff: 189 orders, AED 55,119,{" "}
-        <HighlightTape>approved-but-not-started</HighlightTape>. The
-        dashboard points the floor manager at the right orders in the
-        right order.
+        Processing handoff: 189 orders, AED 55,119, approved-but-not-started.
+        The dashboard points the floor manager at the right orders in
+        the right order.
       </>
     ),
   },
@@ -183,552 +146,6 @@ const SCENARIOS = [
   { recovery: 80, value: 88997, contribution: 31149, roi: 211, recommended: false },
 ] as const;
 
-/* ───────────────────────────── INLINE EMPH ───────────────────────────── */
-
-/**
- * Wavy underline — sits beneath text like a hand-drawn marker stroke.
- * Pure SVG path (cubic-bezier) with a slight imperfection in the curve.
- */
-function WavyUnderline({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="relative inline-block whitespace-nowrap">
-      <span className="relative z-10">{children}</span>
-      <svg
-        aria-hidden
-        className="pointer-events-none absolute -bottom-1 left-0 z-0 h-[6px] w-full text-[color:var(--accent-teal)]"
-        viewBox="0 0 120 6"
-        fill="none"
-        preserveAspectRatio="none"
-      >
-        <path
-          d="M 0 3 C 8 0, 16 6, 24 3 S 40 0, 48 3 S 64 6, 72 3 S 88 0, 96 3 S 112 6, 120 3"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          fill="none"
-        />
-      </svg>
-    </span>
-  );
-}
-
-/**
- * HighlightTape — translucent teal strip behind text, rotated for the
- * imperfect marker-highlight feel (not a clean rounded rectangle).
- */
-function HighlightTape({ children }: { children: React.ReactNode }) {
-  return (
-    <span
-      className="relative inline-block px-1.5 py-0.5"
-      style={{
-        background:
-          "linear-gradient(180deg, color-mix(in oklch, var(--accent-teal) 22%, transparent) 0%, color-mix(in oklch, var(--accent-teal) 30%, transparent) 100%)",
-        transform: "rotate(-1.2deg)",
-      }}
-    >
-      <span className="relative z-10">{children}</span>
-    </span>
-  );
-}
-
-/* ─────────────────────────── STAGE ICONS ─────────────────────────────── */
-
-/**
- * StageIcon — tiny hand-drawn SVG glyph that sits next to each stage
- * label in the margin rail. Each is unique to its stage (aperture /
- * nodes / gear / plane) and uses currentColor so theme tokens carry
- * the stroke.
- */
-function StageIcon({ name }: { name: "aperture" | "nodes" | "gear" | "plane" }) {
-  if (name === "aperture") {
-    return (
-      <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round">
-        <circle cx="8" cy="8" r="5.5" />
-        <path d="M 8 2.5 L 8 13.5 M 3.4 4.8 L 12.6 11.2 M 3.4 11.2 L 12.6 4.8" />
-      </svg>
-    );
-  }
-  if (name === "nodes") {
-    return (
-      <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round">
-        <circle cx="3" cy="3.5" r="1.6" />
-        <circle cx="13" cy="3.5" r="1.6" />
-        <circle cx="8" cy="12" r="1.6" />
-        <path d="M 4.3 4.5 L 7 10.6 M 11.7 4.5 L 9 10.6 M 4.6 3.5 L 11.4 3.5" strokeDasharray="1.5 2" />
-      </svg>
-    );
-  }
-  if (name === "gear") {
-    return (
-      <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="8" cy="8" r="2.5" />
-        <path d="M 8 1.5 L 8 4 M 8 12 L 8 14.5 M 1.5 8 L 4 8 M 12 8 L 14.5 8 M 3.4 3.4 L 5.2 5.2 M 10.8 10.8 L 12.6 12.6 M 3.4 12.6 L 5.2 10.8 M 10.8 5.2 L 12.6 3.4" />
-      </svg>
-    );
-  }
-  return (
-    <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M 2.5 13.5 L 12 4 L 9.5 1.5 L 0 11 L 1 14 Z" />
-      <path d="M 10.2 3.2 L 12.8 5.8" />
-      <path d="M 4 9 L 7 12" />
-    </svg>
-  );
-}
-
-/* ──────────────────────── THINKING BRIDGES ───────────────────────────── */
-
-/**
- * ThinkingBridge — sits in the SPACE BETWEEN paragraphs. Each kind is a
- * unique hand-drawn SVG artifact that captures the cognitive move from
- * one stage to the next, paired with a mono-font annotation and a
- * margin scribble. The artifacts are imperfect on purpose (slight
- * wobble, hand-drawn proportions) — they're meant to read as the
- * engineer's working trace, not as finished diagrams.
- */
-function ThinkingBridge({ kind }: { kind: "venn" | "formula" | "barchart" }) {
-  if (kind === "venn") {
-    return (
-      <div className="relative my-10 md:my-14">
-        <div className="grid grid-cols-[1fr_auto] items-center gap-x-6">
-          <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink-faint" style={{ transform: "rotate(-0.4deg)" }}>
-            ↓&nbsp; next: MAP
-          </div>
-          <div className="hidden md:block font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--accent-teal)]" style={{ transform: "rotate(-2deg)" }}>
-            ✱ the join
-          </div>
-        </div>
-        <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-start md:gap-8">
-          <svg viewBox="0 0 180 110" className="h-28 w-full max-w-[220px] md:h-[120px] md:w-[200px] shrink-0" fill="none" stroke="currentColor">
-            <g stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" opacity="0.85">
-              {/* Three overlapping imperfect circles — hand-drawn wobble via slightly off-axis control points */}
-              <path d="M 38 18 C 22 22, 18 50, 28 70 C 36 88, 64 92, 80 80 C 96 68, 96 36, 84 22 C 70 8, 52 8, 38 18 Z" className="text-[color:var(--accent-teal)]" />
-              <path d="M 80 22 C 64 22, 56 42, 60 64 C 64 86, 88 96, 108 86 C 124 78, 130 50, 118 30 C 108 12, 92 14, 80 22 Z" className="text-[color:var(--accent-amber)]" />
-              <path d="M 60 70 C 48 78, 50 96, 68 102 C 86 108, 110 100, 116 86 C 122 72, 112 56, 96 54 C 80 52, 68 60, 60 70 Z" className="text-[color:var(--accent-rose)]" />
-            </g>
-            <g fontFamily="ui-monospace, SFMono-Regular, monospace" fontSize="8" letterSpacing="0.18em" className="fill-ink">
-              <text x="32" y="44">EMP</text>
-              <text x="92" y="38">ORDER</text>
-              <text x="78" y="100">VALUE</text>
-            </g>
-            <g fontFamily="ui-monospace, SFMono-Regular, monospace" fontSize="7" letterSpacing="0.18em" className="fill-[color:var(--accent-teal)]">
-              <text x="60" y="60">↹</text>
-            </g>
-          </svg>
-          <p className="max-w-md font-display text-base leading-[1.65] text-ink-muted md:text-lg">
-            The moment{" "}
-            <span className="text-ink line-through decoration-[color:var(--accent-rose)] decoration-2">SQL joins</span>{" "}
-            stopped being enough. We need the join to carry weight — not
-            just rows.
-          </p>
-        </div>
-        <div className="mt-3 font-mono text-[10px] uppercase tracking-[0.3em] text-ink-faint" style={{ transform: "rotate(-0.4deg)" }}>
-          (2 days on this tuple)
-        </div>
-      </div>
-    );
-  }
-  if (kind === "formula") {
-    return (
-      <div className="relative my-10 md:my-14">
-        <div className="grid grid-cols-[1fr_auto] items-center gap-x-6">
-          <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink-faint" style={{ transform: "rotate(0.6deg)" }}>
-            ↓&nbsp; next: MODEL
-          </div>
-          <div className="hidden md:block font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--accent-teal)]" style={{ transform: "rotate(1.2deg)" }}>
-            ✱ the weights
-          </div>
-        </div>
-        <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-start md:gap-8">
-          <svg viewBox="0 0 220 110" className="h-28 w-full max-w-[260px] md:h-[110px] md:w-[240px] shrink-0" fill="none" stroke="currentColor">
-            {/* worked-out equation */}
-            <g fontFamily="ui-monospace, SFMono-Regular, monospace" fontSize="13" className="fill-ink">
-              {/* crossed-out first try */}
-              <text x="14" y="22" className="fill-ink-muted" textDecoration="line-through">
-                0.50·p + 0.50·s
-              </text>
-              <path d="M 12 17 L 122 27" stroke="currentColor" strokeWidth="1.2" className="text-[color:var(--accent-rose)]" />
-              {/* final form */}
-              <text x="14" y="48" className="fill-ink">
-                0.40·p + 0.20·s
-              </text>
-              <text x="14" y="68" className="fill-ink">
-                + 0.15·st + 0.15·t
-              </text>
-              <text x="14" y="88" className="fill-ink">
-                + 0.10·a
-              </text>
-              {/* final equals + check */}
-              <text x="148" y="78" className="fill-[color:var(--accent-teal)]" fontSize="18">
-                =
-              </text>
-              <path
-                d="M 170 68 L 178 78 L 196 56"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                fill="none"
-                className="text-[color:var(--accent-teal)]"
-              />
-              <text x="166" y="98" fontSize="9" letterSpacing="0.22em" className="fill-[color:var(--accent-teal)]">
-                WORKS
-              </text>
-            </g>
-          </svg>
-          <p className="max-w-md font-display text-base leading-[1.65] text-ink-muted md:text-lg">
-            First try was a 50/50 split. Tier collapsed. Status vanished.
-            The five variables need five weights, and they need to{" "}
-            <span className="text-ink">add up to a number the floor manager would believe</span>.
-          </p>
-        </div>
-        <div className="mt-3 font-mono text-[10px] uppercase tracking-[0.3em] text-ink-faint" style={{ transform: "rotate(0.6deg)" }}>
-          (4 evenings, 11 spreadsheets)
-        </div>
-      </div>
-    );
-  }
-  // barchart
-  return (
-    <div className="relative my-10 md:my-14">
-      <div className="grid grid-cols-[1fr_auto] items-center gap-x-6">
-        <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink-faint" style={{ transform: "rotate(-0.2deg)" }}>
-          ↓&nbsp; next: DELIVER
-        </div>
-        <div className="hidden md:block font-mono text-[10px] uppercase tracking-[0.22em] text-[color:var(--accent-teal)]" style={{ transform: "rotate(-1.5deg)" }}>
-          ✱ where the AED sits
-        </div>
-      </div>
-      <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-start md:gap-8">
-        <svg viewBox="0 0 200 110" className="h-28 w-full max-w-[240px] md:h-[110px] md:w-[220px] shrink-0" fill="none" stroke="currentColor">
-          {/* sketched axis */}
-          <path d="M 12 14 L 12 96 L 188 96" stroke="currentColor" strokeWidth="1.2" className="text-ink-muted" strokeLinecap="round" />
-          {/* hand-drawn bars (not perfectly aligned) */}
-          <path d="M 28 30 L 28 96 L 56 96 L 56 34 Z" className="fill-[color:var(--accent-lime)]/70 stroke-[color:var(--accent-lime)]" strokeWidth="1.2" />
-          <path d="M 72 56 L 72 96 L 100 96 L 100 60 Z" className="fill-[color:var(--accent-amber)]/70 stroke-[color:var(--accent-amber)]" strokeWidth="1.2" />
-          <path d="M 116 68 L 116 96 L 144 96 L 144 70 Z" className="fill-[color:var(--accent-rose)]/70 stroke-[color:var(--accent-rose)]" strokeWidth="1.2" />
-          <path d="M 160 80 L 160 96 L 188 96 L 188 82 Z" className="fill-[color:var(--accent-teal)]/70 stroke-[color:var(--accent-teal)]" strokeWidth="1.2" />
-          {/* arrow + label pointing at the bottleneck */}
-          <path d="M 76 40 C 78 50, 84 56, 86 60" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" className="text-[color:var(--accent-amber)]" fill="none" />
-          <path d="M 82 56 L 86 60 L 90 56" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="text-[color:var(--accent-amber)]" fill="none" />
-          <text x="48" y="26" fontSize="9" letterSpacing="0.18em" className="fill-[color:var(--accent-amber)]" fontFamily="ui-monospace, SFMono-Regular, monospace">
-            ← 49.5% HERE
-          </text>
-        </svg>
-        <p className="max-w-md font-display text-base leading-[1.65] text-ink-muted md:text-lg">
-          Confirmed is where the money is sitting, doing nothing. The model
-          makes the bottleneck visible — the dashboard makes it actionable.
-        </p>
-      </div>
-      <div className="mt-3 font-mono text-[10px] uppercase tracking-[0.3em] text-ink-faint" style={{ transform: "rotate(-0.2deg)" }}>
-        (49.5% of trapped value)
-      </div>
-    </div>
-  );
-}
-
-/* ──────────────────────── FINAL FIGURE (climax) ───────────────────────── */
-
-/**
- * FinalFigure — the climax. Replaces the clean centered AED 111,246 with
- * a hand-drawn-rectangle "final answer" treatment, a circular rubber
- * stamp ("✓ VERIFIED 09.18.2026") at angle, and the ROI written three
- * times in the margin with one circled. The whole figure sits at -0.5°
- * for the imperfect engineering-notebook feel.
- */
-function FinalFigure() {
-  return (
-    <Reveal
-      as="div"
-      stagger={0.08}
-      className="relative mt-20 md:mt-28"
-      style={{ transform: "rotate(-0.5deg)" }}
-    >
-      {/* Oversized hand-drawn rectangle around the figure */}
-      <div className="relative mx-2 md:mx-10">
-        <svg
-          aria-hidden
-          className="pointer-events-none absolute inset-0 h-full w-full text-[color:var(--accent-teal)]/70"
-          viewBox="0 0 600 200"
-          fill="none"
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M 14 16 C 120 8, 280 12, 440 10 C 540 8, 588 14, 588 36 C 592 80, 588 132, 586 172 C 586 188, 540 192, 460 190 C 300 188, 140 192, 30 188 C 12 186, 10 160, 12 120 C 14 80, 10 40, 14 16 Z"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
-          />
-          {/* A second, looser outer stroke for the "drew the box twice" feel */}
-          <path
-            d="M 18 22 C 124 14, 286 18, 446 16 C 544 14, 584 22, 582 40 C 588 84, 582 134, 580 168"
-            stroke="currentColor"
-            strokeWidth="1"
-            strokeLinecap="round"
-            fill="none"
-            opacity="0.4"
-          />
-        </svg>
-
-        <div className="relative px-6 py-10 md:px-12 md:py-14">
-          <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink-faint">
-            // the final figure
-          </div>
-          <div className="mt-3 font-display text-5xl italic leading-[0.95] text-[color:var(--accent-teal)] md:text-8xl">
-            <CountUp to={111246} duration={1.8} decimals={0} prefix="AED " />
-          </div>
-          <div className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 font-mono text-[10px] uppercase tracking-[0.3em] text-ink-muted">
-            <span>recovered in 30 days</span>
-            <span aria-hidden>·</span>
-            <span>zero additional hires</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Verified circular stamp — rubber-stamp feel */}
-      <div className="relative mx-2 mt-6 md:mx-10 md:mt-8">
-        <div className="flex flex-wrap items-center gap-6">
-          <svg viewBox="0 0 120 120" className="h-24 w-24 text-[color:var(--accent-teal)] md:h-28 md:w-28" fill="none">
-            <circle cx="60" cy="60" r="54" stroke="currentColor" strokeWidth="2.5" />
-            <circle cx="60" cy="60" r="46" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2.5" opacity="0.7" />
-            <text x="60" y="42" textAnchor="middle" fontSize="9" letterSpacing="0.3em" fontFamily="ui-monospace, SFMono-Regular, monospace" fontWeight="700" className="fill-[color:var(--accent-teal)]">
-              VERIFIED
-            </text>
-            <path
-              d="M 38 64 L 54 80 L 84 48"
-              stroke="currentColor"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-            />
-            <text x="60" y="98" textAnchor="middle" fontSize="7" letterSpacing="0.32em" fontFamily="ui-monospace, SFMono-Regular, monospace" className="fill-[color:var(--accent-teal)]">
-              09.18.2026
-            </text>
-          </svg>
-
-          {/* ROI scribbled three times — one circled */}
-          <div className="flex flex-col gap-2">
-            <div className="font-display text-2xl italic text-ink-faint md:text-3xl" style={{ transform: "rotate(-1deg)" }}>
-              ≈ 11.1×
-            </div>
-            <div className="font-display text-2xl italic text-ink-faint md:text-3xl" style={{ transform: "rotate(0.5deg)" }}>
-              ≈ 11.1×
-            </div>
-            <div className="relative font-display text-3xl italic text-[color:var(--accent-teal)] md:text-4xl" style={{ transform: "rotate(-0.5deg)" }}>
-              <span className="relative z-10">≈ 11.1× ROI</span>
-              <svg
-                aria-hidden
-                className="pointer-events-none absolute -inset-1 h-[calc(100%+8px)] w-[calc(100%+12px)] text-[color:var(--accent-teal)]"
-                viewBox="0 0 200 60"
-                fill="none"
-                preserveAspectRatio="none"
-              >
-                <ellipse
-                  cx="100"
-                  cy="30"
-                  rx="96"
-                  ry="26"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  fill="none"
-                  strokeDasharray="3 2"
-                />
-                <ellipse
-                  cx="102"
-                  cy="30"
-                  rx="92"
-                  ry="22"
-                  stroke="currentColor"
-                  strokeWidth="1"
-                  fill="none"
-                  opacity="0.5"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-6 font-mono text-[10px] uppercase tracking-[0.3em] text-ink-faint">
-          value : cost &nbsp;·&nbsp; 11.1 : 1 &nbsp;·&nbsp; this is the close
-        </div>
-      </div>
-    </Reveal>
-  );
-}
-
-/* ─────────────────────── WORKING NOTES OPENER ────────────────────────── */
-
-/**
- * WorkingNotesHeader — bound-notebook feel. Paper tape on top edge, a
- * date stamp, and a "Page 02 — Engineering Log" label. Sets the tone
- * that the user is opening the engineer's working notes, not a
- * marketing section.
- */
-function WorkingNotesHeader() {
-  return (
-    <div className="relative mb-10 md:mb-12">
-      {/* paper tape — top edge */}
-      <div
-        className="absolute -top-3 left-6 h-5 w-28 -rotate-6 md:left-12 md:w-32"
-        style={{
-          background:
-            "linear-gradient(180deg, color-mix(in oklch, var(--accent-teal) 18%, transparent) 0%, color-mix(in oklch, var(--accent-teal) 26%, transparent) 100%)",
-          clipPath: "polygon(2% 0%, 100% 4%, 98% 100%, 0% 96%)",
-        }}
-        aria-hidden
-      />
-      <div
-        className="absolute -top-2 right-8 h-5 w-24 rotate-3 md:right-20 md:w-28"
-        style={{
-          background:
-            "linear-gradient(180deg, color-mix(in oklch, var(--accent-amber) 18%, transparent) 0%, color-mix(in oklch, var(--accent-amber) 26%, transparent) 100%)",
-          clipPath: "polygon(0% 4%, 98% 0%, 100% 96%, 2% 100%)",
-        }}
-        aria-hidden
-      />
-
-      <div className="flex flex-wrap items-end justify-between gap-4 border-b border-rule pb-5 pt-4">
-        <div>
-          <ChapterEyebrow n="// 01" label="The System We Built" />
-          <h3 className="cin-section-title mt-3 text-3xl md:text-5xl">
-            From the floor to the
-            <br />
-            <em>boardroom.</em>
-          </h3>
-        </div>
-        <div className="flex flex-col items-end gap-1 text-right font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
-          <div>4 stages · 1 source of truth</div>
-          <div className="flex items-center gap-2 text-ink-muted">
-            <span aria-hidden>—</span>
-            <span>Page 02 · Engineering Log</span>
-          </div>
-          <div className="text-ink-faint">Sep 2026 · Dubai</div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ─────────────────────────── MARGIN RAIL ─────────────────────────────── */
-
-/**
- * MarginRail — the alive left rail. Each stage gets a hand-drawn icon,
- * a unique wobble connector (perturbed by connectorSeed), and real
- * marginalia between stages. The first stage gets a "← start here"
- * scribble; the last gets a "→ the close" arrow.
- */
-function MarginRail({
-  system,
-}: {
-  system: ReadonlyArray<{
-    n: string;
-    layer: string;
-    icon: "aperture" | "nodes" | "gear" | "plane";
-    connectorSeed: number;
-    scribble: string;
-  }>;
-}) {
-  // Each connector has a UNIQUE wobble pattern — perturbed by connectorSeed.
-  const connectorPath = (seed: number) => {
-    const base = [
-      "M 36 4 C 28 22, 42 36, 30 54 S 28 70, 34 76",
-      "M 38 6 C 26 24, 44 38, 28 56 S 32 72, 36 78",
-      "M 34 8 C 30 26, 40 40, 32 58 S 26 72, 38 80",
-      "M 40 4 C 24 20, 46 34, 26 52 S 34 68, 32 78",
-    ];
-    return base[seed % base.length];
-  };
-  return (
-    <aside
-      aria-hidden
-      className="absolute left-0 top-0 hidden w-32 md:block lg:w-36"
-    >
-      <div className="sticky top-24 flex flex-col gap-16 lg:gap-24">
-        {system.map((s, i) => (
-          <div
-            key={s.n}
-            className="relative"
-            style={{ transform: `translateY(${i % 2 === 0 ? 0 : 6}px) rotate(${i % 2 === 0 ? -0.4 : 0.6}deg)` }}
-          >
-            <div className="flex items-baseline gap-2">
-              <span className="font-mono text-[10px] tracking-[0.3em] text-ink-faint">
-                {s.n}
-              </span>
-              <span
-                className={
-                  "inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.22em] " +
-                  (i === system.length - 1
-                    ? "text-[color:var(--accent-teal)]"
-                    : "text-ink-muted")
-                }
-              >
-                <StageIcon name={s.icon} />
-                {s.layer}
-              </span>
-            </div>
-            {/* First-stage "start here" scribble */}
-            {i === 0 && (
-              <div
-                className="absolute -left-1 top-7 font-mono text-[9px] uppercase tracking-[0.18em] text-ink-faint"
-                style={{ transform: "rotate(-12deg)" }}
-              >
-                ← start
-              </div>
-            )}
-            {/* Hand-drawn connector — UNIQUE wobble per stage */}
-            {i < system.length - 1 && (
-              <svg
-                className="absolute -right-12 top-3 h-24 w-12 text-[color:var(--accent-teal)]/45 lg:-right-16"
-                viewBox="0 0 40 90"
-                fill="none"
-              >
-                <path
-                  d={connectorPath(s.connectorSeed)}
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                  strokeLinecap="round"
-                  strokeDasharray="2.5 3"
-                />
-                <path
-                  d="M 30 70 L 34 76 L 38 71"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                {/* asterisk marginalia mid-flight */}
-                <text
-                  x="46"
-                  y="44"
-                  fontSize="9"
-                  letterSpacing="0.18em"
-                  fontFamily="ui-monospace, SFMono-Regular, monospace"
-                  fill="currentColor"
-                >
-                  ✱
-                </text>
-              </svg>
-            )}
-            {/* Last-stage "the close" arrow */}
-            {i === system.length - 1 && (
-              <div
-                className="absolute -right-2 top-7 font-mono text-[9px] uppercase tracking-[0.18em] text-[color:var(--accent-teal)]"
-                style={{ transform: "rotate(8deg)" }}
-              >
-                → the close ↘
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    </aside>
-  );
-}
-
-/* ──────────────────────── SHARED EYEBROW ATOM ────────────────────────── */
-
 /** Shared eyebrow atom — chapter number + sonar dot + label. */
 function ChapterEyebrow({
   n,
@@ -749,7 +166,184 @@ function ChapterEyebrow({
   );
 }
 
-/* ─────────────────────────── SECTION ROOT ────────────────────────────── */
+/* ───────────────────────── HORIZONTAL TRACK ────────────────────────── */
+
+/**
+ * HorizontalStudioTrack — the 4-stage architecture presented as a
+ * horizontal scroll-snap track on desktop, and a clean vertical stack
+ * on mobile. Each panel uses semantic <article> with aria-labelledby,
+ * generous whitespace, clean serif typography, and a single accent
+ * rule at the bottom. No rotations, no wobble, no decorations that
+ * break readability or accessibility.
+ *
+ * Keyboard: ←/→ arrow keys move focus between panels; the track itself
+ * scrolls horizontally via CSS scroll-snap.
+ *
+ * prefers-reduced-motion: falls back to a vertical stack with a
+ * subtle slide-up reveal (the framer-motion default).
+ */
+function HorizontalStudioTrack() {
+  const reduceMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  // Observe which panel is in view — powers the sticky progress rail.
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const panels = el.querySelectorAll("[data-stage-panel]");
+    if (panels.length === 0) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting && e.intersectionRatio > 0.5) {
+            const idx = Number((e.target as HTMLElement).dataset.stagePanel);
+            if (!Number.isNaN(idx)) setActiveIdx(idx);
+          }
+        }
+      },
+      { root: el, threshold: [0.5, 0.75] }
+    );
+    panels.forEach((p) => io.observe(p));
+    return () => io.disconnect();
+  }, []);
+
+  // Keyboard nav: ←/→ scrolls between panels when the track has focus.
+  const handleKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const panelWidth = el.clientWidth;
+    if (e.key === "ArrowRight") {
+      el.scrollBy({ left: panelWidth, behavior: reduceMotion ? "auto" : "smooth" });
+      e.preventDefault();
+    } else if (e.key === "ArrowLeft") {
+      el.scrollBy({ left: -panelWidth, behavior: reduceMotion ? "auto" : "smooth" });
+      e.preventDefault();
+    }
+  };
+
+  return (
+    <div className="relative mt-10 md:mt-16">
+      {/* Section eyebrow + heading — kept above the track for context. */}
+      <div className="mb-8 flex flex-wrap items-end justify-between gap-4 border-b border-rule pb-6 md:mb-12">
+        <div>
+          <ChapterEyebrow n="// 01" label="The System We Built" />
+          <h3 className="cin-section-title mt-3 text-3xl md:text-5xl">
+            From the floor to the
+            <br />
+            <em>boardroom.</em>
+          </h3>
+        </div>
+        <div className="cin-section-eyebrow text-right">
+          <div>4 stages · 1 source of truth</div>
+        </div>
+      </div>
+
+      {/* Desktop: horizontal scroll-snap track. */}
+      <div
+        ref={trackRef}
+        role="region"
+        aria-label="AbaYa-Track four-stage architecture"
+        tabIndex={0}
+        onKeyDown={handleKey}
+        className="cin-horizontal-track hidden snap-x snap-mandatory overflow-x-auto pb-2 md:flex md:gap-0 md:snap-mandatory"
+        style={{ scrollbarWidth: "thin" }}
+      >
+        {SYSTEM.map((s) => (
+          <article
+            key={s.n}
+            data-stage-panel={s.n}
+            aria-labelledby={`stage-heading-${s.n}`}
+            className="flex w-full shrink-0 snap-center items-center px-2 md:px-12 lg:px-20"
+          >
+            <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-10 md:grid-cols-[180px_1fr] md:gap-16">
+              <div className="md:pt-2">
+                <div className="font-mono text-[11px] tracking-[0.3em] text-ink-faint">
+                  {s.n}
+                </div>
+                <div className="mt-3 font-mono text-xs uppercase tracking-[0.22em] text-accent-teal">
+                  {s.layer}
+                </div>
+              </div>
+              <div>
+                <h4
+                  id={`stage-heading-${s.n}`}
+                  className="font-display text-3xl italic leading-[1.05] text-ink md:text-5xl lg:text-6xl"
+                >
+                  {s.title}
+                </h4>
+                <p className="mt-6 max-w-2xl font-display text-base leading-[1.7] text-ink-muted md:text-xl">
+                  {s.body}
+                </p>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      {/* Sticky progress rail — visible only on desktop, shows current stage. */}
+      <div
+        aria-hidden
+        className="absolute right-4 top-1/2 hidden -translate-y-1/2 flex-col gap-4 md:flex lg:right-8"
+      >
+        {SYSTEM.map((s) => {
+          const isActive = s.n === String(activeIdx + 1).padStart(2, "0");
+          return (
+            <div
+              key={s.n}
+              className="flex items-center gap-3 transition-opacity duration-300"
+              style={{ opacity: isActive ? 1 : 0.45 }}
+            >
+              <span className="font-mono text-[10px] tracking-[0.18em] text-ink-faint">
+                {s.n}
+              </span>
+              <span
+                className="block h-px w-10 transition-colors duration-300 lg:w-14"
+                style={{
+                  background: isActive
+                    ? "var(--accent-teal)"
+                    : "var(--rule-strong)",
+                }}
+              />
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Mobile: clean vertical stack — no horizontal scroll on small screens. */}
+      <div className="space-y-12 md:hidden">
+        {SYSTEM.map((s) => (
+          <article
+            key={s.n}
+            aria-labelledby={`stage-heading-mobile-${s.n}`}
+            className="border-b border-rule pb-10 last:border-b-0"
+          >
+            <div className="font-mono text-[10px] tracking-[0.3em] text-ink-faint">
+              {s.n}
+            </div>
+            <div className="mt-2 font-mono text-[10px] uppercase tracking-[0.22em] text-accent-teal">
+              {s.layer}
+            </div>
+            <h4
+              id={`stage-heading-mobile-${s.n}`}
+              className="mt-4 font-display text-2xl italic leading-[1.1] text-ink md:text-3xl"
+            >
+              {s.title}
+            </h4>
+            <p className="mt-4 font-display text-base leading-[1.7] text-ink-muted">
+              {s.body}
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────── SECTION ROOT ──────────────────────────── */
 
 export function CaseStudySection() {
   return (
@@ -785,79 +379,14 @@ export function CaseStudySection() {
           </div>
         </Reveal>
 
-        {/* The system we built — Working-Notes edition.
-            The thinking process shows up THROUGH the writing itself:
-            4 paragraphs of running prose that hand off to each other,
-            the margin rail carries the stage markers with hand-drawn
-            icons + unique wobble connectors + real marginalia, and the
-            SPACE BETWEEN paragraphs carries Thinking Bridges — hand-drawn
-            Venn / worked-out equation / sketched bar chart — each with
-            a mono-font annotation and a margin scribble. The FinalFigure
-            replaces the clean pull-quote with a hand-drawn-rectangle
-            final answer + verified circular stamp + scribbled ROI. */}
-        <div className="mt-4 md:mt-6">
-          <WorkingNotesHeader />
-
-          <div className="relative">
-            <MarginRail system={SYSTEM} />
-
-            {/* Body column — single flowing prose. The space between
-                paragraphs is where the process lives (Thinking Bridges).
-                Oversized rotated ink stamps sit in the right margin. */}
-            <div className="md:pl-44 lg:pl-52">
-              {SYSTEM.map((s, i) => (
-                <Reveal
-                  key={s.n}
-                  as="div"
-                  stagger={0.06}
-                  className="relative"
-                  style={{
-                    marginLeft:
-                      i % 2 === 0 ? "0" : "clamp(0px, 3vw, 28px)",
-                    transform: `rotate(${i % 2 === 0 ? -0.15 : 0.18}deg)`,
-                  }}
-                >
-                  {/* Oversized rotated ink stamp — underlay, not overlay.
-                      Sits in the right margin at +7°, teal at 12% opacity,
-                      intentionally bleeding past the column edge. */}
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute right-0 top-0 select-none font-display text-[5rem] italic leading-none text-[color:var(--accent-teal)]/[0.12] md:-right-10 md:text-[7rem] lg:-right-16 lg:text-[8.5rem]"
-                    style={{ transform: `rotate(${-3 + i * 3.5}deg)` }}
-                  >
-                    {s.n}
-                  </div>
-
-                  {/* Stage label — sits above the paragraph as a quiet
-                      identifier, before the prose starts. */}
-                  <div className="mb-3 flex items-baseline gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-ink-faint">
-                    <span className="text-[color:var(--accent-teal)]">{s.layer}</span>
-                    <span aria-hidden>·</span>
-                    <span className="italic">{s.scribble}</span>
-                  </div>
-
-                  <p className="max-w-2xl font-display text-lg leading-[1.7] text-ink md:text-xl">
-                    {s.body}
-                  </p>
-
-                  {/* Thinking bridge between this stage and the next */}
-                  {s.bridge && <ThinkingBridge kind={s.bridge} />}
-
-                  {/* Fallback breathing room if no bridge */}
-                  {!s.bridge && i < SYSTEM.length - 1 && (
-                    <div className="h-12 md:h-20" aria-hidden />
-                  )}
-                </Reveal>
-              ))}
-
-              {/* Final Figure — the close */}
-              <FinalFigure />
-            </div>
-          </div>
-        </div>
+        {/* The 4-stage architecture — horizontal studio track (desktop)
+            or vertical stack (mobile). Boutique studio design language:
+            clean serif + italic, generous whitespace, no decorations
+            that break readability. */}
+        <HorizontalStudioTrack />
 
         {/* The blind spot — the headline stat */}
-        <div className="mt-20 grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-8">
+        <div className="mt-20 grid grid-cols-1 gap-6 md:mt-28 md:grid-cols-12 md:gap-8">
           <div className="md:col-span-7">
             <Reveal as="div" stagger={0.1} className="rounded-2xl border border-rule bg-paper-2 p-6 md:p-8">
               <ChapterEyebrow n="// The Old View" label="unit-count, value-invisible" />
@@ -876,7 +405,7 @@ export function CaseStudySection() {
               </p>
               <div className="mt-6 border-t border-rule pt-6">
                 <ChapterEyebrow n="// The New View" label="value-weighted by SKU + tier" />
-                <div className="mt-3 font-display text-4xl leading-tight tracking-tight text-[color:var(--accent-teal)] md:text-6xl">
+                <div className="mt-3 font-display text-4xl leading-tight tracking-tight text-accent-teal md:text-6xl">
                   AED <CountUp to={111246} duration={1.8} decimals={0} />
                 </div>
                 <p className="mt-3 text-sm text-ink-muted md:text-base">
@@ -1048,11 +577,11 @@ export function CaseStudySection() {
                     per unit · 1,303 in pipeline
                   </div>
                 </TiltCard>
-                <TiltCard className="rounded-2xl border-2 border-[color:var(--accent-teal)] bg-paper-2 p-5 transition-colors">
-                  <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--accent-teal)]">
+                <TiltCard className="rounded-2xl border-2 border-accent-teal bg-paper-2 p-5 transition-colors">
+                  <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent-teal">
                     VIP
                   </div>
-                  <div className="mt-3 font-display text-4xl leading-none text-[color:var(--accent-teal)]">
+                  <div className="mt-3 font-display text-4xl leading-none text-accent-teal">
                     AED <CountUp to={641} duration={1.2} />
                   </div>
                   <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-ink-muted">
@@ -1099,7 +628,7 @@ export function CaseStudySection() {
 
                 <div className="mt-6 border-t border-rule pt-6">
                   <ChapterEyebrow n="// Trapped value" label="" showDot />
-                  <div className="mt-3 font-display text-4xl leading-none text-[color:var(--accent-teal)]">
+                  <div className="mt-3 font-display text-4xl leading-none text-accent-teal">
                     AED <CountUp to={111246} duration={1.8} />
                   </div>
                 </div>
@@ -1124,12 +653,12 @@ export function CaseStudySection() {
                     className={
                       "rounded-2xl border p-5 " +
                       (s.recommended
-                        ? "border-2 border-[color:var(--accent-teal)] bg-[color:var(--accent-teal)]/5"
+                        ? "border-2 border-accent-teal bg-accent-teal/5"
                         : "border-rule bg-paper-2")
                     }
                   >
                     {s.recommended ? (
-                      <div className="mb-2 inline-block rounded-full bg-[color:var(--accent-teal)] px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-ink">
+                      <div className="mb-2 inline-block rounded-full bg-accent-teal px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-ink">
                         ★ Recommended
                       </div>
                     ) : null}
@@ -1181,7 +710,7 @@ export function CaseStudySection() {
             <p className="cin-section-title mx-auto mt-4 max-w-3xl text-3xl leading-tight md:text-5xl">
               Stop tracking <em className="text-ink-faint line-through">units</em>.
               <br />
-              Start tracking <em className="text-[color:var(--accent-teal)] not-italic">value</em>.
+              Start tracking <em className="text-accent-teal not-italic">value</em>.
             </p>
           </Reveal>
         </div>
