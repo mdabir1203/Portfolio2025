@@ -251,6 +251,66 @@ function StageIcon({
   );
 }
 
+/* ─────────────────── KINEMATIC TITLE ─────────────────────────── */
+
+/**
+ * KinematicTitle — per-word kinetic typography reveal.
+ * Each word of the title enters with blur→focus pull, staggered 130ms apart,
+ * triggered when `active` flips true (panel scrolled into view).
+ *
+ * The effect: the thinking process of "reading the stage title" is itself
+ * animated — the words don't just appear, they arrive.
+ *
+ * Based on the diagonal kinetic opener from FirstVisitSplash.tsx.
+ */
+function KinematicTitle({
+  title,
+  active,
+  reduce,
+}: {
+  title: string;
+  active: boolean;
+  reduce: boolean;
+}) {
+  const words = title.split(" ");
+  return (
+    <>
+      {words.map((word, i) => (
+        <motion.span
+          key={`${word}-${i}`}
+          className="mr-[0.28em] inline-block"
+          initial={
+            reduce
+              ? { opacity: 1 }
+              : { opacity: 0, filter: "blur(6px)", x: -16, y: 8 }
+          }
+          animate={
+            active
+              ? reduce
+                ? { opacity: 1, filter: "blur(0px)", x: 0, y: 0 }
+                : {
+                    opacity: 1,
+                    filter: "blur(0px)",
+                    x: 0,
+                    y: 0,
+                    transition: {
+                      duration: 0.75,
+                      delay: i * 0.13,
+                      ease: [0.16, 0.84, 0.24, 1],
+                    },
+                  }
+              : reduce
+              ? { opacity: 1 }
+              : { opacity: 0, filter: "blur(6px)", x: -16, y: 8 }
+          }
+        >
+          {word}
+        </motion.span>
+      ))}
+    </>
+  );
+}
+
 /* ──────────────────────── THINKING BRIDGES ──────────────────────────── */
 
 /**
@@ -824,16 +884,15 @@ function HorizontalStudioTrack() {
 
                 {/* Stage content */}
                 <div>
-                  {/* Title — staggered with delay 0.2 */}
-                  <motion.h4
+                  {/* Title — kinetic per-word reveal with blur→focus pull.
+                      Stagger is handled inside KinematicTitle (0, 0.13, 0.26…s per word),
+                      triggered when the panel becomes active. */}
+                  <h4
                     id={`stage-heading-${s.n}`}
-                    initial="hidden"
-                    animate={isActive ? "show" : "hidden"}
-                    variants={itemVariants(0.2)}
                     className="font-display text-3xl italic leading-[1.05] text-ink md:text-5xl lg:text-6xl"
                   >
-                    {s.title}
-                  </motion.h4>
+                    <KinematicTitle title={s.title} active={isActive} reduce={reduce} />
+                  </h4>
                   {/* Body — staggered with delay 0.35 */}
                   <motion.p
                     initial="hidden"
