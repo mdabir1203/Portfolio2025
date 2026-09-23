@@ -946,22 +946,22 @@ function HorizontalStudioTrack() {
                       : { duration: 0.7, ease: [0.16, 1, 0.3, 1] }
                   }
                 >
-                  <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-10 md:grid-cols-[180px_1fr] md:gap-16">
-                    {/* Stage meta — left column */}
-                    <div className="md:pt-2">
+                  <div className="mx-auto grid w-full max-w-5xl grid-cols-[64px_1fr] gap-x-6 gap-y-8 md:gap-x-10 md:gap-y-10">
+                    {/* Stage meta — left column, vertically aligned with title baseline */}
+                    <div className="flex flex-col justify-start md:pt-1">
                       <motion.div
                         initial="hidden"
                         animate={isActive ? "show" : "hidden"}
                         variants={itemVariants(0)}
-                        className="font-mono text-[11px] tracking-[0.3em] text-ink-faint"
+                        className="font-mono text-[10px] tracking-[0.35em] text-ink-muted"
                       >
                         {s.n}
                       </motion.div>
                       <motion.div
                         initial="hidden"
                         animate={isActive ? "show" : "hidden"}
-                        variants={itemVariants(0.1)}
-                        className="mt-3 font-mono text-xs uppercase tracking-[0.22em] text-accent-teal"
+                        variants={itemVariants(0.08)}
+                        className="mt-4 font-mono text-[9px] uppercase tracking-[0.28em] text-accent-teal"
                       >
                         {s.layer}
                       </motion.div>
@@ -971,7 +971,7 @@ function HorizontalStudioTrack() {
                     <div>
                       <h4
                         id={`stage-heading-${s.n}`}
-                        className="font-display text-3xl italic leading-[1.05] text-ink md:text-5xl lg:text-6xl"
+                        className="font-display text-3xl italic leading-[1.0] tracking-[-0.01em] text-ink md:text-5xl lg:text-5xl"
                       >
                         {/* KinematicTitle: per-word blur→focus stagger on activation */}
                         <KinematicTitle
@@ -983,8 +983,8 @@ function HorizontalStudioTrack() {
                       <motion.p
                         initial="hidden"
                         animate={isActive ? "show" : "hidden"}
-                        variants={itemVariants(0.4)}
-                        className="mt-6 max-w-2xl font-display text-base leading-[1.7] text-ink-muted md:text-xl"
+                        variants={itemVariants(0.38)}
+                        className="mt-4 max-w-xl font-display text-base leading-[1.75] tracking-[0.01em] text-ink-muted md:text-lg"
                       >
                         {s.bodyPlain}
                       </motion.p>
@@ -996,10 +996,10 @@ function HorizontalStudioTrack() {
           })}
         </div>
 
-        {/* ── Minimal dot nav — no lines, just dots ─────────────────────── */}
+        {/* ── Dot nav — boutique pill indicators ──────────────────────────── */}
         <div
           aria-hidden
-          className="pointer-events-none absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2"
+          className="pointer-events-none absolute bottom-5 left-1/2 flex -translate-x-1/2 items-center gap-3"
         >
           {SYSTEM.map((s) => {
             const isActive = s.n === String(activeIdx + 1).padStart(2, "0");
@@ -1008,12 +1008,12 @@ function HorizontalStudioTrack() {
                 key={s.n}
                 className="rounded-full transition-all duration-500"
                 style={{
-                  width: isActive ? 20 : 6,
-                  height: isActive ? 6 : 6,
+                  width: isActive ? 18 : 5,
+                  height: isActive ? 5 : 5,
                   background: isActive
                     ? "var(--accent-teal)"
-                    : "var(--rule-strong)",
-                  opacity: isActive ? 1 : 0.5,
+                    : "var(--ink-muted)",
+                  opacity: isActive ? 1 : 0.4,
                 }}
               />
             );
