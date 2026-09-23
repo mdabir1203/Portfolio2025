@@ -107,7 +107,7 @@ if (!existsSync(CONFIG)) {
     if (cfg.pages_build_output_dir) cfg.pages_build_output_dir = '.';
     for (const k of INVALID_TOP_LEVEL) delete cfg[k];
     for (const k of Object.keys(cfg)) {
-      if (['vars','name','compatibility_date','compatibility_flags','pages_build_output_dir'].includes(k)) continue;
+      if (['vars','name','compatibility_date','compatibility_flags','pages_build_output_dir','build'].includes(k)) continue;
       if (Array.isArray(cfg[k]) && cfg[k].length === 0) delete cfg[k];
       else if (cfg[k] && typeof cfg[k] === 'object' && !Array.isArray(cfg[k]) && Object.keys(cfg[k]).length === 0) delete cfg[k];
     }
