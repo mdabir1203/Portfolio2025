@@ -839,15 +839,16 @@ function HorizontalStudioTrack() {
         </div>
       </div>
 
-      {/* Desktop: horizontal scroll-snap track with per-panel motion. */}
+      {/* Desktop: horizontal scroll-snap track — full viewport, no visible scrollbar.
+          Each panel is exactly 100vw so snap-aligns to the screen edge. */}
       <div
         ref={trackRef}
         role="region"
         aria-label="AbaYa-Track four-stage architecture"
         tabIndex={0}
         onKeyDown={handleKey}
-        className="cin-horizontal-track hidden snap-x snap-mandatory overflow-x-auto pb-2 md:flex md:gap-0 md:snap-mandatory"
-        style={{ scrollbarWidth: "thin" }}
+        className="hidden snap-x snap-mandatory overflow-x-auto md:flex md:gap-0 md:snap-mandatory [&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar-track]:hidden [&_::-webkit-scrollbar-thumb]:hidden [scrollbar-width:none]"
+        style={{ scrollbarWidth: "none" }}
       >
         {SYSTEM.map((s, idx) => {
           const isActive = activeIdx === idx;
@@ -858,7 +859,7 @@ function HorizontalStudioTrack() {
                 panelRefs.current[idx] = el;
               }}
               data-stage-panel={s.n}
-              className="flex w-full shrink-0 snap-center items-center px-2 md:px-12 lg:px-20"
+              className="flex w-[100vw] shrink-0 snap-center items-center px-8 md:px-12 lg:px-16"
             >
               <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-10 md:grid-cols-[180px_1fr] md:gap-16">
                 {/* Stage number — staggered with delay 0 */}
@@ -938,38 +939,36 @@ function HorizontalStudioTrack() {
         })}
       </div>
 
-      {/* Mobile: clean vertical stack with Reveal stagger — no horizontal scroll. */}
-      <div className="space-y-12 md:hidden">
-        {SYSTEM.map((s) => (
-          <article
+      {/* Mobile: horizontal scroll-snap track — left-to-right swipe engagement,
+          one stage per swipe. Shows native scrollbar so users know they
+          can swipe through stages. */}
+      <div
+        className="snap-x snap-mandatory overflow-x-auto md:hidden"
+        style={{ WebkitOverflowScrolling: "touch" }}
+      >
+        {SYSTEM.map((s, idx) => (
+          <div
             key={s.n}
-            aria-labelledby={`stage-heading-mobile-${s.n}`}
-            className="border-b border-rule pb-10 last:border-b-0"
+            className="flex w-[100vw] shrink-0 snap-center snap-always items-center px-6 py-4"
           >
-            <Reveal
-              as="div"
-              stagger={0.08}
-              className="font-mono text-[10px] tracking-[0.3em] text-ink-faint"
-            >
-              {s.n}
-            </Reveal>
-            <Reveal
-              as="div"
-              stagger={0.1}
-              className="mt-2 font-mono text-[10px] uppercase tracking-[0.22em] text-accent-teal"
-            >
-              {s.layer}
-            </Reveal>
-            <h4
-              id={`stage-heading-mobile-${s.n}`}
-              className="mt-4 font-display text-2xl italic leading-[1.1] text-ink md:text-3xl"
-            >
-              {s.title}
-            </h4>
-            <p className="mt-4 font-display text-base leading-[1.7] text-ink-muted">
-              {s.bodyPlain}
-            </p>
-          </article>
+            <article aria-labelledby={`stage-heading-mobile-${s.n}`}>
+              <div className="font-mono text-[11px] tracking-[0.3em] text-ink-faint">
+                {s.n}
+              </div>
+              <div className="mt-2 font-mono text-[10px] uppercase tracking-[0.22em] text-accent-teal">
+                {s.layer}
+              </div>
+              <h4
+                id={`stage-heading-mobile-${s.n}`}
+                className="mt-4 font-display text-2xl italic leading-[1.1] text-ink"
+              >
+                {s.title}
+              </h4>
+              <p className="mt-3 font-display text-base leading-[1.65] text-ink-muted">
+                {s.bodyPlain}
+              </p>
+            </article>
+          </div>
         ))}
       </div>
     </div>
