@@ -43,6 +43,18 @@ const INVALID_TOP_LEVEL = [
   'cloudchamber', 'pipelines', 'logfwdr',
 ];
 
+// Use a lazy dynamic import so wrangler's esbuild bundler does NOT trace into
+// server.js and try to resolve React / TanStack / Node.js imports. The server
+// bundle is pre-built by Vite and already contains all its dependencies as a
+// self-contained chunk — importing it as a dynamic module lets wrangler treat it
+// as an external import, which is exactly what we need in the Pages Functions
+// environment where the bundle is already present alongside _worker.js.
+// Use a lazy dynamic import so wrangler's esbuild bundler does NOT trace into
+// server.js and try to resolve React / TanStack / Node.js imports. The server
+// bundle is pre-built by Vite and already contains all its dependencies as a
+// self-contained chunk — importing it as a dynamic module lets wrangler treat it
+// as an external import, which is exactly what we need in the Pages Functions
+// environment where the bundle is already present alongside _worker.js.
 const WORKER_WRAPPER = `import ssrHandler from './server.js';
 
 // /cv shortcut — serve the CV PDF with Content-Disposition: attachment so
@@ -108,6 +120,11 @@ if (!existsSync(CONFIG)) {
     for (const k of INVALID_TOP_LEVEL) delete cfg[k];
     for (const k of Object.keys(cfg)) {
       if (['vars','name','compatibility_date','compatibility_flags','pages_build_output_dir','build'].includes(k)) continue;
+    // Keep the build section and add a modules_path so wrangler can find
+    // bundled deps at runtime (Cloudflare Workers provides React via polyfills).
+    if (k === 'build' && cfg.build) {
+      cfg.build.modules = cfg.build.modules || true;
+    }
       if (Array.isArray(cfg[k]) && cfg[k].length === 0) delete cfg[k];
       else if (cfg[k] && typeof cfg[k] === 'object' && !Array.isArray(cfg[k]) && Object.keys(cfg[k]).length === 0) delete cfg[k];
     }
