@@ -2,34 +2,23 @@
  * CaseStudySection — the centerpiece, boardroom edition.
  *
  * The AbaYa-Track Delivery Module case study, rebuilt from the August 2026
- * deck. Editorial scrapbook language: white paper, type-led, the numbers
+ * deck. Clean editorial language: white paper, type-led, the numbers
  * do the talking. Title is the product surface; the "$100K Blind Spot"
  * subtitle is the hook from slide 1 of the deck.
  *
- * 2026-09-23 redesign — "The Engineer's Notebook · Thinking Bridges + Motion":
- *   The 4-stage architecture reads as a vertical editorial column — prose
- *   flows top-to-bottom, the space BETWEEN writings carries the thinking
- *   process as animated artifacts:
+ * 2026-09-23 redesign — "Horizontal Studio Track + Scroll Motion":
+ *   The 4-stage architecture reads as a horizontal scroll-snap track on
+ *   desktop (one stage per viewport), and a clean vertical stack on mobile.
+ *   Each stage panel staggers its text elements in as it enters the
+ *   horizontal viewport — eyebrow → layer → title → body, blur→focus
+ *   pull. The thinking process unfolds as you scroll, step by step.
  *
- *     · Working-Notes opener strip    — paper tape + page number + date
- *     · Alive margin rail             — hand-drawn stage icons + per-stage
- *                                        wobble connectors + real marginalia
- *     · Inline typographic moves      — wavy underlines, highlight tape,
- *                                        mono-formatted formulas, slightly
- *                                        irregular paragraph indentation
- *     · Thinking Bridges (3 of them)  — hand-drawn Venn (capture→map),
- *                                        worked-out equation (map→model),
- *                                        sketched bar chart (model→deliver).
- *                                        Each carries mono-font annotation
- *                                        AND a margin scribble.
- *     · Final Figure climax           — hand-drawn rectangle around the
- *                                        AED 111,246 number + verified
- *                                        circular stamp + scribbled ROI
+ *   Design language: clean serif + italic, generous whitespace, sticky
+ *   progress rail on the right, keyboard nav (←/→), no decorations that
+ *   break readability or coherence with the sections below.
  *
- *   Motion layer: each stage's eyebrow/title/body stagger-reveals on scroll
- *   (Reveal component, blur→focus pull). Thinking bridges animate their
- *   elements in sequence — the cognitive handoff is animated, not static.
- *   The process lives BETWEEN the writings, not as separate cards.
+ *   Below the track: the same Blind Spot, Value Engine, Iceberg,
+ *   VIP Lever, ROI, closing line and CTA — unchanged.
  */
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
@@ -61,6 +50,8 @@ const SYSTEM = [
     icon: "aperture" as const,
     bridge: "venn" as const,
     scribble: "(2 days on this tuple)",
+    /** Plain text for horizontal track — no JSX decorations. */
+    bodyPlain: "Every station on the floor emits a QR-scan event — cutting table, embroidery queue, QC station, dispatch. The event is a tuple: (employee_id, station_id, order_id, sku, timestamp).",
     body: (
       <>
         Every station on the floor emits a{" "}
@@ -80,6 +71,7 @@ const SYSTEM = [
     icon: "nodes" as const,
     bridge: "formula" as const,
     scribble: "(5 vars, 5 weights, 1 truth)",
+    bodyPlain: "Each order is joined to its invoice price, SKU history, tier (VIP / Standard), and time-on-floor. Each employee gets a live production map: orders touched, time on each, current bottleneck. The join is not a SQL JOIN — it's the join that decides what the manager will see.",
     body: (
       <>
         Each order is joined to its invoice price, SKU history, tier (VIP /
@@ -100,6 +92,7 @@ const SYSTEM = [
     icon: "gear" as const,
     bridge: "barchart" as const,
     scribble: "(this took 4 evenings)",
+    bodyPlain: "Five variables — price, SKU history, status, tier, aging — collapse into one weighted AED number per order. Same formula runs offline in the factory SQL.js cache and online in the Cloudflare Worker: 0.40·p + 0.20·s + 0.15·st + 0.15·t + 0.10·a",
     body: (
       <>
         Five variables — price, SKU history, status, tier, aging — collapse
@@ -118,6 +111,7 @@ const SYSTEM = [
     icon: "plane" as const,
     bridge: null,
     scribble: "(the close)",
+    bodyPlain: "The boardroom view. The bottleneck you saw is the Confirmed → Processing handoff: 189 orders, AED 55,119, approved-but-not-started. The dashboard points the floor manager at the right orders in the right order.",
     body: (
       <>
         The boardroom view. The bottleneck you saw is the Confirmed →
@@ -658,36 +652,122 @@ function FinalFigure() {
   );
 }
 
-/* ──────────────────── ENGINEER'S NOTEBOOK TRACK ─────────────────────── */
+/* ──────────────────── HORIZONTAL STUDIO TRACK ─────────────────────── */
 
 /**
- * EngineersNotebook — the 4-stage architecture as a vertical editorial column.
- * Each stage staggers in on scroll (Reveal). Between stages, ThinkingBridges
- * animate the cognitive handoff. No horizontal scroll — the prose flows top-down.
+ * HorizontalStudioTrack — the 4-stage architecture presented as a
+ * horizontal scroll-snap track on desktop (one stage per viewport),
+ * and a clean vertical stack on mobile.
+ *
+ * Motion layer: each stage panel watches the horizontal scroll container
+ * via IntersectionObserver. When a panel becomes the primary focus
+ * (highest intersectionRatio), its text elements stagger in:
+ *   eyebrow (delay 0) → layer (0.1s) → title (0.2s) → body (0.35s)
+ * Each element uses blur→focus pull so the thinking process
+ * feels like it's being written as you scroll.
+ *
+ * Keyboard: ←/→ arrow keys move between panels.
+ * prefers-reduced-motion: instant opacity fallback.
  */
-function EngineersNotebook() {
+function HorizontalStudioTrack() {
   const reduce = useReducedMotion();
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  // Track which panel is most visible in the horizontal scroll container.
+  // Each panel fires its own IntersectionObserver via a ref map.
+  const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [panelVisible, setPanelVisible] = useState<(boolean | null)[]>(
+    SYSTEM.map(() => null)
+  );
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+
+    const observers: IntersectionObserver[] = [];
+
+    panelRefs.current.forEach((panel, i) => {
+      if (!panel) return;
+      const obs = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            setPanelVisible((prev) => {
+              const next = [...prev];
+              next[i] = e.isIntersecting;
+              return next;
+            });
+          }
+        },
+        { root: el, threshold: [0.4, 0.7] }
+      );
+      obs.observe(panel);
+      observers.push(obs);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
+  }, []);
+
+  // Derive which stage is "primary" — the one with the highest ratio in view.
+  useEffect(() => {
+    const dominated = panelVisible.every((v) => v === false || v === null);
+    if (dominated) return;
+    // Find the panel with the highest true value index.
+    let best = 0;
+    for (let i = 1; i < panelVisible.length; i++) {
+      if (panelVisible[i] === true && panelVisible[best] !== true) {
+        best = i;
+      } else if (
+        panelVisible[i] === true &&
+        panelVisible[best] === true &&
+        i > best
+      ) {
+        best = i;
+      }
+    }
+    setActiveIdx(best);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [panelVisible]);
+
+  // Keyboard nav: ←/→ scrolls between panels when the track has focus.
+  const handleKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const panelWidth = el.clientWidth;
+    if (e.key === "ArrowRight") {
+      el.scrollBy({
+        left: panelWidth,
+        behavior: reduce ? "auto" : "smooth",
+      });
+      e.preventDefault();
+    } else if (e.key === "ArrowLeft") {
+      el.scrollBy({
+        left: -panelWidth,
+        behavior: reduce ? "auto" : "smooth",
+      });
+      e.preventDefault();
+    }
+  };
+
+  // Per-element stagger variants for blur→focus pull.
+  const itemVariants = (delay: number) => ({
+    hidden: reduce
+      ? { opacity: 0 }
+      : { opacity: 0, y: 14, filter: "blur(5px)" },
+    show: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: { duration: 0.65, delay, ease: [0.16, 1, 0.3, 1] },
+    },
+  });
 
   return (
     <div className="relative mt-10 md:mt-16">
-      {/* Working-Notes opener strip */}
-      <div className="mb-10 flex flex-wrap items-end justify-between gap-4 border-b border-rule pb-6 md:mb-12">
+      {/* Section eyebrow + heading — kept above the track for context. */}
+      <div className="mb-8 flex flex-wrap items-end justify-between gap-4 border-b border-rule pb-6 md:mb-12">
         <div>
-          <div className="flex items-center gap-3">
-            {/* Paper tape */}
-            <div className="relative">
-              <div
-                className="h-5 w-20 bg-[color:var(--accent-teal)]/20"
-                style={{
-                  clipPath:
-                    "polygon(0% 0%, 100% 0%, 100% 60%, 92% 100%, 0% 100%)",
-                }}
-              />
-            </div>
-            <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink-faint">
-              // 01 · The System We Built
-            </div>
-          </div>
+          <ChapterEyebrow n="// 01" label="The System We Built" />
           <h3 className="cin-section-title mt-3 text-3xl md:text-5xl">
             From the floor to the
             <br />
@@ -699,34 +779,140 @@ function EngineersNotebook() {
         </div>
       </div>
 
-      {/* Vertical editorial column — each stage is a paragraph + thinking bridge */}
-      <div className="relative">
+      {/* Desktop: horizontal scroll-snap track with per-panel motion. */}
+      <div
+        ref={trackRef}
+        role="region"
+        aria-label="AbaYa-Track four-stage architecture"
+        tabIndex={0}
+        onKeyDown={handleKey}
+        className="cin-horizontal-track hidden snap-x snap-mandatory overflow-x-auto pb-2 md:flex md:gap-0 md:snap-mandatory"
+        style={{ scrollbarWidth: "thin" }}
+      >
         {SYSTEM.map((s, idx) => {
-          const isLast = idx === SYSTEM.length - 1;
+          const isActive = activeIdx === idx;
           return (
-            <div key={s.n}>
-              {/* Stage panel — eyebrow, title, body stagger in on scroll */}
-              <StagePanel
-                n={s.n}
-                layer={s.layer}
-                title={s.title}
-                body={s.body}
-                icon={s.icon}
-                scribble={s.scribble}
-                index={idx}
-              />
+            <div
+              key={s.n}
+              ref={(el) => {
+                panelRefs.current[idx] = el;
+              }}
+              data-stage-panel={s.n}
+              className="flex w-full shrink-0 snap-center items-center px-2 md:px-12 lg:px-20"
+            >
+              <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-10 md:grid-cols-[180px_1fr] md:gap-16">
+                {/* Stage number — staggered with delay 0 */}
+                <div className="md:pt-2">
+                  <motion.div
+                    initial="hidden"
+                    animate={isActive ? "show" : "hidden"}
+                    variants={itemVariants(0)}
+                    className="font-mono text-[11px] tracking-[0.3em] text-ink-faint"
+                  >
+                    {s.n}
+                  </motion.div>
+                  {/* Layer label — staggered with delay 0.1 */}
+                  <motion.div
+                    initial="hidden"
+                    animate={isActive ? "show" : "hidden"}
+                    variants={itemVariants(0.1)}
+                    className="mt-3 font-mono text-xs uppercase tracking-[0.22em] text-accent-teal"
+                  >
+                    {s.layer}
+                  </motion.div>
+                </div>
 
-              {/* Thinking bridge — animated handoff, except after the last stage */}
-              {!isLast && s.bridge && (
-                <ThinkingBridge kind={s.bridge} />
-              )}
+                {/* Stage content */}
+                <div>
+                  {/* Title — staggered with delay 0.2 */}
+                  <motion.h4
+                    id={`stage-heading-${s.n}`}
+                    initial="hidden"
+                    animate={isActive ? "show" : "hidden"}
+                    variants={itemVariants(0.2)}
+                    className="font-display text-3xl italic leading-[1.05] text-ink md:text-5xl lg:text-6xl"
+                  >
+                    {s.title}
+                  </motion.h4>
+                  {/* Body — staggered with delay 0.35 */}
+                  <motion.p
+                    initial="hidden"
+                    animate={isActive ? "show" : "hidden"}
+                    variants={itemVariants(0.35)}
+                    className="mt-6 max-w-2xl font-display text-base leading-[1.7] text-ink-muted md:text-xl"
+                  >
+                    {s.bodyPlain}
+                  </motion.p>
+                </div>
+              </div>
             </div>
           );
         })}
       </div>
 
-      {/* Final figure — animated climax */}
-      <FinalFigure />
+      {/* Sticky progress rail — visible only on desktop, shows current stage. */}
+      <div
+        aria-hidden
+        className="absolute right-4 top-1/2 hidden -translate-y-1/2 flex-col gap-4 md:flex lg:right-8"
+      >
+        {SYSTEM.map((s) => {
+          const isActive = s.n === String(activeIdx + 1).padStart(2, "0");
+          return (
+            <div
+              key={s.n}
+              className="flex items-center gap-3 transition-opacity duration-300"
+              style={{ opacity: isActive ? 1 : 0.45 }}
+            >
+              <span className="font-mono text-[10px] tracking-[0.18em] text-ink-faint">
+                {s.n}
+              </span>
+              <span
+                className="block h-px w-10 transition-colors duration-300 lg:w-14"
+                style={{
+                  background: isActive
+                    ? "var(--accent-teal)"
+                    : "var(--rule-strong)",
+                }}
+              />
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Mobile: clean vertical stack with Reveal stagger — no horizontal scroll. */}
+      <div className="space-y-12 md:hidden">
+        {SYSTEM.map((s) => (
+          <article
+            key={s.n}
+            aria-labelledby={`stage-heading-mobile-${s.n}`}
+            className="border-b border-rule pb-10 last:border-b-0"
+          >
+            <Reveal
+              as="div"
+              stagger={0.08}
+              className="font-mono text-[10px] tracking-[0.3em] text-ink-faint"
+            >
+              {s.n}
+            </Reveal>
+            <Reveal
+              as="div"
+              stagger={0.1}
+              className="mt-2 font-mono text-[10px] uppercase tracking-[0.22em] text-accent-teal"
+            >
+              {s.layer}
+            </Reveal>
+            <h4
+              id={`stage-heading-mobile-${s.n}`}
+              className="mt-4 font-display text-2xl italic leading-[1.1] text-ink md:text-3xl"
+            >
+              {s.title}
+            </h4>
+            <p className="mt-4 font-display text-base leading-[1.7] text-ink-muted">
+              {s.bodyPlain}
+            </p>
+          </article>
+        ))}
+      </div>
     </div>
   );
 }
@@ -911,10 +1097,11 @@ export function CaseStudySection() {
           </div>
         </Reveal>
 
-        {/* The 4-stage architecture — Engineer's Notebook layout.
-            Prose flows top-down; thinking bridges animate the handoffs;
-            each stage staggers in on scroll. */}
-        <EngineersNotebook />
+        {/* The 4-stage architecture — horizontal studio track (desktop)
+            or vertical stack (mobile). Each panel's text staggers in
+            on scroll (blur→focus pull) so the thinking process
+            unfolds step by step. */}
+        <HorizontalStudioTrack />
 
         {/* The blind spot — the headline stat */}
         <div className="mt-20 grid grid-cols-1 gap-6 md:mt-28 md:grid-cols-12 md:gap-8">
