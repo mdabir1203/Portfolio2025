@@ -715,27 +715,31 @@ function FinalFigure() {
 /* ──────────────────── HORIZONTAL STUDIO TRACK ─────────────────────── */
 
 /**
- * HorizontalStudioTrack — the 4-stage architecture presented as a
- * horizontal scroll-snap track on desktop (one stage per viewport),
- * and a clean vertical stack on mobile.
+ * HorizontalStudioTrack — omni-directional text canvas.
  *
- * Motion layer: each stage panel watches the horizontal scroll container
- * via IntersectionObserver. When a panel becomes the primary focus
- * (highest intersectionRatio), its text elements stagger in:
- *   eyebrow (delay 0) → layer (0.1s) → title (0.2s) → body (0.35s)
- * Each element uses blur→focus pull so the thinking process
- * feels like it's being written as you scroll.
+ * The 4-stage architecture exists as ONE continuous horizontal canvas
+ * (400vw). A 100vw viewport clips it. IntersectionObserver tracks
+ * which stage is primary — adjacent stages bleed in from the sides,
+ * slightly blurred, simulating peripheral unfocus. The active stage
+ * is crystal-clear with kinematic per-word blur→focus stagger.
  *
- * Keyboard: ←/→ arrow keys move between panels.
- * prefers-reduced-motion: instant opacity fallback.
+ * The attention break / refocus loop:
+ *   When you scroll to the next stage, the current content drifts
+ *   out of focus (blur + lateral drift) while the incoming content
+ *   snaps into sharp focus — your eye literally refocuses.
+ *
+ * No visible snap lines. No panel borders. The canvas feels
+ * continuous — the user experiences the text flowing, not panels sliding.
+ *
+ * Mobile: same horizontal swipe, but the native scrollbar is the
+ * only affordance telling users they can swipe.
  */
 function HorizontalStudioTrack() {
   const reduce = useReducedMotion();
   const trackRef = useRef<HTMLDivElement | null>(null);
   const [activeIdx, setActiveIdx] = useState(0);
 
-  // Track which panel is most visible in the horizontal scroll container.
-  // Each panel fires its own IntersectionObserver via a ref map.
+  // ── Intersection tracking ─────────────────────────────────────────────
   const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [panelVisible, setPanelVisible] = useState<(boolean | null)[]>(
     SYSTEM.map(() => null)
@@ -744,9 +748,7 @@ function HorizontalStudioTrack() {
   useEffect(() => {
     const el = trackRef.current;
     if (!el) return;
-
     const observers: IntersectionObserver[] = [];
-
     panelRefs.current.forEach((panel, i) => {
       if (!panel) return;
       const obs = new IntersectionObserver(
@@ -759,72 +761,96 @@ function HorizontalStudioTrack() {
             });
           }
         },
-        { root: el, threshold: [0.4, 0.7] }
+        { root: el, threshold: [0.3, 0.6] }
       );
       obs.observe(panel);
       observers.push(obs);
     });
-
     return () => observers.forEach((o) => o.disconnect());
   }, []);
 
-  // Derive which stage is "primary" — the one with the highest ratio in view.
   useEffect(() => {
     const dominated = panelVisible.every((v) => v === false || v === null);
     if (dominated) return;
-    // Find the panel with the highest true value index.
     let best = 0;
     for (let i = 1; i < panelVisible.length; i++) {
-      if (panelVisible[i] === true && panelVisible[best] !== true) {
-        best = i;
-      } else if (
-        panelVisible[i] === true &&
-        panelVisible[best] === true &&
-        i > best
-      ) {
-        best = i;
-      }
+      if (panelVisible[i] === true) best = i;
     }
     setActiveIdx(best);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [panelVisible]);
 
-  // Keyboard nav: ←/→ scrolls between panels when the track has focus.
+  // ── Keyboard nav ─────────────────────────────────────────────────────
   const handleKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
     const el = trackRef.current;
     if (!el) return;
     const panelWidth = el.clientWidth;
     if (e.key === "ArrowRight") {
-      el.scrollBy({
-        left: panelWidth,
-        behavior: reduce ? "auto" : "smooth",
-      });
+      el.scrollBy({ left: panelWidth, behavior: reduce ? "auto" : "smooth" });
       e.preventDefault();
     } else if (e.key === "ArrowLeft") {
-      el.scrollBy({
-        left: -panelWidth,
-        behavior: reduce ? "auto" : "smooth",
-      });
+      el.scrollBy({ left: -panelWidth, behavior: reduce ? "auto" : "smooth" });
       e.preventDefault();
     }
   };
 
-  // Per-element stagger variants for blur→focus pull.
+  // ── Focus-level per stage ────────────────────────────────────────────
+  //  0 = active (crystal clear)
+  // -1 = one behind (slightly blurred, fades toward edge)
+  // -2 = two behind (heavily blurred, near-invisible)
+  const getFocusLevel = (idx: number): number => {
+    const dist = idx - activeIdx;
+    if (dist === 0) return 0;
+    if (dist === -1) return -1; // next-in-line bleeds in from right
+    if (dist === 1) return -1;  // prev bleeds in from left
+    return -2;
+  };
+
+  // Derive motion values from focus level.
+  // Returns individual properties so Framer Motion can animate them separately.
+  const focusProps = (
+    level: number
+  ): { opacity: number; filter: string; scale: number } => {
+    if (reduce) return { opacity: level === 0 ? 1 : 0, filter: "blur(0px)", scale: 1 };
+    if (level === 0)
+      return { opacity: 1, filter: "blur(0px)", scale: 1 };
+    if (level === -1)
+      return { opacity: 0.55, filter: "blur(2px)", scale: 0.97 };
+    return { opacity: 0.15, filter: "blur(5px)", scale: 0.93 };
+  };
+
+  // ── Per-element stagger (for active stage only) ─────────────────────
   const itemVariants = (delay: number) => ({
-    hidden: reduce
-      ? { opacity: 0 }
-      : { opacity: 0, y: 14, filter: "blur(5px)" },
+    hidden: reduce ? { opacity: 0 } : { opacity: 0, y: 12, filter: "blur(5px)" },
     show: {
       opacity: 1,
       y: 0,
       filter: "blur(0px)",
-      transition: { duration: 0.65, delay, ease: [0.16, 1, 0.3, 1] },
+      transition: { duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] },
     },
   });
 
+  // ── Stage transition: lateral drift (attention break) ───────────────
+  // When activeIdx changes, the panel's content drifts OUT to the side
+  // while the new active panel's content snaps IN.
+  // We track the "leaving" index for the drift-out animation.
+  const [leavingIdx, setLeavingIdx] = useState<number | null>(null);
+  const prevActiveRef = useRef(0);
+
+  useEffect(() => {
+    if (activeIdx !== prevActiveRef.current) {
+      setLeavingIdx(prevActiveRef.current);
+      const t = setTimeout(() => setLeavingIdx(null), 700);
+      prevActiveRef.current = activeIdx;
+      return () => clearTimeout(t);
+    }
+  }, [activeIdx]);
+
+  const isLeaving = (idx: number) => leavingIdx === idx;
+
   return (
     <div className="relative mt-10 md:mt-16">
-      {/* Section eyebrow + heading — kept above the track for context. */}
+      {/* ── Section header ─────────────────────────────────────────────── */}
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4 border-b border-rule pb-6 md:mb-12">
         <div>
           <ChapterEyebrow n="// 01" label="The System We Built" />
@@ -839,117 +865,171 @@ function HorizontalStudioTrack() {
         </div>
       </div>
 
-      {/* Desktop: horizontal scroll-snap track — full viewport, no visible scrollbar.
-          Each panel is exactly 100vw so snap-aligns to the screen edge. */}
-      <div
-        ref={trackRef}
-        role="region"
-        aria-label="AbaYa-Track four-stage architecture"
-        tabIndex={0}
-        onKeyDown={handleKey}
-        className="hidden snap-x snap-mandatory overflow-x-auto md:flex md:gap-0 md:snap-mandatory [&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar-track]:hidden [&_::-webkit-scrollbar-thumb]:hidden [scrollbar-width:none]"
-        style={{ scrollbarWidth: "none" }}
-      >
-        {SYSTEM.map((s, idx) => {
-          const isActive = activeIdx === idx;
-          return (
-            <div
-              key={s.n}
-              ref={(el) => {
-                panelRefs.current[idx] = el;
-              }}
-              data-stage-panel={s.n}
-              className="flex w-[100vw] shrink-0 snap-center items-center px-8 md:px-12 lg:px-16"
-            >
-              <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-10 md:grid-cols-[180px_1fr] md:gap-16">
-                {/* Stage number — staggered with delay 0 */}
-                <div className="md:pt-2">
-                  <motion.div
-                    initial="hidden"
-                    animate={isActive ? "show" : "hidden"}
-                    variants={itemVariants(0)}
-                    className="font-mono text-[11px] tracking-[0.3em] text-ink-faint"
-                  >
-                    {s.n}
-                  </motion.div>
-                  {/* Layer label — staggered with delay 0.1 */}
-                  <motion.div
-                    initial="hidden"
-                    animate={isActive ? "show" : "hidden"}
-                    variants={itemVariants(0.1)}
-                    className="mt-3 font-mono text-xs uppercase tracking-[0.22em] text-accent-teal"
-                  >
-                    {s.layer}
-                  </motion.div>
-                </div>
+      {/* ── Desktop: omni-directional canvas ──────────────────────────── */}
+      {/* 400vw strip inside a 100vw overflow:hidden viewport.
+          Edge gradient masks make adjacent panels fade into nothing at the sides. */}
+      <div className="relative hidden md:block">
+        {/* Left edge mask */}
+        <div
+          className="pointer-events-none absolute left-0 top-0 z-10 h-full w-16"
+          style={{
+            background:
+              "linear-gradient(to right, var(--paper), transparent)",
+          }}
+        />
+        {/* Right edge mask */}
+        <div
+          className="pointer-events-none absolute right-0 top-0 z-10 h-full w-16"
+          style={{
+            background:
+              "linear-gradient(to left, var(--paper), transparent)",
+          }}
+        />
 
-                {/* Stage content */}
-                <div>
-                  {/* Title — kinetic per-word reveal with blur→focus pull.
-                      Stagger is handled inside KinematicTitle (0, 0.13, 0.26…s per word),
-                      triggered when the panel becomes active. */}
-                  <h4
-                    id={`stage-heading-${s.n}`}
-                    className="font-display text-3xl italic leading-[1.05] text-ink md:text-5xl lg:text-6xl"
-                  >
-                    <KinematicTitle title={s.title} active={isActive} reduce={reduce} />
-                  </h4>
-                  {/* Body — staggered with delay 0.35 */}
-                  <motion.p
-                    initial="hidden"
-                    animate={isActive ? "show" : "hidden"}
-                    variants={itemVariants(0.35)}
-                    className="mt-6 max-w-2xl font-display text-base leading-[1.7] text-ink-muted md:text-xl"
-                  >
-                    {s.bodyPlain}
-                  </motion.p>
-                </div>
+        {/* The 400vw canvas — smooth horizontal scroll, no snap chrome */}
+        <div
+          ref={trackRef}
+          role="region"
+          aria-label="AbaYa-Track four-stage architecture"
+          tabIndex={0}
+          onKeyDown={handleKey}
+          className="flex overflow-x-auto"
+          style={{
+            width: "100vw",
+            scrollbarWidth: "none",
+          }}
+        >
+          {/* Hide webkit scrollbar */}
+          <style>{`
+            .cin-canvas::-webkit-scrollbar { display: none; }
+            .cin-canvas { scrollbar-width: none; -ms-overflow-style: none; }
+          `}</style>
+
+          {SYSTEM.map((s, idx) => {
+            const level = getFocusLevel(idx);
+            const fp = focusProps(level);
+            const isActive = level === 0;
+            const leaving = isLeaving(idx);
+
+            // Lateral drift: active→inactive drifts out to the side it came from.
+            // The leaving stage drifts away; the entering stage has no extra drift
+            // (KinematicTitle handles the snap-in).
+            const driftX =
+              leaving && idx < activeIdx
+                ? -40  // came from left, drifts left
+                : leaving && idx > activeIdx
+                ? 40   // came from right, drifts right
+                : 0;
+
+            return (
+              <div
+                key={s.n}
+                ref={(el) => {
+                  panelRefs.current[idx] = el;
+                }}
+                data-stage-panel={s.n}
+                className="cin-canvas flex shrink-0 items-center"
+                style={{ width: "100vw" }}
+              >
+                {/* Animated focus wrapper — handles blur, opacity, scale, lateral drift */}
+                <motion.div
+                  className="flex w-full px-8 md:px-16 lg:px-20"
+                  animate={{
+                    opacity: fp.opacity,
+                    filter: fp.filter,
+                    scale: fp.scale,
+                    x: driftX,
+                  }}
+                  transition={
+                    leaving
+                      ? { duration: 0.55, ease: [0.4, 0, 1, 1] }
+                      : { duration: 0.7, ease: [0.16, 1, 0.3, 1] }
+                  }
+                >
+                  <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-10 md:grid-cols-[180px_1fr] md:gap-16">
+                    {/* Stage meta — left column */}
+                    <div className="md:pt-2">
+                      <motion.div
+                        initial="hidden"
+                        animate={isActive ? "show" : "hidden"}
+                        variants={itemVariants(0)}
+                        className="font-mono text-[11px] tracking-[0.3em] text-ink-faint"
+                      >
+                        {s.n}
+                      </motion.div>
+                      <motion.div
+                        initial="hidden"
+                        animate={isActive ? "show" : "hidden"}
+                        variants={itemVariants(0.1)}
+                        className="mt-3 font-mono text-xs uppercase tracking-[0.22em] text-accent-teal"
+                      >
+                        {s.layer}
+                      </motion.div>
+                    </div>
+
+                    {/* Stage content */}
+                    <div>
+                      <h4
+                        id={`stage-heading-${s.n}`}
+                        className="font-display text-3xl italic leading-[1.05] text-ink md:text-5xl lg:text-6xl"
+                      >
+                        {/* KinematicTitle: per-word blur→focus stagger on activation */}
+                        <KinematicTitle
+                          title={s.title}
+                          active={isActive}
+                          reduce={reduce}
+                        />
+                      </h4>
+                      <motion.p
+                        initial="hidden"
+                        animate={isActive ? "show" : "hidden"}
+                        variants={itemVariants(0.4)}
+                        className="mt-6 max-w-2xl font-display text-base leading-[1.7] text-ink-muted md:text-xl"
+                      >
+                        {s.bodyPlain}
+                      </motion.p>
+                    </div>
+                  </div>
+                </motion.div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
 
-      {/* Sticky progress rail — visible only on desktop, shows current stage. */}
-      <div
-        aria-hidden
-        className="absolute right-4 top-1/2 hidden -translate-y-1/2 flex-col gap-4 md:flex lg:right-8"
-      >
-        {SYSTEM.map((s) => {
-          const isActive = s.n === String(activeIdx + 1).padStart(2, "0");
-          return (
-            <div
-              key={s.n}
-              className="flex items-center gap-3 transition-opacity duration-300"
-              style={{ opacity: isActive ? 1 : 0.45 }}
-            >
-              <span className="font-mono text-[10px] tracking-[0.18em] text-ink-faint">
-                {s.n}
-              </span>
-              <span
-                className="block h-px w-10 transition-colors duration-300 lg:w-14"
+        {/* ── Minimal dot nav — no lines, just dots ─────────────────────── */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2"
+        >
+          {SYSTEM.map((s) => {
+            const isActive = s.n === String(activeIdx + 1).padStart(2, "0");
+            return (
+              <div
+                key={s.n}
+                className="rounded-full transition-all duration-500"
                 style={{
+                  width: isActive ? 20 : 6,
+                  height: isActive ? 6 : 6,
                   background: isActive
                     ? "var(--accent-teal)"
                     : "var(--rule-strong)",
+                  opacity: isActive ? 1 : 0.5,
                 }}
               />
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
 
-      {/* Mobile: horizontal scroll-snap track — left-to-right swipe engagement,
-          one stage per swipe. Shows native scrollbar so users know they
-          can swipe through stages. */}
+      {/* ── Mobile: horizontal swipe, native scrollbar is the affordance ─── */}
       <div
         className="snap-x snap-mandatory overflow-x-auto md:hidden"
         style={{ WebkitOverflowScrolling: "touch" }}
       >
-        {SYSTEM.map((s, idx) => (
+        {SYSTEM.map((s) => (
           <div
             key={s.n}
-            className="flex w-[100vw] shrink-0 snap-center snap-always items-center px-6 py-4"
+            className="flex w-[100vw] shrink-0 snap-center items-center px-6 py-4"
           >
             <article aria-labelledby={`stage-heading-mobile-${s.n}`}>
               <div className="font-mono text-[11px] tracking-[0.3em] text-ink-faint">
