@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build && node scripts/fix-wrangler-json.js && node scripts/patch-worker-nul-strip.cjs",
+    "build": "vite build && node scripts/fix-wrangler-json.js",
     "build:dev": "vite build --mode development",
     "cv:pdf": "node scripts/cv-to-pdf.js",
     "preview": "vite preview",
